@@ -5,7 +5,7 @@
 
    Fetches every canonical singleton from Sanity (siteConfig + page-*)
    and ensures every localeString/localeText/localeRichText field has
-   all 3 locales (fr/de/en) populated.
+   all 2 locales (fr/en) populated.
 
    Fails `pnpm validate` if any canonical singleton has a missing
    locale. This is what guarantees "a site shipped to a client never
@@ -47,14 +47,14 @@ if (!PROJECT_ID) {
 
 const CANONICAL_IDS = ['siteConfig-singleton', 'page-home', 'page-about', 'page-contact'];
 
-const REQUIRED_LOCALES = ['fr', 'de', 'en'];
+const REQUIRED_LOCALES = ['fr', 'en'];
 
 function isLocaleField(value) {
   return (
     value !== null &&
     typeof value === 'object' &&
     !Array.isArray(value) &&
-    ('fr' in value || 'de' in value || 'en' in value)
+    ('fr' in value || 'en' in value)
   );
 }
 
@@ -142,7 +142,7 @@ async function main() {
 
   if (hasError) process.exit(1);
 
-  console.log(`  ✓ ${result.length} canonical singleton(s) complete in all 3 locales (fr/de/en).`);
+  console.log(`  ✓ ${result.length} canonical singleton(s) complete in all 2 locales (fr/en).`);
 }
 
 main().catch(err => {

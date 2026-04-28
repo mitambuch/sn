@@ -1,5 +1,6 @@
 import { ErrorBoundary } from '@components/features/ErrorBoundary';
 import { ToastContainer } from '@components/ui/Toast';
+import { AuthProvider } from '@context/AuthContext';
 import { ThemeProvider } from '@context/ThemeContext';
 import { BrowserRouter, useLocation } from 'react-router-dom';
 
@@ -20,7 +21,9 @@ export default function App() {
     <ErrorBoundary>
       <ThemeProvider>
         <BrowserRouter>
-          <AppContent />
+          <AuthProvider>
+            <AppContent />
+          </AuthProvider>
         </BrowserRouter>
       </ThemeProvider>
     </ErrorBoundary>

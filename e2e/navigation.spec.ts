@@ -49,8 +49,8 @@ test.describe('Navigation — header links', () => {
     await page.goto('/playground');
     // Click the logo/brand link (first link in nav)
     await page.locator('nav[aria-label="Main navigation"] a').first().click();
-    // With locale-prefix routing, home canonical URL is /:locale (fr|de|en)
-    await expect(page).toHaveURL(/\/(fr|de|en)\/?$/);
+    // With locale-prefix routing, home canonical URL is /:locale (fr|en)
+    await expect(page).toHaveURL(/\/(fr|en)\/?$/);
   });
 });
 

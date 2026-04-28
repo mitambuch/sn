@@ -1,19 +1,21 @@
-import { Header } from '@components/layout/Header';
+// ═══════════════════════════════════════════════════
+// RootLayout — outer shell common to every locale-prefixed surface
+//
+// WHAT: Provides the skip-link, the bg/text token wrapper, and the
+//       not-initialized setup banner. Renders <Outlet /> so the
+//       Public / App / Admin sub-layouts can take over per route.
+// WHEN: Mounted by LocaleLayout in src/app/routes/index.tsx for every
+//       /:locale path.
+// EDGE: Header lives in the sub-layouts now (each surface has its own
+//       chrome). Page-enter transitions also live in sub-layouts so
+//       navigating within /account/* doesn't re-mount the sidebar.
+// ═══════════════════════════════════════════════════
+
 import { Banner } from '@components/ui/Banner';
 import { siteConfig } from '@config/site';
-import { useMediaQuery } from '@hooks/useMediaQuery';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
-/* ─── RootLayout ─────────────────────────────────────────────
-   Shared wrapper for all pages.
-   Place here: Header, global navigation, etc.
-
-   Outlet = the active page renders here.
-   ─────────────────────────────────────────────────────────── */
 export default function RootLayout() {
-  const { pathname } = useLocation();
-  const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
-
   return (
     <div className="bg-bg text-fg flex min-h-screen flex-col">
       <a
@@ -22,12 +24,7 @@ export default function RootLayout() {
       >
         Skip to content
       </a>
-      <Header />
-      <main id="main-content" className="flex-1 pt-20">
-        <div key={pathname} className={prefersReducedMotion ? undefined : 'animate-page-enter'}>
-          <Outlet />
-        </div>
-      </main>
+      <Outlet />
       {!siteConfig.initialized && (
         <Banner variant="warning">
           Project not initialized — run <code className="font-mono font-bold">pnpm setup</code> then{' '}

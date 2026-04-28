@@ -92,7 +92,7 @@ function parseClient(content) {
     tone: pick('Ton'),
     audience: pick('Cible primaire'),
     deadline: pick('Deadline'),
-    locales: pick('Locales actives') || 'fr, de, en',
+    locales: pick('Locales actives') || 'fr, en',
   };
 }
 

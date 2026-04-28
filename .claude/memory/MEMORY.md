@@ -5,17 +5,17 @@
 
 ## Recent sessions (top 3)
 
+- **2026-04-28** — [Session — Sawnext Studio bootstrap + lot A infra](sessions/2026-04-28-2044.md)
 - **2026-04-24** — [Session — Morning hygiene + Dependabot #41 (uuid override)](sessions/2026-04-24-0825.md)
 - **2026-04-23** — [Session — Audit global + UX-First & Interactions Catalogue → v6.9.0](sessions/2026-04-23-2250.md)
-- **2026-04-23** — [Session — Creative Library foundation (v6.9.0 candidate)](sessions/2026-04-23-1830.md)
 
 ## Active decisions (top 5)
 
+- **2026-04-29** — [Run autonome 5h — protocole + checklist + stop conditions](decisions/2026-04-29-autonomous-5h-run-plan.md) · #workflow #decision #client-specific #p0
+- **2026-04-28** — [Modèle business — inquiry-based, pas e-commerce](decisions/2026-04-28-business-model-inquiry-not-ecommerce.md) · #workflow #decision #client-specific
 - **2026-04-23** — [UX-First rule + catalogue interactions/ (complément à vision-first)](decisions/2026-04-23-ux-first-catalogue.md) · #design #workflow #decision #template
 - **2026-04-19** — [v6.0 Plan — Conductor & Workers (velocity refoundation)](decisions/2026-04-19-v6.0-plan.md) · #workflow #memory #build #decision
 - **2026-04-19** — [Objectif du repo — starter perso optimisé max velocity](decisions/2026-04-19-repo-objective.md) · #workflow #decision #template #p0
-- **2026-04-19** — [Memory discipline hardening — feedback/patterns/frictions triggers](decisions/2026-04-19-memory-discipline-hardening.md) · #memory #workflow #decision #template
-- **2026-04-19** — [Pattern — LLM cross-audit avant release de features process](decisions/2026-04-19-llm-cross-audit-pattern.md) · #workflow #memory #decision #template
 
 ## Active patterns
 
@@ -25,7 +25,7 @@
 
 ## Deep dive
 
-- Full catalogue (87 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (90 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 

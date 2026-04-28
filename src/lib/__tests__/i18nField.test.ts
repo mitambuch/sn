@@ -8,8 +8,8 @@ describe('resolveField', () => {
   });
 
   it('returns the value for the active locale', () => {
-    const field = { fr: 'Bonjour', de: 'Hallo', en: 'Hello' };
-    expect(resolveField(field, 'de')).toBe('Hallo');
+    const field = { fr: 'Bonjour', en: 'Hello' };
+    expect(resolveField(field, 'en')).toBe('Hello');
   });
 
   it('falls back to fr when active locale is missing', () => {
@@ -18,13 +18,13 @@ describe('resolveField', () => {
   });
 
   it('returns undefined when fr fallback is also absent', () => {
-    expect(resolveField({ de: 'Hallo' }, 'en')).toBeUndefined();
+    expect(resolveField({ en: 'Hello' }, 'fr')).toBeUndefined();
   });
 });
 
 describe('resolveFieldOrFallback', () => {
   it('uses the Sanity value when present', () => {
-    expect(resolveFieldOrFallback({ fr: 'Salut', de: 'Hi' }, 'de', 'default')).toBe('Hi');
+    expect(resolveFieldOrFallback({ fr: 'Salut', en: 'Hi' }, 'en', 'default')).toBe('Hi');
   });
 
   it('falls back to fr Sanity value before the provided fallback', () => {

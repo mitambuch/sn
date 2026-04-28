@@ -35,5 +35,26 @@
     "sending": "Sending…",
     "success": "Message sent.",
     "failure": "Failed to send. Please try again shortly."
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signOut": "Sign out"
+  },
+  "account": {
+    "nav": {
+      "events": "Events",
+      "properties": "Properties",
+      "timepieces": "Timepieces",
+      "artworks": "Artworks",
+      "journeys": "Journeys",
+      "concierge": "Concierge"
+    }
+  },
+  "admin": {
+    "nav": {
+      "invitations": "Invitations",
+      "inquiries": "Inquiries",
+      "users": "Users"
+    }
   }
 }

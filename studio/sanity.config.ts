@@ -67,7 +67,6 @@ export default defineConfig({
     languageFilter({
       supportedLanguages: [
         { id: 'fr', title: 'Français' },
-        { id: 'de', title: 'Deutsch' },
         { id: 'en', title: 'English' },
       ],
       defaultLanguages: ['fr'],

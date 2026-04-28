@@ -35,5 +35,26 @@
     "sending": "Envoi en cours…",
     "success": "Message envoyé.",
     "failure": "L'envoi a échoué. Réessaie dans un instant."
+  },
+  "auth": {
+    "signIn": "Se connecter",
+    "signOut": "Se déconnecter"
+  },
+  "account": {
+    "nav": {
+      "events": "Événements",
+      "properties": "Propriétés",
+      "timepieces": "Garde-temps",
+      "artworks": "Œuvres",
+      "journeys": "Voyages",
+      "concierge": "Conciergerie"
+    }
+  },
+  "admin": {
+    "nav": {
+      "invitations": "Invitations",
+      "inquiries": "Demandes",
+      "users": "Utilisateurs"
+    }
   }
 }
