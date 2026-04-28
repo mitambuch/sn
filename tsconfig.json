@@ -44,7 +44,8 @@
       "@config/*": ["./src/config/*"],
       "@features/*": ["./src/features/*"],
       "@workbench/*": ["./src/workbench/*"],
-      "@lib/*": ["./src/lib/*"]
+      "@lib/*": ["./src/lib/*"],
+      "@types/*": ["./src/types/*"]
     }
   },
   "include": ["src"]
