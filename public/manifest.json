@@ -1,7 +1,7 @@
 {
-  "name": "Project",
-  "short_name": "Project",
-  "description": "",
+  "name": "Sawnext Studio",
+  "short_name": "Sawnext",
+  "description": "Conciergerie privée suisse — accès curaté à des biens, expériences et opportunités exclusives.",
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#0a0a0a",

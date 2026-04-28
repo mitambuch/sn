@@ -12,18 +12,19 @@
    ═══════════════════════════════════════════════════════════════ */
 
 @theme {
-  /* Dark mode — DEFAULT (classe2 "brutaliste suisse") */
+  /* Dark mode — DEFAULT (Sawnext Studio monochrome — Swiss-banking) */
   --color-bg: #0a0a0a;
   --color-fg: #f0f0f0;
-  --color-accent: #c44040;
-  /* WHY: #8a8a8a failed WCAG AA on WebKit (4.29:1 — axe computed fg as #757575
-     against #0a0a0a). #a0a0a0 clears ≥4.5 with safety margin across engines. */
+  /* WHY: client brand is strictly monochrome — accent = fg (high-emphasis tone).
+     Overrides the template's `accent identical in both modes` rule because the
+     project's brand identity IS the absence of color. See CLAUDE.md Composition. */
+  --color-accent: #f0f0f0;
   --color-muted: #a0a0a0;
   --color-surface: #141414;
   --color-border: #262626;
-  --color-on-accent: #ffffff;
+  --color-on-accent: #0a0a0a;
 
-  /* Semantic status colors — fluorescent */
+  /* Semantic status colors — kept functional (errors/success/warning) */
   --color-success: #6aff8a;
   --color-warning: #ffd60a;
   --color-danger: #dc2626;
@@ -34,34 +35,33 @@
   --color-warning-text: #ffd60a;
   --color-danger-text: #ff6b6b;
   --color-info-text: #52b0ff;
-  /* #e05a5a measured at 4.45:1 by axe — failed AA. Lifted to match
-     danger-text's safe value; both sit on the same bg at the same sizes. */
-  --color-accent-text: #ff6b6b;
+  --color-accent-text: #f0f0f0;
 
   --font-family-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
   --font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
-/* Light mode override (warm concrete gray — classe2 style) */
+/* Light mode override (monochrome — derived from same scale, no warm tones) */
 [data-theme='light'] {
-  --color-bg: #b0b0a8;
-  --color-fg: #1a1a1a;
-  --color-accent: #c44040;
-  --color-muted: #353530;
-  --color-surface: #a4a49c;
-  --color-border: #96968e;
+  --color-bg: #f0f0f0;
+  --color-fg: #0a0a0a;
+  --color-accent: #1a1a1a;
+  --color-muted: #5a5a5a;
+  --color-surface: #e0e0e0;
+  --color-border: #c8c8c8;
+  --color-on-accent: #f0f0f0;
 
   --color-success: #00c853;
   --color-warning: #e6a800;
   --color-danger: #b91c1c;
   --color-info: #1e88e5;
 
-  /* Text-safe variants — meet WCAG AA (4.5:1) on light bg and composites */
+  /* Text-safe variants — meet WCAG AA (4.5:1) on light bg #f0f0f0 */
   --color-success-text: #004d1f;
   --color-warning-text: #4d3800;
   --color-info-text: #0a3d6a;
   --color-danger-text: #7f1111;
-  --color-accent-text: #751e1e;
+  --color-accent-text: #1a1a1a;
 }
 
 /* ─── Custom scrollbar — thin coral accent ────────────────── */

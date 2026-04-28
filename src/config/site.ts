@@ -10,12 +10,13 @@ import { env } from './env';
 export const siteConfig = {
   name: env.APP_NAME,
   url: env.APP_URL,
-  locale: 'en',
-  language: 'en',
+  locale: 'fr',
+  language: 'fr',
 
   // ─── SEO defaults ──────────────────────────────────────────
   title: env.APP_NAME,
-  description: '', // Set per-project description here
+  description:
+    'Conciergerie privée suisse — accès curaté à des biens, expériences et opportunités exclusives.',
   ogImage: '', // Add your OG image to public/images/ and update this path
 
   // ─── Contact ───────────────────────────────────────────────
@@ -31,5 +32,5 @@ export const siteConfig = {
   },
 
   // WHY: Set to true by /init — controls setup banner and Header display
-  initialized: false,
+  initialized: true,
 } as const;

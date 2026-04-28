@@ -1,12 +1,11 @@
 {
-  "name": "project-base",
-  "version": "6.9.0",
+  "name": "sawnext-studio",
+  "version": "0.1.0",
   "type": "module",
-  "description": "Private production base — React 19 + TypeScript 5.9 + Vite 7 + Tailwind CSS 4",
+  "description": "Sawnext Studio — Swiss private concierge platform for HNW clientele",
   "author": "Mirco",
   "license": "UNLICENSED",
   "private": true,
-  "_baseProject": true,
   "scripts": {
     "dev": "vite",
     "prebuild": "node scripts/sync-csp-hash.js",

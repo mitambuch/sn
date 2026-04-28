@@ -1,72 +1,10 @@
-# project-base
+# Sawnext Studio
 
-Private production base for front-end projects.
-React 19 + TypeScript 5.9 + Vite 7 + Tailwind CSS 4.
+Conciergerie privée suisse pour clientèle HNW. Accès curaté à des biens,
+expériences et opportunités exclusives. Plateforme bilingue (FR/EN),
+hébergée en UE, brand voice retenue et factuelle.
 
 ---
-
-## What this is
-
-An internal foundation optimized for fast, clean front-end work:
-
-- **Concept presentations** and landing pages
-- **Premium showcase sites** and client websites
-- **Projects connecting to external APIs** (REST, GraphQL, headless CMS)
-- **Optional Sanity-backed content** (baked in, disabled until env vars exist)
-
-Not a public template. Not a framework. A disciplined starting point.
-
-## Quick start
-
-```bash
-# Clone from the canonical base
-git clone git@github.com:Mircooo/steaksoap.git my-project
-cd my-project
-pnpm install
-pnpm setup          # Interactive wizard — name, repo (private), cleanup
-pnpm dev            # → http://localhost:5173
-```
-
-Then in Claude Code, run `/brief` (design direction) then `/init` (project identity & styling). Order matters — `/init` reads what `/brief` wrote.
-
-## Keeping projects up to date
-
-Two strategies for pulling upstream improvements:
-
-### Selective patch (recommended)
-
-```bash
-pnpm base:patch
-```
-
-Cherry-pick updates by zone — only pull what you need, avoid merge conflicts:
-
-| Zone    | What it updates                                |
-| ------- | ---------------------------------------------- |
-| `infra` | `.claude/`, `scripts/`, config files           |
-| `ui`    | `src/components/ui/`, `src/components/layout/` |
-| `all`   | Full merge (same as `base:update`)             |
-
-```bash
-pnpm base:patch infra    # infrastructure only
-pnpm base:patch ui       # UI components only
-```
-
-### Full merge
-
-```bash
-pnpm base:update
-```
-
-Fetches and merges everything from `base/main`. Resolve conflicts if any, then commit.
-
-### Remote setup
-
-The `base` remote is configured automatically during `pnpm setup`. If you need to add it manually:
-
-```bash
-git remote add base https://github.com/Mircooo/steaksoap.git
-```
 
 ## Tech stack
 
