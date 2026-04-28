@@ -1,0 +1,39 @@
+{
+  "common": {
+    "back": "Back",
+    "close": "Close",
+    "loading": "Loading…",
+    "error": "Something went wrong.",
+    "retry": "Try again",
+    "empty": "No content yet.",
+    "discover": "Discover",
+    "readMore": "Read more"
+  },
+  "a11y": {
+    "closeMenu": "Close menu",
+    "openMenu": "Open menu",
+    "skipToContent": "Skip to main content",
+    "languageSwitcher": "Change language"
+  },
+  "nav": {
+    "home": "Home",
+    "playground": "Playground",
+    "lab": "Lab"
+  },
+  "playground": {
+    "menu": {
+      "work": "Work",
+      "studio": "Studio",
+      "journal": "Journal",
+      "contact": "Contact"
+    }
+  },
+  "form": {
+    "required": "This field is required.",
+    "invalidEmail": "Invalid email address.",
+    "submit": "Send",
+    "sending": "Sending…",
+    "success": "Message sent.",
+    "failure": "Failed to send. Please try again shortly."
+  }
+}

@@ -1,0 +1,226 @@
+{
+  "_meta": {
+    "brand": "Atelier Lumière — photographer studio demo",
+    "purpose": "Push this fixture to your personal steaksoap-demo Sanity project to see the Studio + front in action with realistic trilingual content.",
+    "generatedFor": "steaksoap template v6.6+"
+  },
+  "documents": [
+    {
+      "_id": "siteConfig-singleton",
+      "_type": "siteConfig",
+      "siteName": {
+        "fr": "Atelier Lumière",
+        "de": "Atelier Lumière",
+        "en": "Atelier Lumière"
+      },
+      "tagline": {
+        "fr": "Photographe d'architecture et d'intérieur — Lausanne",
+        "de": "Architektur- und Innenfotograf — Lausanne",
+        "en": "Architecture and interior photographer — Lausanne"
+      },
+      "primaryNav": [
+        {
+          "_key": "nav-home",
+          "label": { "fr": "Accueil", "de": "Startseite", "en": "Home" },
+          "href": "/"
+        },
+        {
+          "_key": "nav-work",
+          "label": { "fr": "Projets", "de": "Projekte", "en": "Work" },
+          "href": "/projects"
+        },
+        {
+          "_key": "nav-about",
+          "label": { "fr": "À propos", "de": "Über uns", "en": "About" },
+          "href": "/about"
+        },
+        {
+          "_key": "nav-contact",
+          "label": { "fr": "Contact", "de": "Kontakt", "en": "Contact" },
+          "href": "/contact"
+        }
+      ],
+      "footerTagline": {
+        "fr": "L'architecture vue avec patience.",
+        "de": "Architektur mit Geduld betrachtet.",
+        "en": "Architecture, patiently observed."
+      },
+      "copyright": "© 2026 Atelier Lumière Sàrl",
+      "contactEmail": "bonjour@atelier-lumiere.demo",
+      "contactPhone": "+41 21 555 01 02",
+      "contactAddress": {
+        "fr": "Rue du Maupas 12, 1004 Lausanne, Suisse",
+        "de": "Rue du Maupas 12, 1004 Lausanne, Schweiz",
+        "en": "Rue du Maupas 12, 1004 Lausanne, Switzerland"
+      },
+      "socials": {
+        "instagram": "https://instagram.com/atelier-lumiere-demo",
+        "linkedin": "https://linkedin.com/company/atelier-lumiere-demo"
+      },
+      "seoTitle": {
+        "fr": "Atelier Lumière — Photographe d'architecture",
+        "de": "Atelier Lumière — Architekturfotograf",
+        "en": "Atelier Lumière — Architecture photographer"
+      },
+      "seoDescription": {
+        "fr": "Atelier de photographie d'architecture basé à Lausanne. Reportages d'intérieur, immeubles, patrimoine — pour architectes, promoteurs, éditeurs.",
+        "de": "Architekturfotografie-Atelier mit Sitz in Lausanne. Innenaufnahmen, Gebäude, Kulturerbe — für Architekten, Bauträger und Verlage.",
+        "en": "Architecture photography studio based in Lausanne. Interior reportage, buildings, heritage — for architects, developers, publishers."
+      }
+    },
+    {
+      "_id": "page-home",
+      "_type": "page",
+      "title": "Accueil",
+      "slug": { "_type": "slug", "current": "home" },
+      "eyebrow": {
+        "fr": "Photographe d'architecture",
+        "de": "Architekturfotograf",
+        "en": "Architecture photographer"
+      },
+      "heroHeading": {
+        "fr": "Lire la lumière, dessiner les volumes",
+        "de": "Das Licht lesen, die Volumen zeichnen",
+        "en": "Reading light, drawing volumes"
+      },
+      "heroText": {
+        "fr": "Atelier Lumière documente l'architecture contemporaine et le patrimoine en Suisse romande. Chaque projet est traité comme une rencontre : on prend le temps d'observer un bâtiment avant de le photographier.",
+        "de": "Atelier Lumière dokumentiert zeitgenössische Architektur und Kulturerbe in der Westschweiz. Jedes Projekt wird als Begegnung behandelt: Wir nehmen uns die Zeit, ein Gebäude zu beobachten, bevor wir es fotografieren.",
+        "en": "Atelier Lumière documents contemporary architecture and heritage across French-speaking Switzerland. Every project is treated as an encounter — we take the time to observe a building before photographing it."
+      },
+      "introHeading": {
+        "fr": "Une méthode, pas une formule",
+        "de": "Eine Methode, keine Formel",
+        "en": "A method, not a formula"
+      },
+      "introParagraphs": [
+        {
+          "fr": "Nous travaillons en lumière naturelle quand c'est possible, en mixte quand c'est nécessaire. Chaque reportage commence par un repérage : nous revenons plusieurs fois sur les lieux pour comprendre comment la lumière traverse les volumes au fil de la journée.",
+          "de": "Wir arbeiten mit Tageslicht, wenn möglich, und mit Mischlicht, wenn nötig. Jedes Reportage beginnt mit einer Ortsbegehung: Wir kehren mehrmals zum Ort zurück, um zu verstehen, wie das Licht die Volumen im Laufe des Tages durchquert.",
+          "en": "We work in natural light when possible, and mixed light when needed. Every reportage starts with a scouting visit — we come back to the site several times to understand how light travels through the volumes over the course of a day."
+        },
+        {
+          "fr": "Le rendu final est livré en haute définition, retouché à la main, avec variantes print et web. Les architectes que nous accompagnons utilisent nos images pour leur portfolio, la presse spécialisée et les concours.",
+          "de": "Das Endergebnis wird in hoher Auflösung geliefert, von Hand retuschiert, mit Print- und Web-Varianten. Die Architekten, mit denen wir zusammenarbeiten, verwenden unsere Bilder für ihr Portfolio, die Fachpresse und Wettbewerbe.",
+          "en": "Final deliverables are shipped in high resolution, hand-retouched, with print and web variants. The architects we work with use our images for their portfolios, specialist press and competition submissions."
+        }
+      ],
+      "ctaHeading": {
+        "fr": "Un projet à photographier ?",
+        "de": "Ein Projekt zum Fotografieren?",
+        "en": "A project to photograph?"
+      },
+      "ctaText": {
+        "fr": "Parlons-en. Décrivez-nous le bâtiment, les contraintes, la fenêtre de tir souhaitée — nous revenons sous 48 h avec un devis et une proposition de date.",
+        "de": "Lassen Sie uns darüber sprechen. Beschreiben Sie uns das Gebäude, die Einschränkungen und das gewünschte Shooting-Fenster — wir kommen innerhalb von 48 h mit einem Angebot und einem Terminvorschlag zurück.",
+        "en": "Let's talk. Tell us about the building, the constraints, the shooting window you're hoping for — we come back within 48 h with a quote and a proposed date."
+      },
+      "ctaLabel": {
+        "fr": "Prendre contact",
+        "de": "Kontakt aufnehmen",
+        "en": "Get in touch"
+      },
+      "ctaHref": "/contact",
+      "seoTitle": {
+        "fr": "Accueil — Atelier Lumière, photographe d'architecture",
+        "de": "Startseite — Atelier Lumière, Architekturfotograf",
+        "en": "Home — Atelier Lumière, architecture photographer"
+      },
+      "seoDescription": {
+        "fr": "Photographie d'architecture et d'intérieur en Suisse romande. Une méthode patiente, une lumière naturelle, une livraison haute définition pour architectes et éditeurs.",
+        "de": "Architektur- und Innenfotografie in der Westschweiz. Eine geduldige Methode, natürliches Licht, hochauflösende Lieferung für Architekten und Verlage.",
+        "en": "Architecture and interior photography across French-speaking Switzerland. A patient method, natural light, high-res deliverables for architects and publishers."
+      }
+    },
+    {
+      "_id": "page-about",
+      "_type": "page",
+      "title": "À propos",
+      "slug": { "_type": "slug", "current": "about" },
+      "eyebrow": {
+        "fr": "Atelier indépendant",
+        "de": "Unabhängiges Atelier",
+        "en": "Independent studio"
+      },
+      "heroHeading": {
+        "fr": "Un atelier, deux photographes, quinze ans de terrain",
+        "de": "Ein Atelier, zwei Fotografen, fünfzehn Jahre Erfahrung vor Ort",
+        "en": "One studio, two photographers, fifteen years on the ground"
+      },
+      "heroText": {
+        "fr": "Atelier Lumière a été fondé en 2011 par deux photographes formés à l'ECAL. Notre travail s'articule autour d'une question simple : comment raconter un bâtiment sans le caricaturer ?",
+        "de": "Atelier Lumière wurde 2011 von zwei Fotografen gegründet, die an der ECAL ausgebildet wurden. Unsere Arbeit dreht sich um eine einfache Frage: Wie erzählt man ein Gebäude, ohne es zu karikieren?",
+        "en": "Atelier Lumière was founded in 2011 by two photographers trained at ECAL. Our work revolves around a simple question: how do you tell the story of a building without caricaturing it?"
+      },
+      "introHeading": {
+        "fr": "Nos collaborations",
+        "de": "Unsere Zusammenarbeit",
+        "en": "Our collaborations"
+      },
+      "introParagraphs": [
+        {
+          "fr": "Nous travaillons principalement avec des bureaux d'architectes de Suisse romande, des promoteurs immobiliers et des éditeurs spécialisés. Nos images ont été publiées dans Tracés, Espazium, werk, bauen+wohnen et domus.",
+          "de": "Wir arbeiten hauptsächlich mit Architekturbüros aus der Westschweiz, Bauträgern und Fachverlagen zusammen. Unsere Bilder wurden in Tracés, Espazium, werk, bauen+wohnen und domus veröffentlicht.",
+          "en": "We work mainly with architecture firms from French-speaking Switzerland, property developers and specialist publishers. Our images have been published in Tracés, Espazium, werk, bauen+wohnen and domus."
+        }
+      ],
+      "seoTitle": {
+        "fr": "À propos — Atelier Lumière",
+        "de": "Über uns — Atelier Lumière",
+        "en": "About — Atelier Lumière"
+      },
+      "seoDescription": {
+        "fr": "Studio de photographie d'architecture fondé en 2011 à Lausanne. Deux photographes, quinze ans de terrain, publications en presse spécialisée internationale.",
+        "de": "Architekturfotografie-Studio, gegründet 2011 in Lausanne. Zwei Fotografen, fünfzehn Jahre Erfahrung vor Ort, Veröffentlichungen in internationaler Fachpresse.",
+        "en": "Architecture photography studio founded in 2011 in Lausanne. Two photographers, fifteen years on the ground, publications in international specialist press."
+      }
+    },
+    {
+      "_id": "page-contact",
+      "_type": "page",
+      "title": "Contact",
+      "slug": { "_type": "slug", "current": "contact" },
+      "eyebrow": {
+        "fr": "Nous écrire",
+        "de": "Schreiben Sie uns",
+        "en": "Get in touch"
+      },
+      "heroHeading": {
+        "fr": "Parlons de votre projet",
+        "de": "Sprechen wir über Ihr Projekt",
+        "en": "Let's talk about your project"
+      },
+      "heroText": {
+        "fr": "Nous répondons sous 48 h ouvrées. Pour les demandes de presse, passez par la page projets : la bibliothèque haute définition est téléchargeable directement.",
+        "de": "Wir antworten innerhalb von 48 Werkstunden. Für Presseanfragen nutzen Sie bitte die Projektseite: Die hochauflösende Bibliothek ist direkt herunterladbar.",
+        "en": "We reply within 48 working hours. For press requests, please use the projects page — the high-resolution library is downloadable directly."
+      },
+      "ctaHeading": {
+        "fr": "Écrire directement",
+        "de": "Direkt schreiben",
+        "en": "Write directly"
+      },
+      "ctaText": {
+        "fr": "Pas de formulaire, un vrai email lu par un humain.",
+        "de": "Kein Formular, eine echte E-Mail, gelesen von einem Menschen.",
+        "en": "No form — a real email read by a human."
+      },
+      "ctaLabel": {
+        "fr": "bonjour@atelier-lumiere.demo",
+        "de": "bonjour@atelier-lumiere.demo",
+        "en": "bonjour@atelier-lumiere.demo"
+      },
+      "ctaHref": "mailto:bonjour@atelier-lumiere.demo",
+      "seoTitle": {
+        "fr": "Contact — Atelier Lumière",
+        "de": "Kontakt — Atelier Lumière",
+        "en": "Contact — Atelier Lumière"
+      },
+      "seoDescription": {
+        "fr": "Nous contacter pour un devis, un rendez-vous, une demande presse. Réponse sous 48 h ouvrées.",
+        "de": "Kontaktieren Sie uns für ein Angebot, einen Termin oder eine Presseanfrage. Antwort innerhalb von 48 Werkstunden.",
+        "en": "Contact us for a quote, an appointment or a press request. Reply within 48 working hours."
+      }
+    }
+  ]
+}
