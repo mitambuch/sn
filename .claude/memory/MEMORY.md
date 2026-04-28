@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-04-28** — [Session — Sawnext Studio bootstrap + lot A infra](sessions/2026-04-28-2044.md)
 - **2026-04-24** — [Session — Morning hygiene + Dependabot #41 (uuid override)](sessions/2026-04-24-0825.md)
 - **2026-04-23** — [Session — Audit global + UX-First & Interactions Catalogue → v6.9.0](sessions/2026-04-23-2250.md)
-- **2026-04-23** — [Session — Creative Library foundation (v6.9.0 candidate)](sessions/2026-04-23-1830.md)
 
 ## Active decisions (top 5)
 
@@ -25,7 +25,7 @@
 
 ## Deep dive
 
-- Full catalogue (87 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (88 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
