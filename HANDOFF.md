@@ -1,10 +1,10 @@
-# project-base — Developer Handoff
+# Sawnext Studio — Developer Handoff
 
 > This document contains everything a developer needs to understand, run,
 > and maintain this project. No AI tools required.
 
-Generated on: 2026-03-30
-Project version: 4.6.1
+Generated on: 2026-04-28
+Project version: 0.1.0
 
 ---
 

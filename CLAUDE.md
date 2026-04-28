@@ -8,9 +8,38 @@ You operate inside a structured system: rules (.claude/rules/), commands (.claud
 Before ANY code change: `git checkout main && git pull && git checkout -b <type>/<scope>`
 On main with uncommitted changes? Stash → branch → apply. Zero exceptions.
 
-# Project
+# Sawnext Studio
 
-React 19 + TypeScript 5.9 + Vite 7 + Tailwind CSS 4 + pnpm + Vitest + ESLint 9
+Conciergerie privée suisse pour clientèle HNW. Plateforme bilingue FR/EN
+(default FR), hébergée UE. Stack : React 19 + TypeScript 5.9 + Vite 7 +
+Tailwind CSS 4 + pnpm + Vitest + ESLint 9. Backend : Supabase (Frankfurt)
++ Resend pour les notifications email. Contenu éditorial : Sanity.
+
+## Project Context
+
+This project is a Swiss private concierge platform — curated access to
+exclusive goods, experiences and opportunities for HNW clientele. The
+aesthetic is strictly **monochrome** (no chromatic accent), the brand voice
+is **retenue, factuelle, suisse-bancaire** (no poetry, no emoji, no
+exclamation marks). Built for vetted clients onboarded via single-use
+invitation codes; each interest expressed by a client triggers an email
+notification to the operator (Salva).
+
+**Active modules** (skeleton phase, MVP target end of June 2026) :
+Events, Properties, Timepieces, Artworks, Journeys, Concierge (public)
++ Admin (invitations, inquiries, users).
+
+**Composition Rules — project-specific overrides**
+
+- The template's `styling.md` rule "accent identical in dark and light mode"
+  applies to the steaksoap brand. **Sawnext overrides** : `--color-accent`
+  is monochrome and equals the high-emphasis fg tone in each mode (`#f0f0f0`
+  in dark, `#1a1a1a` in light). The brand identity IS the absence of color
+  — that consistency is preserved across modes by tying accent to fg.
+- Languages : FR + EN only. DE is dropped from i18n config (template ships
+  with FR/DE/EN — DE will be removed in a separate pass).
+- Status colors (success/warning/danger/info) are kept functional template
+  values for now; client may opt for monochrome state colors in phase 2.
 
 ## Commands
 pnpm dev              — dev server (port 5173)
