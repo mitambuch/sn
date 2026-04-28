@@ -1,3 +1,4 @@
+import { PublicLayout } from '@app/layouts/PublicLayout';
 import RootLayout from '@app/layouts/RootLayout';
 import { LocaleProvider } from '@app/LocaleProvider';
 import { LocaleRedirect } from '@app/LocaleRedirect';
@@ -82,13 +83,36 @@ export default function AppRoutes() {
         <Route path={ROUTES.PLAYGROUND} element={<LocaleRedirect />} />
         <Route path={ROUTES.LAB} element={<LocaleRedirect />} />
 
-        {/* ─── Canonical locale-prefixed tree ─────────────── */}
+        {/* ─── Canonical locale-prefixed tree ───────────────
+            LocaleLayout = LocaleProvider + RootLayout (skip-link + banner).
+            Three sub-layouts split the surface :
+              · PublicLayout → un-authenticated pages (home, login, onboarding, sandboxes)
+              · AppLayout    → /:locale/account/* (RequireAuth, client modules)
+              · AdminLayout  → /:locale/admin/*   (RequireRole 'admin')
+            ─────────────────────────────────────────────── */}
         <Route path="/:locale" element={<LocaleLayout />}>
-          <Route index element={<Home />} />
-          <Route path="playground" element={<Playground />} />
-          <Route path="lab" element={<Lab />} />
-          {/* Add routes here: */}
-          {/* <Route path="about" element={<About />} /> */}
+          <Route element={<PublicLayout />}>
+            <Route index element={<Home />} />
+            <Route path="playground" element={<Playground />} />
+            <Route path="lab" element={<Lab />} />
+            {/* TODO[lot-B] : <Route path="login" element={<Login />} /> */}
+            {/* TODO[lot-B] : <Route path="onboarding" element={<Onboarding />} /> */}
+          </Route>
+
+          {/* TODO[lot-C+] : <Route path="account" element={<AppLayout />}>
+              <Route index element={<AccountIndex />} />
+              <Route path="events" element={<EventsList />} />
+              <Route path="events/:slug" element={<EventDetail />} />
+              ...
+            </Route> */}
+
+          {/* TODO[lot-E]  : <Route path="admin" element={<AdminLayout />}>
+              <Route index element={<AdminIndex />} />
+              <Route path="invitations" element={<InvitationsList />} />
+              <Route path="inquiries" element={<InquiriesList />} />
+              <Route path="users" element={<UsersList />} />
+            </Route> */}
+
           <Route path="*" element={<NotFound />} />
         </Route>
 
