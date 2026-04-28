@@ -21,8 +21,8 @@ export function MenusSection() {
     <Section number="15" title="menus / headers">
       <p className="text-muted mb-10 max-w-2xl text-sm leading-relaxed md:text-base">
         Douze headers distincts — tokenisés, responsives de 320 px à 1920 px (écrans portrait
-        inclus), compatibles light/dark mode. Plusieurs intègrent le switcher de langue (FR/DE/EN)
-        et le toggle de thème. Copie le chemin d'import en haut de chaque bloc. Aucune dépendance
+        inclus), compatibles light/dark mode. Plusieurs intègrent le switcher de langue (FR/EN) et
+        le toggle de thème. Copie le chemin d'import en haut de chaque bloc. Aucune dépendance
         au-delà des tokens de design, <span className="font-mono text-xs">lucide-react</span> et{' '}
         <span className="font-mono text-xs">react-i18next</span>.
       </p>

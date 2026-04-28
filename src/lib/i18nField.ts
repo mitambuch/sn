@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════
 // i18nField — resolve locale* fields coming from Sanity
 //
-// WHAT: Takes a field shaped as `{ fr, de, en }` and returns the active
+// WHAT: Takes a field shaped as `{ fr, en }` and returns the active
 //       locale's value, with automatic FR fallback.
 // WHEN: Consumed by Sanity hooks and any component rendering multilingual
 //       CMS content.

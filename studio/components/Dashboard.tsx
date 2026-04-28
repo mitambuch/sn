@@ -43,7 +43,6 @@ const C = {
 
 interface LocaleString {
   fr?: string;
-  de?: string;
   en?: string;
 }
 

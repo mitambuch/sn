@@ -20,7 +20,7 @@ describe('localePath', () => {
   });
 
   it('prefixes a nested path', () => {
-    expect(localePath('de', '/playground')).toBe('/de/playground');
+    expect(localePath('en', '/playground')).toBe('/en/playground');
   });
 
   it('normalises a path missing its leading slash', () => {
@@ -34,8 +34,8 @@ describe('getInitialLocale', () => {
   });
 
   it('returns the localStorage value when valid', () => {
-    window.localStorage.setItem('locale', 'de');
-    expect(getInitialLocale()).toBe('de');
+    window.localStorage.setItem('locale', 'en');
+    expect(getInitialLocale()).toBe('en');
   });
 
   it('falls back to the default when storage has an invalid value', () => {

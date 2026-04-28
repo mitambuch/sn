@@ -110,12 +110,12 @@ const html = `<!doctype html>
   clique sur <strong>📖 Guide</strong> tout en haut à droite.
 </div>
 
-<h2>🌐 Multilingue (fr / de / en)</h2>
+<h2>🌐 Multilingue (fr / en)</h2>
 <p>
-  Le site gère 3 langues : français (source de vérité), allemand, anglais.
-  Dans le Studio, les champs DE et EN sont cachés dans un onglet replié
-  <strong>🌐 Traductions</strong>. Le français est obligatoire, DE/EN
-  sont optionnels (fallback auto vers FR).
+  Le site gère 2 langues : français (source de vérité) et anglais.
+  Dans le Studio, le champ EN est caché dans un onglet replié
+  <strong>🌐 Traductions</strong>. Le français est obligatoire, EN
+  est optionnel (fallback auto vers FR).
 </p>
 
 <h2>🆘 Support</h2>

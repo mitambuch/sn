@@ -11,8 +11,8 @@ function Probe() {
     <div>
       <span data-testid="locale">{locale}</span>
       <span data-testid="path">{localePath('/playground')}</span>
-      <button type="button" onClick={() => setLocale('de')}>
-        Switch DE
+      <button type="button" onClick={() => setLocale('en')}>
+        Switch EN
       </button>
     </div>
   );
@@ -42,8 +42,8 @@ describe('LocaleProvider', () => {
   });
 
   it('localePath prefixes with the active locale', () => {
-    renderAt('/de');
-    expect(screen.getByTestId('path')).toHaveTextContent('/de/playground');
+    renderAt('/en');
+    expect(screen.getByTestId('path')).toHaveTextContent('/en/playground');
   });
 
   it('syncs document.documentElement.lang with the active locale', () => {
@@ -54,8 +54,8 @@ describe('LocaleProvider', () => {
   it('setLocale navigates to the same path under the new locale', async () => {
     const user = userEvent.setup();
     renderAt('/fr');
-    await user.click(screen.getByRole('button', { name: /Switch DE/i }));
-    expect(screen.getByTestId('locale')).toHaveTextContent('de');
+    await user.click(screen.getByRole('button', { name: /Switch EN/i }));
+    expect(screen.getByTestId('locale')).toHaveTextContent('en');
   });
 
   it('useLocale without a provider falls back to the default locale', () => {

@@ -20,7 +20,6 @@ import { useLocation } from 'react-router-dom';
 
 const OG_LOCALE_MAP: Record<string, string> = {
   fr: 'fr_FR',
-  de: 'de_DE',
   en: 'en_US',
 };
 

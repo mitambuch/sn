@@ -1,15 +1,15 @@
 // ═══════════════════════════════════════════════════
-// LocaleTabsInput — compact fr/de/en tabs for locale* types
+// LocaleTabsInput — compact fr/en tabs for locale* types
 //
-// WHAT: Replaces the default stacked 3-field rendering of
+// WHAT: Replaces the default stacked 2-field rendering of
 //       localeString / localeText / localeRichText with a single
-//       compact input showing one language at a time + 3 small
-//       language pills at the top (fr/de/en) to switch. Each pill
+//       compact input showing one language at a time + 2 small
+//       language pills at the top (fr/en) to switch. Each pill
 //       shows a fill-indicator dot (green if the locale has a value,
 //       muted otherwise) so the editor can see at a glance what's
 //       translated without expanding anything.
 // WHEN: Registered via `components.input` on each locale* schema.
-// WHY: Stacking FR + DE + EN vertically was taking ~3× the vertical
+// WHY: Stacking FR + EN vertically was taking ~2× the vertical
 //       space of a normal field. On a doc with 15 locale fields
 //       (typical page), that was pushing everything below the fold.
 // ═══════════════════════════════════════════════════
@@ -17,11 +17,10 @@
 import { useMemo, useState } from 'react';
 import { type ObjectInputProps } from 'sanity';
 
-type LocaleId = 'fr' | 'de' | 'en';
+type LocaleId = 'fr' | 'en';
 
 const LOCALES: Array<{ id: LocaleId; label: string }> = [
   { id: 'fr', label: 'FR' },
-  { id: 'de', label: 'DE' },
   { id: 'en', label: 'EN' },
 ];
 
@@ -50,7 +49,6 @@ export function LocaleTabsInput(props: ObjectInputProps) {
     (props.value as Record<LocaleId, unknown> | undefined) ?? ({} as Record<LocaleId, unknown>);
   const filled: Record<LocaleId, boolean> = {
     fr: hasContent(v.fr),
-    de: hasContent(v.de),
     en: hasContent(v.en),
   };
 

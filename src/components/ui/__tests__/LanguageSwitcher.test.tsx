@@ -9,9 +9,9 @@ import { LanguageSwitcher } from '../LanguageSwitcher';
 
 describe('LanguageSwitcher', () => {
   it('marks the current locale as pressed', () => {
-    render(<LanguageSwitcher currentLocale="de" />);
+    render(<LanguageSwitcher currentLocale="en" />);
 
-    expect(screen.getByRole('button', { name: /de/i })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: /en/i })).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByRole('button', { name: /fr/i })).toHaveAttribute('aria-pressed', 'false');
   });
 
@@ -20,9 +20,9 @@ describe('LanguageSwitcher', () => {
     const onLocaleChange = vi.fn();
 
     render(<LanguageSwitcher currentLocale="fr" onLocaleChange={onLocaleChange} />);
-    await user.click(screen.getByRole('button', { name: /de/i }));
+    await user.click(screen.getByRole('button', { name: /en/i }));
 
-    expect(onLocaleChange).toHaveBeenCalledWith('de');
+    expect(onLocaleChange).toHaveBeenCalledWith('en');
   });
 
   it('does not emit a change for the active locale', async () => {
