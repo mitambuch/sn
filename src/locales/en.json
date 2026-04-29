@@ -84,6 +84,25 @@
     "profileTitle": "Your profile",
     "preferencesTitle": "Your preferences",
     "inquiriesTitle": "Inquiries history",
+    "preferences": {
+      "contactPreference": "Contact preference",
+      "locale": "Preferred language",
+      "concierge": "Assigned concierge",
+      "contactConcierge": "To update any of these details, contact your concierge.",
+      "contact": {
+        "email": "Email",
+        "phone": "Phone",
+        "secure-message": "Secure message"
+      },
+      "notifEmail": "Email notifications",
+      "notifEmailHint": "Receive acknowledgements and updates by email.",
+      "notifSms": "SMS notifications",
+      "notifSmsHint": "Urgent notifications only (cancellations, jets, security).",
+      "notifPhone": "Phone call",
+      "notifPhoneHint": "Your concierge can reach you directly by phone.",
+      "recommendations": "Curated recommendations",
+      "recommendationsHint": "Selection tailored to your interests on the dashboard."
+    },
     "events": {
       "title": "Events",
       "lede": "Galas, openings, private dinners, sport — access kept off-market."

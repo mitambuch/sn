@@ -53,6 +53,9 @@ const JourneysList = lazyWithRetry(() => import('@pages/JourneysList'));
 const JourneyDetail = lazyWithRetry(() => import('@pages/JourneyDetail'));
 const ConciergeList = lazyWithRetry(() => import('@pages/ConciergeList'));
 const ConciergeDetail = lazyWithRetry(() => import('@pages/ConciergeDetail'));
+const AccountProfile = lazyWithRetry(() => import('@pages/AccountProfile'));
+const AccountInquiries = lazyWithRetry(() => import('@pages/AccountInquiries'));
+const AccountPreferences = lazyWithRetry(() => import('@pages/AccountPreferences'));
 
 /* ─── Loading fallback — themed, no white flash ───────────────── */
 function PageLoader() {
@@ -119,22 +122,9 @@ export default function AppRoutes() {
             <Route path="journeys/:slug" element={<JourneyDetail />} />
             <Route path="concierge" element={<ConciergeList />} />
             <Route path="concierge/:slug" element={<ConciergeDetail />} />
-            <Route
-              path="profile"
-              element={<ComingSoon titleKey="account.profileTitle" eyebrowKey="account.eyebrow" />}
-            />
-            <Route
-              path="inquiries"
-              element={
-                <ComingSoon titleKey="account.inquiriesTitle" eyebrowKey="account.eyebrow" />
-              }
-            />
-            <Route
-              path="preferences"
-              element={
-                <ComingSoon titleKey="account.preferencesTitle" eyebrowKey="account.eyebrow" />
-              }
-            />
+            <Route path="profile" element={<AccountProfile />} />
+            <Route path="inquiries" element={<AccountInquiries />} />
+            <Route path="preferences" element={<AccountPreferences />} />
           </Route>
 
           {/* ─── Admin surface (RequireRole 'admin' via AdminLayout) ─── */}

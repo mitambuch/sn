@@ -84,6 +84,25 @@
     "profileTitle": "Votre profil",
     "preferencesTitle": "Vos préférences",
     "inquiriesTitle": "Historique des demandes",
+    "preferences": {
+      "contactPreference": "Préférence de contact",
+      "locale": "Langue préférée",
+      "concierge": "Conciergerie attribuée",
+      "contactConcierge": "Pour modifier vos informations, contactez votre conciergerie.",
+      "contact": {
+        "email": "E-mail",
+        "phone": "Téléphone",
+        "secure-message": "Messagerie sécurisée"
+      },
+      "notifEmail": "Notifications e-mail",
+      "notifEmailHint": "Recevoir des accusés de réception et des mises à jour par e-mail.",
+      "notifSms": "Notifications SMS",
+      "notifSmsHint": "Notifications urgentes uniquement (annulations, jets, sécurité).",
+      "notifPhone": "Appel téléphonique",
+      "notifPhoneHint": "Votre conciergerie peut vous joindre directement par téléphone.",
+      "recommendations": "Recommandations curatées",
+      "recommendationsHint": "Sélection adaptée à vos centres d’intérêt sur le tableau de bord."
+    },
     "events": {
       "title": "Événements",
       "lede": "Galas, vernissages, soirées privées, sport — accès maintenu hors public."
