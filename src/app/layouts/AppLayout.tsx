@@ -20,13 +20,19 @@ import { cn } from '@utils/cn';
 import { useTranslation } from 'react-i18next';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-const ACCOUNT_NAV = [
+const ACCOUNT_NAV_MODULES = [
   { to: ROUTES.ACCOUNT_EVENTS, labelKey: 'account.nav.events' },
   { to: ROUTES.ACCOUNT_PROPERTIES, labelKey: 'account.nav.properties' },
   { to: ROUTES.ACCOUNT_TIMEPIECES, labelKey: 'account.nav.timepieces' },
   { to: ROUTES.ACCOUNT_ARTWORKS, labelKey: 'account.nav.artworks' },
   { to: ROUTES.ACCOUNT_JOURNEYS, labelKey: 'account.nav.journeys' },
   { to: ROUTES.ACCOUNT_CONCIERGE, labelKey: 'account.nav.concierge' },
+];
+
+const ACCOUNT_NAV_USER = [
+  { to: ROUTES.ACCOUNT_INQUIRIES, labelKey: 'account.nav.inquiries' },
+  { to: ROUTES.ACCOUNT_PROFILE, labelKey: 'account.nav.profile' },
+  { to: ROUTES.ACCOUNT_PREFERENCES, labelKey: 'account.nav.preferences' },
 ];
 
 export const AppLayout = () => {
@@ -66,9 +72,28 @@ const AppShell = () => {
             'md:flex-col md:gap-1 md:px-3 md:py-4',
           )}
         >
-          {ACCOUNT_NAV.map(({ to, labelKey }) => {
+          {ACCOUNT_NAV_MODULES.map(({ to, labelKey }) => {
             const href = localePath(to);
             const isActive = pathname === href || pathname.startsWith(`${href}/`);
+            return (
+              <Link
+                key={to}
+                to={href}
+                aria-current={isActive ? 'page' : undefined}
+                className={cn(
+                  'duration-base rounded-md px-3 py-2 text-sm transition-colors',
+                  'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
+                  isActive ? 'text-fg bg-surface' : 'text-muted hover:text-fg hover:bg-surface/60',
+                )}
+              >
+                {t(labelKey)}
+              </Link>
+            );
+          })}
+          <span className="bg-border hidden h-px w-full md:my-2 md:block" aria-hidden="true" />
+          {ACCOUNT_NAV_USER.map(({ to, labelKey }) => {
+            const href = localePath(to);
+            const isActive = pathname === href;
             return (
               <Link
                 key={to}

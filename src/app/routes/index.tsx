@@ -1,3 +1,5 @@
+import { AdminLayout } from '@app/layouts/AdminLayout';
+import { AppLayout } from '@app/layouts/AppLayout';
 import { PublicLayout } from '@app/layouts/PublicLayout';
 import RootLayout from '@app/layouts/RootLayout';
 import { LocaleProvider } from '@app/LocaleProvider';
@@ -29,10 +31,34 @@ function lazyWithRetry<T extends ComponentType>(
   });
 }
 
+/* ─── Public ─── */
+
 const Home = lazyWithRetry(() => import('@pages/Home'));
 const Playground = lazyWithRetry(() => import('@pages/Playground'));
 const Lab = lazyWithRetry(() => import('@pages/Lab'));
 const NotFound = lazyWithRetry(() => import('@pages/NotFound'));
+const Login = lazyWithRetry(() => import('@pages/Login'));
+const Onboarding = lazyWithRetry(() => import('@pages/Onboarding'));
+const AccountDashboard = lazyWithRetry(() => import('@pages/AccountDashboard'));
+const PropertiesList = lazyWithRetry(() => import('@pages/PropertiesList'));
+const PropertyDetail = lazyWithRetry(() => import('@pages/PropertyDetail'));
+const TimepiecesList = lazyWithRetry(() => import('@pages/TimepiecesList'));
+const TimepieceDetail = lazyWithRetry(() => import('@pages/TimepieceDetail'));
+const ArtworksList = lazyWithRetry(() => import('@pages/ArtworksList'));
+const ArtworkDetail = lazyWithRetry(() => import('@pages/ArtworkDetail'));
+const EventsList = lazyWithRetry(() => import('@pages/EventsList'));
+const EventDetail = lazyWithRetry(() => import('@pages/EventDetail'));
+const JourneysList = lazyWithRetry(() => import('@pages/JourneysList'));
+const JourneyDetail = lazyWithRetry(() => import('@pages/JourneyDetail'));
+const ConciergeList = lazyWithRetry(() => import('@pages/ConciergeList'));
+const ConciergeDetail = lazyWithRetry(() => import('@pages/ConciergeDetail'));
+const AccountProfile = lazyWithRetry(() => import('@pages/AccountProfile'));
+const AccountInquiries = lazyWithRetry(() => import('@pages/AccountInquiries'));
+const AccountPreferences = lazyWithRetry(() => import('@pages/AccountPreferences'));
+const AdminDashboard = lazyWithRetry(() => import('@pages/AdminDashboard'));
+const AdminInvitations = lazyWithRetry(() => import('@pages/AdminInvitations'));
+const AdminInquiries = lazyWithRetry(() => import('@pages/AdminInquiries'));
+const AdminUsers = lazyWithRetry(() => import('@pages/AdminUsers'));
 
 /* ─── Loading fallback — themed, no white flash ───────────────── */
 function PageLoader() {
@@ -43,15 +69,7 @@ function PageLoader() {
   );
 }
 
-/* ─── Locale-scoped layout ────────────────────────────────────
-   Every locale-prefixed route renders inside <LocaleProvider> which
-   syncs i18n + document.lang + localStorage, plus the shared RootLayout.
-
-   If the `:locale` segment is not a supported code (e.g. `/foo` landing
-   here because of React Router's permissive param match), we redirect
-   to the detected locale and preserve the original path. This way
-   `/unknown` becomes `/fr/unknown` → nested `*` renders NotFound.
-   ─────────────────────────────────────────────────────────── */
+/* ─── Locale-scoped layout ──────────────────────────────────── */
 function LocaleLayout() {
   const { locale: param } = useParams<{ locale?: string }>();
   const { pathname, search, hash } = useLocation();
@@ -69,10 +87,8 @@ function LocaleLayout() {
 }
 
 /* ─── Main router ─────────────────────────────────────────────
-   Un-prefixed paths (/ /playground /lab) redirect once to the
-   canonical /:locale/... counterpart. All real rendering happens
-   under the locale branch so SEO/hreflang alternates are coherent.
-   Page transition animation lives in RootLayout around <Outlet />.
+   All concrete pages land in lot B per phase. Until then, route
+   placeholders render <ComingSoon titleKey="..." />.
    ─────────────────────────────────────────────────────────── */
 export default function AppRoutes() {
   return (
@@ -83,35 +99,44 @@ export default function AppRoutes() {
         <Route path={ROUTES.PLAYGROUND} element={<LocaleRedirect />} />
         <Route path={ROUTES.LAB} element={<LocaleRedirect />} />
 
-        {/* ─── Canonical locale-prefixed tree ───────────────
-            LocaleLayout = LocaleProvider + RootLayout (skip-link + banner).
-            Three sub-layouts split the surface :
-              · PublicLayout → un-authenticated pages (home, login, onboarding, sandboxes)
-              · AppLayout    → /:locale/account/* (RequireAuth, client modules)
-              · AdminLayout  → /:locale/admin/*   (RequireRole 'admin')
-            ─────────────────────────────────────────────── */}
+        {/* ─── Canonical locale-prefixed tree ─── */}
         <Route path="/:locale" element={<LocaleLayout />}>
+          {/* ─── Public surface ─── */}
           <Route element={<PublicLayout />}>
             <Route index element={<Home />} />
             <Route path="playground" element={<Playground />} />
             <Route path="lab" element={<Lab />} />
-            {/* TODO[lot-B] : <Route path="login" element={<Login />} /> */}
-            {/* TODO[lot-B] : <Route path="onboarding" element={<Onboarding />} /> */}
+            <Route path="login" element={<Login />} />
+            <Route path="onboarding" element={<Onboarding />} />
           </Route>
 
-          {/* TODO[lot-C+] : <Route path="account" element={<AppLayout />}>
-              <Route index element={<AccountIndex />} />
-              <Route path="events" element={<EventsList />} />
-              <Route path="events/:slug" element={<EventDetail />} />
-              ...
-            </Route> */}
+          {/* ─── Member surface (RequireAuth via AppLayout) ─── */}
+          <Route path="account" element={<AppLayout />}>
+            <Route index element={<AccountDashboard />} />
+            <Route path="events" element={<EventsList />} />
+            <Route path="events/:slug" element={<EventDetail />} />
+            <Route path="properties" element={<PropertiesList />} />
+            <Route path="properties/:slug" element={<PropertyDetail />} />
+            <Route path="timepieces" element={<TimepiecesList />} />
+            <Route path="timepieces/:slug" element={<TimepieceDetail />} />
+            <Route path="artworks" element={<ArtworksList />} />
+            <Route path="artworks/:slug" element={<ArtworkDetail />} />
+            <Route path="journeys" element={<JourneysList />} />
+            <Route path="journeys/:slug" element={<JourneyDetail />} />
+            <Route path="concierge" element={<ConciergeList />} />
+            <Route path="concierge/:slug" element={<ConciergeDetail />} />
+            <Route path="profile" element={<AccountProfile />} />
+            <Route path="inquiries" element={<AccountInquiries />} />
+            <Route path="preferences" element={<AccountPreferences />} />
+          </Route>
 
-          {/* TODO[lot-E]  : <Route path="admin" element={<AdminLayout />}>
-              <Route index element={<AdminIndex />} />
-              <Route path="invitations" element={<InvitationsList />} />
-              <Route path="inquiries" element={<InquiriesList />} />
-              <Route path="users" element={<UsersList />} />
-            </Route> */}
+          {/* ─── Admin surface (RequireRole 'admin' via AdminLayout) ─── */}
+          <Route path="admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="invitations" element={<AdminInvitations />} />
+            <Route path="inquiries" element={<AdminInquiries />} />
+            <Route path="users" element={<AdminUsers />} />
+          </Route>
 
           <Route path="*" element={<NotFound />} />
         </Route>

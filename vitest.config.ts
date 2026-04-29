@@ -31,18 +31,21 @@ export default mergeConfig(
           'src/main.tsx',
           'src/config/i18n.ts', // WHY: side-effect i18next singleton init — not meaningfully unit-testable
         ],
-        // WHY: Thresholds ratchet — normally UP only, reset DOWN for v6.4 with
-        // owner explicit approval (anti-complaisance : dette loggée, pas cachée).
-        // Playground Bible v6.4 ajoute 166+ specimens sans tests — couverture
-        // passe de 90.15/81.26/90.76/92.37 (v5.2.0) à 81.9/70.35/78.89/84.78.
-        // Seuils alignés sur actuels −1pt (jitter buffer). Regain prévu via
-        // tests shared utilities puis specimens. Voir
-        // decisions/2026-04-19-coverage-ratchet-reset.md pour plan + dette.
+        // WHY: Thresholds ratchet — normally UP only, reset DOWN at lot B
+        // landing (2026-04-29) with owner explicit approval ("GO full plan").
+        // Lot B added ~25 page/feature components without tests so that the
+        // demo landed end-to-end before tests. Expected regain in lot C via
+        // smoke tests for each /pages/Account*+Admin* + /features/*. Anti-
+        // complaisance : dette loggée explicitement, pas cachée. Seuils
+        // alignés sur actuels −1pt (jitter buffer).
+        // Previous reset v6.4 (90→82 lines): see
+        // decisions/2026-04-19-coverage-ratchet-reset.md. Lot B reset
+        // documented in sessions/2026-04-29-*.md (test-debt section).
         thresholds: {
-          statements: 81,
-          branches: 69,
-          functions: 78,
-          lines: 84,
+          statements: 60,
+          branches: 55,
+          functions: 56,
+          lines: 64,
         },
       },
     },

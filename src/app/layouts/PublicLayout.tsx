@@ -10,6 +10,7 @@
 //                     src/styles/animations.css.
 // ═══════════════════════════════════════════════════
 
+import { Footer } from '@components/layout/Footer';
 import { Header } from '@components/layout/Header';
 import { useMediaQuery } from '@hooks/useMediaQuery';
 import { Outlet, useLocation } from 'react-router-dom';
@@ -26,6 +27,7 @@ export const PublicLayout = () => {
           <Outlet />
         </div>
       </main>
+      <Footer />
     </>
   );
 };

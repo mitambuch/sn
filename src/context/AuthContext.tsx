@@ -121,7 +121,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       user: {
         id: `dev-${role}`,
         email: `dev+${role}@sawnext.local`,
+        fullName: role === 'admin' ? 'Salva Bernardi' : 'Hugo Méredith',
         role,
+        locale: 'fr',
+        contactPreference: 'phone',
+        conciergeName: 'Salva Bernardi',
         createdAt: now.toISOString(),
       },
       expiresAt: new Date(now.getTime() + DEV_SESSION_TTL_MS).toISOString(),

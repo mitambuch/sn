@@ -32,6 +32,10 @@ export const ROUTES = {
   ACCOUNT_JOURNEYS: '/account/journeys',
   ACCOUNT_JOURNEY_DETAIL: '/account/journeys/:slug',
   ACCOUNT_CONCIERGE: '/account/concierge',
+  ACCOUNT_CONCIERGE_DETAIL: '/account/concierge/:slug',
+  ACCOUNT_PROFILE: '/account/profile',
+  ACCOUNT_INQUIRIES: '/account/inquiries',
+  ACCOUNT_PREFERENCES: '/account/preferences',
 
   // ─── Admin (RequireRole 'admin') ─────────────────────
   ADMIN: '/admin',
