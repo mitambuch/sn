@@ -38,6 +38,8 @@ const Home = lazyWithRetry(() => import('@pages/Home'));
 const Playground = lazyWithRetry(() => import('@pages/Playground'));
 const Lab = lazyWithRetry(() => import('@pages/Lab'));
 const NotFound = lazyWithRetry(() => import('@pages/NotFound'));
+const Login = lazyWithRetry(() => import('@pages/Login'));
+const Onboarding = lazyWithRetry(() => import('@pages/Onboarding'));
 
 /* ─── Loading fallback — themed, no white flash ───────────────── */
 function PageLoader() {
@@ -85,14 +87,8 @@ export default function AppRoutes() {
             <Route index element={<Home />} />
             <Route path="playground" element={<Playground />} />
             <Route path="lab" element={<Lab />} />
-            <Route
-              path="login"
-              element={<ComingSoon titleKey="auth.signIn" eyebrowKey="public.tagline" />}
-            />
-            <Route
-              path="onboarding"
-              element={<ComingSoon titleKey="auth.signIn" eyebrowKey="public.tagline" />}
-            />
+            <Route path="login" element={<Login />} />
+            <Route path="onboarding" element={<Onboarding />} />
           </Route>
 
           {/* ─── Member surface (RequireAuth via AppLayout) ─── */}

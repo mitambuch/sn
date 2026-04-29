@@ -23,7 +23,10 @@
     "region": "Région",
     "year": "Année",
     "duration": "Durée",
-    "showing": "{{count}} résultats"
+    "showing": "{{count}} résultats",
+    "continue": "Continuer",
+    "fullName": "Nom complet",
+    "phone": "Téléphone"
   },
   "a11y": {
     "closeMenu": "Fermer le menu",
