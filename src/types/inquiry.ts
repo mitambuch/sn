@@ -14,7 +14,7 @@ export type InquirySource =
   | 'journey'
   | 'concierge';
 
-export type InquiryStatus = 'new' | 'in_review' | 'contacted' | 'closed';
+export type InquiryStatus = 'new' | 'in_review' | 'contacted' | 'closed' | 'cancelled';
 
 export interface Inquiry {
   id: string;

@@ -2,16 +2,27 @@
 // Auth domain types
 //
 // Source of truth for user identity, role, and session shape.
-// Mirrored at the DB level in Supabase `profiles.role` column
+// Mirrored at the DB level in Supabase `profiles.*` columns
 // (see lot A.5 — Supabase live).
 // ═══════════════════════════════════════════════════
 
 export type Role = 'client' | 'admin';
 
+export type UserContactPreference = 'email' | 'phone' | 'secure-message';
+
+export type UserLocale = 'fr' | 'en';
+
 export interface User {
   id: string;
   email: string;
+  fullName: string;
   role: Role;
+  locale: UserLocale;
+  contactPreference: UserContactPreference;
+  /** Display avatar URL. Optional — falls back to initials. */
+  avatarUrl?: string;
+  /** Operator assigned as the member's dedicated concierge. */
+  conciergeName: string;
   createdAt: string;
 }
 

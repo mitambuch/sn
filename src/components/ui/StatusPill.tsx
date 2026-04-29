@@ -2,16 +2,18 @@
 // StatusPill — inquiry/order workflow status indicator
 //
 // WHAT: Renders a small pill with a status dot + label. Five canonical
-//       states aligned to the inquiry lifecycle: pending, in-review,
-//       responded, closed, cancelled.
+//       states aligned to the inquiry lifecycle: new, in_review, contacted,
+//       closed, cancelled. Variant slugs mirror src/types/inquiry.ts
+//       InquiryStatus union exactly so mapping is identity.
 // WHEN: Inquiry list rows, admin kanban columns, account history.
-// CHANGE STATES: edit the variantStyles map below — keep keys in sync
-//        with src/types/inquiry.ts InquiryStatus union.
+// CHANGE STATES: edit variantStyles below AND src/types/inquiry.ts together.
 // ═══════════════════════════════════════════════════
 
 import { cn } from '@utils/cn';
 
-export type StatusPillVariant = 'pending' | 'in-review' | 'responded' | 'closed' | 'cancelled';
+import type { InquiryStatus } from '@/types/inquiry';
+
+export type StatusPillVariant = InquiryStatus;
 
 interface StatusPillProps {
   variant: StatusPillVariant;
@@ -20,9 +22,9 @@ interface StatusPillProps {
 }
 
 const variantStyles: Record<StatusPillVariant, { dot: string; text: string }> = {
-  pending: { dot: 'bg-muted', text: 'text-muted' },
-  'in-review': { dot: 'bg-info', text: 'text-info-text' },
-  responded: { dot: 'bg-success', text: 'text-success-text' },
+  new: { dot: 'bg-muted', text: 'text-muted' },
+  in_review: { dot: 'bg-info', text: 'text-info-text' },
+  contacted: { dot: 'bg-success', text: 'text-success-text' },
   closed: { dot: 'bg-fg/40', text: 'text-fg/60' },
   cancelled: { dot: 'bg-danger', text: 'text-danger-text' },
 };

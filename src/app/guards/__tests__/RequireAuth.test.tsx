@@ -39,7 +39,16 @@ describe('RequireAuth', () => {
 
   it('renders children when a dev session is present', () => {
     const stored = {
-      user: { id: 'x', email: 'x@y.test', role: 'client', createdAt: new Date().toISOString() },
+      user: {
+        id: 'x',
+        email: 'x@y.test',
+        fullName: 'Test User',
+        role: 'client',
+        locale: 'fr',
+        contactPreference: 'phone',
+        conciergeName: 'Salva Bernardi',
+        createdAt: new Date().toISOString(),
+      },
       expiresAt: new Date(Date.now() + 60_000).toISOString(),
       accessToken: 't',
     };
