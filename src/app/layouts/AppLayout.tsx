@@ -25,6 +25,7 @@ import {
   CalendarDays,
   Compass,
   Frame,
+  Heart,
   Inbox,
   LayoutDashboard,
   LogOut,
@@ -58,6 +59,7 @@ const ACCOUNT_NAV_MODULES: NavItem[] = [
 ];
 
 const ACCOUNT_NAV_USER: NavItem[] = [
+  { to: ROUTES.ACCOUNT_SAVED, labelKey: 'account.nav.saved', icon: Heart },
   { to: ROUTES.ACCOUNT_INQUIRIES, labelKey: 'account.nav.inquiries', icon: Inbox },
   { to: ROUTES.ACCOUNT_PROFILE, labelKey: 'account.nav.profile', icon: User },
   { to: ROUTES.ACCOUNT_PREFERENCES, labelKey: 'account.nav.preferences', icon: Settings },

@@ -4,6 +4,7 @@
 // + category eyebrow + title + 2-line summary + lead time hint.
 // ═══════════════════════════════════════════════════
 
+import { HeartButton } from '@components/ui/HeartButton';
 import { Image } from '@components/ui/Image';
 import { cn } from '@utils/cn';
 
@@ -34,12 +35,20 @@ export const ConciergeServiceCard = ({
         className,
       )}
     >
-      <Image
-        src={service.images[0]?.src ?? ''}
-        alt={service.images[0]?.alt ?? service.title}
-        ratio="3/2"
-        className="duration-slow transition-transform group-hover:scale-[1.02]"
-      />
+      <div className="relative">
+        <Image
+          src={service.images[0]?.src ?? ''}
+          alt={service.images[0]?.alt ?? service.title}
+          ratio="3/2"
+          className="duration-slow transition-transform group-hover:scale-[1.02]"
+        />
+        <HeartButton
+          module="concierge"
+          slug={service.slug}
+          size="sm"
+          className="absolute top-3 right-3"
+        />
+      </div>
       <div className="mt-4 flex flex-col gap-2">
         <span className="text-muted text-xs tracking-widest uppercase">{categoryLabel}</span>
         <h3 className="text-fg text-base font-medium">{service.title}</h3>

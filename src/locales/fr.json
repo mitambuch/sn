@@ -1,4 +1,13 @@
 {
+  "saved": {
+    "title": "Ma collection",
+    "lede": "Les pièces que vous avez épinglées. Salvatore voit votre collection et peut anticiper.",
+    "add": "Ajouter à ma collection",
+    "remove": "Retirer de ma collection",
+    "emptyTitle": "Votre collection est vide.",
+    "emptyLede": "Cliquez le ❤ sur n’importe quelle pièce qui vous intéresse — elle apparaîtra ici. Salvatore lit la liste et propose en conséquence.",
+    "emptyCta": "Découvrir le catalogue"
+  },
   "common": {
     "back": "Retour",
     "close": "Fermer",
@@ -28,7 +37,8 @@
     "fullName": "Nom complet",
     "phone": "Téléphone",
     "yes": "Oui",
-    "no": "Non"
+    "no": "Non",
+    "similar": "Vous pourriez aussi aimer"
   },
   "a11y": {
     "closeMenu": "Fermer le menu",
@@ -191,6 +201,7 @@
       "artworks": "Œuvres",
       "journeys": "Voyages",
       "concierge": "Conciergerie",
+      "saved": "Ma collection",
       "profile": "Profil",
       "inquiries": "Demandes",
       "preferences": "Préférences"

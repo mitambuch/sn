@@ -13,6 +13,7 @@ import { MetaList } from '@components/ui/MetaList';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { Timeline } from '@components/ui/Timeline';
 import { ROUTES } from '@constants/routes';
+import { SimilarItemsStrip } from '@features/catalogue/SimilarItemsStrip';
 import { InquiryDrawer } from '@features/inquiry/InquiryDrawer';
 import { cn } from '@utils/cn';
 import { useState } from 'react';
@@ -148,6 +149,8 @@ export default function JourneyDetail() {
             <GalleryGrid images={journey.images.slice(1)} />
           </div>
         )}
+
+        <SimilarItemsStrip module="journey" currentSlug={journey.slug} />
 
         <Link
           to={localePath(ROUTES.ACCOUNT_JOURNEYS)}

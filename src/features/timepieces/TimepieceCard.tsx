@@ -6,6 +6,7 @@
 // WHEN: TimepiecesList grid item.
 // ═══════════════════════════════════════════════════
 
+import { HeartButton } from '@components/ui/HeartButton';
 import { Image } from '@components/ui/Image';
 import { PriceTag } from '@components/ui/PriceTag';
 import { cn } from '@utils/cn';
@@ -35,13 +36,21 @@ export const TimepieceCard = ({
         className,
       )}
     >
-      <Image
-        src={timepiece.images[0]?.src ?? ''}
-        alt={timepiece.images[0]?.alt ?? `${timepiece.brand} ${timepiece.model}`}
-        ratio="1/1"
-        wrapperClassName="bg-surface"
-        className="duration-slow object-contain transition-transform group-hover:scale-[1.03]"
-      />
+      <div className="relative">
+        <Image
+          src={timepiece.images[0]?.src ?? ''}
+          alt={timepiece.images[0]?.alt ?? `${timepiece.brand} ${timepiece.model}`}
+          ratio="1/1"
+          wrapperClassName="bg-surface"
+          className="duration-slow object-contain transition-transform group-hover:scale-[1.03]"
+        />
+        <HeartButton
+          module="timepiece"
+          slug={timepiece.slug}
+          size="sm"
+          className="absolute top-3 right-3"
+        />
+      </div>
       <div className="mt-4 flex flex-col gap-1">
         <span className="text-muted text-xs tracking-widest uppercase">
           {timepiece.brand} · {timepiece.year}
