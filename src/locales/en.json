@@ -435,6 +435,23 @@
     "write": "Write a message",
     "writeLede": "Write freely — Salvatore reads each message personally and replies within 24 hours."
   },
+  "saved": {
+    "title": "My collection",
+    "lede": "The pieces you've pinned. Salvatore sees your collection and can anticipate.",
+    "add": "Add to my collection",
+    "remove": "Remove from my collection",
+    "emptyTitle": "Your collection is empty.",
+    "emptyLede": "Tap heart on any piece you're drawn to — it'll appear here. Salvatore reads the list and proposes accordingly.",
+    "emptyCta": "Browse the catalogue"
+  },
+  "search": {
+    "cta": "Search",
+    "label": "Search your space",
+    "placeholder": "Search a watch, a property, an event…",
+    "empty": "No result. Rephrase or describe your need to Salvatore.",
+    "navigate": "Navigate",
+    "open": "Open"
+  },
   "articles": {
     "readMinutes": "min read",
     "related": "On this topic",
