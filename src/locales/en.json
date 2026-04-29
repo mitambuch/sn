@@ -7,7 +7,23 @@
     "retry": "Try again",
     "empty": "No content yet.",
     "discover": "Discover",
-    "readMore": "Read more"
+    "readMore": "Read more",
+    "comingSoon": "This section is in preparation. It will be available shortly.",
+    "onRequest": "On request",
+    "from": "From",
+    "viewAll": "View all",
+    "details": "Details",
+    "expressInterest": "Express your interest",
+    "callConcierge": "Call your concierge",
+    "search": "Search",
+    "filters": "Filters",
+    "reset": "Reset",
+    "category": "Category",
+    "kind": "Kind",
+    "region": "Region",
+    "year": "Year",
+    "duration": "Duration",
+    "showing": "{{count}} results"
   },
   "a11y": {
     "closeMenu": "Close menu",
@@ -38,23 +54,109 @@
   },
   "auth": {
     "signIn": "Sign in",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "tagline": "Vetted access, by invitation",
+    "modeEmail": "Email and password",
+    "modeMagicLink": "Magic link",
+    "modeInvitation": "Invitation code",
+    "modeEmailHint": "For already-registered members",
+    "modeMagicLinkHint": "Receive a single-use access link",
+    "modeInvitationHint": "Activate your invitation code",
+    "email": "Email address",
+    "password": "Password",
+    "code": "Invitation code",
+    "magicLinkSent": "Access link sent. Please check your inbox.",
+    "back": "Back to home"
   },
   "account": {
+    "eyebrow": "Member",
+    "dashboardTitle": "Your concierge",
+    "dashboardLede": "A curated selection prepared for you, your active inquiries, and direct access to your concierge.",
+    "yourInquiries": "Your inquiries",
+    "recentlyAdded": "Recently added",
+    "recommendations": "Discover",
+    "noInquiries": "No active inquiries.",
+    "profileTitle": "Your profile",
+    "preferencesTitle": "Your preferences",
+    "inquiriesTitle": "Inquiries history",
+    "events": {
+      "title": "Events",
+      "lede": "Galas, openings, private dinners, sport — access kept off-market."
+    },
+    "properties": {
+      "title": "Properties",
+      "lede": "Selected residences across Switzerland and Europe, on request."
+    },
+    "timepieces": {
+      "title": "Timepieces",
+      "lede": "Collector horology, full set with documented provenance."
+    },
+    "artworks": {
+      "title": "Artworks",
+      "lede": "Unique pieces by contemporary artists, certificates of authenticity included."
+    },
+    "journeys": {
+      "title": "Journeys",
+      "lede": "Bespoke itineraries — private jet, yacht, guided expeditions."
+    },
+    "concierge": {
+      "title": "Concierge",
+      "lede": "Bespoke service capabilities — transport, gastronomy, security, medical, cultural."
+    },
     "nav": {
       "events": "Events",
       "properties": "Properties",
       "timepieces": "Timepieces",
       "artworks": "Artworks",
       "journeys": "Journeys",
-      "concierge": "Concierge"
+      "concierge": "Concierge",
+      "profile": "Profile",
+      "inquiries": "Inquiries",
+      "preferences": "Preferences"
     }
   },
   "admin": {
+    "eyebrow": "Operator",
+    "dashboardTitle": "Dashboard",
+    "dashboardLede": "Active inquiries, invitation codes, recent signups.",
+    "invitations": {
+      "title": "Invitations"
+    },
+    "inquiries": {
+      "title": "Inquiries"
+    },
+    "users": {
+      "title": "Members"
+    },
     "nav": {
       "invitations": "Invitations",
       "inquiries": "Inquiries",
       "users": "Users"
+    }
+  },
+  "inquiry": {
+    "drawerTitle": "Express your interest",
+    "drawerLede": "Your concierge gets back to you within 24 hours.",
+    "messagePlaceholder": "Mention any constraints, dates or questions.",
+    "submit": "Send request",
+    "sending": "Sending…",
+    "success": "Request transmitted. Salva will reach out within 24 hours.",
+    "status": {
+      "new": "New",
+      "in_review": "In review",
+      "contacted": "Replied",
+      "closed": "Closed",
+      "cancelled": "Cancelled"
+    }
+  },
+  "public": {
+    "tagline": "Swiss private concierge",
+    "intro": "A by-invitation selection for a vetted clientele. Without noise, without excess.",
+    "loginCta": "Access your space",
+    "footer": {
+      "rights": "© Sawnext Studio · All rights reserved",
+      "imprint": "Imprint",
+      "privacy": "Privacy"
     }
   }
 }

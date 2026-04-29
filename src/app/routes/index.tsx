@@ -1,3 +1,5 @@
+import { AdminLayout } from '@app/layouts/AdminLayout';
+import { AppLayout } from '@app/layouts/AppLayout';
 import { PublicLayout } from '@app/layouts/PublicLayout';
 import RootLayout from '@app/layouts/RootLayout';
 import { LocaleProvider } from '@app/LocaleProvider';
@@ -29,6 +31,9 @@ function lazyWithRetry<T extends ComponentType>(
   });
 }
 
+/* ─── Public ─── */
+import ComingSoon from '@pages/ComingSoon';
+
 const Home = lazyWithRetry(() => import('@pages/Home'));
 const Playground = lazyWithRetry(() => import('@pages/Playground'));
 const Lab = lazyWithRetry(() => import('@pages/Lab'));
@@ -43,15 +48,7 @@ function PageLoader() {
   );
 }
 
-/* ─── Locale-scoped layout ────────────────────────────────────
-   Every locale-prefixed route renders inside <LocaleProvider> which
-   syncs i18n + document.lang + localStorage, plus the shared RootLayout.
-
-   If the `:locale` segment is not a supported code (e.g. `/foo` landing
-   here because of React Router's permissive param match), we redirect
-   to the detected locale and preserve the original path. This way
-   `/unknown` becomes `/fr/unknown` → nested `*` renders NotFound.
-   ─────────────────────────────────────────────────────────── */
+/* ─── Locale-scoped layout ──────────────────────────────────── */
 function LocaleLayout() {
   const { locale: param } = useParams<{ locale?: string }>();
   const { pathname, search, hash } = useLocation();
@@ -69,10 +66,8 @@ function LocaleLayout() {
 }
 
 /* ─── Main router ─────────────────────────────────────────────
-   Un-prefixed paths (/ /playground /lab) redirect once to the
-   canonical /:locale/... counterpart. All real rendering happens
-   under the locale branch so SEO/hreflang alternates are coherent.
-   Page transition animation lives in RootLayout around <Outlet />.
+   All concrete pages land in lot B per phase. Until then, route
+   placeholders render <ComingSoon titleKey="..." />.
    ─────────────────────────────────────────────────────────── */
 export default function AppRoutes() {
   return (
@@ -83,35 +78,136 @@ export default function AppRoutes() {
         <Route path={ROUTES.PLAYGROUND} element={<LocaleRedirect />} />
         <Route path={ROUTES.LAB} element={<LocaleRedirect />} />
 
-        {/* ─── Canonical locale-prefixed tree ───────────────
-            LocaleLayout = LocaleProvider + RootLayout (skip-link + banner).
-            Three sub-layouts split the surface :
-              · PublicLayout → un-authenticated pages (home, login, onboarding, sandboxes)
-              · AppLayout    → /:locale/account/* (RequireAuth, client modules)
-              · AdminLayout  → /:locale/admin/*   (RequireRole 'admin')
-            ─────────────────────────────────────────────── */}
+        {/* ─── Canonical locale-prefixed tree ─── */}
         <Route path="/:locale" element={<LocaleLayout />}>
+          {/* ─── Public surface ─── */}
           <Route element={<PublicLayout />}>
             <Route index element={<Home />} />
             <Route path="playground" element={<Playground />} />
             <Route path="lab" element={<Lab />} />
-            {/* TODO[lot-B] : <Route path="login" element={<Login />} /> */}
-            {/* TODO[lot-B] : <Route path="onboarding" element={<Onboarding />} /> */}
+            <Route
+              path="login"
+              element={<ComingSoon titleKey="auth.signIn" eyebrowKey="public.tagline" />}
+            />
+            <Route
+              path="onboarding"
+              element={<ComingSoon titleKey="auth.signIn" eyebrowKey="public.tagline" />}
+            />
           </Route>
 
-          {/* TODO[lot-C+] : <Route path="account" element={<AppLayout />}>
-              <Route index element={<AccountIndex />} />
-              <Route path="events" element={<EventsList />} />
-              <Route path="events/:slug" element={<EventDetail />} />
-              ...
-            </Route> */}
+          {/* ─── Member surface (RequireAuth via AppLayout) ─── */}
+          <Route path="account" element={<AppLayout />}>
+            <Route
+              index
+              element={
+                <ComingSoon titleKey="account.dashboardTitle" eyebrowKey="account.eyebrow" />
+              }
+            />
+            <Route
+              path="events"
+              element={<ComingSoon titleKey="account.events.title" eyebrowKey="account.eyebrow" />}
+            />
+            <Route
+              path="events/:slug"
+              element={<ComingSoon titleKey="account.events.title" eyebrowKey="account.eyebrow" />}
+            />
+            <Route
+              path="properties"
+              element={
+                <ComingSoon titleKey="account.properties.title" eyebrowKey="account.eyebrow" />
+              }
+            />
+            <Route
+              path="properties/:slug"
+              element={
+                <ComingSoon titleKey="account.properties.title" eyebrowKey="account.eyebrow" />
+              }
+            />
+            <Route
+              path="timepieces"
+              element={
+                <ComingSoon titleKey="account.timepieces.title" eyebrowKey="account.eyebrow" />
+              }
+            />
+            <Route
+              path="timepieces/:slug"
+              element={
+                <ComingSoon titleKey="account.timepieces.title" eyebrowKey="account.eyebrow" />
+              }
+            />
+            <Route
+              path="artworks"
+              element={
+                <ComingSoon titleKey="account.artworks.title" eyebrowKey="account.eyebrow" />
+              }
+            />
+            <Route
+              path="artworks/:slug"
+              element={
+                <ComingSoon titleKey="account.artworks.title" eyebrowKey="account.eyebrow" />
+              }
+            />
+            <Route
+              path="journeys"
+              element={
+                <ComingSoon titleKey="account.journeys.title" eyebrowKey="account.eyebrow" />
+              }
+            />
+            <Route
+              path="journeys/:slug"
+              element={
+                <ComingSoon titleKey="account.journeys.title" eyebrowKey="account.eyebrow" />
+              }
+            />
+            <Route
+              path="concierge"
+              element={
+                <ComingSoon titleKey="account.concierge.title" eyebrowKey="account.eyebrow" />
+              }
+            />
+            <Route
+              path="concierge/:slug"
+              element={
+                <ComingSoon titleKey="account.concierge.title" eyebrowKey="account.eyebrow" />
+              }
+            />
+            <Route
+              path="profile"
+              element={<ComingSoon titleKey="account.profileTitle" eyebrowKey="account.eyebrow" />}
+            />
+            <Route
+              path="inquiries"
+              element={
+                <ComingSoon titleKey="account.inquiriesTitle" eyebrowKey="account.eyebrow" />
+              }
+            />
+            <Route
+              path="preferences"
+              element={
+                <ComingSoon titleKey="account.preferencesTitle" eyebrowKey="account.eyebrow" />
+              }
+            />
+          </Route>
 
-          {/* TODO[lot-E]  : <Route path="admin" element={<AdminLayout />}>
-              <Route index element={<AdminIndex />} />
-              <Route path="invitations" element={<InvitationsList />} />
-              <Route path="inquiries" element={<InquiriesList />} />
-              <Route path="users" element={<UsersList />} />
-            </Route> */}
+          {/* ─── Admin surface (RequireRole 'admin' via AdminLayout) ─── */}
+          <Route path="admin" element={<AdminLayout />}>
+            <Route
+              index
+              element={<ComingSoon titleKey="admin.dashboardTitle" eyebrowKey="admin.eyebrow" />}
+            />
+            <Route
+              path="invitations"
+              element={<ComingSoon titleKey="admin.invitations.title" eyebrowKey="admin.eyebrow" />}
+            />
+            <Route
+              path="inquiries"
+              element={<ComingSoon titleKey="admin.inquiries.title" eyebrowKey="admin.eyebrow" />}
+            />
+            <Route
+              path="users"
+              element={<ComingSoon titleKey="admin.users.title" eyebrowKey="admin.eyebrow" />}
+            />
+          </Route>
 
           <Route path="*" element={<NotFound />} />
         </Route>

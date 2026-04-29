@@ -7,7 +7,23 @@
     "retry": "Réessayer",
     "empty": "Aucun contenu pour le moment.",
     "discover": "Découvrir",
-    "readMore": "Lire la suite"
+    "readMore": "Lire la suite",
+    "comingSoon": "Cette section est en préparation. Elle sera disponible prochainement.",
+    "onRequest": "Sur demande",
+    "from": "À partir de",
+    "viewAll": "Voir l’ensemble",
+    "details": "Détails",
+    "expressInterest": "Manifester votre intérêt",
+    "callConcierge": "Appeler votre conciergerie",
+    "search": "Rechercher",
+    "filters": "Filtres",
+    "reset": "Réinitialiser",
+    "category": "Catégorie",
+    "kind": "Type",
+    "region": "Région",
+    "year": "Année",
+    "duration": "Durée",
+    "showing": "{{count}} résultats"
   },
   "a11y": {
     "closeMenu": "Fermer le menu",
@@ -38,23 +54,109 @@
   },
   "auth": {
     "signIn": "Se connecter",
-    "signOut": "Se déconnecter"
+    "signOut": "Se déconnecter",
+    "tagline": "Accès vetté, sur invitation",
+    "modeEmail": "Email et mot de passe",
+    "modeMagicLink": "Lien magique",
+    "modeInvitation": "Code d’invitation",
+    "modeEmailHint": "Pour les membres déjà enregistrés",
+    "modeMagicLinkHint": "Recevez un lien d’accès à usage unique",
+    "modeInvitationHint": "Activez votre code d’invitation",
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "code": "Code d’invitation",
+    "magicLinkSent": "Lien d’accès envoyé. Vérifiez votre boîte e-mail.",
+    "back": "Retour à l’accueil"
   },
   "account": {
+    "eyebrow": "Membre",
+    "dashboardTitle": "Votre conciergerie",
+    "dashboardLede": "Une sélection préparée pour vous, vos demandes en cours, et l’accès direct à votre conciergerie.",
+    "yourInquiries": "Vos demandes",
+    "recentlyAdded": "Récemment ajouté",
+    "recommendations": "À découvrir",
+    "noInquiries": "Aucune demande en cours.",
+    "profileTitle": "Votre profil",
+    "preferencesTitle": "Vos préférences",
+    "inquiriesTitle": "Historique des demandes",
+    "events": {
+      "title": "Événements",
+      "lede": "Galas, vernissages, soirées privées, sport — accès maintenu hors public."
+    },
+    "properties": {
+      "title": "Propriétés",
+      "lede": "Résidences sélectionnées en Suisse et en Europe, sur demande."
+    },
+    "timepieces": {
+      "title": "Garde-temps",
+      "lede": "Pièces d’horlogerie collectionneurs, full set et provenance documentée."
+    },
+    "artworks": {
+      "title": "Œuvres",
+      "lede": "Pièces uniques d’artistes contemporains, certificats d’authenticité inclus."
+    },
+    "journeys": {
+      "title": "Voyages",
+      "lede": "Itinéraires sur mesure, jet privé, yacht, expéditions encadrées."
+    },
+    "concierge": {
+      "title": "Conciergerie",
+      "lede": "Capacités de service sur mesure — transport, gastronomie, sécurité, médical, culturel."
+    },
     "nav": {
       "events": "Événements",
       "properties": "Propriétés",
       "timepieces": "Garde-temps",
       "artworks": "Œuvres",
       "journeys": "Voyages",
-      "concierge": "Conciergerie"
+      "concierge": "Conciergerie",
+      "profile": "Profil",
+      "inquiries": "Demandes",
+      "preferences": "Préférences"
     }
   },
   "admin": {
+    "eyebrow": "Opérateur",
+    "dashboardTitle": "Tableau de bord",
+    "dashboardLede": "Inquiries en cours, codes d’invitation, signups récents.",
+    "invitations": {
+      "title": "Invitations"
+    },
+    "inquiries": {
+      "title": "Demandes"
+    },
+    "users": {
+      "title": "Membres"
+    },
     "nav": {
       "invitations": "Invitations",
       "inquiries": "Demandes",
       "users": "Utilisateurs"
+    }
+  },
+  "inquiry": {
+    "drawerTitle": "Manifester votre intérêt",
+    "drawerLede": "Votre conciergerie revient vers vous sous 24 heures.",
+    "messagePlaceholder": "Indiquez vos contraintes, dates ou questions.",
+    "submit": "Envoyer la demande",
+    "sending": "Envoi en cours…",
+    "success": "Demande transmise. Salva vous recontacte sous 24 heures.",
+    "status": {
+      "new": "Nouvelle",
+      "in_review": "En étude",
+      "contacted": "Réponse envoyée",
+      "closed": "Clôturée",
+      "cancelled": "Annulée"
+    }
+  },
+  "public": {
+    "tagline": "Conciergerie privée suisse",
+    "intro": "Une sélection sur invitation pour une clientèle vetted. Sans bruit, sans excès.",
+    "loginCta": "Accéder à votre espace",
+    "footer": {
+      "rights": "© Sawnext Studio · Tous droits réservés",
+      "imprint": "Mentions légales",
+      "privacy": "Confidentialité"
     }
   }
 }
