@@ -139,6 +139,28 @@
       "users": "Users"
     }
   },
+  "journeys": {
+    "days": "days",
+    "itinerary": "Itinerary",
+    "inclusions": "Included",
+    "exclusions": "Not included",
+    "gallery": "Gallery",
+    "kind": {
+      "private-jet": "Private jet",
+      "yacht": "Yacht",
+      "expedition": "Expedition",
+      "safari": "Safari",
+      "rail-luxury": "Luxury rail"
+    },
+    "meta": {
+      "kind": "Kind",
+      "duration": "Duration",
+      "origin": "Origin",
+      "destinations": "Destinations",
+      "guestCapacity": "Guest capacity",
+      "earliestStart": "Earliest start"
+    }
+  },
   "events": {
     "programme": "Programme",
     "gallery": "Gallery",
