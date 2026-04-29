@@ -57,6 +57,25 @@
     "success": "Message sent.",
     "failure": "Failed to send. Please try again shortly."
   },
+  "onboarding": {
+    "skip": "Skip",
+    "enter": "Enter my space",
+    "step1": {
+      "eyebrow": "Welcome",
+      "title": "Sawnext, your private concierge.",
+      "lede": "A by-invitation selection, without noise. Activate your code to enter your space."
+    },
+    "step2": {
+      "eyebrow": "Let's meet",
+      "title": "How would you like to be addressed?",
+      "lede": "Salvatore and the team will address every exchange to your name. No data transmitted to any third party."
+    },
+    "step3": {
+      "eyebrow": "Your dedicated concierge",
+      "title": "Salvatore Montemagno will guide you.",
+      "lede": "A single point of contact, reachable any time from your space. Reply within 30 working minutes, standard NDA activated."
+    }
+  },
   "auth": {
     "signIn": "Sign in",
     "signOut": "Sign out",
