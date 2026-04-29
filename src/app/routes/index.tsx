@@ -32,7 +32,6 @@ function lazyWithRetry<T extends ComponentType>(
 }
 
 /* ─── Public ─── */
-import ComingSoon from '@pages/ComingSoon';
 
 const Home = lazyWithRetry(() => import('@pages/Home'));
 const Playground = lazyWithRetry(() => import('@pages/Playground'));
@@ -56,6 +55,10 @@ const ConciergeDetail = lazyWithRetry(() => import('@pages/ConciergeDetail'));
 const AccountProfile = lazyWithRetry(() => import('@pages/AccountProfile'));
 const AccountInquiries = lazyWithRetry(() => import('@pages/AccountInquiries'));
 const AccountPreferences = lazyWithRetry(() => import('@pages/AccountPreferences'));
+const AdminDashboard = lazyWithRetry(() => import('@pages/AdminDashboard'));
+const AdminInvitations = lazyWithRetry(() => import('@pages/AdminInvitations'));
+const AdminInquiries = lazyWithRetry(() => import('@pages/AdminInquiries'));
+const AdminUsers = lazyWithRetry(() => import('@pages/AdminUsers'));
 
 /* ─── Loading fallback — themed, no white flash ───────────────── */
 function PageLoader() {
@@ -129,22 +132,10 @@ export default function AppRoutes() {
 
           {/* ─── Admin surface (RequireRole 'admin' via AdminLayout) ─── */}
           <Route path="admin" element={<AdminLayout />}>
-            <Route
-              index
-              element={<ComingSoon titleKey="admin.dashboardTitle" eyebrowKey="admin.eyebrow" />}
-            />
-            <Route
-              path="invitations"
-              element={<ComingSoon titleKey="admin.invitations.title" eyebrowKey="admin.eyebrow" />}
-            />
-            <Route
-              path="inquiries"
-              element={<ComingSoon titleKey="admin.inquiries.title" eyebrowKey="admin.eyebrow" />}
-            />
-            <Route
-              path="users"
-              element={<ComingSoon titleKey="admin.users.title" eyebrowKey="admin.eyebrow" />}
-            />
+            <Route index element={<AdminDashboard />} />
+            <Route path="invitations" element={<AdminInvitations />} />
+            <Route path="inquiries" element={<AdminInquiries />} />
+            <Route path="users" element={<AdminUsers />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

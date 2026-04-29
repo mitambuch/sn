@@ -14,6 +14,7 @@ import type { User } from '@/types/auth';
 import type { ConciergeService } from '@/types/concierge';
 import type { Event } from '@/types/event';
 import type { Inquiry } from '@/types/inquiry';
+import type { InvitationCode } from '@/types/invitation';
 import type { Journey } from '@/types/journey';
 import type { Property } from '@/types/property';
 import type { Timepiece } from '@/types/timepiece';
@@ -22,6 +23,7 @@ import { artworks } from './artworks';
 import { conciergeServices } from './concierge';
 import { events } from './events';
 import { inquiries } from './inquiries';
+import { invitations } from './invitations';
 import { journeys } from './journeys';
 import { properties } from './properties';
 import { timepieces } from './timepieces';
@@ -63,6 +65,19 @@ export const listInquiries = (): Inquiry[] => inquiries;
 export const listInquiriesForUser = (userId: string): Inquiry[] =>
   inquiries.filter(i => i.userId === userId);
 
+// ─── Invitations ─────────────────────────────────────
+export const listInvitations = (): InvitationCode[] => invitations;
+
 export { currentUser, operator };
 
-export { artworks, conciergeServices, events, inquiries, journeys, properties, timepieces, users };
+export {
+  artworks,
+  conciergeServices,
+  events,
+  inquiries,
+  invitations,
+  journeys,
+  properties,
+  timepieces,
+  users,
+};

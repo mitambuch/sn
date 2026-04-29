@@ -144,7 +144,21 @@
     "dashboardTitle": "Dashboard",
     "dashboardLede": "Active inquiries, invitation codes, recent signups.",
     "invitations": {
-      "title": "Invitations"
+      "title": "Invitations",
+      "code": "Code",
+      "status": "Status",
+      "createdAt": "Created",
+      "expiresAt": "Expires",
+      "copy": "Copy",
+      "copied": "Code copied to clipboard",
+      "generate": "Generate code",
+      "generated": "New code generated",
+      "statusValues": {
+        "unused": "Unused",
+        "redeemed": "Redeemed",
+        "expired": "Expired",
+        "revoked": "Revoked"
+      }
     },
     "inquiries": {
       "title": "Inquiries"
@@ -152,6 +166,12 @@
     "users": {
       "title": "Members"
     },
+    "stats": {
+      "pendingInquiries": "Pending inquiries",
+      "unusedCodes": "Available codes",
+      "signupsLast7d": "Signups last 7 days"
+    },
+    "recentInquiries": "Recent inquiries",
     "nav": {
       "invitations": "Invitations",
       "inquiries": "Inquiries",

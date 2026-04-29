@@ -147,7 +147,21 @@
     "dashboardTitle": "Tableau de bord",
     "dashboardLede": "Inquiries en cours, codes d’invitation, signups récents.",
     "invitations": {
-      "title": "Invitations"
+      "title": "Invitations",
+      "code": "Code",
+      "status": "Statut",
+      "createdAt": "Créé le",
+      "expiresAt": "Expire le",
+      "copy": "Copier",
+      "copied": "Code copié dans le presse-papier",
+      "generate": "Générer un code",
+      "generated": "Nouveau code généré",
+      "statusValues": {
+        "unused": "Non utilisé",
+        "redeemed": "Utilisé",
+        "expired": "Expiré",
+        "revoked": "Révoqué"
+      }
     },
     "inquiries": {
       "title": "Demandes"
@@ -155,6 +169,12 @@
     "users": {
       "title": "Membres"
     },
+    "stats": {
+      "pendingInquiries": "Demandes en attente",
+      "unusedCodes": "Codes disponibles",
+      "signupsLast7d": "Inscriptions 7 jours"
+    },
+    "recentInquiries": "Demandes récentes",
     "nav": {
       "invitations": "Invitations",
       "inquiries": "Demandes",
