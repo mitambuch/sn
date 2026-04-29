@@ -430,6 +430,112 @@
       "story": "Récit"
     }
   },
+  "bespoke": {
+    "eyebrow": "Demande sur mesure",
+    "title": "Décrivez ce que vous cherchez, on s’en occupe",
+    "lede": "Salvatore et son réseau activent les bonnes portes. Plus vous êtes précis (référence, fourchette, dates), plus la réponse arrive vite.",
+    "domain": "Que cherchez-vous ?",
+    "domainHint": "Sélectionnez un ou plusieurs domaines.",
+    "domainValues": {
+      "property": "Propriété",
+      "timepiece": "Garde-temps",
+      "artwork": "Œuvre",
+      "event": "Événement",
+      "journey": "Voyage",
+      "concierge": "Service",
+      "other": "Autre"
+    },
+    "description": "Description",
+    "descriptionHint": "Soyez aussi précis que possible — référence, marque, époque, dimensions, contraintes.",
+    "descriptionPlaceholder": "Ex. Patek Philippe Aquanaut 5167A acier cadran noir, 2018-2022, full set, papiers indispensables, fourchette 60-75K CHF.",
+    "budget": "Budget",
+    "budgetHint": "Optionnel mais conseillé — accélère le tri du réseau.",
+    "budgetMin": "Minimum",
+    "budgetMax": "Maximum",
+    "currency": "Devise",
+    "urgency": "Urgence",
+    "urgencyValues": {
+      "this-week": "Cette semaine",
+      "this-month": "Ce mois-ci",
+      "three-months": "Sous 3 mois",
+      "no-rush": "Sans urgence"
+    },
+    "targetDate": "Date cible (optionnel)",
+    "attachLabel": "Joindre des photos ou documents",
+    "attachHint": "Visuels de référence, screenshots, certificats existants, plans. Jusqu’à 5 fichiers.",
+    "confidential": "Confidentialité absolue",
+    "confidentialHint": "Votre demande est traitée par Salvatore uniquement. NDA standard activé, aucune indexation, aucune revente.",
+    "submit": "Transmettre la demande",
+    "success": "Demande sur mesure transmise. Salvatore revient vers vous sous 24 heures.",
+    "banner": {
+      "eyebrow": "Vous ne trouvez pas ?",
+      "cta": "Faire une demande sur mesure",
+      "generic": {
+        "title": "Vous ne trouvez pas ce que vous cherchez ?",
+        "lede": "Décrivez-le. Salvatore active son réseau — montres rares, propriétés hors-marché, accès événementiels, voyages composés sur mesure."
+      },
+      "property": {
+        "title": "La propriété idéale n’est pas ici ?",
+        "lede": "Un quartier précis, une typologie particulière, une vue spécifique ? Notre réseau hors-marché couvre toute l’Europe."
+      },
+      "timepiece": {
+        "title": "La référence que vous cherchez n’est pas listée ?",
+        "lede": "Indiquez la marque, la référence, l’année, l’état attendu. Salvatore active les détaillants et collectionneurs partenaires."
+      },
+      "artwork": {
+        "title": "L’œuvre n’est pas dans le catalogue ?",
+        "lede": "Artiste, époque, médium, fourchette — nous activons les galeries et maisons de vente avec lesquelles nous travaillons."
+      },
+      "event": {
+        "title": "Un événement particulier vous intéresse ?",
+        "lede": "Gala fermé, soirée d’ouverture, concert privé — décrivez-le, nous vérifions les places et négocions l’accès."
+      },
+      "journey": {
+        "title": "Votre voyage de rêve n’est pas listé ?",
+        "lede": "Destination, durée, niveau d’encadrement, contraintes — Salvatore compose l’itinéraire de A à Z."
+      },
+      "concierge": {
+        "title": "Un service spécifique manque ?",
+        "lede": "Décrivez le besoin — sécurité, médical, logistique événementielle. Nous activons l’équipe partenaire adaptée."
+      }
+    }
+  },
+  "trust": {
+    "badge": "Sécurité & confidentialité",
+    "modalTitle": "Sept garanties premium",
+    "modalLede": "Sawnext Studio est une conciergerie privée suisse. Chaque demande, chaque transaction, chaque échange suit le protocole ci-dessous — sans exception.",
+    "footerNote": "Pour toute question juridique précise, votre avocat ou notaire est invité à contacter directement notre département conformité — Salvatore vous met en relation.",
+    "pillar": {
+      "nda": {
+        "title": "NDA standard sur chaque demande",
+        "body": "Toute demande émise depuis votre espace déclenche automatiquement un accord de confidentialité signé par les deux parties. Aucun tiers n’y a accès."
+      },
+      "encryption": {
+        "title": "Communications chiffrées de bout en bout",
+        "body": "E-mails sortants chiffrés via Resend, données stockées chez Supabase Frankfurt avec chiffrement au repos. Mots de passe hashés Argon2id."
+      },
+      "residency": {
+        "title": "Résidence des données — Union Européenne",
+        "body": "Données personnelles hébergées en Allemagne (Supabase EU-Central-1, Frankfurt). Aucun transfert extra-UE sans clauses contractuelles types."
+      },
+      "vetted": {
+        "title": "Cercle vetté — accès sur invitation uniquement",
+        "body": "L’accès au catalogue requiert un code d’invitation à usage unique remis en main propre. Aucun parcours d’inscription public, aucun referral non-validé."
+      },
+      "escrow": {
+        "title": "Séquestre disponible pour transactions sensibles",
+        "body": "Pour les acquisitions importantes (horlogerie, immobilier, œuvres), notre étude notariale partenaire à Genève peut séquestrer les fonds jusqu’à transfert effectif."
+      },
+      "compliance": {
+        "title": "Conformité RGPD + LPD Suisse",
+        "body": "Vos droits d’accès, de rectification, d’effacement et de portabilité sont opérationnels sous 7 jours. Délégué à la protection des données accessible directement."
+      },
+      "audit": {
+        "title": "Journal d’audit accessible sur demande",
+        "body": "Chaque consultation, chaque demande, chaque modification de votre profil est journalisée. Vous pouvez exporter votre journal complet à tout moment auprès de Salvatore."
+      }
+    }
+  },
   "public": {
     "tagline": "Conciergerie privée suisse",
     "intro": "Une sélection sur invitation pour une clientèle vetted. Sans bruit, sans excès.",

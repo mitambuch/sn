@@ -9,6 +9,7 @@ import { CardSkeleton } from '@components/ui/CardSkeleton';
 import { FilterBar } from '@components/ui/FilterBar';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
+import { CatalogueProactiveBanner } from '@features/catalogue/CatalogueProactiveBanner';
 import { ArticleCard } from '@features/news/ArticleCard';
 import { useFakeLoading } from '@hooks/useFakeLoading';
 import { useMemo, useState } from 'react';
@@ -83,6 +84,8 @@ export default function NewsList() {
             {t('common.showing', { count: filtered.length })}
           </p>
         )}
+
+        <CatalogueProactiveBanner />
       </div>
     </Container>
   );

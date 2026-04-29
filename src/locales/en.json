@@ -427,6 +427,112 @@
       "story": "Story"
     }
   },
+  "bespoke": {
+    "eyebrow": "Bespoke request",
+    "title": "Describe what you're after — we'll handle it",
+    "lede": "Salvatore and his network open the right doors. The more specific you are (reference, range, dates), the faster the answer arrives.",
+    "domain": "What are you looking for?",
+    "domainHint": "Pick one or several domains.",
+    "domainValues": {
+      "property": "Property",
+      "timepiece": "Timepiece",
+      "artwork": "Artwork",
+      "event": "Event",
+      "journey": "Journey",
+      "concierge": "Service",
+      "other": "Other"
+    },
+    "description": "Description",
+    "descriptionHint": "Be as specific as possible — reference, brand, era, dimensions, constraints.",
+    "descriptionPlaceholder": "E.g. Patek Philippe Aquanaut 5167A steel black dial, 2018-2022, full set, papers required, range 60-75K CHF.",
+    "budget": "Budget",
+    "budgetHint": "Optional but recommended — speeds up network triage.",
+    "budgetMin": "Minimum",
+    "budgetMax": "Maximum",
+    "currency": "Currency",
+    "urgency": "Urgency",
+    "urgencyValues": {
+      "this-week": "This week",
+      "this-month": "This month",
+      "three-months": "Within 3 months",
+      "no-rush": "No rush"
+    },
+    "targetDate": "Target date (optional)",
+    "attachLabel": "Attach photos or documents",
+    "attachHint": "Reference visuals, screenshots, existing certificates, plans. Up to 5 files.",
+    "confidential": "Absolute confidentiality",
+    "confidentialHint": "Your request is handled by Salvatore only. Standard NDA activated, no indexing, no resale.",
+    "submit": "Send bespoke request",
+    "success": "Bespoke request sent. Salvatore will reach out within 24 hours.",
+    "banner": {
+      "eyebrow": "Can't find it?",
+      "cta": "Make a bespoke request",
+      "generic": {
+        "title": "Not finding what you're looking for?",
+        "lede": "Describe it. Salvatore activates his network — rare watches, off-market properties, event access, custom-composed journeys."
+      },
+      "property": {
+        "title": "Your ideal property isn't here?",
+        "lede": "A specific neighbourhood, a particular layout, a precise view? Our off-market network covers all of Europe."
+      },
+      "timepiece": {
+        "title": "The reference you want isn't listed?",
+        "lede": "Tell us the brand, reference, year, expected condition. Salvatore activates partner dealers and collectors."
+      },
+      "artwork": {
+        "title": "The piece isn't in the catalogue?",
+        "lede": "Artist, era, medium, range — we activate the galleries and auction houses we work with."
+      },
+      "event": {
+        "title": "Interested in a specific event?",
+        "lede": "Closed gala, opening night, private concert — describe it, we check seats and negotiate access."
+      },
+      "journey": {
+        "title": "Your dream trip isn't listed?",
+        "lede": "Destination, duration, level of accompaniment, constraints — Salvatore composes the itinerary end to end."
+      },
+      "concierge": {
+        "title": "Need a service that isn't here?",
+        "lede": "Describe it — security, medical, event logistics. We activate the appropriate partner team."
+      }
+    }
+  },
+  "trust": {
+    "badge": "Security & confidentiality",
+    "modalTitle": "Seven premium guarantees",
+    "modalLede": "Sawnext Studio is a Swiss private concierge. Every request, every transaction, every exchange follows the protocol below — no exception.",
+    "footerNote": "For specific legal questions, your lawyer or notary is invited to contact our compliance department directly — Salvatore will introduce them.",
+    "pillar": {
+      "nda": {
+        "title": "Standard NDA on every request",
+        "body": "Every request from your space automatically triggers a confidentiality agreement signed by both parties. No third party has access."
+      },
+      "encryption": {
+        "title": "End-to-end encrypted communications",
+        "body": "Outgoing emails encrypted via Resend, data stored at Supabase Frankfurt with at-rest encryption. Passwords Argon2id-hashed."
+      },
+      "residency": {
+        "title": "Data residency — European Union",
+        "body": "Personal data hosted in Germany (Supabase EU-Central-1, Frankfurt). No extra-EU transfer without standard contractual clauses."
+      },
+      "vetted": {
+        "title": "Vetted circle — by-invitation access only",
+        "body": "Catalogue access requires a single-use invitation code handed in person. No public sign-up flow, no unverified referrals."
+      },
+      "escrow": {
+        "title": "Escrow available for sensitive transactions",
+        "body": "For major acquisitions (horology, real estate, art), our partner notary in Geneva can escrow funds until effective transfer."
+      },
+      "compliance": {
+        "title": "GDPR + Swiss DPA compliant",
+        "body": "Your access, rectification, erasure and portability rights are operational within 7 days. Data Protection Officer reachable directly."
+      },
+      "audit": {
+        "title": "Audit log available on request",
+        "body": "Every view, request and profile modification is logged. You can export your full audit log at any time via Salvatore."
+      }
+    }
+  },
   "public": {
     "tagline": "Swiss private concierge",
     "intro": "A by-invitation selection for a vetted clientele. Without noise, without excess.",

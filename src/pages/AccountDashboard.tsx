@@ -17,6 +17,7 @@ import { Skeleton } from '@components/ui/Skeleton';
 import { StatusPill } from '@components/ui/StatusPill';
 import { ROUTES } from '@constants/routes';
 import { IntentCards } from '@features/inquiry/IntentCards';
+import { TrustBadge } from '@features/trust/TrustBadge';
 import { useFakeLoading } from '@hooks/useFakeLoading';
 import { cn } from '@utils/cn';
 import { Mail, Phone } from 'lucide-react';
@@ -301,6 +302,9 @@ export default function AccountDashboard() {
     <Container size="xl">
       <div className="space-y-16 py-12">
         <GreetingSection />
+        <div>
+          <TrustBadge />
+        </div>
         <IntentCards />
         <ConciergeCard />
         <RecentInquiriesSection loading={loading} />
