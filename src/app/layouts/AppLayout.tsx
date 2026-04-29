@@ -15,6 +15,7 @@ import { useLocale } from '@app/LocaleProvider';
 import { Header } from '@components/layout/Header';
 import { ROUTES } from '@constants/routes';
 import { useAuth } from '@context/AuthContext';
+import { ConciergeDock } from '@features/concierge/ConciergeDock';
 import { useMediaQuery } from '@hooks/useMediaQuery';
 import { cn } from '@utils/cn';
 import { useTranslation } from 'react-i18next';
@@ -129,6 +130,7 @@ const AppShell = () => {
           <Outlet />
         </div>
       </main>
+      <ConciergeDock />
     </>
   );
 };

@@ -84,6 +84,39 @@
     "profileTitle": "Votre profil",
     "preferencesTitle": "Vos préférences",
     "inquiriesTitle": "Historique des demandes",
+    "intent": {
+      "heading": "Que puis-je vous trouver aujourd’hui ?",
+      "subheading": "Votre conciergerie répond sous 30 minutes.",
+      "travel": {
+        "eyebrow": "Voyage",
+        "title": "Je voudrais voyager",
+        "hint": "Itinéraire sur mesure, jet, yacht, expédition.",
+        "drawerTitle": "Je voudrais voyager",
+        "drawerLede": "Décrivez la destination, les dates, le nombre de voyageurs et vos contraintes — Salva compose l’itinéraire.",
+        "placeholder": "Ex. Maldives en novembre, 4 personnes, 10 jours, jet inclus, hôtel sur l’atoll privé."
+      },
+      "object": {
+        "eyebrow": "Recherche",
+        "title": "Je cherche un objet précis",
+        "hint": "Horlogerie, œuvre, voiture de collection — décrivez la pièce.",
+        "drawerTitle": "Je cherche un objet précis",
+        "drawerLede": "Soyez précis — référence, années acceptables, état attendu, papiers, fourchette de prix éventuelle. Salva active son réseau.",
+        "placeholder": "Ex. Patek Philippe Nautilus 5711/1A cadran bleu, 2018-2022, full set, bon état minimum."
+      },
+      "event": {
+        "eyebrow": "Événement",
+        "title": "Je veux organiser un événement",
+        "hint": "Mariage, jubilé, dîner privé, séminaire — du briefing à la dernière coupe.",
+        "drawerTitle": "Je veux organiser un événement",
+        "drawerLede": "Indiquez la nature, la date approximative, le nombre d’invités, le lieu si déjà choisi.",
+        "placeholder": "Ex. Mariage 220 invités au lac de Côme, été 2027, Villa del Balbianello souhaitée."
+      },
+      "jet": {
+        "eyebrow": "Aviation privée",
+        "title": "J’ai besoin d’un jet privé",
+        "hint": "Court ou long-courrier, 6h de préavis suffisent."
+      }
+    },
     "preferences": {
       "contactPreference": "Préférence de contact",
       "locale": "Langue préférée",
@@ -338,6 +371,17 @@
     "submit": "Envoyer la demande",
     "sending": "Envoi en cours…",
     "success": "Demande transmise. Salva vous recontacte sous 24 heures.",
+    "sourceLabel": {
+      "event": "Événement",
+      "property": "Propriété",
+      "timepiece": "Garde-temps",
+      "artwork": "Œuvre",
+      "journey": "Voyage",
+      "concierge": "Conciergerie",
+      "jet": "Jet privé",
+      "object-search": "Recherche d’objet",
+      "event-organize": "Organisation d’événement"
+    },
     "status": {
       "new": "Nouvelle",
       "in_review": "En étude",
@@ -345,6 +389,33 @@
       "closed": "Clôturée",
       "cancelled": "Annulée"
     }
+  },
+  "jet": {
+    "drawerTitle": "Affréter un jet privé",
+    "drawerLede": "Indiquez départ, arrivée et passagers — Salva confirme la disponibilité sous 30 minutes.",
+    "from": "Départ",
+    "fromPlaceholder": "Ex. Genève (LSGG)",
+    "to": "Arrivée",
+    "toPlaceholder": "Ex. Tokyo Haneda (RJTT)",
+    "departDate": "Date et heure de départ",
+    "withReturn": "Retour prévu",
+    "withReturnHint": "Décocher pour un aller simple",
+    "returnDate": "Date et heure de retour",
+    "pax": "Nombre de passagers",
+    "notes": "Notes complémentaires",
+    "notesPlaceholder": "Animaux, équipements particuliers, repas, contraintes diplomatiques…",
+    "submit": "Envoyer la demande",
+    "success": "Demande de vol transmise. Salva confirme sous 30 minutes.",
+    "salvaReassurance": "Salva (votre conciergerie) reçoit cette demande directement et confirme sous 30 minutes ouvrées. À tout moment, vous pouvez l’appeler depuis le bouton en bas à droite."
+  },
+  "dock": {
+    "title": "Votre conciergerie",
+    "eyebrow": "Conciergerie dédiée",
+    "availability": "Disponible 7j/7, 6h–23h Europe/Zurich",
+    "cta": "Salva",
+    "call": "Appeler maintenant",
+    "write": "Écrire un message",
+    "writeLede": "Écrivez librement — Salva lit chaque message personnellement et répond sous 24 heures."
   },
   "public": {
     "tagline": "Conciergerie privée suisse",

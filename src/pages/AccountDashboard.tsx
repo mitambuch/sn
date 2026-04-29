@@ -16,6 +16,7 @@ import { Image } from '@components/ui/Image';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { StatusPill } from '@components/ui/StatusPill';
 import { ROUTES } from '@constants/routes';
+import { IntentCards } from '@features/inquiry/IntentCards';
 import { cn } from '@utils/cn';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -79,6 +80,9 @@ export default function AccountDashboard() {
           size="md"
           as="h1"
         />
+
+        {/* ─── Intent prompts (proactive premium UX) ─── */}
+        <IntentCards />
 
         {/* ─── Concierge card ─── */}
         <section

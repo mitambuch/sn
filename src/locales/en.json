@@ -84,6 +84,39 @@
     "profileTitle": "Your profile",
     "preferencesTitle": "Your preferences",
     "inquiriesTitle": "Inquiries history",
+    "intent": {
+      "heading": "What can I find for you today?",
+      "subheading": "Your concierge replies within 30 minutes.",
+      "travel": {
+        "eyebrow": "Travel",
+        "title": "I'd like to travel",
+        "hint": "Bespoke itinerary, jet, yacht, expedition.",
+        "drawerTitle": "I'd like to travel",
+        "drawerLede": "Describe the destination, dates, number of travellers and any constraints — Salva composes the itinerary.",
+        "placeholder": "E.g. Maldives in November, 4 people, 10 days, jet included, hotel on private atoll."
+      },
+      "object": {
+        "eyebrow": "Search",
+        "title": "I'm looking for a specific object",
+        "hint": "Horology, artwork, collector car — describe the piece.",
+        "drawerTitle": "I'm looking for a specific object",
+        "drawerLede": "Be specific — reference, acceptable years, expected condition, papers, possible price range. Salva activates the network.",
+        "placeholder": "E.g. Patek Philippe Nautilus 5711/1A blue dial, 2018-2022, full set, good condition minimum."
+      },
+      "event": {
+        "eyebrow": "Event",
+        "title": "I want to organise an event",
+        "hint": "Wedding, jubilee, private dinner, seminar — from brief to last toast.",
+        "drawerTitle": "I want to organise an event",
+        "drawerLede": "Tell us the nature, approximate date, guest count, venue if already chosen.",
+        "placeholder": "E.g. Wedding 220 guests at Lake Como, summer 2027, Villa del Balbianello preferred."
+      },
+      "jet": {
+        "eyebrow": "Private aviation",
+        "title": "I need a private jet",
+        "hint": "Short or long-haul, 6h notice is enough."
+      }
+    },
     "preferences": {
       "contactPreference": "Contact preference",
       "locale": "Preferred language",
@@ -335,6 +368,17 @@
     "submit": "Send request",
     "sending": "Sending…",
     "success": "Request transmitted. Salva will reach out within 24 hours.",
+    "sourceLabel": {
+      "event": "Event",
+      "property": "Property",
+      "timepiece": "Timepiece",
+      "artwork": "Artwork",
+      "journey": "Journey",
+      "concierge": "Concierge",
+      "jet": "Private jet",
+      "object-search": "Object search",
+      "event-organize": "Event organisation"
+    },
     "status": {
       "new": "New",
       "in_review": "In review",
@@ -342,6 +386,33 @@
       "closed": "Closed",
       "cancelled": "Cancelled"
     }
+  },
+  "jet": {
+    "drawerTitle": "Charter a private jet",
+    "drawerLede": "Tell us departure, arrival and passengers — Salva confirms availability within 30 minutes.",
+    "from": "Departure",
+    "fromPlaceholder": "E.g. Geneva (LSGG)",
+    "to": "Arrival",
+    "toPlaceholder": "E.g. Tokyo Haneda (RJTT)",
+    "departDate": "Departure date and time",
+    "withReturn": "Return planned",
+    "withReturnHint": "Uncheck for one-way",
+    "returnDate": "Return date and time",
+    "pax": "Number of passengers",
+    "notes": "Additional notes",
+    "notesPlaceholder": "Pets, special equipment, meals, diplomatic constraints…",
+    "submit": "Send request",
+    "success": "Flight request transmitted. Salva confirms within 30 minutes.",
+    "salvaReassurance": "Salva (your concierge) receives this request directly and confirms within 30 working minutes. At any time, you can call from the button bottom-right."
+  },
+  "dock": {
+    "title": "Your concierge",
+    "eyebrow": "Dedicated concierge",
+    "availability": "Available 7 days a week, 6 a.m. – 11 p.m. Europe/Zurich",
+    "cta": "Salva",
+    "call": "Call now",
+    "write": "Write a message",
+    "writeLede": "Write freely — Salva reads each message personally and replies within 24 hours."
   },
   "public": {
     "tagline": "Swiss private concierge",
