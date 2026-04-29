@@ -43,6 +43,8 @@ const Onboarding = lazyWithRetry(() => import('@pages/Onboarding'));
 const AccountDashboard = lazyWithRetry(() => import('@pages/AccountDashboard'));
 const PropertiesList = lazyWithRetry(() => import('@pages/PropertiesList'));
 const PropertyDetail = lazyWithRetry(() => import('@pages/PropertyDetail'));
+const TimepiecesList = lazyWithRetry(() => import('@pages/TimepiecesList'));
+const TimepieceDetail = lazyWithRetry(() => import('@pages/TimepieceDetail'));
 
 /* ─── Loading fallback — themed, no white flash ───────────────── */
 function PageLoader() {
@@ -107,18 +109,8 @@ export default function AppRoutes() {
             />
             <Route path="properties" element={<PropertiesList />} />
             <Route path="properties/:slug" element={<PropertyDetail />} />
-            <Route
-              path="timepieces"
-              element={
-                <ComingSoon titleKey="account.timepieces.title" eyebrowKey="account.eyebrow" />
-              }
-            />
-            <Route
-              path="timepieces/:slug"
-              element={
-                <ComingSoon titleKey="account.timepieces.title" eyebrowKey="account.eyebrow" />
-              }
-            />
+            <Route path="timepieces" element={<TimepiecesList />} />
+            <Route path="timepieces/:slug" element={<TimepieceDetail />} />
             <Route
               path="artworks"
               element={

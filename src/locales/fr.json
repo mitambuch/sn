@@ -26,7 +26,9 @@
     "showing": "{{count}} résultats",
     "continue": "Continuer",
     "fullName": "Nom complet",
-    "phone": "Téléphone"
+    "phone": "Téléphone",
+    "yes": "Oui",
+    "no": "Non"
   },
   "a11y": {
     "closeMenu": "Fermer le menu",
@@ -138,6 +140,40 @@
       "invitations": "Invitations",
       "inquiries": "Demandes",
       "users": "Utilisateurs"
+    }
+  },
+  "timepieces": {
+    "fullSet": "Set complet",
+    "provenance": "Provenance",
+    "gallery": "Galerie",
+    "meta": {
+      "brand": "Marque",
+      "model": "Modèle",
+      "reference": "Référence",
+      "year": "Année",
+      "caliber": "Calibre",
+      "diameter": "Diamètre boîtier",
+      "material": "Matériau",
+      "condition": "État",
+      "fullSet": "Set complet"
+    },
+    "material": {
+      "steel": "Acier",
+      "gold-yellow": "Or jaune",
+      "gold-white": "Or blanc",
+      "gold-rose": "Or rose",
+      "platinum": "Platine",
+      "titanium": "Titane",
+      "two-tone": "Bicolore",
+      "ceramic": "Céramique"
+    },
+    "condition": {
+      "mint": "Neuf",
+      "unworn": "Non porté",
+      "excellent": "Excellent",
+      "very-good": "Très bon",
+      "good": "Bon",
+      "restored": "Restauré"
     }
   },
   "properties": {

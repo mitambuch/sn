@@ -26,7 +26,9 @@
     "showing": "{{count}} results",
     "continue": "Continue",
     "fullName": "Full name",
-    "phone": "Phone"
+    "phone": "Phone",
+    "yes": "Yes",
+    "no": "No"
   },
   "a11y": {
     "closeMenu": "Close menu",
@@ -135,6 +137,40 @@
       "invitations": "Invitations",
       "inquiries": "Inquiries",
       "users": "Users"
+    }
+  },
+  "timepieces": {
+    "fullSet": "Full set",
+    "provenance": "Provenance",
+    "gallery": "Gallery",
+    "meta": {
+      "brand": "Brand",
+      "model": "Model",
+      "reference": "Reference",
+      "year": "Year",
+      "caliber": "Caliber",
+      "diameter": "Case diameter",
+      "material": "Material",
+      "condition": "Condition",
+      "fullSet": "Full set"
+    },
+    "material": {
+      "steel": "Steel",
+      "gold-yellow": "Yellow gold",
+      "gold-white": "White gold",
+      "gold-rose": "Rose gold",
+      "platinum": "Platinum",
+      "titanium": "Titanium",
+      "two-tone": "Two-tone",
+      "ceramic": "Ceramic"
+    },
+    "condition": {
+      "mint": "Mint",
+      "unworn": "Unworn",
+      "excellent": "Excellent",
+      "very-good": "Very good",
+      "good": "Good",
+      "restored": "Restored"
     }
   },
   "properties": {
