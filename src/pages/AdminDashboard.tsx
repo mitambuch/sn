@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════
 // AdminDashboard — /:locale/admin
-// Stats summary + 5 most recent inquiries with quick links.
+// Salvatore's home: stats, quick actions to add catalogue items / codes,
+// and the 5 most recent inquiries.
 // ═══════════════════════════════════════════════════
 
 import { useLocale } from '@app/LocaleProvider';
@@ -9,14 +10,70 @@ import { SectionHeader } from '@components/ui/SectionHeader';
 import { Stat } from '@components/ui/Stat';
 import { StatusPill } from '@components/ui/StatusPill';
 import { ROUTES } from '@constants/routes';
+import { cn } from '@utils/cn';
+import type { LucideIcon } from 'lucide-react';
+import {
+  Building2,
+  CalendarDays,
+  Compass,
+  Frame,
+  Newspaper,
+  Sparkles,
+  Ticket,
+  Watch,
+} from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { listInquiries, listInvitations, listUsers } from '@/mocks';
 
-// WHY: Date.now() called once at module scope so react-hooks/purity is happy
-// inside the render path. Lot C replaces with a server snapshot.
+// WHY: Date.now() called once at module scope so react-hooks/purity is happy.
 const NOW_MS = Date.now();
+
+interface QuickAction {
+  to: string;
+  labelKey: string;
+  icon: LucideIcon;
+}
+
+const QUICK_ACTIONS: QuickAction[] = [
+  {
+    to: `${ROUTES.ADMIN_CATALOGUE}?module=property`,
+    labelKey: 'account.nav.properties',
+    icon: Building2,
+  },
+  {
+    to: `${ROUTES.ADMIN_CATALOGUE}?module=timepiece`,
+    labelKey: 'account.nav.timepieces',
+    icon: Watch,
+  },
+  {
+    to: `${ROUTES.ADMIN_CATALOGUE}?module=artwork`,
+    labelKey: 'account.nav.artworks',
+    icon: Frame,
+  },
+  {
+    to: `${ROUTES.ADMIN_CATALOGUE}?module=event`,
+    labelKey: 'account.nav.events',
+    icon: CalendarDays,
+  },
+  {
+    to: `${ROUTES.ADMIN_CATALOGUE}?module=journey`,
+    labelKey: 'account.nav.journeys',
+    icon: Compass,
+  },
+  {
+    to: `${ROUTES.ADMIN_CATALOGUE}?module=concierge`,
+    labelKey: 'account.nav.concierge',
+    icon: Sparkles,
+  },
+  {
+    to: `${ROUTES.ADMIN_CATALOGUE}?module=article`,
+    labelKey: 'account.nav.news',
+    icon: Newspaper,
+  },
+  { to: ROUTES.ADMIN_INVITATIONS, labelKey: 'admin.invitations.title', icon: Ticket },
+];
 
 export default function AdminDashboard() {
   const { t, i18n } = useTranslation();
@@ -46,15 +103,45 @@ export default function AdminDashboard() {
           as="h1"
         />
 
+        {/* ─── Stats ─── */}
         <div className="grid gap-6 sm:grid-cols-3">
           <Stat label={t('admin.stats.pendingInquiries')} value={String(pending)} />
           <Stat label={t('admin.stats.unusedCodes')} value={String(unusedCodes)} />
           <Stat label={t('admin.stats.signupsLast7d')} value={String(last7d)} />
         </div>
 
-        <section className="space-y-6">
+        {/* ─── Quick actions ─── */}
+        <section aria-labelledby="quick-actions-heading" className="space-y-6">
+          <h2 id="quick-actions-heading" className="text-fg text-2xl font-light">
+            {t('admin.quickActions')}
+          </h2>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-8">
+            {QUICK_ACTIONS.map(({ to, labelKey, icon: Icon }) => (
+              <Link
+                key={to}
+                to={localePath(to)}
+                className={cn(
+                  'border-border bg-surface/40 hover:border-fg/40 hover:bg-surface focus-visible:ring-accent group flex flex-col items-start gap-3 rounded-lg border p-4 text-left',
+                  'duration-base transition-[border-color,background-color,transform]',
+                  'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+                  'motion-safe:hover:-translate-y-0.5',
+                )}
+              >
+                <span className="border-border bg-bg text-fg flex h-9 w-9 items-center justify-center rounded-full border">
+                  <Icon size={16} strokeWidth={1.5} aria-hidden="true" />
+                </span>
+                <span className="text-fg text-sm leading-snug font-medium">+ {t(labelKey)}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* ─── Recent inquiries ─── */}
+        <section aria-labelledby="recent-inquiries-heading" className="space-y-6">
           <div className="flex items-end justify-between">
-            <h2 className="text-fg text-2xl font-light">{t('admin.recentInquiries')}</h2>
+            <h2 id="recent-inquiries-heading" className="text-fg text-2xl font-light">
+              {t('admin.recentInquiries')}
+            </h2>
             <Link
               to={localePath(ROUTES.ADMIN_INQUIRIES)}
               className="text-muted hover:text-fg text-xs tracking-widest uppercase"

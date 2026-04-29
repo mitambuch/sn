@@ -42,6 +42,7 @@ export const ROUTES = {
 
   // ─── Admin (RequireRole 'admin') ─────────────────────
   ADMIN: '/admin',
+  ADMIN_CATALOGUE: '/admin/catalogue',
   ADMIN_INVITATIONS: '/admin/invitations',
   ADMIN_INQUIRIES: '/admin/inquiries',
   ADMIN_USERS: '/admin/users',

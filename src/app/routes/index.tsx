@@ -59,6 +59,7 @@ const AdminDashboard = lazyWithRetry(() => import('@pages/AdminDashboard'));
 const AdminInvitations = lazyWithRetry(() => import('@pages/AdminInvitations'));
 const AdminInquiries = lazyWithRetry(() => import('@pages/AdminInquiries'));
 const AdminUsers = lazyWithRetry(() => import('@pages/AdminUsers'));
+const AdminCatalogue = lazyWithRetry(() => import('@pages/AdminCatalogue'));
 const NewsList = lazyWithRetry(() => import('@pages/NewsList'));
 const NewsDetail = lazyWithRetry(() => import('@pages/NewsDetail'));
 const AccountSaved = lazyWithRetry(() => import('@pages/AccountSaved'));
@@ -139,6 +140,7 @@ export default function AppRoutes() {
           {/* ─── Admin surface (RequireRole 'admin' via AdminLayout) ─── */}
           <Route path="admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
+            <Route path="catalogue" element={<AdminCatalogue />} />
             <Route path="invitations" element={<AdminInvitations />} />
             <Route path="inquiries" element={<AdminInquiries />} />
             <Route path="users" element={<AdminUsers />} />
