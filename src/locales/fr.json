@@ -454,8 +454,23 @@
     "availability": "Disponible 7j/7, 6h–23h Europe/Zurich",
     "cta": "Salvatore",
     "call": "Appeler maintenant",
+    "schedule": "Réserver 30 min",
     "write": "Écrire un message",
     "writeLede": "Écrivez librement — Salvatore lit chaque message personnellement et répond sous 24 heures."
+  },
+  "schedule": {
+    "eyebrow": "Salvatore Montemagno",
+    "title": "Réserver 30 minutes avec Salvatore",
+    "lede": "Choisissez un créneau dans les 7 prochains jours. Vous recevez la confirmation et l’invitation iCal sous 30 minutes.",
+    "chooseDay": "Choisir un jour",
+    "chooseSlot": "Choisir un créneau",
+    "timezone": "Heures Europe/Zurich. Si aucune option ne convient, écrivez à Salvatore — il s’adapte.",
+    "notes": "Quoi évoquer (optionnel)",
+    "notesHint": "Aide Salvatore à préparer la conversation. Quelques mots suffisent.",
+    "notesPlaceholder": "Ex. revue de la liste de souhaits + question sur le séjour de juillet.",
+    "calendarHint": "Une fois confirmé, l’invitation iCal arrive par e-mail. Ajout à Google Calendar / Outlook en un clic.",
+    "submit": "Réserver le créneau",
+    "success": "Demande envoyée. Salvatore confirme {{day}} à {{slot}} dans 30 minutes."
   },
   "articles": {
     "readMinutes": "min de lecture",

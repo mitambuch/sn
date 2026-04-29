@@ -11,8 +11,10 @@
 //       stretches to the screen width with safe-area inset.
 // ═══════════════════════════════════════════════════
 
+import { ScheduleCallDrawer } from '@features/concierge/ScheduleCallDrawer';
 import { FreeFormInquiryDrawer } from '@features/inquiry/FreeFormInquiryDrawer';
 import { cn } from '@utils/cn';
+import { CalendarClock, Mail, Phone } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -35,6 +37,7 @@ export const ConciergeDock = () => {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const [writeOpen, setWriteOpen] = useState(false);
+  const [scheduleOpen, setScheduleOpen] = useState(false);
   const dockRef = useRef<HTMLDivElement>(null);
 
   // Close popover on click-outside + Escape
@@ -86,15 +89,33 @@ export const ConciergeDock = () => {
                 href="tel:+41215550000"
                 className={cn(
                   'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
-                  'inline-flex items-center justify-between rounded-full border px-5 py-2.5 text-xs tracking-widest uppercase',
+                  'inline-flex items-center gap-3 rounded-full border px-5 py-2.5 text-xs tracking-widest uppercase',
                   'duration-base transition-[border-color,background-color]',
                   'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
                 )}
                 onClick={() => setExpanded(false)}
               >
-                {t('dock.call')}
+                <Phone size={12} strokeWidth={1.5} aria-hidden="true" />
+                <span className="flex-1 text-left">{t('dock.call')}</span>
                 <span aria-hidden="true">↗</span>
               </a>
+              <button
+                type="button"
+                onClick={() => {
+                  setExpanded(false);
+                  setScheduleOpen(true);
+                }}
+                className={cn(
+                  'border-border text-fg hover:border-fg/60 focus-visible:ring-accent',
+                  'inline-flex items-center gap-3 rounded-full border px-5 py-2.5 text-xs tracking-widest uppercase',
+                  'duration-base transition-[border-color]',
+                  'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+                )}
+              >
+                <CalendarClock size={12} strokeWidth={1.5} aria-hidden="true" />
+                <span className="flex-1 text-left">{t('dock.schedule')}</span>
+                <span aria-hidden="true">→</span>
+              </button>
               <button
                 type="button"
                 onClick={() => {
@@ -103,12 +124,13 @@ export const ConciergeDock = () => {
                 }}
                 className={cn(
                   'border-border text-fg hover:border-fg/60 focus-visible:ring-accent',
-                  'inline-flex items-center justify-between rounded-full border px-5 py-2.5 text-xs tracking-widest uppercase',
+                  'inline-flex items-center gap-3 rounded-full border px-5 py-2.5 text-xs tracking-widest uppercase',
                   'duration-base transition-[border-color]',
                   'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
                 )}
               >
-                {t('dock.write')}
+                <Mail size={12} strokeWidth={1.5} aria-hidden="true" />
+                <span className="flex-1 text-left">{t('dock.write')}</span>
                 <span aria-hidden="true">→</span>
               </button>
             </div>
@@ -144,6 +166,8 @@ export const ConciergeDock = () => {
         intentLede={t('dock.writeLede')}
         placeholder={t('inquiry.messagePlaceholder')}
       />
+
+      <ScheduleCallDrawer open={scheduleOpen} onClose={() => setScheduleOpen(false)} />
     </>
   );
 };

@@ -432,8 +432,23 @@
     "availability": "Available 7 days a week, 6 a.m. – 11 p.m. Europe/Zurich",
     "cta": "Salvatore",
     "call": "Call now",
+    "schedule": "Book 30 min",
     "write": "Write a message",
     "writeLede": "Write freely — Salvatore reads each message personally and replies within 24 hours."
+  },
+  "schedule": {
+    "eyebrow": "Salvatore Montemagno",
+    "title": "Book 30 minutes with Salvatore",
+    "lede": "Pick a slot in the next 7 days. You receive the confirmation and iCal invitation within 30 minutes.",
+    "chooseDay": "Choose a day",
+    "chooseSlot": "Choose a slot",
+    "timezone": "Europe/Zurich hours. If nothing fits, write to Salvatore — he adapts.",
+    "notes": "Topics to cover (optional)",
+    "notesHint": "Helps Salvatore prepare the conversation. A few words is enough.",
+    "notesPlaceholder": "E.g. review wishlist + question about the July stay.",
+    "calendarHint": "Once confirmed, the iCal invitation arrives by email. One-click add to Google Calendar / Outlook.",
+    "submit": "Book this slot",
+    "success": "Request sent. Salvatore confirms {{day}} at {{slot}} within 30 minutes."
   },
   "saved": {
     "title": "My collection",
