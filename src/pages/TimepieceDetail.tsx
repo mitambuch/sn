@@ -16,6 +16,7 @@ import { SectionHeader } from '@components/ui/SectionHeader';
 import { Timeline } from '@components/ui/Timeline';
 import { ROUTES } from '@constants/routes';
 import { SimilarItemsStrip } from '@features/catalogue/SimilarItemsStrip';
+import { AudioNote } from '@features/concierge/AudioNote';
 import { InquiryDrawer } from '@features/inquiry/InquiryDrawer';
 import { cn } from '@utils/cn';
 import { useState } from 'react';
@@ -109,6 +110,7 @@ export default function TimepieceDetail() {
             <div className="border-border border-t pt-6">
               <PriceTag onRequestLabel={t('common.onRequest')} size="md" />
             </div>
+            <AudioNote transcript={t('audio.samples.timepiece')} durationSeconds={48} />
           </aside>
         </div>
 

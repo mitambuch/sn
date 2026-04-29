@@ -436,6 +436,18 @@
     "write": "Write a message",
     "writeLede": "Write freely — Salvatore reads each message personally and replies within 24 hours."
   },
+  "audio": {
+    "label": "Voice note from Salvatore",
+    "eyebrow": "Voice note",
+    "play": "Play voice note",
+    "pause": "Pause",
+    "samples": {
+      "property": "This property came off a private collection last week. The family lived there twenty years — the history is intact. Three clients are in parallel conversation alongside this listing — call me before visiting, I'll tell you where we stand.",
+      "timepiece": "The set is complete, seals intact. I verified the papers this morning with the authorised dealer. The piece will not go to auction — it's a private cession, owner to owner. If you're interested, I'll put you in direct contact.",
+      "artwork": "I knew this piece at Galerie Standard in Oslo in 2024. The gallery entrusted us with it exclusively before it returns to collection. The smoked-oak frame is included. I can organise a studio visit with the artist if you really want to feel the material.",
+      "journey": "This is an itinerary we composed for two families this summer. The French-speaking ranger we privatise across 8 days makes all the difference — no sharing with another group. On these dates, we know the Mombo suite is available. I can block it for 48 hours."
+    }
+  },
   "schedule": {
     "eyebrow": "Salvatore Montemagno",
     "title": "Book 30 minutes with Salvatore",

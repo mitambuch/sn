@@ -18,6 +18,7 @@ import { PriceTag } from '@components/ui/PriceTag';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { SimilarItemsStrip } from '@features/catalogue/SimilarItemsStrip';
+import { AudioNote } from '@features/concierge/AudioNote';
 import { InquiryDrawer } from '@features/inquiry/InquiryDrawer';
 import { cn } from '@utils/cn';
 import { useState } from 'react';
@@ -124,7 +125,7 @@ export default function PropertyDetail() {
             )}
           </div>
 
-          {/* Right column — specsheet */}
+          {/* Right column — specsheet + audio note */}
           <aside className="space-y-6">
             <span className="text-muted text-xs tracking-widest uppercase">
               {t('common.details')}
@@ -133,6 +134,7 @@ export default function PropertyDetail() {
             <div className="border-border border-t pt-6">
               <PriceTag onRequestLabel={t('common.onRequest')} size="md" />
             </div>
+            <AudioNote transcript={t('audio.samples.property')} durationSeconds={42} />
           </aside>
         </div>
 
