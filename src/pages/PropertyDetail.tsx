@@ -16,7 +16,9 @@ import { MetaList } from '@components/ui/MetaList';
 import { PriceTag } from '@components/ui/PriceTag';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
+import { InquiryDrawer } from '@features/inquiry/InquiryDrawer';
 import { cn } from '@utils/cn';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate, useParams } from 'react-router-dom';
 
@@ -36,6 +38,7 @@ export default function PropertyDetail() {
   const { slug } = useParams<{ slug: string }>();
 
   const property = slug ? getProperty(slug) : undefined;
+  const [inquiryOpen, setInquiryOpen] = useState(false);
 
   if (!property) {
     return <Navigate to={localePath(ROUTES.ACCOUNT_PROPERTIES)} replace />;
@@ -76,6 +79,7 @@ export default function PropertyDetail() {
         actions={
           <button
             type="button"
+            onClick={() => setInquiryOpen(true)}
             className={cn(
               'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
               'inline-flex items-center gap-3 rounded-full border px-6 py-3 text-sm tracking-widest uppercase',
@@ -87,6 +91,13 @@ export default function PropertyDetail() {
             <span aria-hidden="true">→</span>
           </button>
         }
+      />
+
+      <InquiryDrawer
+        open={inquiryOpen}
+        onClose={() => setInquiryOpen(false)}
+        source="property"
+        itemTitle={property.title}
       />
 
       <Container size="xl">
