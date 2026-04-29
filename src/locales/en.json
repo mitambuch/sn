@@ -139,6 +139,20 @@
       "users": "Users"
     }
   },
+  "concierge": {
+    "leadTime": "Lead time",
+    "caseStudies": "Past examples",
+    "category": {
+      "transport": "Transport",
+      "gastronomy": "Gastronomy",
+      "security": "Security",
+      "medical": "Medical",
+      "cultural": "Cultural",
+      "wellness": "Wellness",
+      "family": "Family",
+      "logistics": "Logistics"
+    }
+  },
   "journeys": {
     "days": "days",
     "itinerary": "Itinerary",

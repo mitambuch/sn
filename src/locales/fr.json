@@ -142,6 +142,20 @@
       "users": "Utilisateurs"
     }
   },
+  "concierge": {
+    "leadTime": "Délai",
+    "caseStudies": "Exemples passés",
+    "category": {
+      "transport": "Transport",
+      "gastronomy": "Gastronomie",
+      "security": "Sécurité",
+      "medical": "Médical",
+      "cultural": "Culturel",
+      "wellness": "Bien-être",
+      "family": "Famille",
+      "logistics": "Logistique"
+    }
+  },
   "journeys": {
     "days": "jours",
     "itinerary": "Itinéraire",

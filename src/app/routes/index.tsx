@@ -51,6 +51,8 @@ const EventsList = lazyWithRetry(() => import('@pages/EventsList'));
 const EventDetail = lazyWithRetry(() => import('@pages/EventDetail'));
 const JourneysList = lazyWithRetry(() => import('@pages/JourneysList'));
 const JourneyDetail = lazyWithRetry(() => import('@pages/JourneyDetail'));
+const ConciergeList = lazyWithRetry(() => import('@pages/ConciergeList'));
+const ConciergeDetail = lazyWithRetry(() => import('@pages/ConciergeDetail'));
 
 /* ─── Loading fallback — themed, no white flash ───────────────── */
 function PageLoader() {
@@ -115,18 +117,8 @@ export default function AppRoutes() {
             <Route path="artworks/:slug" element={<ArtworkDetail />} />
             <Route path="journeys" element={<JourneysList />} />
             <Route path="journeys/:slug" element={<JourneyDetail />} />
-            <Route
-              path="concierge"
-              element={
-                <ComingSoon titleKey="account.concierge.title" eyebrowKey="account.eyebrow" />
-              }
-            />
-            <Route
-              path="concierge/:slug"
-              element={
-                <ComingSoon titleKey="account.concierge.title" eyebrowKey="account.eyebrow" />
-              }
-            />
+            <Route path="concierge" element={<ConciergeList />} />
+            <Route path="concierge/:slug" element={<ConciergeDetail />} />
             <Route
               path="profile"
               element={<ComingSoon titleKey="account.profileTitle" eyebrowKey="account.eyebrow" />}
