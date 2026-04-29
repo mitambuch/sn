@@ -92,7 +92,7 @@
         "title": "I'd like to travel",
         "hint": "Bespoke itinerary, jet, yacht, expedition.",
         "drawerTitle": "I'd like to travel",
-        "drawerLede": "Describe the destination, dates, number of travellers and any constraints — Salva composes the itinerary.",
+        "drawerLede": "Describe the destination, dates, number of travellers and any constraints — Salvatore composes the itinerary.",
         "placeholder": "E.g. Maldives in November, 4 people, 10 days, jet included, hotel on private atoll."
       },
       "object": {
@@ -100,7 +100,7 @@
         "title": "I'm looking for a specific object",
         "hint": "Horology, artwork, collector car — describe the piece.",
         "drawerTitle": "I'm looking for a specific object",
-        "drawerLede": "Be specific — reference, acceptable years, expected condition, papers, possible price range. Salva activates the network.",
+        "drawerLede": "Be specific — reference, acceptable years, expected condition, papers, possible price range. Salvatore activates the network.",
         "placeholder": "E.g. Patek Philippe Nautilus 5711/1A blue dial, 2018-2022, full set, good condition minimum."
       },
       "event": {
@@ -161,6 +161,8 @@
       "lede": "Bespoke service capabilities — transport, gastronomy, security, medical, cultural."
     },
     "nav": {
+      "dashboard": "Home",
+      "news": "Stories",
       "events": "Events",
       "properties": "Properties",
       "timepieces": "Timepieces",
@@ -367,7 +369,7 @@
     "messagePlaceholder": "Mention any constraints, dates or questions.",
     "submit": "Send request",
     "sending": "Sending…",
-    "success": "Request transmitted. Salva will reach out within 24 hours.",
+    "success": "Request transmitted. Salvatore will reach out within 24 hours.",
     "sourceLabel": {
       "event": "Event",
       "property": "Property",
@@ -389,7 +391,7 @@
   },
   "jet": {
     "drawerTitle": "Charter a private jet",
-    "drawerLede": "Tell us departure, arrival and passengers — Salva confirms availability within 30 minutes.",
+    "drawerLede": "Tell us departure, arrival and passengers — Salvatore confirms availability within 30 minutes.",
     "from": "Departure",
     "fromPlaceholder": "E.g. Geneva (LSGG)",
     "to": "Arrival",
@@ -402,17 +404,28 @@
     "notes": "Additional notes",
     "notesPlaceholder": "Pets, special equipment, meals, diplomatic constraints…",
     "submit": "Send request",
-    "success": "Flight request transmitted. Salva confirms within 30 minutes.",
-    "salvaReassurance": "Salva (your concierge) receives this request directly and confirms within 30 working minutes. At any time, you can call from the button bottom-right."
+    "success": "Flight request transmitted. Salvatore confirms within 30 minutes.",
+    "salvaReassurance": "Salvatore (your concierge) receives this request directly and confirms within 30 working minutes. At any time, you can call from the button bottom-right."
   },
   "dock": {
     "title": "Your concierge",
     "eyebrow": "Dedicated concierge",
     "availability": "Available 7 days a week, 6 a.m. – 11 p.m. Europe/Zurich",
-    "cta": "Salva",
+    "cta": "Salvatore",
     "call": "Call now",
     "write": "Write a message",
-    "writeLede": "Write freely — Salva reads each message personally and replies within 24 hours."
+    "writeLede": "Write freely — Salvatore reads each message personally and replies within 24 hours."
+  },
+  "articles": {
+    "readMinutes": "min read",
+    "related": "On this topic",
+    "kind": {
+      "launch": "New arrival",
+      "opening": "Seat secured",
+      "partnership": "Partnership",
+      "editorial": "Editorial",
+      "story": "Story"
+    }
   },
   "public": {
     "tagline": "Swiss private concierge",

@@ -9,6 +9,7 @@
 //       travel free-form, generic concierge).
 // ═══════════════════════════════════════════════════
 
+import { ImageUpload } from '@components/ui/ImageUpload';
 import { Textarea } from '@components/ui/Textarea';
 import { useToast } from '@hooks/useToast';
 import { cn } from '@utils/cn';
@@ -101,13 +102,22 @@ export const FreeFormInquiryDrawer = ({
           </button>
         </header>
 
-        <form className="flex flex-1 flex-col gap-6 px-8 py-8" onSubmit={handleSubmit}>
+        <form
+          className="flex flex-1 flex-col gap-6 overflow-y-auto px-8 py-8"
+          onSubmit={handleSubmit}
+        >
           <Textarea
             label={t('inquiry.drawerTitle')}
-            rows={8}
+            rows={6}
             placeholder={placeholder}
             value={message}
             onChange={e => setMessage(e.target.value)}
+          />
+
+          <ImageUpload
+            label={t('inquiry.attachLabel')}
+            hint={t('inquiry.attachHint')}
+            maxFiles={3}
           />
 
           <p className="text-muted border-border border-t pt-4 text-xs leading-relaxed">

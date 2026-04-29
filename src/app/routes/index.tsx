@@ -59,6 +59,8 @@ const AdminDashboard = lazyWithRetry(() => import('@pages/AdminDashboard'));
 const AdminInvitations = lazyWithRetry(() => import('@pages/AdminInvitations'));
 const AdminInquiries = lazyWithRetry(() => import('@pages/AdminInquiries'));
 const AdminUsers = lazyWithRetry(() => import('@pages/AdminUsers'));
+const NewsList = lazyWithRetry(() => import('@pages/NewsList'));
+const NewsDetail = lazyWithRetry(() => import('@pages/NewsDetail'));
 
 /* ─── Loading fallback — themed, no white flash ───────────────── */
 function PageLoader() {
@@ -113,6 +115,8 @@ export default function AppRoutes() {
           {/* ─── Member surface (RequireAuth via AppLayout) ─── */}
           <Route path="account" element={<AppLayout />}>
             <Route index element={<AccountDashboard />} />
+            <Route path="news" element={<NewsList />} />
+            <Route path="news/:slug" element={<NewsDetail />} />
             <Route path="events" element={<EventsList />} />
             <Route path="events/:slug" element={<EventDetail />} />
             <Route path="properties" element={<PropertiesList />} />

@@ -12,6 +12,7 @@
 // REPLACE LATER: lot C wires real Resend + Supabase write.
 // ═══════════════════════════════════════════════════
 
+import { ImageUpload } from '@components/ui/ImageUpload';
 import { Input } from '@components/ui/Input';
 import { useToast } from '@hooks/useToast';
 import { cn } from '@utils/cn';
@@ -174,13 +175,15 @@ export const JetCharterDrawer = ({ open, onClose }: JetCharterDrawerProps) => {
             </label>
             <textarea
               id="jet-notes"
-              rows={4}
+              rows={3}
               placeholder={t('jet.notesPlaceholder')}
               value={notes}
               onChange={e => setNotes(e.target.value)}
               className="bg-surface/80 border-border focus:border-accent focus:ring-accent text-fg placeholder:text-muted/60 rounded-lg border px-3 py-2 text-sm focus:ring-1 focus:outline-none"
             />
           </div>
+
+          <ImageUpload label={t('jet.attachLabel')} hint={t('jet.attachHint')} maxFiles={3} />
 
           <p className="text-muted border-border mt-2 border-t pt-4 text-xs leading-relaxed">
             {t('jet.salvaReassurance')}

@@ -9,6 +9,7 @@
 // in lot C (server wiring) — keep the same names and shapes.
 // ═══════════════════════════════════════════════════
 
+import type { Article } from '@/types/article';
 import type { Artwork } from '@/types/artwork';
 import type { User } from '@/types/auth';
 import type { ConciergeService } from '@/types/concierge';
@@ -19,6 +20,7 @@ import type { Journey } from '@/types/journey';
 import type { Property } from '@/types/property';
 import type { Timepiece } from '@/types/timepiece';
 
+import { articles } from './articles';
 import { artworks } from './artworks';
 import { conciergeServices } from './concierge';
 import { events } from './events';
@@ -67,6 +69,11 @@ export const listInquiriesForUser = (userId: string): Inquiry[] =>
 
 // ─── Invitations ─────────────────────────────────────
 export const listInvitations = (): InvitationCode[] => invitations;
+
+// ─── Articles / News ─────────────────────────────────
+export const listArticles = (): Article[] => articles;
+export const getArticle = (slug: string): Article | undefined =>
+  articles.find(a => a.slug === slug || a.id === slug);
 
 export { currentUser, operator };
 

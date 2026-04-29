@@ -10,6 +10,7 @@
 //       prefers-reduced-motion respected on the slide animation.
 // ═══════════════════════════════════════════════════
 
+import { ImageUpload } from '@components/ui/ImageUpload';
 import { Textarea } from '@components/ui/Textarea';
 import { useToast } from '@hooks/useToast';
 import { cn } from '@utils/cn';
@@ -111,7 +112,10 @@ export const InquiryDrawer = ({ open, onClose, source, itemTitle }: InquiryDrawe
           </button>
         </header>
 
-        <form className="flex flex-1 flex-col gap-6 px-8 py-8" onSubmit={handleSubmit}>
+        <form
+          className="flex flex-1 flex-col gap-6 overflow-y-auto px-8 py-8"
+          onSubmit={handleSubmit}
+        >
           <div className="flex flex-col gap-2">
             <span className="text-muted text-xs tracking-widest uppercase">
               {t('inquiry.drawerTitle')}
@@ -121,10 +125,16 @@ export const InquiryDrawer = ({ open, onClose, source, itemTitle }: InquiryDrawe
 
           <Textarea
             label={t('inquiry.drawerTitle')}
-            rows={6}
+            rows={5}
             placeholder={t('inquiry.messagePlaceholder')}
             value={message}
             onChange={e => setMessage(e.target.value)}
+          />
+
+          <ImageUpload
+            label={t('inquiry.attachLabel')}
+            hint={t('inquiry.attachHint')}
+            maxFiles={3}
           />
 
           <div className="mt-auto flex items-center gap-4">
