@@ -1,4 +1,12 @@
 {
+  "search": {
+    "cta": "Rechercher",
+    "label": "Recherche dans votre espace",
+    "placeholder": "Rechercher une montre, une propriété, un événement…",
+    "empty": "Aucun résultat. Reformulez ou décrivez votre besoin à Salvatore.",
+    "navigate": "Naviguer",
+    "open": "Ouvrir"
+  },
   "saved": {
     "title": "Ma collection",
     "lede": "Les pièces que vous avez épinglées. Salvatore voit votre collection et peut anticiper.",

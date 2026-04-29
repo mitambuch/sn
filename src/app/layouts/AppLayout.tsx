@@ -17,6 +17,8 @@ import { Header } from '@components/layout/Header';
 import { ROUTES } from '@constants/routes';
 import { useAuth } from '@context/AuthContext';
 import { ConciergeDock } from '@features/concierge/ConciergeDock';
+import { CommandPalette } from '@features/search/CommandPalette';
+import { useCommandPalette } from '@hooks/useCommandPalette';
 import { useMediaQuery } from '@hooks/useMediaQuery';
 import { cn } from '@utils/cn';
 import type { LucideIcon } from 'lucide-react';
@@ -110,6 +112,7 @@ const AppShell = () => {
   const { localePath } = useLocale();
   const { signOut } = useAuth();
   const navigate = useNavigate();
+  const palette = useCommandPalette();
 
   const handleSignOut = async () => {
     await signOut();
@@ -170,6 +173,22 @@ const AppShell = () => {
         </div>
       </main>
       <ConciergeDock />
+      <CommandPalette open={palette.open} onClose={() => palette.setOpen(false)} />
+      {/* Floating search trigger — bottom-left, mirror of ConciergeDock */}
+      <button
+        type="button"
+        onClick={() => palette.setOpen(true)}
+        aria-label={t('search.label')}
+        className={cn(
+          'fixed bottom-4 left-4 z-(--z-overlay) hidden h-12 items-center gap-3 rounded-full border pr-5 pl-4 text-xs tracking-widest uppercase shadow-lg md:bottom-8 md:left-8 md:flex',
+          'border-border bg-bg/80 text-muted hover:text-fg hover:border-fg/40 backdrop-blur-md',
+          'duration-base transition-[border-color,color]',
+          'focus-visible:ring-accent focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+        )}
+      >
+        <span className="font-mono text-[10px] tracking-[0.3em]">⌘ K</span>
+        <span>{t('search.cta')}</span>
+      </button>
     </>
   );
 };
