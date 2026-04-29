@@ -41,6 +41,8 @@ const NotFound = lazyWithRetry(() => import('@pages/NotFound'));
 const Login = lazyWithRetry(() => import('@pages/Login'));
 const Onboarding = lazyWithRetry(() => import('@pages/Onboarding'));
 const AccountDashboard = lazyWithRetry(() => import('@pages/AccountDashboard'));
+const PropertiesList = lazyWithRetry(() => import('@pages/PropertiesList'));
+const PropertyDetail = lazyWithRetry(() => import('@pages/PropertyDetail'));
 
 /* ─── Loading fallback — themed, no white flash ───────────────── */
 function PageLoader() {
@@ -103,18 +105,8 @@ export default function AppRoutes() {
               path="events/:slug"
               element={<ComingSoon titleKey="account.events.title" eyebrowKey="account.eyebrow" />}
             />
-            <Route
-              path="properties"
-              element={
-                <ComingSoon titleKey="account.properties.title" eyebrowKey="account.eyebrow" />
-              }
-            />
-            <Route
-              path="properties/:slug"
-              element={
-                <ComingSoon titleKey="account.properties.title" eyebrowKey="account.eyebrow" />
-              }
-            />
+            <Route path="properties" element={<PropertiesList />} />
+            <Route path="properties/:slug" element={<PropertyDetail />} />
             <Route
               path="timepieces"
               element={

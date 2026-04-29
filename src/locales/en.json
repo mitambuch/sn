@@ -137,6 +137,30 @@
       "users": "Users"
     }
   },
+  "properties": {
+    "kind": {
+      "chalet": "Chalet",
+      "villa": "Villa",
+      "penthouse": "Penthouse",
+      "estate": "Estate",
+      "townhouse": "Townhouse"
+    },
+    "availability": {
+      "sale": "For sale",
+      "rent": "For rent",
+      "both": "Sale or rent"
+    },
+    "meta": {
+      "surface": "Surface",
+      "bedrooms": "Bedrooms",
+      "bathrooms": "Bathrooms",
+      "plot": "Plot",
+      "yearBuilt": "Year built",
+      "region": "Region",
+      "availability": "Availability"
+    },
+    "gallery": "Gallery"
+  },
   "inquiry": {
     "drawerTitle": "Express your interest",
     "drawerLede": "Your concierge gets back to you within 24 hours.",

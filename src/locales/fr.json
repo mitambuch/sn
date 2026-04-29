@@ -90,6 +90,9 @@
       "title": "Propriétés",
       "lede": "Résidences sélectionnées en Suisse et en Europe, sur demande."
     },
+    "modules": {
+      "filtersHint": "Filtrer par type"
+    },
     "timepieces": {
       "title": "Garde-temps",
       "lede": "Pièces d’horlogerie collectionneurs, full set et provenance documentée."
@@ -136,6 +139,30 @@
       "inquiries": "Demandes",
       "users": "Utilisateurs"
     }
+  },
+  "properties": {
+    "kind": {
+      "chalet": "Chalet",
+      "villa": "Villa",
+      "penthouse": "Penthouse",
+      "estate": "Domaine",
+      "townhouse": "Maison de ville"
+    },
+    "availability": {
+      "sale": "Vente",
+      "rent": "Location",
+      "both": "Vente ou location"
+    },
+    "meta": {
+      "surface": "Surface",
+      "bedrooms": "Chambres",
+      "bathrooms": "Salles d’eau",
+      "plot": "Terrain",
+      "yearBuilt": "Année de construction",
+      "region": "Région",
+      "availability": "Disponibilité"
+    },
+    "gallery": "Galerie"
   },
   "inquiry": {
     "drawerTitle": "Manifester votre intérêt",
