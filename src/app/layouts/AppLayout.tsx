@@ -2,12 +2,13 @@
 // AppLayout — shell for authenticated client surfaces
 //
 // WHAT: Renders Header + a vertical module sidebar + main content for
-//       /:locale/account/* routes. Wraps everything in RequireAuth so
-//       unauthenticated users redirect to /:locale/login.
+//       /:locale/account/* routes. Dashboard link sits at the top, then
+//       6 catalogue modules + Stories, then user nav (inquiries / profile
+//       / preferences) + sign-out. Each item carries a lucide icon so
+//       the chrome reads as a true conciergerie desk.
 // WHEN: Element of the `/:locale/account` route segment.
-// EDGE: Sidebar collapses to a horizontal scrollable bar on mobile to
-//       keep main content full-width. Desktop pins it to the left.
-// CHANGE NAV ITEMS: edit the ACCOUNT_NAV array below.
+// EDGE: Sidebar collapses to a horizontal scrollable bar on mobile.
+// CHANGE NAV ITEMS: edit the ACCOUNT_NAV_* arrays below.
 // ═══════════════════════════════════════════════════
 
 import { RequireAuth } from '@app/guards/RequireAuth';
@@ -15,24 +16,55 @@ import { useLocale } from '@app/LocaleProvider';
 import { Header } from '@components/layout/Header';
 import { ROUTES } from '@constants/routes';
 import { useAuth } from '@context/AuthContext';
+import { ConciergeDock } from '@features/concierge/ConciergeDock';
+import { CommandPalette } from '@features/search/CommandPalette';
+import { useCommandPalette } from '@hooks/useCommandPalette';
 import { useMediaQuery } from '@hooks/useMediaQuery';
 import { cn } from '@utils/cn';
+import type { LucideIcon } from 'lucide-react';
+import {
+  Building2,
+  CalendarDays,
+  Compass,
+  Frame,
+  Heart,
+  Inbox,
+  LayoutDashboard,
+  LogOut,
+  Newspaper,
+  Settings,
+  Sparkles,
+  User,
+  Watch,
+} from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-const ACCOUNT_NAV_MODULES = [
-  { to: ROUTES.ACCOUNT_EVENTS, labelKey: 'account.nav.events' },
-  { to: ROUTES.ACCOUNT_PROPERTIES, labelKey: 'account.nav.properties' },
-  { to: ROUTES.ACCOUNT_TIMEPIECES, labelKey: 'account.nav.timepieces' },
-  { to: ROUTES.ACCOUNT_ARTWORKS, labelKey: 'account.nav.artworks' },
-  { to: ROUTES.ACCOUNT_JOURNEYS, labelKey: 'account.nav.journeys' },
-  { to: ROUTES.ACCOUNT_CONCIERGE, labelKey: 'account.nav.concierge' },
+interface NavItem {
+  to: string;
+  labelKey: string;
+  icon: LucideIcon;
+}
+
+const ACCOUNT_NAV_TOP: NavItem[] = [
+  { to: ROUTES.ACCOUNT, labelKey: 'account.nav.dashboard', icon: LayoutDashboard },
+  { to: ROUTES.ACCOUNT_NEWS, labelKey: 'account.nav.news', icon: Newspaper },
 ];
 
-const ACCOUNT_NAV_USER = [
-  { to: ROUTES.ACCOUNT_INQUIRIES, labelKey: 'account.nav.inquiries' },
-  { to: ROUTES.ACCOUNT_PROFILE, labelKey: 'account.nav.profile' },
-  { to: ROUTES.ACCOUNT_PREFERENCES, labelKey: 'account.nav.preferences' },
+const ACCOUNT_NAV_MODULES: NavItem[] = [
+  { to: ROUTES.ACCOUNT_EVENTS, labelKey: 'account.nav.events', icon: CalendarDays },
+  { to: ROUTES.ACCOUNT_PROPERTIES, labelKey: 'account.nav.properties', icon: Building2 },
+  { to: ROUTES.ACCOUNT_TIMEPIECES, labelKey: 'account.nav.timepieces', icon: Watch },
+  { to: ROUTES.ACCOUNT_ARTWORKS, labelKey: 'account.nav.artworks', icon: Frame },
+  { to: ROUTES.ACCOUNT_JOURNEYS, labelKey: 'account.nav.journeys', icon: Compass },
+  { to: ROUTES.ACCOUNT_CONCIERGE, labelKey: 'account.nav.concierge', icon: Sparkles },
+];
+
+const ACCOUNT_NAV_USER: NavItem[] = [
+  { to: ROUTES.ACCOUNT_SAVED, labelKey: 'account.nav.saved', icon: Heart },
+  { to: ROUTES.ACCOUNT_INQUIRIES, labelKey: 'account.nav.inquiries', icon: Inbox },
+  { to: ROUTES.ACCOUNT_PROFILE, labelKey: 'account.nav.profile', icon: User },
+  { to: ROUTES.ACCOUNT_PREFERENCES, labelKey: 'account.nav.preferences', icon: Settings },
 ];
 
 export const AppLayout = () => {
@@ -43,6 +75,36 @@ export const AppLayout = () => {
   );
 };
 
+const NavLink = ({
+  item,
+  pathname,
+  exact = false,
+}: {
+  item: NavItem;
+  pathname: string;
+  exact?: boolean;
+}) => {
+  const { t } = useTranslation();
+  const { localePath } = useLocale();
+  const href = localePath(item.to);
+  const isActive = exact ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
+  const Icon = item.icon;
+  return (
+    <Link
+      to={href}
+      aria-current={isActive ? 'page' : undefined}
+      className={cn(
+        'duration-base flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors',
+        'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
+        isActive ? 'text-fg bg-surface' : 'text-muted hover:text-fg hover:bg-surface/60',
+      )}
+    >
+      <Icon size={16} strokeWidth={1.5} aria-hidden="true" />
+      <span>{t(item.labelKey)}</span>
+    </Link>
+  );
+};
+
 const AppShell = () => {
   const { pathname } = useLocation();
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
@@ -50,6 +112,7 @@ const AppShell = () => {
   const { localePath } = useLocale();
   const { signOut } = useAuth();
   const navigate = useNavigate();
+  const palette = useCommandPalette();
 
   const handleSignOut = async () => {
     await signOut();
@@ -72,55 +135,35 @@ const AppShell = () => {
             'md:flex-col md:gap-1 md:px-3 md:py-4',
           )}
         >
-          {ACCOUNT_NAV_MODULES.map(({ to, labelKey }) => {
-            const href = localePath(to);
-            const isActive = pathname === href || pathname.startsWith(`${href}/`);
-            return (
-              <Link
-                key={to}
-                to={href}
-                aria-current={isActive ? 'page' : undefined}
-                className={cn(
-                  'duration-base rounded-md px-3 py-2 text-sm transition-colors',
-                  'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
-                  isActive ? 'text-fg bg-surface' : 'text-muted hover:text-fg hover:bg-surface/60',
-                )}
-              >
-                {t(labelKey)}
-              </Link>
-            );
-          })}
+          {ACCOUNT_NAV_TOP.map(item => (
+            <NavLink
+              key={item.to}
+              item={item}
+              pathname={pathname}
+              exact={item.to === ROUTES.ACCOUNT}
+            />
+          ))}
           <span className="bg-border hidden h-px w-full md:my-2 md:block" aria-hidden="true" />
-          {ACCOUNT_NAV_USER.map(({ to, labelKey }) => {
-            const href = localePath(to);
-            const isActive = pathname === href;
-            return (
-              <Link
-                key={to}
-                to={href}
-                aria-current={isActive ? 'page' : undefined}
-                className={cn(
-                  'duration-base rounded-md px-3 py-2 text-sm transition-colors',
-                  'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
-                  isActive ? 'text-fg bg-surface' : 'text-muted hover:text-fg hover:bg-surface/60',
-                )}
-              >
-                {t(labelKey)}
-              </Link>
-            );
-          })}
+          {ACCOUNT_NAV_MODULES.map(item => (
+            <NavLink key={item.to} item={item} pathname={pathname} />
+          ))}
+          <span className="bg-border hidden h-px w-full md:my-2 md:block" aria-hidden="true" />
+          {ACCOUNT_NAV_USER.map(item => (
+            <NavLink key={item.to} item={item} pathname={pathname} exact />
+          ))}
           <button
             type="button"
             onClick={() => {
               void handleSignOut();
             }}
             className={cn(
-              'duration-base text-muted hover:text-fg rounded-md px-3 py-2 text-sm transition-colors',
+              'duration-base text-muted hover:text-fg flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors',
               'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
               'md:border-border md:mt-auto md:border-t md:pt-4',
             )}
           >
-            {t('auth.signOut')}
+            <LogOut size={16} strokeWidth={1.5} aria-hidden="true" />
+            <span>{t('auth.signOut')}</span>
           </button>
         </nav>
       </aside>
@@ -129,6 +172,23 @@ const AppShell = () => {
           <Outlet />
         </div>
       </main>
+      <ConciergeDock />
+      <CommandPalette open={palette.open} onClose={() => palette.setOpen(false)} />
+      {/* Floating search trigger — bottom-left, mirror of ConciergeDock */}
+      <button
+        type="button"
+        onClick={() => palette.setOpen(true)}
+        aria-label={t('search.label')}
+        className={cn(
+          'fixed bottom-4 left-4 z-(--z-overlay) hidden h-12 items-center gap-3 rounded-full border pr-5 pl-4 text-xs tracking-widest uppercase shadow-lg md:bottom-8 md:left-8 md:flex',
+          'border-border bg-bg/80 text-muted hover:text-fg hover:border-fg/40 backdrop-blur-md',
+          'duration-base transition-[border-color,color]',
+          'focus-visible:ring-accent focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+        )}
+      >
+        <span className="font-mono text-[10px] tracking-[0.3em]">⌘ K</span>
+        <span>{t('search.cta')}</span>
+      </button>
     </>
   );
 };

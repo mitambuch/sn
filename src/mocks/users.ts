@@ -14,18 +14,18 @@ export const currentUser: User = {
   role: 'client',
   locale: 'fr',
   contactPreference: 'phone',
-  conciergeName: 'Salva Bernardi',
+  conciergeName: 'Salvatore Montemagno',
   createdAt: '2025-11-12T10:00:00.000Z',
 };
 
 export const operator: User = {
   id: 'usr-op-salva',
-  email: 'salva@sawnext.studio',
-  fullName: 'Salva Bernardi',
+  email: 'salvatore@sawnext.studio',
+  fullName: 'Salvatore Montemagno',
   role: 'admin',
   locale: 'fr',
   contactPreference: 'email',
-  conciergeName: 'Salva Bernardi',
+  conciergeName: 'Salvatore Montemagno',
   createdAt: '2025-09-01T00:00:00.000Z',
 };
 
@@ -39,7 +39,7 @@ export const users: User[] = [
     role: 'client',
     locale: 'fr',
     contactPreference: 'phone',
-    conciergeName: 'Salva Bernardi',
+    conciergeName: 'Salvatore Montemagno',
     createdAt: '2025-12-05T09:00:00.000Z',
   },
   {
@@ -49,7 +49,7 @@ export const users: User[] = [
     role: 'client',
     locale: 'en',
     contactPreference: 'secure-message',
-    conciergeName: 'Salva Bernardi',
+    conciergeName: 'Salvatore Montemagno',
     createdAt: '2026-01-18T14:00:00.000Z',
   },
   {
@@ -59,7 +59,7 @@ export const users: User[] = [
     role: 'client',
     locale: 'en',
     contactPreference: 'email',
-    conciergeName: 'Salva Bernardi',
+    conciergeName: 'Salvatore Montemagno',
     createdAt: '2026-02-02T11:00:00.000Z',
   },
   {
@@ -69,7 +69,7 @@ export const users: User[] = [
     role: 'client',
     locale: 'fr',
     contactPreference: 'phone',
-    conciergeName: 'Salva Bernardi',
+    conciergeName: 'Salvatore Montemagno',
     createdAt: '2026-02-22T15:00:00.000Z',
   },
   {
@@ -79,7 +79,7 @@ export const users: User[] = [
     role: 'client',
     locale: 'en',
     contactPreference: 'phone',
-    conciergeName: 'Salva Bernardi',
+    conciergeName: 'Salvatore Montemagno',
     createdAt: '2026-03-10T10:00:00.000Z',
   },
 ];

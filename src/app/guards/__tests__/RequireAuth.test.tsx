@@ -46,7 +46,7 @@ describe('RequireAuth', () => {
         role: 'client',
         locale: 'fr',
         contactPreference: 'phone',
-        conciergeName: 'Salva Bernardi',
+        conciergeName: 'Salvatore Montemagno',
         createdAt: new Date().toISOString(),
       },
       expiresAt: new Date(Date.now() + 60_000).toISOString(),

@@ -9,6 +9,7 @@ import { Container } from '@components/layout/Container';
 import { FilterBar } from '@components/ui/FilterBar';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
+import { CatalogueProactiveBanner } from '@features/catalogue/CatalogueProactiveBanner';
 import { ConciergeServiceCard } from '@features/concierge/ConciergeServiceCard';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -76,6 +77,8 @@ export default function ConciergeList() {
         <p className="text-muted text-xs tracking-widest uppercase">
           {t('common.showing', { count: filtered.length })}
         </p>
+
+        <CatalogueProactiveBanner domain="concierge" />
       </div>
     </Container>
   );

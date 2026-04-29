@@ -57,6 +57,25 @@
     "success": "Message sent.",
     "failure": "Failed to send. Please try again shortly."
   },
+  "onboarding": {
+    "skip": "Skip",
+    "enter": "Enter my space",
+    "step1": {
+      "eyebrow": "Welcome",
+      "title": "Sawnext, your private concierge.",
+      "lede": "A by-invitation selection, without noise. Activate your code to enter your space."
+    },
+    "step2": {
+      "eyebrow": "Let's meet",
+      "title": "How would you like to be addressed?",
+      "lede": "Salvatore and the team will address every exchange to your name. No data transmitted to any third party."
+    },
+    "step3": {
+      "eyebrow": "Your dedicated concierge",
+      "title": "Salvatore Montemagno will guide you.",
+      "lede": "A single point of contact, reachable any time from your space. Reply within 30 working minutes, standard NDA activated."
+    }
+  },
   "auth": {
     "signIn": "Sign in",
     "signOut": "Sign out",
@@ -84,6 +103,39 @@
     "profileTitle": "Your profile",
     "preferencesTitle": "Your preferences",
     "inquiriesTitle": "Inquiries history",
+    "intent": {
+      "heading": "What can I find for you today?",
+      "subheading": "Your concierge replies within 30 minutes.",
+      "travel": {
+        "eyebrow": "Travel",
+        "title": "I'd like to travel",
+        "hint": "Bespoke itinerary, jet, yacht, expedition.",
+        "drawerTitle": "I'd like to travel",
+        "drawerLede": "Describe the destination, dates, number of travellers and any constraints — Salvatore composes the itinerary.",
+        "placeholder": "E.g. Maldives in November, 4 people, 10 days, jet included, hotel on private atoll."
+      },
+      "object": {
+        "eyebrow": "Search",
+        "title": "I'm looking for a specific object",
+        "hint": "Horology, artwork, collector car — describe the piece.",
+        "drawerTitle": "I'm looking for a specific object",
+        "drawerLede": "Be specific — reference, acceptable years, expected condition, papers, possible price range. Salvatore activates the network.",
+        "placeholder": "E.g. Patek Philippe Nautilus 5711/1A blue dial, 2018-2022, full set, good condition minimum."
+      },
+      "event": {
+        "eyebrow": "Event",
+        "title": "I want to organise an event",
+        "hint": "Wedding, jubilee, private dinner, seminar — from brief to last toast.",
+        "drawerTitle": "I want to organise an event",
+        "drawerLede": "Tell us the nature, approximate date, guest count, venue if already chosen.",
+        "placeholder": "E.g. Wedding 220 guests at Lake Como, summer 2027, Villa del Balbianello preferred."
+      },
+      "jet": {
+        "eyebrow": "Private aviation",
+        "title": "I need a private jet",
+        "hint": "Short or long-haul, 6h notice is enough."
+      }
+    },
     "preferences": {
       "contactPreference": "Contact preference",
       "locale": "Preferred language",
@@ -128,6 +180,8 @@
       "lede": "Bespoke service capabilities — transport, gastronomy, security, medical, cultural."
     },
     "nav": {
+      "dashboard": "Home",
+      "news": "Stories",
       "events": "Events",
       "properties": "Properties",
       "timepieces": "Timepieces",
@@ -172,10 +226,87 @@
       "signupsLast7d": "Signups last 7 days"
     },
     "recentInquiries": "Recent inquiries",
+    "quickActions": "Quick add",
     "nav": {
+      "dashboard": "Dashboard",
+      "catalogue": "Catalogue",
       "invitations": "Invitations",
       "inquiries": "Inquiries",
       "users": "Users"
+    },
+    "catalogue": {
+      "title": "Catalogue",
+      "lede": "Add, edit or remove items, events, journeys, services and articles. Every change appears in the member space instantly.",
+      "tabs": "Modules"
+    },
+    "modules": {
+      "property": "Property",
+      "timepiece": "Timepiece",
+      "artwork": "Artwork",
+      "event": "Event",
+      "journey": "Journey",
+      "concierge": "Concierge service",
+      "article": "Article"
+    },
+    "addItem": "+ Add {{module}}",
+    "newTitle": "New item",
+    "editTitle": "Edit item",
+    "saveChanges": "Save",
+    "create": "Create",
+    "deleteAction": "Delete this item",
+    "editAction": "Edit",
+    "confirmDelete": "Confirm deletion — this is permanent (lot B: localStorage reset restores).",
+    "empty": "No item for this module. Click + Add to create the first one.",
+    "toasts": {
+      "created": "Item created. Visible in the member space now.",
+      "updated": "Item updated.",
+      "removed": "Item removed."
+    },
+    "fields": {
+      "title": "Title",
+      "slug": "Slug (leave blank = auto)",
+      "kind": "Kind",
+      "availability": "Availability",
+      "region": "Region",
+      "countryCode": "Country code (CH, FR, GB…)",
+      "surfaceSqm": "Surface (m²)",
+      "bedrooms": "Bedrooms",
+      "bathrooms": "Bathrooms",
+      "summary": "Editorial summary",
+      "description": "Long description",
+      "imageSrc": "Primary image URL",
+      "imageAlt": "Image description (a11y)",
+      "brand": "Brand",
+      "model": "Model",
+      "reference": "Reference",
+      "year": "Year",
+      "material": "Material",
+      "condition": "Condition",
+      "caliber": "Caliber",
+      "caseDiameterMm": "Case diameter (mm)",
+      "fullSet": "Full set",
+      "artistName": "Artist name",
+      "artistBio": "Artist biography",
+      "medium": "Medium",
+      "heightCm": "Height (cm)",
+      "widthCm": "Width (cm)",
+      "signed": "Signed",
+      "category": "Category",
+      "startsAt": "Date and time",
+      "city": "City",
+      "venue": "Venue",
+      "capacity": "Total capacity",
+      "allocatedSeats": "Allocated seats",
+      "dressCode": "Dress code",
+      "durationDays": "Duration (days)",
+      "origin": "Origin",
+      "destinations": "Destinations",
+      "guestCapacity": "Guest capacity",
+      "leadTime": "Lead time",
+      "publishedAt": "Published at",
+      "readMinutes": "Read time (min)",
+      "excerpt": "Excerpt",
+      "body": "Article body"
     }
   },
   "concierge": {
@@ -334,13 +465,212 @@
     "messagePlaceholder": "Mention any constraints, dates or questions.",
     "submit": "Send request",
     "sending": "Sending…",
-    "success": "Request transmitted. Salva will reach out within 24 hours.",
+    "success": "Request transmitted. Salvatore will reach out within 24 hours.",
+    "sourceLabel": {
+      "event": "Event",
+      "property": "Property",
+      "timepiece": "Timepiece",
+      "artwork": "Artwork",
+      "journey": "Journey",
+      "concierge": "Concierge",
+      "jet": "Private jet",
+      "object-search": "Object search",
+      "event-organize": "Event organisation"
+    },
     "status": {
       "new": "New",
       "in_review": "In review",
       "contacted": "Replied",
       "closed": "Closed",
       "cancelled": "Cancelled"
+    }
+  },
+  "jet": {
+    "drawerTitle": "Charter a private jet",
+    "drawerLede": "Tell us departure, arrival and passengers — Salvatore confirms availability within 30 minutes.",
+    "from": "Departure",
+    "fromPlaceholder": "E.g. Geneva (LSGG)",
+    "to": "Arrival",
+    "toPlaceholder": "E.g. Tokyo Haneda (RJTT)",
+    "departDate": "Departure date and time",
+    "withReturn": "Return planned",
+    "withReturnHint": "Uncheck for one-way",
+    "returnDate": "Return date and time",
+    "pax": "Number of passengers",
+    "notes": "Additional notes",
+    "notesPlaceholder": "Pets, special equipment, meals, diplomatic constraints…",
+    "submit": "Send request",
+    "success": "Flight request transmitted. Salvatore confirms within 30 minutes.",
+    "salvaReassurance": "Salvatore (your concierge) receives this request directly and confirms within 30 working minutes. At any time, you can call from the button bottom-right."
+  },
+  "dock": {
+    "title": "Your concierge",
+    "eyebrow": "Dedicated concierge",
+    "availability": "Available 7 days a week, 6 a.m. – 11 p.m. Europe/Zurich",
+    "cta": "Salvatore",
+    "call": "Call now",
+    "schedule": "Book 30 min",
+    "write": "Write a message",
+    "writeLede": "Write freely — Salvatore reads each message personally and replies within 24 hours."
+  },
+  "audio": {
+    "label": "Voice note from Salvatore",
+    "eyebrow": "Voice note",
+    "play": "Play voice note",
+    "pause": "Pause",
+    "samples": {
+      "property": "This property came off a private collection last week. The family lived there twenty years — the history is intact. Three clients are in parallel conversation alongside this listing — call me before visiting, I'll tell you where we stand.",
+      "timepiece": "The set is complete, seals intact. I verified the papers this morning with the authorised dealer. The piece will not go to auction — it's a private cession, owner to owner. If you're interested, I'll put you in direct contact.",
+      "artwork": "I knew this piece at Galerie Standard in Oslo in 2024. The gallery entrusted us with it exclusively before it returns to collection. The smoked-oak frame is included. I can organise a studio visit with the artist if you really want to feel the material.",
+      "journey": "This is an itinerary we composed for two families this summer. The French-speaking ranger we privatise across 8 days makes all the difference — no sharing with another group. On these dates, we know the Mombo suite is available. I can block it for 48 hours."
+    }
+  },
+  "schedule": {
+    "eyebrow": "Salvatore Montemagno",
+    "title": "Book 30 minutes with Salvatore",
+    "lede": "Pick a slot in the next 7 days. You receive the confirmation and iCal invitation within 30 minutes.",
+    "chooseDay": "Choose a day",
+    "chooseSlot": "Choose a slot",
+    "timezone": "Europe/Zurich hours. If nothing fits, write to Salvatore — he adapts.",
+    "notes": "Topics to cover (optional)",
+    "notesHint": "Helps Salvatore prepare the conversation. A few words is enough.",
+    "notesPlaceholder": "E.g. review wishlist + question about the July stay.",
+    "calendarHint": "Once confirmed, the iCal invitation arrives by email. One-click add to Google Calendar / Outlook.",
+    "submit": "Book this slot",
+    "success": "Request sent. Salvatore confirms {{day}} at {{slot}} within 30 minutes."
+  },
+  "saved": {
+    "title": "My collection",
+    "lede": "The pieces you've pinned. Salvatore sees your collection and can anticipate.",
+    "add": "Add to my collection",
+    "remove": "Remove from my collection",
+    "emptyTitle": "Your collection is empty.",
+    "emptyLede": "Tap heart on any piece you're drawn to — it'll appear here. Salvatore reads the list and proposes accordingly.",
+    "emptyCta": "Browse the catalogue"
+  },
+  "search": {
+    "cta": "Search",
+    "label": "Search your space",
+    "placeholder": "Search a watch, a property, an event…",
+    "empty": "No result. Rephrase or describe your need to Salvatore.",
+    "navigate": "Navigate",
+    "open": "Open"
+  },
+  "articles": {
+    "readMinutes": "min read",
+    "related": "On this topic",
+    "kind": {
+      "launch": "New arrival",
+      "opening": "Seat secured",
+      "partnership": "Partnership",
+      "editorial": "Editorial",
+      "story": "Story"
+    }
+  },
+  "bespoke": {
+    "eyebrow": "Bespoke request",
+    "title": "Describe what you're after — we'll handle it",
+    "lede": "Salvatore and his network open the right doors. The more specific you are (reference, range, dates), the faster the answer arrives.",
+    "domain": "What are you looking for?",
+    "domainHint": "Pick one or several domains.",
+    "domainValues": {
+      "property": "Property",
+      "timepiece": "Timepiece",
+      "artwork": "Artwork",
+      "event": "Event",
+      "journey": "Journey",
+      "concierge": "Service",
+      "other": "Other"
+    },
+    "description": "Description",
+    "descriptionHint": "Be as specific as possible — reference, brand, era, dimensions, constraints.",
+    "descriptionPlaceholder": "E.g. Patek Philippe Aquanaut 5167A steel black dial, 2018-2022, full set, papers required, range 60-75K CHF.",
+    "budget": "Budget",
+    "budgetHint": "Optional but recommended — speeds up network triage.",
+    "budgetMin": "Minimum",
+    "budgetMax": "Maximum",
+    "currency": "Currency",
+    "urgency": "Urgency",
+    "urgencyValues": {
+      "this-week": "This week",
+      "this-month": "This month",
+      "three-months": "Within 3 months",
+      "no-rush": "No rush"
+    },
+    "targetDate": "Target date (optional)",
+    "attachLabel": "Attach photos or documents",
+    "attachHint": "Reference visuals, screenshots, existing certificates, plans. Up to 5 files.",
+    "confidential": "Absolute confidentiality",
+    "confidentialHint": "Your request is handled by Salvatore only. Standard NDA activated, no indexing, no resale.",
+    "submit": "Send bespoke request",
+    "success": "Bespoke request sent. Salvatore will reach out within 24 hours.",
+    "banner": {
+      "eyebrow": "Can't find it?",
+      "cta": "Make a bespoke request",
+      "generic": {
+        "title": "Not finding what you're looking for?",
+        "lede": "Describe it. Salvatore activates his network — rare watches, off-market properties, event access, custom-composed journeys."
+      },
+      "property": {
+        "title": "Your ideal property isn't here?",
+        "lede": "A specific neighbourhood, a particular layout, a precise view? Our off-market network covers all of Europe."
+      },
+      "timepiece": {
+        "title": "The reference you want isn't listed?",
+        "lede": "Tell us the brand, reference, year, expected condition. Salvatore activates partner dealers and collectors."
+      },
+      "artwork": {
+        "title": "The piece isn't in the catalogue?",
+        "lede": "Artist, era, medium, range — we activate the galleries and auction houses we work with."
+      },
+      "event": {
+        "title": "Interested in a specific event?",
+        "lede": "Closed gala, opening night, private concert — describe it, we check seats and negotiate access."
+      },
+      "journey": {
+        "title": "Your dream trip isn't listed?",
+        "lede": "Destination, duration, level of accompaniment, constraints — Salvatore composes the itinerary end to end."
+      },
+      "concierge": {
+        "title": "Need a service that isn't here?",
+        "lede": "Describe it — security, medical, event logistics. We activate the appropriate partner team."
+      }
+    }
+  },
+  "trust": {
+    "badge": "Security & confidentiality",
+    "modalTitle": "Seven premium guarantees",
+    "modalLede": "Sawnext Studio is a Swiss private concierge. Every request, every transaction, every exchange follows the protocol below — no exception.",
+    "footerNote": "For specific legal questions, your lawyer or notary is invited to contact our compliance department directly — Salvatore will introduce them.",
+    "pillar": {
+      "nda": {
+        "title": "Standard NDA on every request",
+        "body": "Every request from your space automatically triggers a confidentiality agreement signed by both parties. No third party has access."
+      },
+      "encryption": {
+        "title": "End-to-end encrypted communications",
+        "body": "Outgoing emails encrypted via Resend, data stored at Supabase Frankfurt with at-rest encryption. Passwords Argon2id-hashed."
+      },
+      "residency": {
+        "title": "Data residency — European Union",
+        "body": "Personal data hosted in Germany (Supabase EU-Central-1, Frankfurt). No extra-EU transfer without standard contractual clauses."
+      },
+      "vetted": {
+        "title": "Vetted circle — by-invitation access only",
+        "body": "Catalogue access requires a single-use invitation code handed in person. No public sign-up flow, no unverified referrals."
+      },
+      "escrow": {
+        "title": "Escrow available for sensitive transactions",
+        "body": "For major acquisitions (horology, real estate, art), our partner notary in Geneva can escrow funds until effective transfer."
+      },
+      "compliance": {
+        "title": "GDPR + Swiss DPA compliant",
+        "body": "Your access, rectification, erasure and portability rights are operational within 7 days. Data Protection Officer reachable directly."
+      },
+      "audit": {
+        "title": "Audit log available on request",
+        "body": "Every view, request and profile modification is logged. You can export your full audit log at any time via Salvatore."
+      }
     }
   },
   "public": {

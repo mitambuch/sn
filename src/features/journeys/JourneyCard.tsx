@@ -3,6 +3,7 @@
 // 16:9 image, kind eyebrow, title, destinations summary, duration.
 // ═══════════════════════════════════════════════════
 
+import { HeartButton } from '@components/ui/HeartButton';
 import { Image } from '@components/ui/Image';
 import { cn } from '@utils/cn';
 
@@ -31,12 +32,20 @@ export const JourneyCard = ({
         className,
       )}
     >
-      <Image
-        src={journey.images[0]?.src ?? ''}
-        alt={journey.images[0]?.alt ?? journey.title}
-        ratio="16/9"
-        className="duration-slow transition-transform group-hover:scale-[1.02]"
-      />
+      <div className="relative">
+        <Image
+          src={journey.images[0]?.src ?? ''}
+          alt={journey.images[0]?.alt ?? journey.title}
+          ratio="16/9"
+          className="duration-slow transition-transform group-hover:scale-[1.02]"
+        />
+        <HeartButton
+          module="journey"
+          slug={journey.slug}
+          size="sm"
+          className="absolute top-3 right-3"
+        />
+      </div>
       <div className="mt-4 flex flex-col gap-1">
         <span className="text-muted text-xs tracking-widest uppercase">
           {kindLabel} · {String(journey.durationDays)} {daysLabel}

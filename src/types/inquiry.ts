@@ -12,7 +12,10 @@ export type InquirySource =
   | 'timepiece'
   | 'artwork'
   | 'journey'
-  | 'concierge';
+  | 'concierge'
+  | 'jet'
+  | 'object-search'
+  | 'event-organize';
 
 export type InquiryStatus = 'new' | 'in_review' | 'contacted' | 'closed' | 'cancelled';
 

@@ -12,10 +12,13 @@ import { useLocale } from '@app/LocaleProvider';
 import { Container } from '@components/layout/Container';
 import { DetailHero } from '@components/ui/DetailHero';
 import { GalleryGrid } from '@components/ui/GalleryGrid';
+import { HeartButton } from '@components/ui/HeartButton';
 import { MetaList } from '@components/ui/MetaList';
 import { PriceTag } from '@components/ui/PriceTag';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
+import { SimilarItemsStrip } from '@features/catalogue/SimilarItemsStrip';
+import { AudioNote } from '@features/concierge/AudioNote';
 import { InquiryDrawer } from '@features/inquiry/InquiryDrawer';
 import { cn } from '@utils/cn';
 import { useState } from 'react';
@@ -77,19 +80,22 @@ export default function PropertyDetail() {
         caption={`${property.region} · ${String(property.surfaceSqm)} m²`}
         height="full"
         actions={
-          <button
-            type="button"
-            onClick={() => setInquiryOpen(true)}
-            className={cn(
-              'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
-              'inline-flex items-center gap-3 rounded-full border px-6 py-3 text-sm tracking-widest uppercase',
-              'duration-base transition-[border-color,background-color]',
-              'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
-            )}
-          >
-            {t('common.expressInterest')}
-            <span aria-hidden="true">→</span>
-          </button>
+          <>
+            <HeartButton module="property" slug={property.slug} size="md" />
+            <button
+              type="button"
+              onClick={() => setInquiryOpen(true)}
+              className={cn(
+                'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
+                'inline-flex items-center gap-3 rounded-full border px-6 py-3 text-sm tracking-widest uppercase',
+                'duration-base transition-[border-color,background-color]',
+                'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+              )}
+            >
+              {t('common.expressInterest')}
+              <span aria-hidden="true">→</span>
+            </button>
+          </>
         }
       />
 
@@ -119,7 +125,7 @@ export default function PropertyDetail() {
             )}
           </div>
 
-          {/* Right column — specsheet */}
+          {/* Right column — specsheet + audio note */}
           <aside className="space-y-6">
             <span className="text-muted text-xs tracking-widest uppercase">
               {t('common.details')}
@@ -128,6 +134,7 @@ export default function PropertyDetail() {
             <div className="border-border border-t pt-6">
               <PriceTag onRequestLabel={t('common.onRequest')} size="md" />
             </div>
+            <AudioNote transcript={t('audio.samples.property')} durationSeconds={42} />
           </aside>
         </div>
 
@@ -137,6 +144,8 @@ export default function PropertyDetail() {
             <GalleryGrid images={restImages} />
           </div>
         )}
+
+        <SimilarItemsStrip module="property" currentSlug={property.slug} />
 
         <Link
           to={localePath(ROUTES.ACCOUNT_PROPERTIES)}

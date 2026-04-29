@@ -5,6 +5,7 @@
 //       title + city · venue + small category badge.
 // ═══════════════════════════════════════════════════
 
+import { HeartButton } from '@components/ui/HeartButton';
 import { Image } from '@components/ui/Image';
 import { cn } from '@utils/cn';
 
@@ -32,12 +33,20 @@ export const EventCard = ({ event, href, categoryLabel, locale, className }: Eve
         className,
       )}
     >
-      <Image
-        src={event.images[0]?.src ?? ''}
-        alt={event.images[0]?.alt ?? event.title}
-        ratio="16/9"
-        className="duration-slow transition-transform group-hover:scale-[1.02]"
-      />
+      <div className="relative">
+        <Image
+          src={event.images[0]?.src ?? ''}
+          alt={event.images[0]?.alt ?? event.title}
+          ratio="16/9"
+          className="duration-slow transition-transform group-hover:scale-[1.02]"
+        />
+        <HeartButton
+          module="event"
+          slug={event.slug}
+          size="sm"
+          className="absolute top-3 right-3"
+        />
+      </div>
       <div className="mt-4 flex items-start gap-4">
         <div className="border-border flex shrink-0 flex-col items-center justify-center rounded-md border px-3 py-2 text-center">
           <span className="text-fg text-xl leading-none font-light">{day}</span>

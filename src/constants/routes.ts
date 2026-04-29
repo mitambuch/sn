@@ -36,9 +36,13 @@ export const ROUTES = {
   ACCOUNT_PROFILE: '/account/profile',
   ACCOUNT_INQUIRIES: '/account/inquiries',
   ACCOUNT_PREFERENCES: '/account/preferences',
+  ACCOUNT_NEWS: '/account/news',
+  ACCOUNT_NEWS_DETAIL: '/account/news/:slug',
+  ACCOUNT_SAVED: '/account/saved',
 
   // ─── Admin (RequireRole 'admin') ─────────────────────
   ADMIN: '/admin',
+  ADMIN_CATALOGUE: '/admin/catalogue',
   ADMIN_INVITATIONS: '/admin/invitations',
   ADMIN_INQUIRIES: '/admin/inquiries',
   ADMIN_USERS: '/admin/users',

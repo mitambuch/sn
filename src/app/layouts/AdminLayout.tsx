@@ -1,11 +1,12 @@
 // ═══════════════════════════════════════════════════
-// AdminLayout — shell for the admin (operator) surface
+// AdminLayout — Salvatore's super-admin shell
 //
-// WHAT: Same structure as AppLayout but with the admin module nav and
-//       a stricter guard. RequireRole 'admin' redirects logged-in
-//       clients to the locale HOME (no point sending them to login).
+// WHAT: Header + sidebar (Dashboard / Catalogue / Invitations /
+//       Inquiries / Users) + main content. RequireRole 'admin' guards
+//       the whole tree.
 // WHEN: Element of the `/:locale/admin` route segment.
-// CHANGE NAV ITEMS: edit the ADMIN_NAV array below.
+// CHANGE NAV ITEMS: edit the ADMIN_NAV array below — each entry carries
+//       a lucide icon for cohesion with the member sidebar.
 // ═══════════════════════════════════════════════════
 
 import { RequireRole } from '@app/guards/RequireRole';
@@ -15,13 +16,24 @@ import { ROUTES } from '@constants/routes';
 import { useAuth } from '@context/AuthContext';
 import { useMediaQuery } from '@hooks/useMediaQuery';
 import { cn } from '@utils/cn';
+import type { LucideIcon } from 'lucide-react';
+import { Inbox, LayoutDashboard, Library, LogOut, Ticket, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-const ADMIN_NAV = [
-  { to: ROUTES.ADMIN_INVITATIONS, labelKey: 'admin.nav.invitations' },
-  { to: ROUTES.ADMIN_INQUIRIES, labelKey: 'admin.nav.inquiries' },
-  { to: ROUTES.ADMIN_USERS, labelKey: 'admin.nav.users' },
+interface NavItem {
+  to: string;
+  labelKey: string;
+  icon: LucideIcon;
+  exact?: boolean;
+}
+
+const ADMIN_NAV: NavItem[] = [
+  { to: ROUTES.ADMIN, labelKey: 'admin.nav.dashboard', icon: LayoutDashboard, exact: true },
+  { to: ROUTES.ADMIN_CATALOGUE, labelKey: 'admin.nav.catalogue', icon: Library },
+  { to: ROUTES.ADMIN_INVITATIONS, labelKey: 'admin.nav.invitations', icon: Ticket },
+  { to: ROUTES.ADMIN_INQUIRIES, labelKey: 'admin.nav.inquiries', icon: Inbox },
+  { to: ROUTES.ADMIN_USERS, labelKey: 'admin.nav.users', icon: Users },
 ];
 
 export const AdminLayout = () => {
@@ -61,21 +73,24 @@ const AdminShell = () => {
             'md:flex-col md:gap-1 md:px-3 md:py-4',
           )}
         >
-          {ADMIN_NAV.map(({ to, labelKey }) => {
+          {ADMIN_NAV.map(({ to, labelKey, icon: Icon, exact }) => {
             const href = localePath(to);
-            const isActive = pathname === href || pathname.startsWith(`${href}/`);
+            const isActive = exact
+              ? pathname === href
+              : pathname === href || pathname.startsWith(`${href}/`);
             return (
               <Link
                 key={to}
                 to={href}
                 aria-current={isActive ? 'page' : undefined}
                 className={cn(
-                  'duration-base rounded-md px-3 py-2 text-sm transition-colors',
+                  'duration-base flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors',
                   'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
                   isActive ? 'text-fg bg-surface' : 'text-muted hover:text-fg hover:bg-surface/60',
                 )}
               >
-                {t(labelKey)}
+                <Icon size={16} strokeWidth={1.5} aria-hidden="true" />
+                <span>{t(labelKey)}</span>
               </Link>
             );
           })}
@@ -85,11 +100,13 @@ const AdminShell = () => {
               void handleSignOut();
             }}
             className={cn(
-              'duration-base text-muted hover:text-fg rounded-md px-3 py-2 text-sm transition-colors',
+              'duration-base text-muted hover:text-fg flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors',
               'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
+              'md:border-border md:mt-auto md:border-t md:pt-4',
             )}
           >
-            {t('auth.signOut')}
+            <LogOut size={16} strokeWidth={1.5} aria-hidden="true" />
+            <span>{t('auth.signOut')}</span>
           </button>
         </nav>
       </aside>
