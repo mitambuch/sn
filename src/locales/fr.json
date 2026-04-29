@@ -142,6 +142,37 @@
       "users": "Utilisateurs"
     }
   },
+  "events": {
+    "programme": "Programme",
+    "gallery": "Galerie",
+    "category": {
+      "gala": "Gala",
+      "opening": "Vernissage",
+      "concert": "Concert",
+      "sport": "Sport",
+      "private-dinner": "Dîner privé",
+      "auction": "Enchères",
+      "cultural": "Culturel"
+    },
+    "dressCode": {
+      "black-tie": "Cravate noire",
+      "cocktail": "Cocktail",
+      "business": "Business",
+      "smart-casual": "Smart casual",
+      "tenue-d-hiver": "Tenue d’hiver",
+      "open": "Libre"
+    },
+    "meta": {
+      "date": "Date",
+      "time": "Heure",
+      "venue": "Lieu",
+      "city": "Ville",
+      "capacity": "Capacité",
+      "allocatedSeats": "Places attribuées",
+      "dressCode": "Code vestimentaire",
+      "category": "Catégorie"
+    }
+  },
   "artworks": {
     "artist": "Artiste",
     "provenance": "Provenance",

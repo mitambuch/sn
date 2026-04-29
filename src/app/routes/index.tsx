@@ -47,6 +47,8 @@ const TimepiecesList = lazyWithRetry(() => import('@pages/TimepiecesList'));
 const TimepieceDetail = lazyWithRetry(() => import('@pages/TimepieceDetail'));
 const ArtworksList = lazyWithRetry(() => import('@pages/ArtworksList'));
 const ArtworkDetail = lazyWithRetry(() => import('@pages/ArtworkDetail'));
+const EventsList = lazyWithRetry(() => import('@pages/EventsList'));
+const EventDetail = lazyWithRetry(() => import('@pages/EventDetail'));
 
 /* ─── Loading fallback — themed, no white flash ───────────────── */
 function PageLoader() {
@@ -101,14 +103,8 @@ export default function AppRoutes() {
           {/* ─── Member surface (RequireAuth via AppLayout) ─── */}
           <Route path="account" element={<AppLayout />}>
             <Route index element={<AccountDashboard />} />
-            <Route
-              path="events"
-              element={<ComingSoon titleKey="account.events.title" eyebrowKey="account.eyebrow" />}
-            />
-            <Route
-              path="events/:slug"
-              element={<ComingSoon titleKey="account.events.title" eyebrowKey="account.eyebrow" />}
-            />
+            <Route path="events" element={<EventsList />} />
+            <Route path="events/:slug" element={<EventDetail />} />
             <Route path="properties" element={<PropertiesList />} />
             <Route path="properties/:slug" element={<PropertyDetail />} />
             <Route path="timepieces" element={<TimepiecesList />} />
