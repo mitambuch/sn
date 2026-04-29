@@ -139,6 +139,31 @@
       "users": "Users"
     }
   },
+  "artworks": {
+    "artist": "Artist",
+    "provenance": "Provenance",
+    "exhibitions": "Exhibitions",
+    "gallery": "Gallery",
+    "meta": {
+      "artist": "Artist",
+      "year": "Year",
+      "medium": "Medium",
+      "dimensions": "Dimensions",
+      "signed": "Signed",
+      "edition": "Edition"
+    },
+    "medium": {
+      "painting-oil": "Oil",
+      "painting-acrylic": "Acrylic",
+      "painting-watercolor": "Watercolor",
+      "sculpture-bronze": "Bronze sculpture",
+      "sculpture-marble": "Marble sculpture",
+      "sculpture-mixed": "Mixed sculpture",
+      "photography": "Photography",
+      "works-on-paper": "Works on paper",
+      "mixed-media": "Mixed media"
+    }
+  },
   "timepieces": {
     "fullSet": "Full set",
     "provenance": "Provenance",

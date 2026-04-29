@@ -142,6 +142,31 @@
       "users": "Utilisateurs"
     }
   },
+  "artworks": {
+    "artist": "Artiste",
+    "provenance": "Provenance",
+    "exhibitions": "Expositions",
+    "gallery": "Galerie",
+    "meta": {
+      "artist": "Artiste",
+      "year": "Année",
+      "medium": "Médium",
+      "dimensions": "Dimensions",
+      "signed": "Signée",
+      "edition": "Édition"
+    },
+    "medium": {
+      "painting-oil": "Huile",
+      "painting-acrylic": "Acrylique",
+      "painting-watercolor": "Aquarelle",
+      "sculpture-bronze": "Sculpture bronze",
+      "sculpture-marble": "Sculpture marbre",
+      "sculpture-mixed": "Sculpture mixte",
+      "photography": "Photographie",
+      "works-on-paper": "Œuvre sur papier",
+      "mixed-media": "Technique mixte"
+    }
+  },
   "timepieces": {
     "fullSet": "Set complet",
     "provenance": "Provenance",
