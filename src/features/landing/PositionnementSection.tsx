@@ -1,13 +1,12 @@
 // ═══════════════════════════════════════════════════
-// PositionnementSection — who SAW Next is + the conviction + approche
+// PositionnementSection — who SAW Next is + conviction + approche
 //
-// WHAT: Three composed blocks within a single anchored section :
-//       (a) Positionnement — long-form édito explaining the structure
-//       (b) Conviction — 3 monumental nouns (L'accès / La relation /
-//           L'exécution) with marginal gloss
-//       (c) Approche — 4 piliers in a clean numbered list
+// WHAT: One section, three composed blocks, ONE single index label
+//       (02 · POSITIONNEMENT) at the top. Sub-blocks are introduced
+//       by a thin caps subtitle, no repeated 02.A / 02.B / 02.C.
+//       Hairlines used sparingly: one between conviction and approche
+//       only (the section itself sits on the section-divider above).
 // WHEN: Second section of pages/Home.tsx, anchored at #positionnement.
-// EDIT COPY: constants below.
 // ═══════════════════════════════════════════════════
 
 import { Container } from '@components/layout/Container';
@@ -45,42 +44,45 @@ const APPROCHE = [
 ];
 
 export const PositionnementSection = () => (
-  <section id="positionnement" className="relative w-full py-32 md:py-48">
+  <section id="positionnement" className="border-fg/10 relative w-full border-t py-32 md:py-48">
     <Container size="2k">
-      {/* (a) Positionnement édito */}
-      <header className="mb-16 grid gap-6 md:mb-24 md:grid-cols-12 md:gap-16">
-        <p className="text-fg/55 col-span-12 font-mono text-[10px] font-semibold tracking-[0.5em] uppercase md:col-span-3 md:pt-3">
-          <span className="text-fg/30">02 / </span>POSITIONNEMENT
-        </p>
-        <div className="col-span-12 max-w-4xl space-y-8 md:col-span-9">
+      {/* Single section label */}
+      <p className="text-fg/55 mb-16 font-mono text-[10px] font-semibold tracking-[0.5em] uppercase md:mb-24">
+        <span className="text-fg/30">02 / </span>POSITIONNEMENT
+      </p>
+
+      {/* (a) Édito */}
+      <div className="grid gap-10 md:grid-cols-12 md:gap-20">
+        <h2
+          className="text-fg col-span-12 font-light tracking-tight md:col-span-5"
+          style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: '1.05' }}
+        >
+          Une structure suisse indépendante.
+        </h2>
+        <div className="col-span-12 max-w-3xl space-y-6 md:col-span-7">
           {POSITIONING.map((p, i) => (
             <p
               key={i}
-              className="text-fg leading-snug font-light tracking-tight"
-              style={{ fontSize: 'clamp(1.35rem, 2.4vw, 2.25rem)' }}
+              className="text-fg/80 leading-relaxed font-light"
+              style={{ fontSize: 'clamp(1.1rem, 1.4vw, 1.4rem)' }}
             >
               {p}
             </p>
           ))}
         </div>
-      </header>
+      </div>
 
-      {/* (b) Conviction — 3 monumental lines */}
-      <div className="border-fg/10 grid gap-12 border-t pt-24 md:grid-cols-12 md:gap-16 md:pt-32">
-        <aside className="col-span-12 md:col-span-3">
-          <p className="text-fg/55 font-mono text-[10px] font-semibold tracking-[0.5em] uppercase">
-            <span className="text-fg/30">02.B / </span>CONVICTION
-          </p>
-          <p className="text-fg/65 mt-6 max-w-xs text-base leading-relaxed italic md:text-lg">
-            Dans un monde où tout peut s’acheter, la différence se joue ailleurs.
-          </p>
-        </aside>
+      {/* (b) Conviction — 3 monumental lines, no extra label */}
+      <div className="mt-32 grid gap-12 md:mt-48 md:grid-cols-12 md:gap-16">
+        <p className="text-fg/65 col-span-12 max-w-xs text-base leading-relaxed italic md:col-span-3 md:text-lg">
+          Dans un monde où tout peut s’acheter, la différence se joue ailleurs.
+        </p>
         <ol className="col-span-12 flex flex-col gap-2 md:col-span-9">
           {CONVICTION.map((line, i) => (
             <li
               key={i}
               className="text-fg flex items-baseline gap-6 leading-[0.95] font-light tracking-tight"
-              style={{ fontSize: 'clamp(2.5rem, 9vw, 8rem)' }}
+              style={{ fontSize: 'clamp(2.5rem, 8vw, 7rem)' }}
             >
               <span className="text-fg/25 font-mono text-xs font-semibold tracking-[0.4em] md:text-sm">
                 0{i + 1}
@@ -91,14 +93,8 @@ export const PositionnementSection = () => (
         </ol>
       </div>
 
-      {/* (c) Approche — 4 piliers */}
-      <div className="border-fg/10 mt-24 border-t pt-16 md:mt-32 md:pt-24">
-        <header className="mb-12 flex items-baseline gap-6">
-          <p className="text-fg/55 font-mono text-[10px] font-semibold tracking-[0.5em] uppercase">
-            <span className="text-fg/30">02.C / </span>APPROCHE
-          </p>
-          <span className="bg-fg/15 block h-px flex-1" />
-        </header>
+      {/* (c) Approche — 4 piliers, no extra label */}
+      <div className="mt-32 md:mt-48">
         <ul className="grid gap-12 md:grid-cols-2 md:gap-16">
           {APPROCHE.map(p => (
             <li
@@ -111,7 +107,7 @@ export const PositionnementSection = () => (
               </div>
               <h3
                 className="text-fg font-light tracking-tight"
-                style={{ fontSize: 'clamp(1.5rem, 2.8vw, 2.25rem)', lineHeight: '1.1' }}
+                style={{ fontSize: 'clamp(1.5rem, 2.4vw, 2rem)', lineHeight: '1.1' }}
               >
                 {p.title}.
               </h3>

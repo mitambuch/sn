@@ -14,6 +14,7 @@
 import { LandingFooter } from '@components/layout/LandingFooter';
 import { LandingHeader } from '@components/layout/LandingHeader';
 import { FilmGrain } from '@components/ui/FilmGrain';
+import { Loader } from '@features/landing/Loader/Loader';
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
@@ -39,6 +40,7 @@ export const LandingLayout = () => {
   return (
     <div className="bg-bg text-fg relative min-h-screen w-full">
       <FilmGrain intensity={0.55} density={14} tickMs={100} className="fixed inset-0 -z-10" />
+      <Loader />
       <LandingHeader />
       <main id="main-content" className="relative">
         <Outlet />
