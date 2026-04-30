@@ -45,7 +45,7 @@ export const EquipeSection = () => (
       <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-16">
         {/* Left — édito intro */}
         <div className="md:col-span-5">
-          <p className="text-fg/85 text-lg leading-relaxed font-light md:text-xl">
+          <p className="text-fg/85 text-lg leading-relaxed md:text-xl">
             Trois profils complémentaires, issus de l’industrie du luxe, du sport professionnel et
             de la relation client haut de gamme.
           </p>

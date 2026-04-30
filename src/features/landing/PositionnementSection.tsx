@@ -57,10 +57,7 @@ export const PositionnementSection = () => (
         </p>
         <div className="col-span-12 space-y-5 md:col-span-9">
           {POSITIONING.map((p, i) => (
-            <p
-              key={i}
-              className="text-fg/80 max-w-3xl text-lg leading-relaxed font-light md:text-xl"
-            >
+            <p key={i} className="text-fg/80 max-w-3xl text-lg leading-relaxed md:text-xl">
               {p}
             </p>
           ))}
