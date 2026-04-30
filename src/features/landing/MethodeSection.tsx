@@ -69,53 +69,51 @@ export const MethodeSection = () => {
           }
         />
 
-        <div className="border-fg/15 bg-fg/[0.03] relative overflow-hidden rounded-sm border p-4 md:p-6">
-          <ol ref={ref} className="grid grid-cols-1 gap-4 md:grid-cols-4">
-            {STEPS.map((s, i) => {
-              const stepDelay = i * STEP_STAGGER_MS;
-              return (
-                <li
-                  key={s.id}
-                  className="border-fg/10 bg-bg/55 relative min-h-72 overflow-hidden rounded-sm border p-5 md:p-6"
+        <ol ref={ref} className="grid grid-cols-1 gap-4 md:grid-cols-4">
+          {STEPS.map((s, i) => {
+            const stepDelay = i * STEP_STAGGER_MS;
+            return (
+              <li
+                key={s.id}
+                className="border-fg/15 bg-fg/[0.025] relative min-h-72 overflow-hidden rounded-sm border p-5 md:p-6"
+                style={{
+                  opacity: revealed ? 1 : 0,
+                  transform: revealed ? 'translateY(0)' : 'translateY(18px)',
+                  transition: 'opacity 700ms ease, transform 700ms ease',
+                  transitionDelay: `${stepDelay}ms`,
+                }}
+              >
+                <span
+                  aria-hidden="true"
+                  className="bg-fg/35 absolute top-0 right-0 left-0 h-px origin-left"
                   style={{
-                    opacity: revealed ? 1 : 0,
-                    transform: revealed ? 'translateY(0)' : 'translateY(18px)',
-                    transition: 'opacity 700ms ease, transform 700ms ease',
-                    transitionDelay: `${stepDelay}ms`,
+                    transform: revealed ? 'scaleX(1)' : 'scaleX(0)',
+                    transition: 'transform 900ms ease',
+                    transitionDelay: `${stepDelay + 160}ms`,
                   }}
-                >
-                  <span
-                    aria-hidden="true"
-                    className="bg-fg/35 absolute top-0 right-0 left-0 h-px origin-left"
-                    style={{
-                      transform: revealed ? 'scaleX(1)' : 'scaleX(0)',
-                      transition: 'transform 900ms ease',
-                      transitionDelay: `${stepDelay + 160}ms`,
-                    }}
-                  />
+                />
 
-                  <div className="flex h-full flex-col justify-between gap-10">
-                    <div className="flex items-start justify-between gap-6">
-                      <span className="text-fg font-mono text-base font-semibold tracking-[0.4em] uppercase tabular-nums">
-                        {s.id}
-                      </span>
-                      <span className="text-fg/15 font-mono text-6xl leading-none font-semibold tracking-tight tabular-nums">
-                        {s.id}
-                      </span>
-                    </div>
-
-                    <div>
-                      <h3 className="text-fg font-mono text-lg leading-tight font-semibold tracking-tight uppercase md:text-xl">
-                        {s.verb}
-                      </h3>
-                      <p className="text-muted mt-4 text-base leading-relaxed">{s.body}</p>
-                    </div>
+                <div className="flex h-full flex-col justify-between gap-10">
+                  <div className="flex items-start justify-between gap-6">
+                    <span className="text-fg font-mono text-base font-semibold tracking-[0.4em] uppercase tabular-nums">
+                      {s.id}
+                    </span>
+                    <span className="text-fg/15 font-mono text-6xl leading-none font-semibold tracking-tight tabular-nums">
+                      {s.id}
+                    </span>
                   </div>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
+
+                  <div>
+                    <h3 className="text-fg font-mono text-lg leading-tight font-semibold tracking-tight uppercase md:text-xl">
+                      {s.verb}
+                    </h3>
+                    <p className="text-muted mt-4 text-base leading-relaxed">{s.body}</p>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
 
         <div
           className="mt-12 grid grid-cols-1 gap-6 transition-all duration-700 ease-out md:mt-14 md:grid-cols-[1fr_auto] md:items-end"

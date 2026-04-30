@@ -58,13 +58,11 @@ export const LandingFooter = () => {
             par une conversation.
           </h2>
 
-          <div className="border-fg/15 bg-fg/[0.035] rounded-sm border p-5 md:col-span-4">
+          <div className="md:col-span-4">
             <p className="text-muted font-mono text-[10px] leading-relaxed font-semibold tracking-[0.28em] uppercase">
-              Contact direct
-              <br />
-              réponse confidentielle
+              Contact direct — réponse confidentielle
             </p>
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="mt-5 flex flex-wrap gap-3">
               <WipeButton href={`tel:${CONTACT.phoneRaw}`} variant="solid">
                 Appeler maintenant
               </WipeButton>

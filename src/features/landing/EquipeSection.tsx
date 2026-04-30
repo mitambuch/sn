@@ -50,53 +50,32 @@ export const EquipeSection = () => (
               Le premier interlocuteur reste le même tout au long du dossier. Les autres
               interviennent à la demande, selon la nature de l’intention.
             </p>
-
-            <div className="border-fg/15 bg-fg/[0.035] mt-10 overflow-hidden rounded-sm border">
-              <div className="border-fg/10 flex items-center justify-between border-b px-5 py-4">
-                <span className="text-muted font-mono text-[10px] font-semibold tracking-[0.35em] uppercase">
-                  Principe
-                </span>
-                <span className="text-fg font-mono text-[10px] font-semibold tracking-[0.35em] uppercase">
-                  01
-                </span>
-              </div>
-              <p className="text-fg px-5 py-6 font-mono text-xl leading-tight font-semibold tracking-tight uppercase">
-                Un point de contact.
-                <br />
-                Un dossier.
-                <br />
-                Une exécution.
-              </p>
-            </div>
           </div>
         </div>
 
-        <ul className="grid gap-4 md:col-span-7">
+        <ul className="border-fg/15 border-t md:col-span-7">
           {FOUNDERS.map((f, i) => (
             <li
               key={f.name}
-              className="border-fg/15 bg-fg/[0.025] group relative overflow-hidden rounded-sm border"
+              className="border-fg/15 grid grid-cols-1 gap-6 border-b py-7 md:grid-cols-[7.5rem_1fr] md:items-center md:py-8"
             >
-              <span className="bg-fg absolute top-0 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
-              <div className="grid grid-cols-1 gap-6 p-5 md:grid-cols-[7.5rem_1fr] md:items-center md:p-6">
-                <div className="text-fg/20 font-mono text-6xl leading-none font-semibold tracking-tight md:text-7xl">
-                  {f.initials}
-                </div>
+              <div className="text-fg/25 font-mono text-6xl leading-none font-semibold tracking-tight md:text-7xl">
+                {f.initials}
+              </div>
 
-                <div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-muted font-mono text-[10px] font-semibold tracking-[0.4em] uppercase tabular-nums">
-                      0{i + 1}
-                    </span>
-                    <span className="text-muted font-mono text-[10px] font-semibold tracking-[0.35em] uppercase">
-                      {f.role}
-                    </span>
-                  </div>
-                  <h3 className="text-fg mt-4 font-mono text-lg leading-tight font-semibold tracking-tight uppercase md:text-2xl">
-                    {f.name}.
-                  </h3>
-                  <p className="text-muted mt-2 text-base leading-relaxed">{f.qualif}</p>
+              <div>
+                <div className="flex items-center gap-4">
+                  <span className="text-muted font-mono text-[10px] font-semibold tracking-[0.4em] uppercase tabular-nums">
+                    0{i + 1}
+                  </span>
+                  <span className="text-muted font-mono text-[10px] font-semibold tracking-[0.35em] uppercase">
+                    {f.role}
+                  </span>
                 </div>
+                <h3 className="text-fg mt-4 font-mono text-lg leading-tight font-semibold tracking-tight uppercase md:text-2xl">
+                  {f.name}.
+                </h3>
+                <p className="text-muted mt-2 text-base leading-relaxed">{f.qualif}</p>
               </div>
             </li>
           ))}
