@@ -1,16 +1,19 @@
 // ═══════════════════════════════════════════════════
-// LandingLayout — full-bleed light surface for the public landing
-//                 page and the personal invitation page.
+// LandingLayout — public landing shell (light, full-width, simple)
 //
-// WHAT: Wraps the route Outlet without Header/Footer. Forces the
-//       `light` theme + the brand off-white #edf2f1 background, scoped
-//       to the document root for the lifetime of the route. Reverts on
-//       unmount so the rest of the app (lot B in dark) is untouched.
-// WHEN: Route element for `/` (Home immersive) and `/invite/:code`.
-// CHANGE BG TINT: edit LANDING_BG below — propagates everywhere via
-//                 the CSS custom property override.
+// WHAT: Forces the light theme + soft warm-grey (#d8dcda) background
+//       on the document root, mounts a global FilmGrain layer + the
+//       LandingHeader at the top, hands the route content over via
+//       <Outlet />, and closes with the LandingFooter (which carries
+//       the main CONTACTER block). Reverts the theme on unmount so
+//       the rest of the app (lot B in dark) stays untouched.
+// WHEN: Route element for `/` (Home) and `/invite/:code`.
+// CHANGE BG: LANDING_BG below.
 // ═══════════════════════════════════════════════════
 
+import { LandingFooter } from '@components/layout/LandingFooter';
+import { LandingHeader } from '@components/layout/LandingHeader';
+import { FilmGrain } from '@components/ui/FilmGrain';
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
@@ -28,15 +31,19 @@ export const LandingLayout = () => {
     return () => {
       if (prevTheme === undefined) delete html.dataset.theme;
       else html.dataset.theme = prevTheme;
-
       if (prevBg) html.style.setProperty('--color-bg', prevBg);
       else html.style.removeProperty('--color-bg');
     };
   }, []);
 
   return (
-    <main id="main-content" className="bg-bg text-fg min-h-screen">
-      <Outlet />
-    </main>
+    <div className="bg-bg text-fg relative min-h-screen w-full">
+      <FilmGrain intensity={0.55} density={14} tickMs={100} className="fixed inset-0 -z-10" />
+      <LandingHeader />
+      <main id="main-content" className="relative">
+        <Outlet />
+      </main>
+      <LandingFooter />
+    </div>
   );
 };

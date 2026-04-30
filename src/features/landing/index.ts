@@ -1,6 +1,5 @@
-export { Apparition } from './Apparition/Apparition';
-export { Doorway } from './Doorway/Doorway';
-export { Murmurs } from './Murmurs/Murmurs';
-export { Reversal } from './Reversal/Reversal';
-export { Stillness } from './Stillness/Stillness';
-export { Threshold } from './Threshold/Threshold';
+export { EquipeSection } from './EquipeSection';
+export { ExpertiseSection } from './ExpertiseSection';
+export { HeroSection } from './HeroSection';
+export { MethodeSection } from './MethodeSection';
+export { PositionnementSection } from './PositionnementSection';
