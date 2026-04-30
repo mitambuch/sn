@@ -1,29 +1,24 @@
 // ═══════════════════════════════════════════════════
-// EquipeSection — the 3 founders with qualifications visible upfront
-//
-// WHAT: Three founders presented as full-width rows : large name in
-//       Geist Light, role tag aligned right, body paragraph below.
-//       Asymmetric indent on the 2nd founder for visual rhythm. No
-//       cards, no photos — pure typographic hierarchy.
-// WHEN: Fifth section of pages/Home.tsx, anchored at #equipe.
-// EDIT FOUNDERS: FOUNDERS array.
+// EquipeSection — GAFHA grid + 3 founder cards
 // ═══════════════════════════════════════════════════
 
-import { Container } from '@components/layout/Container';
-import { cn } from '@utils/cn';
+import { SectionHeader } from '@components/layout/SectionHeader';
 
 const FOUNDERS = [
   {
+    initials: 'SM',
     name: 'Salvatore Montemagno',
     role: 'Fondateur',
     body: '20 ans d’expérience dans le luxe, la distribution et la gestion de relations avec une clientèle HNWI et UHNW.',
   },
   {
+    initials: 'BG',
     name: 'Bokar Guissé',
     role: 'Co-fondateur',
     body: 'Agent de joueurs de football de premier plan au niveau européen, avec accès à des cercles internationaux exigeants.',
   },
   {
+    initials: 'HN',
     name: 'Harry Novillo',
     role: 'Co-fondateur',
     body: 'Ancien sportif professionnel de haut niveau, impliqué dans des projets entrepreneuriaux et environnements premium.',
@@ -31,40 +26,43 @@ const FOUNDERS = [
 ];
 
 export const EquipeSection = () => (
-  <section id="equipe" className="border-fg/10 relative w-full border-t py-32 md:py-48">
-    <Container size="2k">
-      <header className="mb-16 grid gap-6 md:mb-24 md:grid-cols-12 md:gap-16">
-        <p className="text-fg/55 col-span-12 font-mono text-[10px] font-semibold tracking-[0.5em] uppercase md:col-span-3 md:pt-3">
-          <span className="text-fg/30">05 / </span>ÉQUIPE
-        </p>
-        <h2
-          className="text-fg col-span-12 max-w-3xl font-mono font-semibold tracking-tight uppercase md:col-span-9"
-          style={{ fontSize: 'clamp(1.75rem, 3.6vw, 3rem)', lineHeight: '1.1' }}
-        >
-          Une structure agile,
-          <br />
-          discrète, crédible.
-        </h2>
-      </header>
+  <section id="equipe" className="border-border relative w-full border-b py-20 md:py-28">
+    <div className="mx-auto w-full max-w-400 px-5 md:px-6">
+      <SectionHeader
+        index="05"
+        label="ÉQUIPE"
+        title={
+          <>
+            Une structure agile,
+            <br />
+            discrète, crédible.
+          </>
+        }
+      />
 
-      <ul className="flex flex-col gap-20 md:gap-28">
-        {FOUNDERS.map((f, i) => (
-          <li key={f.name} className={cn('flex flex-col gap-6', i % 2 === 1 && 'md:ml-[18%]')}>
-            <div className="border-fg/15 flex flex-wrap items-baseline justify-between gap-4 border-t pt-6">
-              <h3
-                className="text-fg font-mono font-semibold tracking-tight uppercase"
-                style={{ fontSize: 'clamp(1.4rem, 2.6vw, 2.25rem)', lineHeight: '1.1' }}
+      <ul className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        {FOUNDERS.map(f => (
+          <li key={f.name} className="bg-surface flex flex-col gap-5 rounded-md p-6 md:p-8">
+            <div className="flex items-center gap-4">
+              <span
+                aria-hidden="true"
+                className="border-border bg-bg text-fg flex h-12 w-12 shrink-0 items-center justify-center rounded-full border font-mono text-xs font-semibold tracking-widest uppercase"
               >
-                {f.name}.
-              </h3>
-              <span className="text-fg/55 font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
-                {f.role}
+                {f.initials}
               </span>
+              <div className="min-w-0">
+                <h3 className="text-fg truncate font-mono text-base leading-tight font-semibold tracking-tight uppercase md:text-lg">
+                  {f.name}.
+                </h3>
+                <p className="text-muted truncate font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
+                  {f.role}
+                </p>
+              </div>
             </div>
-            <p className="text-fg/70 max-w-2xl text-lg leading-relaxed md:text-xl">{f.body}</p>
+            <p className="text-muted text-base leading-relaxed">{f.body}</p>
           </li>
         ))}
       </ul>
-    </Container>
+    </div>
   </section>
 );

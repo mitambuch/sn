@@ -1,15 +1,8 @@
 // ═══════════════════════════════════════════════════
-// MethodeSection — the 4-step operational method
-//
-// WHAT: 4 numbered steps presented as a horizontal flow on desktop
-//       (one cell per step, hairlines between them) and a vertical
-//       stack on mobile. Each step = id, verb, body. A short legal
-//       precision under ("facilitateur, jamais intermédiaire financier").
-// WHEN: Fourth section of pages/Home.tsx, anchored at #methode.
-// EDIT STEPS: STEPS array.
+// MethodeSection — GAFHA grid + 4-step horizontal flow + cards
 // ═══════════════════════════════════════════════════
 
-import { Container } from '@components/layout/Container';
+import { SectionHeader } from '@components/layout/SectionHeader';
 
 const STEPS = [
   { id: '01', verb: 'Une demande.', body: 'Vous formulez une intention, même imprécise.' },
@@ -27,47 +20,37 @@ const STEPS = [
 ];
 
 export const MethodeSection = () => (
-  <section id="methode" className="border-fg/10 relative w-full border-t py-32 md:py-48">
-    <Container size="2k">
-      <header className="mb-16 grid gap-6 md:mb-24 md:grid-cols-12 md:gap-16">
-        <p className="text-fg/55 col-span-12 font-mono text-[10px] font-semibold tracking-[0.5em] uppercase md:col-span-3 md:pt-3">
-          <span className="text-fg/30">04 / </span>MÉTHODE
-        </p>
-        <h2
-          className="text-fg col-span-12 max-w-3xl font-mono font-semibold tracking-tight uppercase md:col-span-9"
-          style={{ fontSize: 'clamp(1.75rem, 3.6vw, 3rem)', lineHeight: '1.1' }}
-        >
-          Un fonctionnement simple,
-          <br />
-          répété sans concession.
-        </h2>
-      </header>
+  <section id="methode" className="border-border relative w-full border-b py-20 md:py-28">
+    <div className="mx-auto w-full max-w-400 px-5 md:px-6">
+      <SectionHeader
+        index="04"
+        label="MÉTHODE"
+        title={
+          <>
+            Un fonctionnement simple,
+            <br />
+            répété sans concession.
+          </>
+        }
+      />
 
-      <ol className="grid gap-12 md:grid-cols-4 md:gap-10">
-        {STEPS.map((s, i) => (
-          <li key={s.id} className="flex flex-col gap-4">
-            <div className="border-fg/30 flex items-center gap-3 border-t pt-4">
-              <span className="text-fg/65 font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
-                {s.id}
-              </span>
-              {i < STEPS.length - 1 && (
-                <span aria-hidden="true" className="bg-fg/15 hidden h-px flex-1 md:block" />
-              )}
-            </div>
-            <h3
-              className="text-fg font-mono font-semibold tracking-tight uppercase"
-              style={{ fontSize: 'clamp(1.05rem, 1.5vw, 1.4rem)', lineHeight: '1.15' }}
-            >
+      <ol className="grid grid-cols-1 gap-6 md:grid-cols-4">
+        {STEPS.map(s => (
+          <li key={s.id} className="bg-surface flex h-full flex-col gap-4 rounded-md p-6 md:p-8">
+            <span className="text-muted font-mono text-[10px] font-semibold tracking-[0.4em] uppercase tabular-nums">
+              {s.id}
+            </span>
+            <h3 className="text-fg font-mono text-base leading-tight font-semibold tracking-tight uppercase md:text-lg">
               {s.verb}
             </h3>
-            <p className="text-fg/70 text-base leading-relaxed md:text-lg">{s.body}</p>
+            <p className="text-muted text-base leading-relaxed">{s.body}</p>
           </li>
         ))}
       </ol>
 
-      <p className="text-fg/45 mt-16 max-w-md font-mono text-[11px] leading-relaxed tracking-wider uppercase">
+      <p className="text-muted mt-12 max-w-md font-mono text-[11px] leading-relaxed tracking-[0.2em] uppercase">
         SAW Next agit comme facilitateur. Jamais comme intermédiaire financier.
       </p>
-    </Container>
+    </div>
   </section>
 );

@@ -1,16 +1,10 @@
 // ═══════════════════════════════════════════════════
-// ExpertiseSection — the 10 expertise domains, numbered table
-//
-// WHAT: Numbered sommaire of the 10 fields where SAW Next intervenes.
-//       Each row = index (01–10), title, sub-line of keywords. Hover
-//       brings the row forward and slides in the brand arrow.
-// WHEN: Third section of pages/Home.tsx, anchored at #expertise.
-// EDIT LIST: DOMAINS array.
+// ExpertiseSection — GAFHA grid + uniform header + clean rows
 // ═══════════════════════════════════════════════════
 
-import { Container } from '@components/layout/Container';
-import { BrandArrow } from '@components/ui/BrandArrow';
+import { SectionHeader } from '@components/layout/SectionHeader';
 import { cn } from '@utils/cn';
+import { ArrowUpRight } from 'lucide-react';
 import { useState } from 'react';
 
 interface Domain {
@@ -60,30 +54,22 @@ export const ExpertiseSection = () => {
   const [hovered, setHovered] = useState<string | null>(null);
 
   return (
-    <section id="expertise" className="border-fg/10 relative w-full border-t py-32 md:py-48">
-      <Container size="2k">
-        <header className="mb-16 grid gap-6 md:mb-24 md:grid-cols-12 md:gap-16">
-          <p className="text-fg/55 col-span-12 font-mono text-[10px] font-semibold tracking-[0.5em] uppercase md:col-span-3 md:pt-3">
-            <span className="text-fg/30">03 / </span>EXPERTISE
-          </p>
-          <div className="col-span-12 max-w-3xl md:col-span-9">
-            <h2
-              className="text-fg font-mono font-semibold tracking-tight uppercase"
-              style={{ fontSize: 'clamp(1.75rem, 3.6vw, 3rem)', lineHeight: '1.1' }}
-            >
+    <section id="expertise" className="border-border relative w-full border-b py-20 md:py-28">
+      <div className="mx-auto w-full max-w-400 px-5 md:px-6">
+        <SectionHeader
+          index="03"
+          label="EXPERTISE"
+          title={
+            <>
               Un spectre
               <br />
               volontairement large.
-            </h2>
-            <p className="text-fg/70 mt-6 max-w-2xl text-lg leading-relaxed md:text-xl">
-              Chaque intervention est pensée comme une réponse unique. Les domaines ci-dessous sont
-              des points d&apos;ancrage, pas des catégories closes.
-            </p>
-          </div>
-        </header>
+            </>
+          }
+        />
 
-        <ul onMouseLeave={() => setHovered(null)} className="flex flex-col">
-          {DOMAINS.map((d, i) => {
+        <ol onMouseLeave={() => setHovered(null)} className="border-border border-t">
+          {DOMAINS.map(d => {
             const isActive = hovered === d.id;
             const isDimmed = hovered !== null && !isActive;
             return (
@@ -91,46 +77,35 @@ export const ExpertiseSection = () => {
                 key={d.id}
                 onMouseEnter={() => setHovered(d.id)}
                 className={cn(
-                  'border-fg/15 group relative flex flex-col gap-2 border-t py-6 transition-opacity duration-500 md:flex-row md:items-baseline md:gap-10 md:py-8',
+                  'border-border group grid grid-cols-[3rem_1fr_auto] items-center gap-4 border-b py-6 transition-opacity duration-300 md:grid-cols-[5rem_1fr_auto] md:gap-8 md:py-8',
                   isDimmed && 'opacity-40',
-                  i === DOMAINS.length - 1 && 'border-b',
                 )}
               >
-                <span
-                  className={cn(
-                    'text-fg/55 font-mono text-[10px] font-semibold tracking-[0.4em] uppercase transition-colors duration-300 md:w-16',
-                    isActive && 'text-fg',
-                  )}
-                >
+                <span className="text-muted font-mono text-[10px] font-semibold tracking-[0.4em] uppercase tabular-nums">
                   {d.id}
                 </span>
-                <div
-                  className={cn(
-                    'flex flex-1 flex-col gap-1 transition-transform duration-500',
-                    isActive && 'md:translate-x-2',
-                  )}
-                >
-                  <h3
-                    className="text-fg font-mono font-semibold tracking-tight uppercase"
-                    style={{ fontSize: 'clamp(1.05rem, 1.7vw, 1.5rem)', lineHeight: '1.15' }}
-                  >
+                <div className="min-w-0">
+                  <h3 className="text-fg truncate font-mono text-base leading-tight font-semibold tracking-tight uppercase md:text-lg">
                     {d.title}.
                   </h3>
-                  <p className="text-fg/55 font-mono text-[11px] tracking-[0.2em] uppercase md:text-xs">
+                  <p className="text-muted mt-1 truncate font-mono text-[11px] tracking-[0.2em] uppercase">
                     {d.sub}
                   </p>
                 </div>
-                <BrandArrow
+                <ArrowUpRight
+                  size={18}
+                  strokeWidth={1.5}
+                  aria-hidden="true"
                   className={cn(
-                    'text-fg pointer-events-none hidden h-[0.9em] transition-all duration-500 md:block',
-                    isActive ? 'translate-x-0 opacity-100' : 'translate-x-3 opacity-0',
+                    'text-fg pointer-events-none transition-all duration-300',
+                    isActive ? 'translate-x-0 opacity-100' : 'translate-x-2 opacity-30',
                   )}
                 />
               </li>
             );
           })}
-        </ul>
-      </Container>
+        </ol>
+      </div>
     </section>
   );
 };
