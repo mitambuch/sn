@@ -54,10 +54,12 @@ export const PositionnementSection = () => (
       {/* (a) Édito */}
       <div className="grid gap-10 md:grid-cols-12 md:gap-20">
         <h2
-          className="text-fg col-span-12 font-light tracking-tight md:col-span-5"
-          style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: '1.05' }}
+          className="text-fg col-span-12 font-mono font-semibold tracking-tight uppercase md:col-span-5"
+          style={{ fontSize: 'clamp(1.75rem, 3.4vw, 3rem)', lineHeight: '1.1' }}
         >
-          Une structure suisse indépendante.
+          Une structure
+          <br />
+          suisse indépendante.
         </h2>
         <div className="col-span-12 max-w-3xl space-y-6 md:col-span-7">
           {POSITIONING.map((p, i) => (
@@ -81,8 +83,8 @@ export const PositionnementSection = () => (
           {CONVICTION.map((line, i) => (
             <li
               key={i}
-              className="text-fg flex items-baseline gap-6 leading-[0.95] font-light tracking-tight"
-              style={{ fontSize: 'clamp(2.5rem, 8vw, 7rem)' }}
+              className="text-fg flex items-baseline gap-6 font-mono leading-[0.95] font-semibold tracking-tight uppercase"
+              style={{ fontSize: 'clamp(2rem, 6.5vw, 5.5rem)' }}
             >
               <span className="text-fg/25 font-mono text-xs font-semibold tracking-[0.4em] md:text-sm">
                 0{i + 1}
@@ -106,8 +108,8 @@ export const PositionnementSection = () => (
                 <BrandArrow className="text-fg/30 group-hover:text-fg/70 h-[0.9em] transition-transform duration-300 group-hover:translate-x-1" />
               </div>
               <h3
-                className="text-fg font-light tracking-tight"
-                style={{ fontSize: 'clamp(1.5rem, 2.4vw, 2rem)', lineHeight: '1.1' }}
+                className="text-fg font-mono font-semibold tracking-tight uppercase"
+                style={{ fontSize: 'clamp(1.15rem, 1.6vw, 1.5rem)', lineHeight: '1.15' }}
               >
                 {p.title}.
               </h3>

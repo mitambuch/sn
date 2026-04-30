@@ -34,10 +34,12 @@ export const MethodeSection = () => (
           <span className="text-fg/30">04 / </span>MÉTHODE
         </p>
         <h2
-          className="text-fg col-span-12 max-w-3xl font-light tracking-tight md:col-span-9"
-          style={{ fontSize: 'clamp(2rem, 4.5vw, 3.75rem)', lineHeight: '1.05' }}
+          className="text-fg col-span-12 max-w-3xl font-mono font-semibold tracking-tight uppercase md:col-span-9"
+          style={{ fontSize: 'clamp(1.75rem, 3.6vw, 3rem)', lineHeight: '1.1' }}
         >
-          Un fonctionnement simple, répété sans concession.
+          Un fonctionnement simple,
+          <br />
+          répété sans concession.
         </h2>
       </header>
 
@@ -53,8 +55,8 @@ export const MethodeSection = () => (
               )}
             </div>
             <h3
-              className="text-fg font-light tracking-tight"
-              style={{ fontSize: 'clamp(1.35rem, 2vw, 1.85rem)', lineHeight: '1.15' }}
+              className="text-fg font-mono font-semibold tracking-tight uppercase"
+              style={{ fontSize: 'clamp(1.05rem, 1.5vw, 1.4rem)', lineHeight: '1.15' }}
             >
               {s.verb}
             </h3>

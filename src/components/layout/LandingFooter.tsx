@@ -43,12 +43,12 @@ export const LandingFooter = () => {
               CONTACT
             </p>
             <h2
-              className="text-fg mt-6 font-light tracking-tight"
-              style={{ fontSize: 'clamp(2.5rem, 7vw, 6rem)', lineHeight: '0.95' }}
+              className="text-fg mt-6 font-mono font-semibold tracking-tight uppercase"
+              style={{ fontSize: 'clamp(1.85rem, 4.5vw, 4rem)', lineHeight: '1.05' }}
             >
               Chaque expérience commence
               <br />
-              par une <em className="italic">conversation.</em>
+              par une conversation.
             </h2>
             <div className="mt-12 flex flex-wrap items-center gap-4">
               <MagneticButton strength={0.3} range={140}>

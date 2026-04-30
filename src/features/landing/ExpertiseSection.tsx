@@ -68,10 +68,12 @@ export const ExpertiseSection = () => {
           </p>
           <div className="col-span-12 max-w-3xl md:col-span-9">
             <h2
-              className="text-fg font-light tracking-tight"
-              style={{ fontSize: 'clamp(2rem, 4.5vw, 3.75rem)', lineHeight: '1.05' }}
+              className="text-fg font-mono font-semibold tracking-tight uppercase"
+              style={{ fontSize: 'clamp(1.75rem, 3.6vw, 3rem)', lineHeight: '1.1' }}
             >
-              Un spectre volontairement large.
+              Un spectre
+              <br />
+              volontairement large.
             </h2>
             <p className="text-fg/70 mt-6 max-w-2xl text-lg leading-relaxed md:text-xl">
               Chaque intervention est pensée comme une réponse unique. Les domaines ci-dessous sont
@@ -109,8 +111,8 @@ export const ExpertiseSection = () => {
                   )}
                 >
                   <h3
-                    className="text-fg font-light tracking-tight"
-                    style={{ fontSize: 'clamp(1.35rem, 2.4vw, 2rem)', lineHeight: '1.15' }}
+                    className="text-fg font-mono font-semibold tracking-tight uppercase"
+                    style={{ fontSize: 'clamp(1.05rem, 1.7vw, 1.5rem)', lineHeight: '1.15' }}
                   >
                     {d.title}.
                   </h3>

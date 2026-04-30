@@ -38,10 +38,12 @@ export const EquipeSection = () => (
           <span className="text-fg/30">05 / </span>ÉQUIPE
         </p>
         <h2
-          className="text-fg col-span-12 max-w-3xl font-light tracking-tight md:col-span-9"
-          style={{ fontSize: 'clamp(2rem, 4.5vw, 3.75rem)', lineHeight: '1.05' }}
+          className="text-fg col-span-12 max-w-3xl font-mono font-semibold tracking-tight uppercase md:col-span-9"
+          style={{ fontSize: 'clamp(1.75rem, 3.6vw, 3rem)', lineHeight: '1.1' }}
         >
-          Une structure agile, discrète, crédible.
+          Une structure agile,
+          <br />
+          discrète, crédible.
         </h2>
       </header>
 
@@ -50,8 +52,8 @@ export const EquipeSection = () => (
           <li key={f.name} className={cn('flex flex-col gap-6', i % 2 === 1 && 'md:ml-[18%]')}>
             <div className="border-fg/15 flex flex-wrap items-baseline justify-between gap-4 border-t pt-6">
               <h3
-                className="text-fg font-light tracking-tight"
-                style={{ fontSize: 'clamp(1.75rem, 4vw, 3.25rem)', lineHeight: '1.05' }}
+                className="text-fg font-mono font-semibold tracking-tight uppercase"
+                style={{ fontSize: 'clamp(1.4rem, 2.6vw, 2.25rem)', lineHeight: '1.1' }}
               >
                 {f.name}.
               </h3>
