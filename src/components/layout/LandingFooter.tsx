@@ -44,9 +44,12 @@ export const LandingFooter = () => {
       className="relative z-10 w-full scroll-mt-24 overflow-hidden pt-24 pb-10 md:scroll-mt-28 md:pt-32 md:pb-12"
     >
       <div className="relative mx-auto w-full max-w-400 px-5 md:px-6">
-        <p className="text-muted font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
-          <span className="text-fg/30">06 / </span>CONTACT
-        </p>
+        <div className="flex items-center gap-4">
+          <p className="text-muted font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
+            <span className="text-fg/30">06 / </span>CONTACT
+          </p>
+          <span className="bg-fg/20 hidden h-px w-16 md:block" aria-hidden="true" />
+        </div>
 
         <div className="mt-5 grid grid-cols-1 gap-8 md:grid-cols-12 md:items-end md:gap-12">
           <h2 className="text-fg font-mono text-4xl leading-[1.02] font-semibold tracking-tight uppercase md:col-span-8 md:text-6xl lg:text-7xl">

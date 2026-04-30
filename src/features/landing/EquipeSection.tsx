@@ -78,7 +78,7 @@ export const EquipeSection = () => (
               className="border-fg/15 bg-fg/[0.025] group relative overflow-hidden rounded-sm border"
             >
               <span className="bg-fg absolute top-0 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
-              <div className="grid grid-cols-1 gap-6 p-5 md:grid-cols-[7.5rem_1fr_auto] md:items-center md:p-6">
+              <div className="grid grid-cols-1 gap-6 p-5 md:grid-cols-[7.5rem_1fr] md:items-center md:p-6">
                 <div className="text-fg/20 font-mono text-6xl leading-none font-semibold tracking-tight md:text-7xl">
                   {f.initials}
                 </div>
@@ -97,10 +97,6 @@ export const EquipeSection = () => (
                   </h3>
                   <p className="text-muted mt-2 text-base leading-relaxed">{f.qualif}</p>
                 </div>
-
-                <span className="border-fg/20 text-fg hidden border px-3 py-2 font-mono text-[10px] font-semibold tracking-[0.35em] uppercase lg:inline-flex">
-                  Active
-                </span>
               </div>
             </li>
           ))}

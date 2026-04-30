@@ -70,11 +70,6 @@ export const MethodeSection = () => {
         />
 
         <div className="border-fg/15 bg-fg/[0.03] relative overflow-hidden rounded-sm border p-4 md:p-6">
-          <div
-            className="bg-fg/45 pointer-events-none absolute inset-x-0 top-0 h-px animate-[landing-scan-x_6s_ease-in-out_infinite]"
-            aria-hidden="true"
-          />
-
           <ol ref={ref} className="grid grid-cols-1 gap-4 md:grid-cols-4">
             {STEPS.map((s, i) => {
               const stepDelay = i * STEP_STAGGER_MS;

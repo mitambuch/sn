@@ -10,9 +10,9 @@ export const HeroSection = () => (
   >
     <div className="mx-auto flex w-full max-w-400 flex-col px-5 pt-28 pb-6 md:px-6 md:pt-32">
       <div className="flex min-h-[calc(100svh-8.5rem)] flex-col">
-        <div className="text-muted flex flex-wrap items-center justify-between gap-3 font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
-          <span>BESPOKE CLIENT SERVICES PLATFORM</span>
-          <span className="hidden md:inline">CONCIERGERIE PRIVÉE — SUISSE</span>
+        <div className="text-muted flex items-center gap-4 font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
+          <span>CONCIERGERIE PRIVÉE — SUISSE</span>
+          <span className="bg-fg/20 hidden h-px flex-1 md:block" aria-hidden="true" />
         </div>
 
         <div className="flex flex-1 flex-col justify-center py-12 md:py-16">
