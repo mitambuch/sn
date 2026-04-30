@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════
-// GrainCanvas — film-grain texture, warm-tinted, full-bleed
+// FilmGrain — film-grain texture, warm-tinted, full-bleed
 //
 // WHAT: Renders an offscreen <canvas> that paints stochastic
 //       film-grain particles (random positions, varying sizes,
@@ -19,7 +19,7 @@
 import { cn } from '@utils/cn';
 import { useEffect, useRef } from 'react';
 
-interface GrainCanvasProps {
+interface FilmGrainProps {
   className?: string;
   /** 0–1, master alpha multiplier on every particle. Default 1. */
   intensity?: number;
@@ -34,12 +34,12 @@ const WARM_TINT: [number, number, number] = [62, 44, 30]; // #3e2c1e — slight 
 const HIGHLIGHT: [number, number, number] = [148, 138, 128]; // warm grey speck
 
 /** Animated film-grain canvas, decorative. aria-hidden, never reads to AT. */
-export const GrainCanvas = ({
+export const FilmGrain = ({
   className,
   intensity = 1,
   density = 14,
   tickMs = 80,
-}: GrainCanvasProps) => {
+}: FilmGrainProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {

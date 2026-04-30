@@ -14,7 +14,7 @@
 // ═══════════════════════════════════════════════════
 
 import { BrandArrow } from '@components/ui/BrandArrow';
-import { GrainCanvas } from '@components/ui/GrainCanvas';
+import { FilmGrain } from '@components/ui/FilmGrain';
 import { Logomark } from '@components/ui/Logomark';
 import { MagneticButton } from '@components/ui/MagneticButton';
 import { MaskedReveal } from '@components/ui/MaskedReveal';
@@ -113,7 +113,7 @@ interface InviteHeroProps {
 
 const InviteHero = ({ code, form, status, error, onChange, onSubmit }: InviteHeroProps) => (
   <section className="relative flex min-h-screen w-full flex-col overflow-hidden">
-    <GrainCanvas intensity={0.85} density={14} tickMs={90} />
+    <FilmGrain intensity={0.85} density={14} tickMs={90} />
 
     <header className="relative z-10 flex items-center justify-between px-6 pt-6 md:px-12 md:pt-10">
       <Logomark className="text-fg h-6 w-auto md:h-7" />
@@ -234,7 +234,7 @@ interface InviteSuccessProps {
 
 const InviteSuccess = ({ firstName }: InviteSuccessProps) => (
   <section className="relative flex min-h-screen w-full items-center justify-center overflow-hidden px-6">
-    <GrainCanvas intensity={1} density={20} tickMs={80} />
+    <FilmGrain intensity={1} density={20} tickMs={80} />
     <div className="relative z-10 mx-auto flex max-w-2xl flex-col items-center text-center">
       <SnArrow className="text-fg mb-12 h-12 w-auto" />
       <MaskedReveal immediate>
