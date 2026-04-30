@@ -1,8 +1,20 @@
 [build]
   command = "pnpm build"
   publish = "dist"
+  functions = "netlify/functions"
 
-# SPA routing — redirect all paths to index.html
+[functions]
+  node_bundler = "esbuild"
+
+# Netlify Functions (serverless) — /.netlify/functions/<name> routes
+# leave their direct path untouched so React Router doesn't intercept.
+[[redirects]]
+  from = "/.netlify/functions/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# SPA routing — redirect all OTHER paths to index.html so React Router
+# can handle deep links like /fr/invite/SAW-DEMO from a cold visit.
 [[redirects]]
   from = "/*"
   to = "/index.html"
