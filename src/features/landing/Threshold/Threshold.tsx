@@ -16,10 +16,10 @@ import { useEffect, useState } from 'react';
 
 import { WordmarkStroke } from '../Apparition/WordmarkStroke';
 
-const DRAW_MS = 3000;
-const HOLD_MS = 250;
-const FILL_MS = 900;
-const EXIT_MS = 700;
+const DRAW_MS = 3400;
+const HOLD_MS = 350;
+const FILL_MS = 1800;
+const EXIT_MS = 800;
 
 type LoaderPhase = 'draw' | 'hold' | 'fill' | 'exit' | 'done';
 
@@ -109,7 +109,7 @@ export const Threshold = () => {
 
       <div className="relative w-full max-w-6xl px-6 md:px-12">
         {/* Wordmark stroke (always rendered) */}
-        <WordmarkStroke progress={drawProgress} strokeWidth={2.4} className="text-[#1a1a1a]" />
+        <WordmarkStroke progress={drawProgress} strokeWidth={1.0} className="text-[#1a1a1a]" />
         {/* Wordmark fill — superimposed at the same position, opacity rising */}
         <div
           aria-hidden="true"
