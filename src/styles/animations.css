@@ -241,6 +241,21 @@
   }
 }
 
+/* ─── Scroll hint — vertical line that pulses to invite scroll ─ */
+
+@keyframes scroll-hint {
+  0%,
+  100% {
+    transform: scaleY(0.2);
+    transform-origin: top center;
+    opacity: 0.25;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
 /* ─── Reduced motion — disable ALL animations globally ────── */
 
 @media (prefers-reduced-motion: reduce) {

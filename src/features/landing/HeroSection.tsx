@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react';
 
 const EYEBROW = 'CONCIERGERIE PRIVÉE — SUISSE';
-const PILLARS = ['SUISSE', 'INDÉPENDANT', 'BESPOKE'];
+
+const PILLARS = [
+  { label: 'SUISSE', qualif: 'Cadre confidentiel' },
+  { label: 'INDÉPENDANT', qualif: 'Sans commission cachée' },
+  { label: 'BESPOKE', qualif: 'Sur mesure intégral' },
+];
+
 const PHRASES = [
   'Une demande, même imprécise.',
   'Un cadre, pas un catalogue.',
@@ -10,10 +16,10 @@ const PHRASES = [
   'Conciergerie privée — depuis la Suisse.',
 ];
 
-const TYPE_SPEED_MS = 55;
-const ERASE_SPEED_MS = 22;
-const HOLD_MS = 1800;
-const SETTLE_MS = 280;
+const TYPE_SPEED_MS = 80;
+const ERASE_SPEED_MS = 35;
+const HOLD_MS = 3500;
+const SETTLE_MS = 380;
 
 type Phase = 'typing' | 'holding' | 'erasing' | 'settle';
 
@@ -89,25 +95,41 @@ export const HeroSection = () => {
               <span>{typed}</span>
               <span
                 aria-hidden="true"
-                className="bg-fg ml-2 inline-block w-[0.45ch] animate-[cursor-blink_1.05s_step-end_infinite] align-baseline"
+                className="bg-fg ml-2 inline-block w-0.5 animate-[cursor-blink_1.05s_step-end_infinite] align-baseline"
                 style={{ height: '0.82em', transform: 'translateY(0.1em)' }}
               />
             </h1>
             <span className="sr-only">SAW Next — conciergerie privée. {PHRASES.join(' ')}</span>
           </div>
 
-          <div className="border-fg/20 grid grid-cols-1 gap-3 border-t pt-5 md:grid-cols-3 md:gap-8 md:pt-6">
+          <div className="border-fg/30 grid grid-cols-1 gap-6 border-t pt-6 md:grid-cols-3 md:gap-12 md:pt-7">
             {PILLARS.map((p, i) => (
-              <span
-                key={p}
-                className="text-fg flex items-baseline gap-4 font-mono text-xs font-semibold tracking-[0.45em] uppercase md:text-sm"
-              >
-                <span className="text-fg tabular-nums">0{i + 1}</span>
-                <span>{p}</span>
-              </span>
+              <div key={p.label} className="flex items-baseline gap-4">
+                <span className="text-fg font-mono text-[10px] font-semibold tracking-[0.4em] uppercase tabular-nums">
+                  0{i + 1}
+                </span>
+                <div className="flex flex-col gap-1.5">
+                  <span className="text-fg font-mono text-sm font-semibold tracking-[0.32em] uppercase md:text-base">
+                    {p.label}
+                  </span>
+                  <span className="text-fg font-mono text-[10px] tracking-[0.18em] uppercase">
+                    {p.qualif}
+                  </span>
+                </div>
+              </div>
             ))}
           </div>
         </div>
+      </div>
+
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute right-5 bottom-32 hidden flex-col items-end gap-3 md:right-8 md:bottom-36 md:flex"
+      >
+        <span className="text-fg font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
+          Découvrir
+        </span>
+        <span className="bg-fg block h-14 w-px animate-[scroll-hint_2.4s_ease-in-out_infinite]" />
       </div>
     </section>
   );

@@ -50,7 +50,7 @@ export const WordmarkStroke = ({ progress, className, strokeWidth = 1.6 }: Wordm
 
   return (
     <svg
-      viewBox="0 0 566.15 89.04"
+      viewBox="-3 -3 572.15 95.04"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label="SAW Next"
@@ -60,6 +60,7 @@ export const WordmarkStroke = ({ progress, className, strokeWidth = 1.6 }: Wordm
       strokeLinecap="round"
       strokeLinejoin="round"
       className={cn('h-auto w-full', className)}
+      style={{ overflow: 'visible' }}
     >
       {PATHS.map((d, i) => (
         <path key={`p-${i}`} d={d} {...dashStyle} />
