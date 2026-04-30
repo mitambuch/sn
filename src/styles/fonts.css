@@ -1,11 +1,20 @@
 /* ═══════════════════════════════════════════════════════════════
-   FONTS — Self-hosted for privacy, performance, and reliability.
-   No external requests to Google. GDPR/nLPD compliant.
-   Change fonts HERE → index.css @theme picks them up → done.
+   FONTS — Self-hosted variable fonts, no external requests.
+   Geist + Geist Mono via @fontsource-variable (Vercel OFL).
+   Imported as JS modules in main.tsx so Vite bundles the woff2 locally.
 
-   Files in public/fonts/ (woff2, ~82KB total).
-   Source: fontsource.org (open-source font CDN).
+   Geist          → body, paragraphs, form fields (UI norms).
+   Geist Mono     → headings, brand marks, technical labels (signature).
+
+   Legacy Space Grotesk / JetBrains Mono woff2 still in public/fonts
+   for the workbench /lab and /playground only (loaded on-demand).
    ═══════════════════════════════════════════════════════════════ */
+
+/* Geist + Geist Mono are imported via @fontsource-variable in main.tsx.
+   They register the font-families "Geist Variable" and "Geist Mono Variable"
+   at the document level — no additional @font-face declarations needed. */
+
+/* ─── Legacy fonts (workbench only — kept for /playground showcase) ─── */
 
 @font-face {
   font-family: 'Space Grotesk';

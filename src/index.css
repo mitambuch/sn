@@ -37,8 +37,8 @@
   --color-info-text: #52b0ff;
   --color-accent-text: #f0f0f0;
 
-  --font-family-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-  --font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-family-sans: 'Geist Variable', system-ui, -apple-system, sans-serif;
+  --font-family-mono: 'Geist Mono Variable', 'JetBrains Mono', 'Fira Code', monospace;
 }
 
 /* Light mode override (monochrome — derived from same scale, no warm tones) */

@@ -114,6 +114,58 @@
   }
 }
 
+/* ─── Arrow pulse — signature S↗N breathing arrow ──────── */
+
+@keyframes arrow-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  50% {
+    opacity: 0.55;
+    transform: translateX(2px) translateY(-2px);
+  }
+}
+
+@utility animate-arrow-pulse {
+  animation: arrow-pulse 3.5s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* ─── Wordmark draw — clip-path reveal from left, brand moment ── */
+
+@keyframes wordmark-draw {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@utility animate-wordmark-draw {
+  animation: wordmark-draw 1.4s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+/* ─── Veil rise — line-by-line text reveal (masked) ────── */
+
+@keyframes veil-rise {
+  from {
+    transform: translateY(110%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+@utility animate-veil-rise {
+  animation: veil-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
 /* ─── Reduced motion — disable ALL animations globally ────── */
 
 @media (prefers-reduced-motion: reduce) {

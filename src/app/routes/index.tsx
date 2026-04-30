@@ -1,5 +1,6 @@
 import { AdminLayout } from '@app/layouts/AdminLayout';
 import { AppLayout } from '@app/layouts/AppLayout';
+import { LandingLayout } from '@app/layouts/LandingLayout';
 import { PublicLayout } from '@app/layouts/PublicLayout';
 import RootLayout from '@app/layouts/RootLayout';
 import { LocaleProvider } from '@app/LocaleProvider';
@@ -34,6 +35,7 @@ function lazyWithRetry<T extends ComponentType>(
 /* ─── Public ─── */
 
 const Home = lazyWithRetry(() => import('@pages/Home'));
+const Invite = lazyWithRetry(() => import('@pages/Invite'));
 const Playground = lazyWithRetry(() => import('@pages/Playground'));
 const Lab = lazyWithRetry(() => import('@pages/Lab'));
 const NotFound = lazyWithRetry(() => import('@pages/NotFound'));
@@ -105,9 +107,14 @@ export default function AppRoutes() {
 
         {/* ─── Canonical locale-prefixed tree ─── */}
         <Route path="/:locale" element={<LocaleLayout />}>
-          {/* ─── Public surface ─── */}
-          <Route element={<PublicLayout />}>
+          {/* ─── Landing surface (light, immersive, no chrome) ─── */}
+          <Route element={<LandingLayout />}>
             <Route index element={<Home />} />
+            <Route path="invite/:code" element={<Invite />} />
+          </Route>
+
+          {/* ─── Public surface (dark, app chrome) ─── */}
+          <Route element={<PublicLayout />}>
             <Route path="playground" element={<Playground />} />
             <Route path="lab" element={<Lab />} />
             <Route path="login" element={<Login />} />

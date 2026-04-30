@@ -1,3 +1,5 @@
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
 import './index.css';
 import '@config/i18n'; // WHY: initialise i18next before React renders so t() works on first paint
 
