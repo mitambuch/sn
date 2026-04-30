@@ -29,8 +29,12 @@ export const HeroSection = () => (
         <span className="hidden md:inline">CONCIERGERIE PRIVÉE — GENÈVE</span>
       </div>
 
-      {/* Wordmark monumental, dominates the viewport */}
-      <Wordmark className="text-fg w-full" />
+      {/* Wordmark monumental — capped to a sane max so it doesn't become
+          a highway billboard on 4K screens. ~1100px on desktop is already
+          imposing without going absurd. */}
+      <div className="w-full max-w-[min(90vw,1200px)]">
+        <Wordmark className="text-fg w-full" />
+      </div>
 
       {/* Sub-mark + accroche editorial */}
       <div className="mt-12 grid gap-8 md:mt-16 md:grid-cols-12 md:gap-16">
