@@ -65,7 +65,7 @@ export const ExpertiseSection = () => (
         }
       />
 
-      <p className="text-fg/80 -mt-6 mb-12 max-w-3xl text-base leading-relaxed md:-mt-8 md:mb-16 md:text-lg">
+      <p className="text-fg -mt-6 mb-12 max-w-3xl text-base leading-relaxed md:-mt-8 md:mb-16 md:text-lg">
         {INTRO}
       </p>
 
@@ -75,14 +75,14 @@ export const ExpertiseSection = () => (
             key={d.id}
             className="border-fg/15 group grid grid-cols-[3.25rem_1fr_auto] items-start gap-4 border-b py-6 md:py-7"
           >
-            <span className="text-muted pt-1 font-mono text-[10px] font-semibold tracking-[0.4em] uppercase tabular-nums">
+            <span className="text-fg pt-1 font-mono text-[10px] font-semibold tracking-[0.4em] uppercase tabular-nums">
               {d.id}
             </span>
             <div className="min-w-0">
               <h3 className="text-fg font-mono text-lg leading-tight font-semibold tracking-tight uppercase">
                 {d.title}.
               </h3>
-              <p className="text-muted mt-2 font-mono text-[11px] leading-relaxed tracking-[0.2em] uppercase">
+              <p className="text-fg mt-2 font-mono text-[11px] leading-relaxed tracking-[0.2em] uppercase">
                 {d.sub}
               </p>
             </div>
@@ -90,7 +90,7 @@ export const ExpertiseSection = () => (
               size={20}
               strokeWidth={1.5}
               aria-hidden="true"
-              className="text-fg/30 group-hover:text-fg mt-1 transition-colors duration-300"
+              className="text-fg mt-1 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
             />
           </li>
         ))}

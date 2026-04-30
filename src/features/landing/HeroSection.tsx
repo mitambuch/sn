@@ -102,7 +102,7 @@ export const HeroSection = () => {
             <span className="sr-only">SAW Next — conciergerie privée. {PHRASES.join(' ')}</span>
           </div>
 
-          <div className="border-fg/30 grid grid-cols-1 gap-6 border-t pt-6 md:grid-cols-3 md:gap-12 md:pt-7">
+          <div className="border-fg/15 grid grid-cols-1 gap-6 border-t pt-6 md:grid-cols-3 md:gap-12 md:pt-7">
             {PILLARS.map((p, i) => (
               <div key={p.label} className="flex items-baseline gap-4">
                 <span className="text-fg font-mono text-[10px] font-semibold tracking-[0.4em] uppercase tabular-nums">

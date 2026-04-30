@@ -51,7 +51,7 @@ export const PositionnementSection = () => (
         }
         trailing={
           <div className="border-fg/15 hidden min-w-56 border-l pl-5 md:block">
-            <p className="text-muted font-mono text-[10px] leading-relaxed font-semibold tracking-[0.3em] uppercase">
+            <p className="text-fg font-mono text-[10px] leading-relaxed font-semibold tracking-[0.3em] uppercase">
               Cadre suisse
               <br />
               Intervention privée

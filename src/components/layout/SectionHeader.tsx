@@ -27,11 +27,10 @@ export const SectionHeader = ({ index, label, title, trailing, className }: Sect
   >
     <div className="max-w-3xl">
       <div className="flex items-center gap-4">
-        <p className="text-muted font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
-          <span className="text-fg/30">{index} / </span>
-          {label}
+        <p className="text-fg font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
+          {index} / {label}
         </p>
-        <span className="bg-fg/20 hidden h-px w-16 md:block" aria-hidden="true" />
+        <span className="bg-fg/30 hidden h-px w-16 md:block" aria-hidden="true" />
       </div>
       <h2 className="text-fg mt-5 font-mono text-3xl leading-[1.04] font-semibold tracking-tight uppercase md:mt-6 md:text-5xl lg:text-6xl">
         {title}

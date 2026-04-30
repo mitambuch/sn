@@ -29,7 +29,7 @@ export const EquipeSection = () => (
         <div className="md:col-span-5">
           <div className="flex items-center gap-4">
             <p className="text-fg font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
-              <span className="text-fg/30">05 / </span>ÉQUIPE
+              05 / ÉQUIPE
             </p>
             <span className="bg-fg/30 hidden h-px w-16 md:block" aria-hidden="true" />
           </div>

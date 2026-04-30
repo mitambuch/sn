@@ -61,7 +61,7 @@ export const MethodeSection = () => {
             </>
           }
           trailing={
-            <p className="text-muted max-w-xs font-mono text-[10px] leading-relaxed font-semibold tracking-[0.3em] uppercase">
+            <p className="text-fg max-w-xs font-mono text-[10px] leading-relaxed font-semibold tracking-[0.3em] uppercase">
               Une ligne claire
               <br />
               du signal à l’exécution
@@ -75,7 +75,7 @@ export const MethodeSection = () => {
             return (
               <li
                 key={s.id}
-                className="border-fg/15 bg-fg/[0.025] relative min-h-72 overflow-hidden rounded-sm border p-5 md:p-6"
+                className="border-fg/15 bg-fg/[0.025] relative min-h-72 overflow-hidden rounded-sm border p-6 md:p-7"
                 style={{
                   opacity: revealed ? 1 : 0,
                   transform: revealed ? 'translateY(0)' : 'translateY(18px)',
@@ -107,7 +107,7 @@ export const MethodeSection = () => {
                     <h3 className="text-fg font-mono text-lg leading-tight font-semibold tracking-tight uppercase md:text-xl">
                       {s.verb}
                     </h3>
-                    <p className="text-muted mt-4 text-base leading-relaxed">{s.body}</p>
+                    <p className="text-fg mt-4 text-base leading-relaxed">{s.body}</p>
                   </div>
                 </div>
               </li>
@@ -123,7 +123,7 @@ export const MethodeSection = () => {
             transitionDelay: `${STEPS.length * STEP_STAGGER_MS + 220}ms`,
           }}
         >
-          <p className="text-muted max-w-xl font-mono text-[11px] leading-relaxed tracking-[0.2em] uppercase">
+          <p className="text-fg max-w-xl font-mono text-[11px] leading-relaxed tracking-[0.2em] uppercase">
             SAW Next agit comme facilitateur. Jamais comme intermédiaire financier.
           </p>
           <WipeButton href="#contact" variant="solid">

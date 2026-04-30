@@ -56,7 +56,7 @@ export const LandingHeader = () => {
         className={cn(
           'fixed top-0 right-0 left-0 z-50 transition-[background-color,backdrop-filter,border-color] duration-300',
           scrolled || menuOpen
-            ? 'border-fg/10 bg-bg/85 border-b backdrop-blur-xl'
+            ? 'border-fg/15 bg-bg/85 border-b backdrop-blur-xl'
             : 'border-b border-transparent bg-transparent',
         )}
       >
@@ -88,8 +88,8 @@ export const LandingHeader = () => {
                     onClick={() => setLocale(loc)}
                     aria-pressed={loc === locale}
                     className={cn(
-                      'focus-visible:ring-fg/30 hover:text-fg rounded-sm transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none',
-                      loc === locale ? 'text-fg' : 'text-muted',
+                      'text-fg focus-visible:ring-fg/30 rounded-sm border-b transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none',
+                      loc === locale ? 'border-fg' : 'hover:border-fg/40 border-transparent',
                     )}
                   >
                     {loc.toUpperCase()}
@@ -163,17 +163,17 @@ export const LandingHeader = () => {
                       transitionDelay: menuOpen ? `${120 + i * 70}ms` : '0ms',
                     }}
                   >
-                    <span className="text-muted font-mono text-[10px] font-semibold tracking-[0.4em] uppercase tabular-nums">
+                    <span className="text-fg font-mono text-[10px] font-semibold tracking-[0.4em] uppercase tabular-nums">
                       0{i + 1}
                     </span>
-                    <span className="text-fg/85 group-hover:text-fg font-mono text-2xl leading-tight font-semibold tracking-tight uppercase transition-colors duration-200 md:text-4xl lg:text-5xl">
+                    <span className="text-fg font-mono text-2xl leading-tight font-semibold tracking-tight uppercase md:text-4xl lg:text-5xl">
                       {item.label}
                     </span>
                     <ArrowUpRight
                       size={22}
                       strokeWidth={1.5}
                       aria-hidden="true"
-                      className="text-fg/30 group-hover:text-fg transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                      className="text-fg transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
                     />
                   </a>
                 </li>
@@ -204,7 +204,7 @@ export const LandingHeader = () => {
               />
             </Link>
 
-            <p className="text-muted font-mono text-[10px] font-semibold tracking-[0.32em] uppercase">
+            <p className="text-fg font-mono text-[10px] font-semibold tracking-[0.32em] uppercase">
               {SIGNATURE_LINE}
             </p>
           </div>
