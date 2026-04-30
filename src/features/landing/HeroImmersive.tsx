@@ -8,7 +8,7 @@
 // WHEN: First section of the landing one-pager. Single instance.
 // CHANGE THE TAGLINE: edit src/locales/fr.json + en.json under
 //                     landing.hero.* — never inline.
-// CHANGE THE GRAIN: prop on <GrainCanvas /> below (intensity, gridPx).
+// CHANGE THE GRAIN: prop on <GrainCanvas /> below (intensity, density, tickMs).
 // ═══════════════════════════════════════════════════
 
 import { GrainCanvas } from '@components/ui/GrainCanvas';
@@ -26,7 +26,7 @@ export const HeroImmersive = ({ id = 'hero' }: HeroImmersiveProps) => {
   return (
     <section id={id} className="relative flex min-h-screen w-full flex-col overflow-hidden">
       {/* Living grain backdrop — decorative, aria-hidden inside */}
-      <GrainCanvas intensity={0.7} gridPx={6} tint="#1a1a1a" />
+      <GrainCanvas intensity={1} density={18} tickMs={90} />
 
       {/* Top metadata strip — Geist Mono, ultra-discreet */}
       <header className="relative z-10 flex items-center justify-between px-6 pt-6 md:px-12 md:pt-10">

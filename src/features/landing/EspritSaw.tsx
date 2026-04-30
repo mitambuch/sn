@@ -10,6 +10,7 @@
 // CHANGE TERM DEFINITIONS: TERMS array below.
 // ═══════════════════════════════════════════════════
 
+import { BrandArrow } from '@components/ui/BrandArrow';
 import { MaskedReveal } from '@components/ui/MaskedReveal';
 import { cn } from '@utils/cn';
 import type { ReactNode } from 'react';
@@ -83,10 +84,12 @@ export const EspritSaw = ({ id = 'esprit' }: EspritSawProps) => {
 
         <div className="col-span-12 md:col-span-9">
           <MaskedReveal>
-            <h2 className="text-fg font-mono text-3xl leading-[0.95] tracking-tight uppercase md:text-5xl lg:text-6xl">
+            <h2 className="text-fg font-mono text-3xl leading-[0.95] font-semibold tracking-tight uppercase md:text-5xl lg:text-6xl">
               L&apos;esprit
               <br />
-              SAW<span className="text-fg/60">↗</span>NEXT
+              SAW
+              <BrandArrow className="text-fg/60 mx-1 h-[0.7em]" />
+              NEXT
             </h2>
           </MaskedReveal>
 

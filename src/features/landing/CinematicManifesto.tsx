@@ -100,7 +100,7 @@ export const CinematicManifesto = ({ id = 'manifeste' }: CinematicManifestoProps
               <span className="text-fg/40 font-mono text-xs tracking-[0.4em] uppercase">
                 {act.tag}
               </span>
-              <p className="text-fg font-mono text-2xl leading-tight tracking-tight uppercase">
+              <p className="text-fg font-mono text-2xl leading-tight font-semibold tracking-tight uppercase">
                 {act.body}
               </p>
             </div>
@@ -133,7 +133,7 @@ export const CinematicManifesto = ({ id = 'manifeste' }: CinematicManifestoProps
                 <span className="text-fg/30 font-mono text-xs tracking-[0.5em] uppercase">
                   Acte {act.tag}
                 </span>
-                <p className="text-fg font-mono text-4xl leading-tight tracking-tight uppercase md:text-5xl lg:text-6xl">
+                <p className="text-fg font-mono text-4xl leading-tight font-semibold tracking-tight uppercase md:text-5xl lg:text-6xl">
                   {act.body}
                 </p>
               </div>

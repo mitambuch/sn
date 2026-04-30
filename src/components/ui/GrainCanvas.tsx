@@ -1,46 +1,44 @@
 // ═══════════════════════════════════════════════════
-// GrainCanvas — animated organic grain texture, full-bleed
+// GrainCanvas — film-grain texture, warm-tinted, full-bleed
 //
-// WHAT: Renders a <canvas> that paints a slowly-evolving Perlin noise
-//       field as low-alpha dots. Gives the "living paper" feel of the
-//       brand presentation PDF without the weight of a video bg.
-// WHEN: Hero backdrop, invite page seal, any premium section that
-//       needs ambient matter. Set `intensity` per surface.
-// HOW IT WORKS: simplex-noise 2D + slow time axis. ResizeObserver +
-//       devicePixelRatio for crispness. requestAnimationFrame loop with
-//       throttle. Bails on prefers-reduced-motion (paints once, static).
-// CHANGE DENSITY: tweak GRID_PX (smaller = denser grain, heavier CPU).
-// CHANGE TINT: edit the rgba in fillStyle below.
+// WHAT: Renders an offscreen <canvas> that paints stochastic
+//       film-grain particles (random positions, varying sizes,
+//       warm/cold mix). Refreshes on a discretised tick (~80ms by
+//       default) so it flickers like a real reel rather than
+//       looking digitally noisy.
+// WHEN: Hero backdrop, invite seal, any premium ambient surface.
+// HOW IT WORKS: stochastic particle generation per tick (no grid),
+//       devicePixelRatio-aware, ResizeObserver, prefers-reduced-motion
+//       paints once and freezes.
+// CHANGE WARMTH: WARM_TINT below — pulls the dominant colour toward
+//       brown/sepia. Set to '#1a1a1a' for pure cold grain.
+// CHANGE DENSITY: prop `density` (particles per 10000px²). Default 14.
+// CHANGE FLICKER: prop `tickMs` (ms between refresh). Default 80.
 // ═══════════════════════════════════════════════════
 
 import { cn } from '@utils/cn';
 import { useEffect, useRef } from 'react';
-import { createNoise3D } from 'simplex-noise';
 
 interface GrainCanvasProps {
   className?: string;
-  /** 0–1, scales the dot opacity. Default 1 (full). */
+  /** 0–1, master alpha multiplier on every particle. Default 1. */
   intensity?: number;
-  /** px between dots. Smaller = denser grain. Default 7. */
-  gridPx?: number;
-  /** Hex tint for dots. Default '#1a1a1a' (brand fg in light mode). */
-  tint?: string;
+  /** Particles per 10000 px² (≈ a 100×100 patch). Default 14. */
+  density?: number;
+  /** Milliseconds between full repaints — gives the flicker cadence. */
+  tickMs?: number;
 }
 
-function hexToRgb(hex: string): [number, number, number] {
-  const clean = hex.replace('#', '');
-  const r = parseInt(clean.slice(0, 2), 16);
-  const g = parseInt(clean.slice(2, 4), 16);
-  const b = parseInt(clean.slice(4, 6), 16);
-  return [r, g, b];
-}
+const COLD_TINT: [number, number, number] = [22, 22, 22]; // #161616 — base shadow
+const WARM_TINT: [number, number, number] = [62, 44, 30]; // #3e2c1e — slight sepia
+const HIGHLIGHT: [number, number, number] = [148, 138, 128]; // warm grey speck
 
-/** Animated Perlin grain, decorative. aria-hidden, never reads to AT. */
+/** Animated film-grain canvas, decorative. aria-hidden, never reads to AT. */
 export const GrainCanvas = ({
   className,
   intensity = 1,
-  gridPx = 7,
-  tint = '#1a1a1a',
+  density = 14,
+  tickMs = 80,
 }: GrainCanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -50,12 +48,9 @@ export const GrainCanvas = ({
     const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
-    const noise = createNoise3D();
-    const [r, g, b] = hexToRgb(tint);
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
     let raf = 0;
-    let t = 0;
+    let lastTick = 0;
     let width = 0;
     let height = 0;
 
@@ -70,26 +65,42 @@ export const GrainCanvas = ({
 
     const paint = () => {
       ctx.clearRect(0, 0, width, height);
-      const cols = Math.ceil(width / gridPx);
-      const rows = Math.ceil(height / gridPx);
-      const NOISE_SCALE = 0.06;
-      const TIME_SCALE = 0.6;
+      const area = width * height;
+      const count = Math.floor((area / 10000) * density);
 
-      for (let x = 0; x < cols; x++) {
-        for (let y = 0; y < rows; y++) {
-          const n = noise(x * NOISE_SCALE, y * NOISE_SCALE, t * TIME_SCALE);
-          // Map noise [-1, 1] → opacity. Bias dark to give a velvety feel.
-          const a = Math.max(0, n) * 0.18 * intensity;
-          if (a < 0.01) continue;
-          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-          ctx.fillRect(x * gridPx, y * gridPx, 1.5, 1.5);
+      for (let i = 0; i < count; i++) {
+        const x = Math.random() * width;
+        const y = Math.random() * height;
+        const r = Math.random();
+
+        // 65% deep cold grain, 25% warm sepia speck, 10% bright warm-grey highlight.
+        let rgb: [number, number, number];
+        let alpha: number;
+        let size: number;
+        if (r < 0.65) {
+          rgb = COLD_TINT;
+          alpha = (0.18 + Math.random() * 0.22) * intensity;
+          size = Math.random() < 0.85 ? 1 : 1.6;
+        } else if (r < 0.9) {
+          rgb = WARM_TINT;
+          alpha = (0.1 + Math.random() * 0.18) * intensity;
+          size = Math.random() < 0.7 ? 1.2 : 2;
+        } else {
+          rgb = HIGHLIGHT;
+          alpha = (0.04 + Math.random() * 0.08) * intensity;
+          size = Math.random() < 0.5 ? 1.5 : 2.4;
         }
+
+        ctx.fillStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`;
+        ctx.fillRect(x, y, size, size);
       }
     };
 
-    const tick = () => {
-      t += 0.004;
-      paint();
+    const tick = (now: number) => {
+      if (now - lastTick >= tickMs) {
+        paint();
+        lastTick = now;
+      }
       raf = window.requestAnimationFrame(tick);
     };
 
@@ -109,7 +120,7 @@ export const GrainCanvas = ({
       window.cancelAnimationFrame(raf);
       ro.disconnect();
     };
-  }, [intensity, gridPx, tint]);
+  }, [intensity, density, tickMs]);
 
   return (
     <canvas

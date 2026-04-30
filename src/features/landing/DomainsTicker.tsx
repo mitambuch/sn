@@ -14,6 +14,7 @@
 // CHANGE LIST: DOMAINS array below.
 // ═══════════════════════════════════════════════════
 
+import { BrandArrow } from '@components/ui/BrandArrow';
 import { MaskedReveal } from '@components/ui/MaskedReveal';
 import { cn } from '@utils/cn';
 import { useState } from 'react';
@@ -62,7 +63,7 @@ export const DomainsTicker = ({ id = 'domaines' }: DomainsTickerProps) => {
 
         <div className="col-span-12 md:col-span-9">
           <MaskedReveal>
-            <h2 className="text-fg font-mono text-2xl leading-[1.05] tracking-tight uppercase md:text-4xl">
+            <h2 className="text-fg font-mono text-2xl leading-[1.05] font-semibold tracking-tight uppercase md:text-4xl">
               La société accompagne ses clients
               <br />
               dans <span className="text-fg/60">{DOMAINS.length}</span> univers de haute exigence.
@@ -101,7 +102,7 @@ export const DomainsTicker = ({ id = 'domaines' }: DomainsTickerProps) => {
                   {/* Title */}
                   <span
                     className={cn(
-                      'text-fg flex-1 font-mono text-lg leading-tight tracking-tight uppercase transition-transform duration-500 md:text-2xl lg:text-3xl',
+                      'text-fg flex-1 font-mono text-lg leading-tight font-semibold tracking-tight uppercase transition-transform duration-500 md:text-2xl lg:text-3xl',
                       isActive && 'md:translate-x-2',
                     )}
                   >
@@ -119,15 +120,12 @@ export const DomainsTicker = ({ id = 'domaines' }: DomainsTickerProps) => {
                   </span>
 
                   {/* Brand arrow — appears at the very right on hover */}
-                  <span
-                    aria-hidden="true"
+                  <BrandArrow
                     className={cn(
-                      'text-fg pointer-events-none absolute top-1/2 right-0 hidden -translate-y-1/2 font-mono text-2xl transition-all duration-500 md:block',
+                      'text-fg pointer-events-none absolute top-1/2 right-0 hidden h-[1.1em] -translate-y-1/2 transition-all duration-500 md:block',
                       isActive ? 'translate-x-0 opacity-100' : 'translate-x-4 opacity-0',
                     )}
-                  >
-                    ↗
-                  </span>
+                  />
                 </li>
               );
             })}

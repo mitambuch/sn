@@ -13,6 +13,7 @@
 // CHANGE ENDPOINT: SUBMIT_URL constant — points to Netlify function.
 // ═══════════════════════════════════════════════════
 
+import { BrandArrow } from '@components/ui/BrandArrow';
 import { GrainCanvas } from '@components/ui/GrainCanvas';
 import { Logomark } from '@components/ui/Logomark';
 import { MagneticButton } from '@components/ui/MagneticButton';
@@ -112,7 +113,7 @@ interface InviteHeroProps {
 
 const InviteHero = ({ code, form, status, error, onChange, onSubmit }: InviteHeroProps) => (
   <section className="relative flex min-h-screen w-full flex-col overflow-hidden">
-    <GrainCanvas intensity={0.5} gridPx={6} tint="#1a1a1a" />
+    <GrainCanvas intensity={0.85} density={14} tickMs={90} />
 
     <header className="relative z-10 flex items-center justify-between px-6 pt-6 md:px-12 md:pt-10">
       <Logomark className="text-fg h-6 w-auto md:h-7" />
@@ -127,7 +128,7 @@ const InviteHero = ({ code, form, status, error, onChange, onSubmit }: InviteHer
           <span className="text-fg/40 font-mono text-[9px] tracking-[0.5em] uppercase">
             SAW · INVITATION
           </span>
-          <span className="text-fg mt-3 font-mono text-2xl tracking-[0.3em] md:text-4xl">
+          <span className="text-fg mt-3 font-mono text-2xl font-semibold tracking-[0.3em] md:text-4xl">
             {code || '— · — · —'}
           </span>
         </div>
@@ -139,7 +140,7 @@ const InviteHero = ({ code, form, status, error, onChange, onSubmit }: InviteHer
         </p>
       </MaskedReveal>
       <MaskedReveal immediate delay={420}>
-        <h1 className="text-fg mt-3 font-mono text-2xl leading-tight tracking-tight uppercase md:text-4xl">
+        <h1 className="text-fg mt-3 font-mono text-2xl leading-tight font-semibold tracking-tight uppercase md:text-4xl">
           Salvatore Montemagno
         </h1>
       </MaskedReveal>
@@ -215,7 +216,7 @@ const InviteForm = ({ form, status, error, onChange, onSubmit }: InviteFormProps
           )}
         >
           <span>{status === 'submitting' ? 'Envoi en cours' : 'Accepter l’invitation'}</span>
-          <span aria-hidden="true">↗</span>
+          <BrandArrow className="h-[0.9em]" />
         </button>
       </MagneticButton>
     </div>
@@ -233,7 +234,7 @@ interface InviteSuccessProps {
 
 const InviteSuccess = ({ firstName }: InviteSuccessProps) => (
   <section className="relative flex min-h-screen w-full items-center justify-center overflow-hidden px-6">
-    <GrainCanvas intensity={0.85} gridPx={5} tint="#1a1a1a" />
+    <GrainCanvas intensity={1} density={20} tickMs={80} />
     <div className="relative z-10 mx-auto flex max-w-2xl flex-col items-center text-center">
       <SnArrow className="text-fg mb-12 h-12 w-auto" />
       <MaskedReveal immediate>
@@ -242,7 +243,7 @@ const InviteSuccess = ({ firstName }: InviteSuccessProps) => (
         </p>
       </MaskedReveal>
       <MaskedReveal immediate delay={200}>
-        <h1 className="text-fg mt-8 font-mono text-3xl leading-tight tracking-tight uppercase md:text-5xl">
+        <h1 className="text-fg mt-8 font-mono text-3xl leading-tight font-semibold tracking-tight uppercase md:text-5xl">
           Merci{firstName ? `, ${firstName}` : ''}.
         </h1>
       </MaskedReveal>

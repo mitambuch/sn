@@ -11,6 +11,7 @@
 //                 once /brief is run for client.md.
 // ═══════════════════════════════════════════════════
 
+import { BrandArrow } from '@components/ui/BrandArrow';
 import { Logomark } from '@components/ui/Logomark';
 import { MagneticButton } from '@components/ui/MagneticButton';
 import { MaskedReveal } from '@components/ui/MaskedReveal';
@@ -53,7 +54,7 @@ export const ConversationFooter = ({ id = 'conversation' }: ConversationFooterPr
 
         <div className="col-span-12 md:col-span-9">
           <MaskedReveal>
-            <h2 className="text-fg font-mono text-3xl leading-[0.95] tracking-tight uppercase md:text-5xl lg:text-6xl">
+            <h2 className="text-fg font-mono text-3xl leading-[0.95] font-semibold tracking-tight uppercase md:text-5xl lg:text-6xl">
               Chaque expérience commence
               <br />
               par une conversation.
@@ -87,7 +88,7 @@ export const ConversationFooter = ({ id = 'conversation' }: ConversationFooterPr
                   href={`tel:${CONTACT.phoneRaw}`}
                   className="border-fg/30 hover:border-fg text-fg focus-visible:ring-fg/40 inline-flex items-center justify-center gap-3 rounded-full border px-6 py-3 font-mono text-[11px] tracking-[0.3em] uppercase transition-colors duration-300 focus-visible:ring-2 focus-visible:outline-none"
                 >
-                  <span aria-hidden="true">↗</span>
+                  <BrandArrow className="h-[0.9em]" />
                   <span>{CONTACT.phone}</span>
                 </a>
               </MagneticButton>
