@@ -1,6 +1,7 @@
 import { MaskedReveal } from '@components/ui/MaskedReveal';
 import { WipeButton } from '@components/ui/WipeButton';
 
+const EYEBROW = 'CONCIERGERIE PRIVÉE — SUISSE';
 const PILLARS = ['SUISSE', 'INDÉPENDANT', 'BESPOKE'];
 
 export const HeroSection = () => (
@@ -11,7 +12,7 @@ export const HeroSection = () => (
     <div className="mx-auto flex w-full max-w-400 flex-col px-5 pt-28 pb-6 md:px-6 md:pt-32">
       <div className="flex min-h-[calc(100svh-8.5rem)] flex-col">
         <div className="text-muted flex items-center gap-4 font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
-          <span>CONCIERGERIE PRIVÉE — SUISSE</span>
+          <span>{EYEBROW}</span>
           <span className="bg-fg/20 hidden h-px flex-1 md:block" aria-hidden="true" />
         </div>
 
