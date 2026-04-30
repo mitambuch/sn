@@ -1,8 +1,14 @@
 // ═══════════════════════════════════════════════════
-// MethodeSection — GAFHA grid + 4-step horizontal flow + cards
+// MethodeSection — horizontal timeline (different layout from Équipe)
+//
+// WHAT: 4 steps presented as a horizontal numbered timeline. Big
+//       index numbers (clamp 3-5rem) with hairlines between them.
+//       Verb mono uppercase + body sans below. NOT cards — this
+//       differentiates from EquipeSection (cards).
 // ═══════════════════════════════════════════════════
 
 import { SectionHeader } from '@components/layout/SectionHeader';
+import { cn } from '@utils/cn';
 
 const STEPS = [
   { id: '01', verb: 'Une demande.', body: 'Vous formulez une intention, même imprécise.' },
@@ -34,21 +40,30 @@ export const MethodeSection = () => (
         }
       />
 
-      <ol className="grid grid-cols-1 gap-6 md:grid-cols-4">
-        {STEPS.map(s => (
-          <li key={s.id} className="bg-surface flex h-full flex-col gap-4 rounded-md p-6 md:p-8">
-            <span className="text-muted font-mono text-[10px] font-semibold tracking-[0.4em] uppercase tabular-nums">
-              {s.id}
-            </span>
+      <ol className="grid grid-cols-1 gap-12 md:grid-cols-4 md:gap-8">
+        {STEPS.map((s, i) => (
+          <li key={s.id} className="flex flex-col gap-5">
+            {/* Big index + hairline connector */}
+            <div className="flex items-center gap-4">
+              <span
+                className="text-fg font-mono leading-none font-semibold tracking-tight tabular-nums"
+                style={{ fontSize: 'clamp(2.5rem, 4vw, 3.75rem)' }}
+              >
+                {s.id}
+              </span>
+              {i < STEPS.length - 1 && (
+                <span aria-hidden="true" className="bg-fg/30 hidden h-px flex-1 md:block" />
+              )}
+            </div>
             <h3 className="text-fg font-mono text-base leading-tight font-semibold tracking-tight uppercase md:text-lg">
               {s.verb}
             </h3>
-            <p className="text-muted text-base leading-relaxed">{s.body}</p>
+            <p className={cn('text-muted text-base leading-relaxed')}>{s.body}</p>
           </li>
         ))}
       </ol>
 
-      <p className="text-muted mt-12 max-w-md font-mono text-[11px] leading-relaxed tracking-[0.2em] uppercase">
+      <p className="text-muted mt-16 max-w-md font-mono text-[11px] leading-relaxed tracking-[0.2em] uppercase">
         SAW Next agit comme facilitateur. Jamais comme intermédiaire financier.
       </p>
     </div>

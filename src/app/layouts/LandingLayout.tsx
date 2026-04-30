@@ -18,7 +18,7 @@ import { Loader } from '@features/landing/Loader/Loader';
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
-const LANDING_BG = '#d8dcda';
+const LANDING_BG = '#dad6cf';
 
 export const LandingLayout = () => {
   useEffect(() => {

@@ -40,7 +40,7 @@ export const LandingHeader = () => {
           : 'border-b border-transparent bg-transparent',
       )}
     >
-      <div className="mx-auto flex w-full max-w-[2560px] items-center justify-between px-6 py-5 md:px-12 md:py-6">
+      <div className="mx-auto flex w-full max-w-400 items-center justify-between px-5 py-5 md:px-6 md:py-6">
         {/* Left — Logomark */}
         <a
           href="#hero"
@@ -69,7 +69,7 @@ export const LandingHeader = () => {
             href="#contact"
             className={cn(
               'border-fg text-fg hover:bg-fg hover:text-bg focus-visible:ring-fg/30',
-              'inline-flex items-center gap-3 rounded-full border px-5 py-2.5 font-mono text-[10px] font-semibold tracking-[0.35em] uppercase transition-colors duration-200',
+              'inline-flex items-center gap-3 rounded-sm border px-5 py-2.5 font-mono text-[10px] font-semibold tracking-[0.35em] uppercase transition-colors duration-200',
               'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
             )}
           >

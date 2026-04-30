@@ -68,7 +68,10 @@ export const ExpertiseSection = () => {
           }
         />
 
-        <ol onMouseLeave={() => setHovered(null)} className="border-border border-t">
+        <ol
+          onMouseLeave={() => setHovered(null)}
+          className="border-border grid grid-cols-1 gap-x-12 border-t md:grid-cols-2"
+        >
           {DOMAINS.map(d => {
             const isActive = hovered === d.id;
             const isDimmed = hovered !== null && !isActive;
@@ -77,7 +80,7 @@ export const ExpertiseSection = () => {
                 key={d.id}
                 onMouseEnter={() => setHovered(d.id)}
                 className={cn(
-                  'border-border group grid grid-cols-[3rem_1fr_auto] items-center gap-4 border-b py-6 transition-opacity duration-300 md:grid-cols-[5rem_1fr_auto] md:gap-8 md:py-8',
+                  'border-border group grid grid-cols-[3rem_1fr_auto] items-center gap-4 border-b py-6 transition-opacity duration-300 md:grid-cols-[4rem_1fr_auto] md:gap-6 md:py-7',
                   isDimmed && 'opacity-40',
                 )}
               >

@@ -1,5 +1,10 @@
 // ═══════════════════════════════════════════════════
-// EquipeSection — GAFHA grid + 3 founder cards
+// EquipeSection — 3 founder cards (different layout from Méthode)
+//
+// WHAT: 3 founder cards in a 3-col grid. Each card = avatar carré
+//       (initials placeholder) en haut, then name + role tag + body.
+//       Cards are bg-surface rounded-sm — visually distinct from
+//       MethodeSection (which is timeline-style numbered, no cards).
 // ═══════════════════════════════════════════════════
 
 import { SectionHeader } from '@components/layout/SectionHeader';
@@ -42,22 +47,24 @@ export const EquipeSection = () => (
 
       <ul className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {FOUNDERS.map(f => (
-          <li key={f.name} className="bg-surface flex flex-col gap-5 rounded-md p-6 md:p-8">
-            <div className="flex items-center gap-4">
+          <li key={f.name} className="bg-surface flex flex-col gap-6 rounded-sm p-6 md:p-8">
+            {/* Avatar carré, large */}
+            <div className="border-fg/15 bg-bg flex aspect-square w-full items-center justify-center rounded-sm border">
               <span
                 aria-hidden="true"
-                className="border-border bg-bg text-fg flex h-12 w-12 shrink-0 items-center justify-center rounded-full border font-mono text-xs font-semibold tracking-widest uppercase"
+                className="text-fg font-mono font-semibold tracking-widest uppercase tabular-nums"
+                style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}
               >
                 {f.initials}
               </span>
-              <div className="min-w-0">
-                <h3 className="text-fg truncate font-mono text-base leading-tight font-semibold tracking-tight uppercase md:text-lg">
-                  {f.name}.
-                </h3>
-                <p className="text-muted truncate font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
-                  {f.role}
-                </p>
-              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <h3 className="text-fg font-mono text-base leading-tight font-semibold tracking-tight uppercase md:text-lg">
+                {f.name}.
+              </h3>
+              <p className="text-muted font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
+                {f.role}
+              </p>
             </div>
             <p className="text-muted text-base leading-relaxed">{f.body}</p>
           </li>
