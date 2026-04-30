@@ -1,15 +1,3 @@
-// ═══════════════════════════════════════════════════
-// MethodeSection — compact 4-col horizontal flow + scroll-driven reveal
-//
-// WHAT: 4 steps inline horizontally on desktop, each one appears in
-//       sequence as the section scrolls into view : the index fades
-//       in first, the connector line draws left→right (scaleX 0→1),
-//       the verb + body slide up. Stagger 220ms between steps. Once
-//       triggered, sticks (no re-trigger on scroll back).
-//       IntersectionObserver-based, no external lib.
-// WHEN: Section 04 of pages/Home.tsx, anchored at #methode.
-// ═══════════════════════════════════════════════════
-
 import { SectionHeader } from '@components/layout/SectionHeader';
 import { WipeButton } from '@components/ui/WipeButton';
 import { useEffect, useRef, useState } from 'react';
@@ -57,8 +45,13 @@ export const MethodeSection = () => {
   }, [revealed]);
 
   return (
-    <section id="methode" className="border-border relative w-full border-b py-20 md:py-28">
-      <div className="mx-auto w-full max-w-400 px-5 md:px-6">
+    <section
+      id="methode"
+      className="border-border relative isolate w-full scroll-mt-24 overflow-hidden border-b py-24 md:scroll-mt-28 md:py-32"
+    >
+      <div className="landing-grid absolute inset-0 opacity-30" aria-hidden="true" />
+
+      <div className="relative mx-auto w-full max-w-400 px-5 md:px-6">
         <SectionHeader
           index="04"
           label="MÉTHODE"
@@ -69,65 +62,77 @@ export const MethodeSection = () => {
               répété sans concession.
             </>
           }
+          trailing={
+            <p className="text-muted max-w-xs font-mono text-[10px] leading-relaxed font-semibold tracking-[0.3em] uppercase">
+              Une ligne claire
+              <br />
+              du signal à l’exécution
+            </p>
+          }
         />
 
-        <ol ref={ref} className="grid grid-cols-1 gap-10 md:grid-cols-4 md:gap-8">
-          {STEPS.map((s, i) => {
-            const stepDelay = i * STEP_STAGGER_MS;
-            return (
-              <li key={s.id} className="relative flex flex-col gap-4">
-                {/* Index row : number + connector line drawing in */}
-                <div className="flex items-center gap-3">
-                  <span
-                    className="text-fg font-mono text-base font-semibold tracking-[0.4em] uppercase tabular-nums transition-opacity duration-500 ease-out"
-                    style={{
-                      opacity: revealed ? 1 : 0,
-                      transitionDelay: `${stepDelay}ms`,
-                    }}
-                  >
-                    {s.id}
-                  </span>
-                  {i < STEPS.length - 1 && (
-                    <span
-                      aria-hidden="true"
-                      className="bg-fg/40 hidden h-px flex-1 origin-left transition-transform duration-700 ease-out md:block"
-                      style={{
-                        transform: revealed ? 'scaleX(1)' : 'scaleX(0)',
-                        transitionDelay: `${stepDelay + 120}ms`,
-                      }}
-                    />
-                  )}
-                </div>
+        <div className="border-fg/15 bg-fg/[0.03] relative overflow-hidden border p-4 md:p-6">
+          <div
+            className="bg-fg/45 pointer-events-none absolute inset-x-0 top-0 h-px animate-[landing-scan-x_6s_ease-in-out_infinite]"
+            aria-hidden="true"
+          />
 
-                {/* Verb + body : translate up + fade */}
-                <div
-                  className="flex flex-col gap-3 transition-all duration-700 ease-out"
+          <ol ref={ref} className="grid grid-cols-1 gap-4 md:grid-cols-4">
+            {STEPS.map((s, i) => {
+              const stepDelay = i * STEP_STAGGER_MS;
+              return (
+                <li
+                  key={s.id}
+                  className="border-fg/10 bg-bg/55 relative min-h-72 overflow-hidden border p-5 md:p-6"
                   style={{
                     opacity: revealed ? 1 : 0,
-                    transform: revealed ? 'translateY(0)' : 'translateY(14px)',
-                    transitionDelay: `${stepDelay + 220}ms`,
+                    transform: revealed ? 'translateY(0)' : 'translateY(18px)',
+                    transition: 'opacity 700ms ease, transform 700ms ease',
+                    transitionDelay: `${stepDelay}ms`,
                   }}
                 >
-                  <h3 className="text-fg font-mono text-base leading-tight font-semibold tracking-tight uppercase md:text-lg">
-                    {s.verb}
-                  </h3>
-                  <p className="text-muted text-base leading-relaxed">{s.body}</p>
-                </div>
-              </li>
-            );
-          })}
-        </ol>
+                  <span
+                    aria-hidden="true"
+                    className="bg-fg/35 absolute top-0 right-0 left-0 h-px origin-left"
+                    style={{
+                      transform: revealed ? 'scaleX(1)' : 'scaleX(0)',
+                      transition: 'transform 900ms ease',
+                      transitionDelay: `${stepDelay + 160}ms`,
+                    }}
+                  />
 
-        {/* Mention legale + CTA — appears after the last step has revealed */}
+                  <div className="flex h-full flex-col justify-between gap-10">
+                    <div className="flex items-start justify-between gap-6">
+                      <span className="text-fg font-mono text-base font-semibold tracking-[0.4em] uppercase tabular-nums">
+                        {s.id}
+                      </span>
+                      <span className="text-fg/15 font-mono text-6xl leading-none font-semibold tracking-tight tabular-nums">
+                        {s.id}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h3 className="text-fg font-mono text-lg leading-tight font-semibold tracking-tight uppercase md:text-xl">
+                        {s.verb}
+                      </h3>
+                      <p className="text-muted mt-4 text-base leading-relaxed">{s.body}</p>
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+
         <div
-          className="mt-16 flex flex-col items-start justify-between gap-8 transition-all duration-700 ease-out md:mt-20 md:flex-row md:items-end"
+          className="mt-12 grid grid-cols-1 gap-6 transition-all duration-700 ease-out md:mt-14 md:grid-cols-[1fr_auto] md:items-end"
           style={{
             opacity: revealed ? 1 : 0,
             transform: revealed ? 'translateY(0)' : 'translateY(14px)',
             transitionDelay: `${STEPS.length * STEP_STAGGER_MS + 220}ms`,
           }}
         >
-          <p className="text-muted max-w-md font-mono text-[11px] leading-relaxed tracking-[0.2em] uppercase">
+          <p className="text-muted max-w-xl font-mono text-[11px] leading-relaxed tracking-[0.2em] uppercase">
             SAW Next agit comme facilitateur. Jamais comme intermédiaire financier.
           </p>
           <WipeButton href="#contact" variant="solid">

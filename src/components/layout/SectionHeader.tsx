@@ -23,17 +23,20 @@ interface SectionHeaderProps {
 
 export const SectionHeader = ({ index, label, title, trailing, className }: SectionHeaderProps) => (
   <header
-    className={cn('mb-10 flex flex-wrap items-baseline justify-between gap-4 md:mb-14', className)}
+    className={cn('mb-12 grid grid-cols-1 gap-6 md:mb-16 md:grid-cols-[1fr_auto]', className)}
   >
     <div className="max-w-3xl">
-      <p className="text-muted font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
-        <span className="text-fg/30">{index} / </span>
-        {label}
-      </p>
-      <h2 className="text-fg mt-4 font-mono text-2xl leading-[1.1] font-semibold tracking-tight uppercase md:mt-5 md:text-4xl lg:text-5xl">
+      <div className="flex items-center gap-4">
+        <p className="text-muted font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
+          <span className="text-fg/30">{index} / </span>
+          {label}
+        </p>
+        <span className="bg-fg/20 hidden h-px w-16 md:block" aria-hidden="true" />
+      </div>
+      <h2 className="text-fg mt-5 font-mono text-3xl leading-[1.04] font-semibold tracking-tight uppercase md:mt-6 md:text-5xl lg:text-6xl">
         {title}
       </h2>
     </div>
-    {trailing && <div>{trailing}</div>}
+    {trailing && <div className="self-end">{trailing}</div>}
   </header>
 );

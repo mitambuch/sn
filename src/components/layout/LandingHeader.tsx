@@ -1,15 +1,3 @@
-// ═══════════════════════════════════════════════════
-// LandingHeader — public landing top-bar (logo + anchor nav + CTA)
-//
-// WHAT: Sticky transparent header at the top of the public landing.
-//       Logomark at left, anchor nav in the middle (positionnement,
-//       expertise, méthode, équipe), magnetic CONTACTER button at
-//       right. Backdrops with blur once scrolled.
-// WHEN: Mounted by LandingLayout for `/` and `/invite/:code`.
-// CHANGE NAV ITEMS: NAV array below — anchors must match section ids
-//       in pages/Home.tsx.
-// ═══════════════════════════════════════════════════
-
 import { Logomark } from '@components/ui/Logomark';
 import { MagneticButton } from '@components/ui/MagneticButton';
 import { cn } from '@utils/cn';
@@ -28,50 +16,54 @@ export const LandingHeader = () => {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
     window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   return (
     <header
       className={cn(
-        'fixed top-0 right-0 left-0 z-50 transition-[background-color,backdrop-filter,border-color] duration-300',
+        'fixed top-0 right-0 left-0 z-50 transition-[background-color,backdrop-filter,border-color,transform] duration-300',
         scrolled
-          ? 'border-fg/10 bg-bg/85 border-b backdrop-blur-md'
+          ? 'border-fg/10 bg-bg/85 border-b backdrop-blur-xl'
           : 'border-b border-transparent bg-transparent',
       )}
     >
-      <div className="mx-auto flex w-full max-w-400 items-center justify-between px-5 py-5 md:px-6 md:py-6">
-        {/* Left — Logomark */}
+      <div className="mx-auto flex w-full max-w-400 items-center justify-between gap-5 px-5 py-4 md:px-6 md:py-5">
         <a
           href="#hero"
           aria-label="SAW Next — retour en haut"
-          className="text-fg focus-visible:ring-fg/30 inline-flex rounded-sm focus-visible:ring-2 focus-visible:outline-none"
+          className="text-fg focus-visible:ring-fg/30 group inline-flex items-center gap-3 rounded-sm focus-visible:ring-2 focus-visible:outline-none"
         >
           <Logomark className="h-6 w-auto md:h-7" />
+          <span className="text-fg hidden font-mono text-[10px] font-semibold tracking-[0.32em] uppercase lg:inline">
+            SAW NEXT
+          </span>
         </a>
 
-        {/* Middle — anchor nav (hidden on small screens) */}
-        <nav aria-label="Sections" className="hidden items-center gap-8 md:flex lg:gap-12">
+        <nav
+          aria-label="Sections"
+          className="border-fg/10 bg-bg/55 hidden items-center gap-1 border px-1 py-1 backdrop-blur-md md:flex"
+        >
           {NAV.map(item => (
             <a
               key={item.href}
               href={item.href}
-              className="text-fg/70 hover:text-fg focus-visible:ring-fg/30 font-mono text-[10px] font-semibold tracking-[0.4em] uppercase transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none"
+              className="text-muted hover:text-fg focus-visible:ring-fg/30 group relative px-4 py-2 font-mono text-[10px] font-semibold tracking-[0.26em] uppercase transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none lg:px-5"
             >
-              {item.label}
+              <span>{item.label}</span>
+              <span
+                aria-hidden="true"
+                className="bg-fg absolute right-4 bottom-1.5 left-4 h-px origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"
+              />
             </a>
           ))}
         </nav>
 
-        {/* Right — Contacter button (always visible) */}
-        <MagneticButton strength={0.25} range={120}>
+        <MagneticButton strength={0.22} range={110}>
           <a
             href="#contact"
-            className={cn(
-              'border-fg text-fg hover:bg-fg hover:text-bg focus-visible:ring-fg/30',
-              'inline-flex items-center gap-3 rounded-sm border px-5 py-2.5 font-mono text-[10px] font-semibold tracking-[0.35em] uppercase transition-colors duration-200',
-              'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
-            )}
+            className="border-fg text-fg hover:bg-fg hover:text-bg focus-visible:ring-fg/30 inline-flex h-10 items-center gap-3 rounded-sm border px-4 font-mono text-[10px] font-semibold tracking-[0.28em] uppercase transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:h-11 md:px-5"
           >
             <span>CONTACTER</span>
             <span aria-hidden="true">→</span>
