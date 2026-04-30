@@ -39,9 +39,6 @@ export const LandingLayout = () => {
 
   return (
     <div className="bg-bg text-fg relative isolate min-h-screen w-full overflow-x-hidden">
-      <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
-        <div className="landing-grid absolute inset-0 opacity-25" />
-      </div>
       <FilmGrain intensity={0.55} density={14} tickMs={100} className="fixed inset-0 z-0" />
       <Loader />
       <LandingHeader />

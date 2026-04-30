@@ -51,7 +51,7 @@ export const EquipeSection = () => (
               interviennent à la demande, selon la nature de l’intention.
             </p>
 
-            <div className="border-fg/15 bg-fg/[0.035] mt-10 overflow-hidden border">
+            <div className="border-fg/15 bg-fg/[0.035] mt-10 overflow-hidden rounded-sm border">
               <div className="border-fg/10 flex items-center justify-between border-b px-5 py-4">
                 <span className="text-muted font-mono text-[10px] font-semibold tracking-[0.35em] uppercase">
                   Principe
@@ -75,7 +75,7 @@ export const EquipeSection = () => (
           {FOUNDERS.map((f, i) => (
             <li
               key={f.name}
-              className="border-fg/15 bg-fg/[0.025] group relative overflow-hidden border transition-transform duration-300 hover:-translate-y-1"
+              className="border-fg/15 bg-fg/[0.025] group relative overflow-hidden rounded-sm border"
             >
               <span className="bg-fg absolute top-0 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
               <div className="grid grid-cols-1 gap-6 p-5 md:grid-cols-[7.5rem_1fr_auto] md:items-center md:p-6">

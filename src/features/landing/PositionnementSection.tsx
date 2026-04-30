@@ -7,7 +7,8 @@ const POSITIONING = [
   "SAW Next n'est pas un vendeur de produits. C'est une plateforme de solutions.",
 ];
 
-const CONVICTION_PHRASE = 'L’accès · La relation · L’exécution · ';
+const CONVICTION_PHRASE =
+  'L’accès aux cercles fermés · La relation portée par un seul interlocuteur · L’exécution sans intermédiaire financier · Depuis la Suisse, en stricte confidentialité · ';
 
 const APPROCHE = [
   {
@@ -37,8 +38,6 @@ export const PositionnementSection = () => (
     id="positionnement"
     className="border-border relative isolate w-full scroll-mt-24 overflow-hidden border-b py-24 md:scroll-mt-28 md:py-32"
   >
-    <div className="landing-grid absolute inset-0 opacity-35" aria-hidden="true" />
-
     <div className="relative mx-auto w-full max-w-400 px-5 md:px-6">
       <SectionHeader
         index="02"
@@ -103,11 +102,11 @@ export const PositionnementSection = () => (
       aria-hidden="true"
       className="border-fg/15 bg-fg text-bg group mt-24 overflow-hidden border-y md:mt-32"
     >
-      <div className="flex animate-[marquee_38s_linear_infinite] py-8 whitespace-nowrap group-hover:[animation-play-state:paused] md:py-11">
-        {Array.from({ length: 10 }).map((_, i) => (
+      <div className="flex animate-[marquee_72s_linear_infinite] py-3 whitespace-nowrap group-hover:[animation-play-state:paused] md:py-4">
+        {Array.from({ length: 4 }).map((_, i) => (
           <span
             key={i}
-            className="inline-block pr-12 font-mono text-4xl leading-none font-semibold tracking-tight uppercase md:pr-20 md:text-6xl lg:text-7xl"
+            className="inline-block pr-10 font-mono text-sm leading-none font-semibold tracking-[0.18em] uppercase md:pr-14 md:text-base lg:text-lg"
           >
             {CONVICTION_PHRASE}
           </span>
@@ -120,7 +119,7 @@ export const PositionnementSection = () => (
         {APPROCHE.map((p, index) => (
           <article
             key={p.id}
-            className="border-fg/10 bg-fg/[0.035] group relative min-h-72 overflow-hidden border p-6 transition-transform duration-300 hover:-translate-y-1 md:p-7"
+            className="border-fg/10 bg-fg/[0.035] group relative min-h-72 overflow-hidden rounded-sm border p-6 md:p-7"
           >
             <span className="bg-fg absolute top-0 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
             <div className="flex h-full flex-col justify-between gap-8">

@@ -1,4 +1,3 @@
-import { Logomark } from '@components/ui/Logomark';
 import { MagneticButton } from '@components/ui/MagneticButton';
 import { cn } from '@utils/cn';
 import { useEffect, useState } from 'react';
@@ -33,17 +32,14 @@ export const LandingHeader = () => {
         <a
           href="#hero"
           aria-label="SAW Next — retour en haut"
-          className="text-fg focus-visible:ring-fg/30 group inline-flex items-center gap-3 rounded-sm focus-visible:ring-2 focus-visible:outline-none"
+          className="text-fg focus-visible:ring-fg/30 group inline-flex items-center rounded-sm font-mono text-sm font-semibold tracking-[0.32em] uppercase focus-visible:ring-2 focus-visible:outline-none md:text-base"
         >
-          <Logomark className="h-6 w-auto md:h-7" />
-          <span className="text-fg hidden font-mono text-[10px] font-semibold tracking-[0.32em] uppercase lg:inline">
-            SAW NEXT
-          </span>
+          SN
         </a>
 
         <nav
           aria-label="Sections"
-          className="border-fg/10 bg-bg/55 hidden items-center gap-1 border px-1 py-1 backdrop-blur-md md:flex"
+          className="border-fg/10 bg-bg/55 hidden items-center gap-1 rounded-sm border px-1 py-1 backdrop-blur-md md:flex"
         >
           {NAV.map(item => (
             <a

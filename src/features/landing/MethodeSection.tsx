@@ -49,8 +49,6 @@ export const MethodeSection = () => {
       id="methode"
       className="border-border relative isolate w-full scroll-mt-24 overflow-hidden border-b py-24 md:scroll-mt-28 md:py-32"
     >
-      <div className="landing-grid absolute inset-0 opacity-30" aria-hidden="true" />
-
       <div className="relative mx-auto w-full max-w-400 px-5 md:px-6">
         <SectionHeader
           index="04"
@@ -71,7 +69,7 @@ export const MethodeSection = () => {
           }
         />
 
-        <div className="border-fg/15 bg-fg/[0.03] relative overflow-hidden border p-4 md:p-6">
+        <div className="border-fg/15 bg-fg/[0.03] relative overflow-hidden rounded-sm border p-4 md:p-6">
           <div
             className="bg-fg/45 pointer-events-none absolute inset-x-0 top-0 h-px animate-[landing-scan-x_6s_ease-in-out_infinite]"
             aria-hidden="true"
@@ -83,7 +81,7 @@ export const MethodeSection = () => {
               return (
                 <li
                   key={s.id}
-                  className="border-fg/10 bg-bg/55 relative min-h-72 overflow-hidden border p-5 md:p-6"
+                  className="border-fg/10 bg-bg/55 relative min-h-72 overflow-hidden rounded-sm border p-5 md:p-6"
                   style={{
                     opacity: revealed ? 1 : 0,
                     transform: revealed ? 'translateY(0)' : 'translateY(18px)',

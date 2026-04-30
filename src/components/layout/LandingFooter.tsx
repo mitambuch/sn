@@ -43,8 +43,6 @@ export const LandingFooter = () => {
       id="contact"
       className="relative z-10 w-full scroll-mt-24 overflow-hidden pt-24 pb-10 md:scroll-mt-28 md:pt-32 md:pb-12"
     >
-      <div className="landing-grid absolute inset-0 opacity-30" aria-hidden="true" />
-
       <div className="relative mx-auto w-full max-w-400 px-5 md:px-6">
         <p className="text-muted font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
           <span className="text-fg/30">06 / </span>CONTACT
@@ -57,7 +55,7 @@ export const LandingFooter = () => {
             par une conversation.
           </h2>
 
-          <div className="border-fg/15 bg-fg/[0.035] border p-5 md:col-span-4">
+          <div className="border-fg/15 bg-fg/[0.035] rounded-sm border p-5 md:col-span-4">
             <p className="text-muted font-mono text-[10px] leading-relaxed font-semibold tracking-[0.28em] uppercase">
               Contact direct
               <br />
@@ -81,7 +79,7 @@ export const LandingFooter = () => {
               href={channel.href}
               target={channel.external ? '_blank' : undefined}
               rel={channel.external ? 'noopener noreferrer' : undefined}
-              className="border-fg/15 bg-bg/45 group relative min-h-44 overflow-hidden border p-5 transition-transform duration-300 hover:-translate-y-1"
+              className="border-fg/15 bg-bg/45 group relative min-h-44 overflow-hidden rounded-sm border p-5"
             >
               <span className="bg-fg absolute top-0 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
               <span className="text-muted font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
@@ -101,7 +99,7 @@ export const LandingFooter = () => {
 
           <Link
             to={localePath(ROUTES.LOGIN)}
-            className="border-fg/15 bg-fg text-bg group relative min-h-44 overflow-hidden border p-5 transition-transform duration-300 hover:-translate-y-1"
+            className="border-fg/15 bg-fg text-bg group relative min-h-44 overflow-hidden rounded-sm border p-5"
           >
             <span className="font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
               04 / Espace client

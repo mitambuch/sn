@@ -73,7 +73,7 @@ export const ExpertiseSection = () => {
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
           <aside className="lg:col-span-4">
-            <div className="border-fg/15 bg-fg/[0.035] sticky top-28 overflow-hidden border p-5 md:p-6">
+            <div className="border-fg/15 bg-fg/[0.035] sticky top-28 overflow-hidden rounded-sm border p-5 md:p-6">
               <div className="landing-diagonal absolute inset-0 opacity-45" aria-hidden="true" />
               <div className="relative">
                 <p className="text-muted font-mono text-[10px] font-semibold tracking-[0.35em] uppercase">
