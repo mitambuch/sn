@@ -1,6 +1,5 @@
 import { useLocale } from '@app/LocaleProvider';
 import { Logomark } from '@components/ui/Logomark';
-import { WipeButton } from '@components/ui/WipeButton';
 import { ROUTES } from '@constants/routes';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -14,7 +13,14 @@ const CONTACT = {
     encodeURIComponent('Bonjour Salvatore, je souhaiterais entrer en contact avec SAW Next.'),
 };
 
-const CHANNELS = [
+interface Channel {
+  label: string;
+  value: string;
+  href: string;
+  external: boolean;
+}
+
+const CHANNELS: Channel[] = [
   {
     label: 'Téléphone',
     value: CONTACT.phoneDisplay,
@@ -35,6 +41,9 @@ const CHANNELS = [
   },
 ];
 
+const SUBTITLE = 'Réponse confidentielle, sous 24 heures ouvrées.';
+const COPYRIGHT = '© 2026 SAW NEXT · SUISSE · Jamais intermédiaire financier';
+
 export const LandingFooter = () => {
   const { localePath } = useLocale();
 
@@ -51,77 +60,63 @@ export const LandingFooter = () => {
           <span className="bg-fg/20 hidden h-px w-16 md:block" aria-hidden="true" />
         </div>
 
-        <div className="mt-5 grid grid-cols-1 gap-8 md:grid-cols-12 md:items-end md:gap-12">
-          <h2 className="text-fg font-mono text-4xl leading-[1.02] font-semibold tracking-tight uppercase md:col-span-8 md:text-6xl lg:text-7xl">
-            Chaque expérience commence
-            <br />
-            par une conversation.
-          </h2>
+        <h2 className="text-fg mt-5 max-w-3xl font-mono text-2xl leading-[1.08] font-semibold tracking-tight uppercase md:mt-6 md:text-4xl lg:text-5xl">
+          Chaque expérience commence
+          <br />
+          par une conversation.
+        </h2>
 
-          <div className="md:col-span-4">
-            <p className="text-muted font-mono text-[10px] leading-relaxed font-semibold tracking-[0.28em] uppercase">
-              Contact direct — réponse confidentielle
-            </p>
-            <div className="mt-5 flex flex-wrap gap-3">
-              <WipeButton href={`tel:${CONTACT.phoneRaw}`} variant="solid">
-                Appeler maintenant
-              </WipeButton>
-              <WipeButton href={`mailto:${CONTACT.email}`} variant="ghost">
-                Écrire un email
-              </WipeButton>
-            </div>
-          </div>
-        </div>
+        <p className="text-muted mt-5 max-w-md text-base leading-relaxed">{SUBTITLE}</p>
 
-        <div className="mt-14 grid grid-cols-1 gap-4 md:mt-16 md:grid-cols-4">
+        <ul className="border-fg/15 mt-12 border-t md:mt-16">
           {CHANNELS.map((channel, index) => (
-            <a
-              key={channel.label}
-              href={channel.href}
-              target={channel.external ? '_blank' : undefined}
-              rel={channel.external ? 'noopener noreferrer' : undefined}
-              className="border-fg/15 bg-bg/45 group relative min-h-44 overflow-hidden rounded-sm border p-5"
-            >
-              <span className="bg-fg absolute top-0 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
-              <span className="text-muted font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
-                0{index + 1} / {channel.label}
-              </span>
-              <span className="text-fg mt-12 flex items-end justify-between gap-4 font-mono text-base font-semibold tracking-tight md:text-lg">
-                {channel.value}
+            <li key={channel.label} className="border-fg/15 border-b">
+              <a
+                href={channel.href}
+                target={channel.external ? '_blank' : undefined}
+                rel={channel.external ? 'noopener noreferrer' : undefined}
+                className="hover:bg-fg/[0.03] group grid grid-cols-[2.5rem_1fr_auto] items-center gap-4 py-5 transition-colors duration-200 md:grid-cols-[4rem_minmax(9rem,12rem)_1fr_auto] md:gap-6 md:py-6"
+              >
+                <span className="text-muted font-mono text-[10px] font-semibold tracking-[0.4em] uppercase tabular-nums">
+                  0{index + 1}
+                </span>
+                <span className="text-muted hidden font-mono text-[10px] font-semibold tracking-[0.35em] uppercase md:inline">
+                  {channel.label}
+                </span>
+                <span className="text-fg font-mono text-base font-semibold tracking-tight md:text-lg">
+                  <span className="text-muted mr-3 md:hidden">{channel.label} —</span>
+                  {channel.value}
+                </span>
                 <ArrowUpRight
-                  size={16}
-                  strokeWidth={1.8}
+                  size={18}
+                  strokeWidth={1.5}
                   aria-hidden="true"
-                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  className="text-fg/30 group-hover:text-fg transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                 />
-              </span>
-            </a>
+              </a>
+            </li>
           ))}
+        </ul>
 
+        <div className="border-fg/10 mt-16 flex flex-col items-start justify-between gap-6 border-t pt-6 md:flex-row md:items-center md:gap-10 md:pt-8">
+          <div className="flex items-center gap-6">
+            <Logomark className="text-fg/80 h-5 w-auto" />
+            <p className="text-muted font-mono text-[10px] tracking-[0.4em] uppercase">
+              {COPYRIGHT}
+            </p>
+          </div>
           <Link
             to={localePath(ROUTES.LOGIN)}
-            className="border-fg/15 bg-fg text-bg group relative min-h-44 overflow-hidden rounded-sm border p-5"
+            className="text-muted hover:text-fg group inline-flex items-center gap-3 font-mono text-[10px] font-semibold tracking-[0.32em] uppercase transition-colors duration-200"
           >
-            <span className="font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
-              04 / Espace client
-            </span>
-            <span className="mt-12 flex items-end justify-between gap-4 font-mono text-base font-semibold tracking-tight md:text-lg">
-              Se connecter
-              <ArrowUpRight
-                size={16}
-                strokeWidth={1.8}
-                aria-hidden="true"
-                className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              />
-            </span>
+            <span>Espace client</span>
+            <ArrowUpRight
+              size={14}
+              strokeWidth={1.8}
+              aria-hidden="true"
+              className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
           </Link>
-        </div>
-
-        <div className="border-fg/10 mt-16 flex flex-col items-start justify-between gap-4 border-t pt-6 md:flex-row md:items-center md:pt-8">
-          <Logomark className="text-fg/80 h-5 w-auto" />
-          <p className="text-muted font-mono text-[10px] tracking-[0.4em] uppercase">
-            © 2026 SAW NEXT · SUISSE · Jamais intermédiaire financier
-          </p>
         </div>
       </div>
     </footer>
