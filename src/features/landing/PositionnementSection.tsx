@@ -1,9 +1,6 @@
 // ═══════════════════════════════════════════════════
-// PositionnementSection — édito + Conviction marquee + Approche cards
-//
-// WHAT: 3 blocks. (a) édito 2-col. (b) Conviction = marquee
-// horizontal infinite ticker (l'accès · la relation · l'exécution
-// répétés en boucle, hover pause). (c) Approche 2x2 cards bg-surface.
+// PositionnementSection — édito + Conviction marquee + Approche
+// (cards bg-fg/5, harmonised with the warm-grey bg, no white)
 // ═══════════════════════════════════════════════════
 
 import { SectionHeader } from '@components/layout/SectionHeader';
@@ -54,7 +51,6 @@ export const PositionnementSection = () => (
         }
       />
 
-      {/* (a) Body — Geist sans, 2 col asymetric */}
       <div className="grid grid-cols-1 gap-y-6 md:grid-cols-12 md:gap-12">
         <p className="text-muted col-span-12 max-w-xs text-sm leading-relaxed italic md:col-span-3 md:text-base">
           Dans un monde où tout peut s’acheter, la différence se joue ailleurs.
@@ -72,10 +68,10 @@ export const PositionnementSection = () => (
       </div>
     </div>
 
-    {/* (b) Conviction marquee — full-bleed ticker, GAFHA-style */}
+    {/* Conviction marquee — full-bleed bg-fg/5 (not surface-white) */}
     <div
       aria-hidden="true"
-      className="border-border bg-surface group mt-20 overflow-hidden border-y md:mt-28"
+      className="border-fg/15 bg-fg/5 group mt-20 overflow-hidden border-y md:mt-28"
     >
       <div className="flex animate-[marquee_42s_linear_infinite] py-10 whitespace-nowrap group-hover:[animation-play-state:paused] md:py-14">
         {Array.from({ length: 8 }).map((_, i) => (
@@ -94,11 +90,14 @@ export const PositionnementSection = () => (
     </div>
 
     <div className="mx-auto w-full max-w-400 px-5 md:px-6">
-      {/* (c) Approche — 2x2 grid of cards */}
+      {/* Approche — cards bg-fg/5 (no more white bg-surface) */}
       <div className="mt-20 md:mt-28">
         <ul className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {APPROCHE.map(p => (
-            <li key={p.id} className="bg-surface flex flex-col gap-4 rounded-sm p-6 md:p-8">
+            <li
+              key={p.id}
+              className="bg-fg/5 border-fg/10 flex flex-col gap-4 rounded-sm border p-6 md:p-8"
+            >
               <span className="text-muted font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
                 {p.id}
               </span>

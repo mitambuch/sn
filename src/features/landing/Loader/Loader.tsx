@@ -16,10 +16,10 @@ import { useEffect, useState } from 'react';
 
 import { WordmarkStroke } from './WordmarkStroke';
 
-const DRAW_MS = 3400;
-const HOLD_MS = 350;
-const FILL_MS = 1800;
-const EXIT_MS = 800;
+const DRAW_MS = 4200;
+const HOLD_MS = 500;
+const FILL_MS = 2200;
+const EXIT_MS = 1000;
 
 type LoaderPhase = 'draw' | 'hold' | 'fill' | 'exit' | 'done';
 
@@ -81,7 +81,7 @@ export const Loader = () => {
     <div
       role="status"
       aria-label="Chargement de SAW Next"
-      className="bg-bg fixed inset-0 z-[60] flex flex-col items-center justify-center transition-opacity"
+      className="bg-bg fixed inset-0 z-60 flex flex-col items-center justify-center transition-opacity"
       style={{
         opacity: exiting ? 0 : 1,
         transitionDuration: `${EXIT_MS}ms`,
