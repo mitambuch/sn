@@ -1,14 +1,13 @@
 // ═══════════════════════════════════════════════════
-// Home — SAW Next experience landing (timeline 6-actes)
+// Home — SAW Next experience landing (timeline 6-actes, light total)
 //
-// WHAT: Composes the SceneDirector orchestrator and the six acts
-//       in narrative order : Threshold (gate) → Apparition (brand
-//       emerges) → Murmurs (stellar field) → Stillness (silence) →
-//       Reversal (flip) → Doorway (the conversation).
+// WHAT: Composes the SceneDirector + the six actes :
+//       000 LOADER → 001 INTRODUCTION → 002 POSITIONNEMENT →
+//       003 EXPERTISE → 004 MÉTHODE & ÉQUIPE → 005 CONVERSATION.
+//       FilmGrain warm-tinted permanent en fond. QuickDock top-right
+//       persistant (APPELER · ÉCRIRE · ESPACE CLIENT · WHATSAPP).
 // WHEN: Index of /:locale/ — public landing.
-// CHANGE COMPOSITION: rearrange children below. Each act is
-//       self-contained ; ordering changes the narrative, not the
-//       components themselves.
+// CHANGE COMPOSITION: rearrange the children. Each acte is autonomous.
 // ═══════════════════════════════════════════════════
 
 import { SeoHead } from '@components/features/SeoHead';
@@ -24,8 +23,8 @@ export default function Home() {
         description="Le véritable luxe ne se mesure pas uniquement à ce que l'on possède, mais à ce que l'on vit."
       />
       <SceneDirector>
-        {/* Global film-grain — sits behind every act, fixed position */}
-        <FilmGrain intensity={0.85} density={16} tickMs={90} className="fixed inset-0 -z-10" />
+        {/* Global film-grain — warm sepia mix, fixed behind every act */}
+        <FilmGrain intensity={0.55} density={14} tickMs={100} className="fixed inset-0 -z-10" />
 
         <Threshold />
         <Apparition />

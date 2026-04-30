@@ -11,6 +11,7 @@
 // ═══════════════════════════════════════════════════
 
 import { CursorField } from '@components/orchestration/CursorField';
+import { QuickDock } from '@components/orchestration/QuickDock';
 import { ScrollEngine } from '@components/orchestration/ScrollEngine';
 import type { ReactNode } from 'react';
 import { useCallback, useMemo, useState } from 'react';
@@ -20,9 +21,11 @@ import { SceneContext } from './useScene';
 
 interface SceneDirectorProps {
   children: ReactNode;
+  /** Click handler for the QuickDock "ÉCRIRE" entry — should open the drawer. */
+  onWrite?: () => void;
 }
 
-export const SceneDirector = ({ children }: SceneDirectorProps) => {
+export const SceneDirector = ({ children, onWrite }: SceneDirectorProps) => {
   const [currentAct, setCurrentAct] = useState<ActName>('Threshold');
   const [hasCrossedThreshold, setHasCrossedThreshold] = useState(false);
 
@@ -37,6 +40,7 @@ export const SceneDirector = ({ children }: SceneDirectorProps) => {
     <SceneContext.Provider value={value}>
       <ScrollEngine>
         <CursorField />
+        <QuickDock onWrite={onWrite} />
         {children}
       </ScrollEngine>
     </SceneContext.Provider>

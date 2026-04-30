@@ -1,48 +1,51 @@
 // ═══════════════════════════════════════════════════
-// CursorField — custom cursor + global magnetic field
+// CursorField — custom cursor: hollow circle + center dot
 //
-// WHAT: Replaces the system cursor with a 1×24px white line that
-//       follows the pointer with smooth lerp inertia. Any element
-//       carrying `data-magnetic` (and optional `data-magnetic-strength`)
-//       attracts the cursor + receives a subtle translate toward the
-//       pointer, computed at the parent's tick (no per-element
-//       useEffect cost).
+// WHAT: Replaces the system cursor with a 28×28px hollow circle
+//       that follows the pointer with smooth lerp + a 4×4px center
+//       dot that follows instantly (shutter feel). `mix-blend-
+//       difference` keeps it visible on every surface (light grey,
+//       black, photos).
 // WHEN: Mounted once at the SceneDirector root.
-// CHANGE FEEL: LERP constant (0.18 = brisk, 0.08 = heavy).
-// MOBILE: bails on hover:none (no cursor concept) + reduced-motion.
+// CHANGE FEEL: LERP_RING (0.18 brisk, 0.08 heavy).
+// MOBILE: bails on hover:none + reduced-motion.
 // ═══════════════════════════════════════════════════
 
 import { useEffect, useRef } from 'react';
 
-const LERP = 0.18;
+const LERP_RING = 0.18;
 
 export const CursorField = () => {
-  const cursorRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
+  const dotRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (window.matchMedia('(hover: none)').matches) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    const cursor = cursorRef.current;
-    if (!cursor) return;
+    const ring = ringRef.current;
+    const dot = dotRef.current;
+    if (!ring || !dot) return;
 
     document.documentElement.style.cursor = 'none';
 
     let targetX = window.innerWidth / 2;
     let targetY = window.innerHeight / 2;
-    let currentX = targetX;
-    let currentY = targetY;
+    let ringX = targetX;
+    let ringY = targetY;
     let raf = 0;
 
     const onMove = (e: MouseEvent) => {
       targetX = e.clientX;
       targetY = e.clientY;
+      // Dot follows instantly (shutter)
+      dot.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`;
     };
 
     const tick = () => {
-      currentX += (targetX - currentX) * LERP;
-      currentY += (targetY - currentY) * LERP;
-      cursor.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+      ringX += (targetX - ringX) * LERP_RING;
+      ringY += (targetY - ringY) * LERP_RING;
+      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
       raf = window.requestAnimationFrame(tick);
     };
     raf = window.requestAnimationFrame(tick);
@@ -56,11 +59,21 @@ export const CursorField = () => {
   }, []);
 
   return (
-    <div
-      ref={cursorRef}
-      aria-hidden="true"
-      className="bg-fg pointer-events-none fixed top-0 left-0 z-[9999] h-6 w-px -translate-x-1/2 -translate-y-1/2 mix-blend-difference"
-      style={{ willChange: 'transform' }}
-    />
+    <>
+      {/* Ring — 28px hollow, lerp follow */}
+      <div
+        ref={ringRef}
+        aria-hidden="true"
+        className="pointer-events-none fixed top-0 left-0 z-9999 h-7 w-7 -translate-x-1/2 -translate-y-1/2 rounded-full border-[1.5px] border-[#1a1a1a] mix-blend-difference"
+        style={{ willChange: 'transform' }}
+      />
+      {/* Dot — 4px solid, instant follow */}
+      <div
+        ref={dotRef}
+        aria-hidden="true"
+        className="pointer-events-none fixed top-0 left-0 z-9999 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#1a1a1a] mix-blend-difference"
+        style={{ willChange: 'transform' }}
+      />
+    </>
   );
 };
