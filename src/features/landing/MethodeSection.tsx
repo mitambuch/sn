@@ -1,14 +1,18 @@
 // ═══════════════════════════════════════════════════
-// MethodeSection — accentuated step-by-step + CTA at the bottom
+// MethodeSection — compact 4-col horizontal flow + scroll-driven reveal
 //
-// WHAT: 4 vertical numbered steps, BIG monumental indices (clamp
-//       4rem→8rem) chained by a vertical hairline + small dot
-//       between each. CTA "Démarrer une demande" at the bottom.
-//       Layout differs from Equipe (which is 2-col édito + list).
+// WHAT: 4 steps inline horizontally on desktop, each one appears in
+//       sequence as the section scrolls into view : the index fades
+//       in first, the connector line draws left→right (scaleX 0→1),
+//       the verb + body slide up. Stagger 220ms between steps. Once
+//       triggered, sticks (no re-trigger on scroll back).
+//       IntersectionObserver-based, no external lib.
+// WHEN: Section 04 of pages/Home.tsx, anchored at #methode.
 // ═══════════════════════════════════════════════════
 
 import { SectionHeader } from '@components/layout/SectionHeader';
 import { WipeButton } from '@components/ui/WipeButton';
+import { useEffect, useRef, useState } from 'react';
 
 const STEPS = [
   { id: '01', verb: 'Une demande.', body: 'Vous formulez une intention, même imprécise.' },
@@ -25,64 +29,112 @@ const STEPS = [
   { id: '04', verb: 'Une exécution.', body: 'Discrétion absolue. Réseau international mobilisé.' },
 ];
 
-export const MethodeSection = () => (
-  <section id="methode" className="border-border relative w-full border-b py-20 md:py-28">
-    <div className="mx-auto w-full max-w-400 px-5 md:px-6">
-      <SectionHeader
-        index="04"
-        label="MÉTHODE"
-        title={
-          <>
-            Un fonctionnement simple,
-            <br />
-            répété sans concession.
-          </>
-        }
-      />
+const STEP_STAGGER_MS = 220;
 
-      {/* Vertical timeline — big indices, hairline + dot between steps */}
-      <ol className="border-fg/15 border-t">
-        {STEPS.map((s, i) => (
-          <li
-            key={s.id}
-            className="border-fg/15 group relative grid grid-cols-[5rem_1fr] items-baseline gap-6 border-b py-10 md:grid-cols-[10rem_1fr] md:gap-12 md:py-16"
-          >
-            {/* Big index */}
-            <span
-              className="text-fg font-mono leading-none font-semibold tracking-tight tabular-nums"
-              style={{ fontSize: 'clamp(3rem, 6vw, 6.5rem)' }}
-            >
-              {s.id}
-            </span>
+export const MethodeSection = () => {
+  const ref = useRef<HTMLOListElement>(null);
+  const reducedMotion =
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const [revealed, setRevealed] = useState(reducedMotion);
 
-            {/* Verb + body */}
-            <div className="flex flex-col gap-3">
-              <h3 className="text-fg font-mono text-lg leading-tight font-semibold tracking-tight uppercase md:text-2xl">
-                {s.verb}
-              </h3>
-              <p className="text-muted max-w-2xl text-base leading-relaxed md:text-lg">{s.body}</p>
-            </div>
+  useEffect(() => {
+    if (revealed) return;
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setRevealed(true);
+            obs.disconnect();
+          }
+        });
+      },
+      { threshold: 0.25 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [revealed]);
 
-            {/* Connector dot at the bottom of each step except the last */}
-            {i < STEPS.length - 1 && (
-              <span
-                aria-hidden="true"
-                className="bg-fg absolute bottom-0 left-10 h-1.5 w-1.5 -translate-x-1/2 translate-y-1/2 rounded-full md:left-20"
-              />
-            )}
-          </li>
-        ))}
-      </ol>
+  return (
+    <section id="methode" className="border-border relative w-full border-b py-20 md:py-28">
+      <div className="mx-auto w-full max-w-400 px-5 md:px-6">
+        <SectionHeader
+          index="04"
+          label="MÉTHODE"
+          title={
+            <>
+              Un fonctionnement simple,
+              <br />
+              répété sans concession.
+            </>
+          }
+        />
 
-      {/* Mention legale + CTA */}
-      <div className="mt-16 flex flex-col items-start justify-between gap-8 md:mt-20 md:flex-row md:items-end">
-        <p className="text-muted max-w-md font-mono text-[11px] leading-relaxed tracking-[0.2em] uppercase">
-          SAW Next agit comme facilitateur. Jamais comme intermédiaire financier.
-        </p>
-        <WipeButton href="#contact" variant="solid">
-          Démarrer une demande
-        </WipeButton>
+        <ol ref={ref} className="grid grid-cols-1 gap-10 md:grid-cols-4 md:gap-8">
+          {STEPS.map((s, i) => {
+            const stepDelay = i * STEP_STAGGER_MS;
+            return (
+              <li key={s.id} className="relative flex flex-col gap-4">
+                {/* Index row : number + connector line drawing in */}
+                <div className="flex items-center gap-3">
+                  <span
+                    className="text-fg font-mono text-base font-semibold tracking-[0.4em] uppercase tabular-nums transition-opacity duration-500 ease-out"
+                    style={{
+                      opacity: revealed ? 1 : 0,
+                      transitionDelay: `${stepDelay}ms`,
+                    }}
+                  >
+                    {s.id}
+                  </span>
+                  {i < STEPS.length - 1 && (
+                    <span
+                      aria-hidden="true"
+                      className="bg-fg/40 hidden h-px flex-1 origin-left transition-transform duration-700 ease-out md:block"
+                      style={{
+                        transform: revealed ? 'scaleX(1)' : 'scaleX(0)',
+                        transitionDelay: `${stepDelay + 120}ms`,
+                      }}
+                    />
+                  )}
+                </div>
+
+                {/* Verb + body : translate up + fade */}
+                <div
+                  className="flex flex-col gap-3 transition-all duration-700 ease-out"
+                  style={{
+                    opacity: revealed ? 1 : 0,
+                    transform: revealed ? 'translateY(0)' : 'translateY(14px)',
+                    transitionDelay: `${stepDelay + 220}ms`,
+                  }}
+                >
+                  <h3 className="text-fg font-mono text-base leading-tight font-semibold tracking-tight uppercase md:text-lg">
+                    {s.verb}
+                  </h3>
+                  <p className="text-muted text-base leading-relaxed">{s.body}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+
+        {/* Mention legale + CTA — appears after the last step has revealed */}
+        <div
+          className="mt-16 flex flex-col items-start justify-between gap-8 transition-all duration-700 ease-out md:mt-20 md:flex-row md:items-end"
+          style={{
+            opacity: revealed ? 1 : 0,
+            transform: revealed ? 'translateY(0)' : 'translateY(14px)',
+            transitionDelay: `${STEPS.length * STEP_STAGGER_MS + 220}ms`,
+          }}
+        >
+          <p className="text-muted max-w-md font-mono text-[11px] leading-relaxed tracking-[0.2em] uppercase">
+            SAW Next agit comme facilitateur. Jamais comme intermédiaire financier.
+          </p>
+          <WipeButton href="#contact" variant="solid">
+            Démarrer une demande
+          </WipeButton>
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
