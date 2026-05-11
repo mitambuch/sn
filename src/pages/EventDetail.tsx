@@ -85,6 +85,7 @@ export default function EventDetail() {
         onClose={() => setInquiryOpen(false)}
         source="event"
         itemTitle={event.title}
+        targetId={event.id}
       />
 
       <Container size="xl">

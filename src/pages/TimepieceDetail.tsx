@@ -143,6 +143,7 @@ export default function TimepieceDetail() {
         onClose={() => setInquiryOpen(false)}
         source="timepiece"
         itemTitle={`${tp.brand} ${tp.model}`}
+        targetId={tp.id}
       />
     </Container>
   );

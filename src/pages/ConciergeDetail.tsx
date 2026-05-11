@@ -105,6 +105,7 @@ export default function ConciergeDetail() {
         onClose={() => setInquiryOpen(false)}
         source="concierge"
         itemTitle={service.title}
+        targetId={service.id}
       />
     </Container>
   );
