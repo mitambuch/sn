@@ -221,6 +221,8 @@
     "step": {
       "category": "Category",
       "details": "Details",
+      "fields": "Criteria",
+      "extras": "Specifics",
       "review": "Summary"
     },
     "category": {
@@ -240,6 +242,9 @@
       "allOptional": "All fields are optional. Leave blank what you don't know yet — Salvatore will get back to clarify.",
       "freeFormLabel": "Other details",
       "freeFormPlaceholder": "Anything that helps us…"
+    },
+    "extras": {
+      "lede": "Add photos and any details that help us understand better."
     },
     "fields": {
       "travel": {

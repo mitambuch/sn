@@ -243,6 +243,8 @@
     "step": {
       "category": "Catégorie",
       "details": "Détails",
+      "fields": "Critères",
+      "extras": "Précisions",
       "review": "Récapitulatif"
     },
     "category": {
@@ -262,6 +264,9 @@
       "allOptional": "Tous les champs sont facultatifs. Laissez vides ceux que vous ne savez pas encore — Salvatore reviendra vers vous pour préciser.",
       "freeFormLabel": "Autres précisions",
       "freeFormPlaceholder": "Tout ce qui peut nous aider…"
+    },
+    "extras": {
+      "lede": "Ajoutez des photos et précisez tout ce qui peut nous aider à mieux comprendre."
     },
     "fields": {
       "travel": {

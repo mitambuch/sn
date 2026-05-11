@@ -43,7 +43,15 @@ export type WizardCategory =
   | 'travel'
   | 'other';
 
-type Step = 'category' | 'details' | 'review';
+type Step = 'category' | 'fields' | 'extras' | 'review';
+
+/** Returns the ordered chain of steps for a given category. "Other" has
+ *  no per-category fields, so it skips the 'fields' step. */
+function stepsFor(category: WizardCategory | null): Step[] {
+  if (!category) return ['category', 'fields', 'extras', 'review'];
+  if (category === 'other') return ['category', 'extras', 'review'];
+  return ['category', 'fields', 'extras', 'review'];
+}
 
 const CATEGORY_ICON: Record<WizardCategory, LucideIcon> = {
   'real-estate': Briefcase,
@@ -146,7 +154,14 @@ export const ConciergeRequestWizard = ({
   const { t } = useTranslation();
   const { toast } = useToast();
 
-  const [step, setStep] = useState<Step>(initialCategory ? 'details' : 'category');
+  // Entry step depends on initialCategory : Other skips 'fields' entirely.
+  const initialEntryStep: Step = initialCategory
+    ? initialCategory === 'other'
+      ? 'extras'
+      : 'fields'
+    : 'category';
+
+  const [step, setStep] = useState<Step>(initialEntryStep);
   const [category, setCategory] = useState<WizardCategory | null>(initialCategory ?? null);
   const [fields, setFields] = useState<FormState>({});
   const [description, setDescription] = useState('');
@@ -157,7 +172,7 @@ export const ConciergeRequestWizard = ({
   if (openLatch !== open) {
     setOpenLatch(open);
     if (open) {
-      setStep(initialCategory ? 'details' : 'category');
+      setStep(initialEntryStep);
       setCategory(initialCategory ?? null);
       setFields({});
       setDescription('');
@@ -189,17 +204,30 @@ export const ConciergeRequestWizard = ({
 
   const setField = (key: string, value: string) => setFields(prev => ({ ...prev, [key]: value }));
 
+  const chain = stepsFor(category);
+  const stepIdx = chain.indexOf(step);
+  // First reachable step in the chain (after initialCategory entry).
+  const firstReachable = initialCategory
+    ? initialCategory === 'other'
+      ? 'extras'
+      : 'fields'
+    : 'category';
+
   const goNext = () => {
-    if (step === 'category') setStep('details');
-    else if (step === 'details') setStep('review');
+    if (stepIdx >= 0 && stepIdx < chain.length - 1) {
+      const next = chain[stepIdx + 1];
+      if (next !== undefined) setStep(next);
+    }
   };
 
   const goBack = () => {
-    if (step === 'review') setStep('details');
-    else if (step === 'details' && !initialCategory) setStep('category');
+    if (stepIdx > 0 && step !== firstReachable) {
+      const prev = chain[stepIdx - 1];
+      if (prev !== undefined) setStep(prev);
+    }
   };
 
-  const canGoBack = (step === 'details' && !initialCategory) || step === 'review';
+  const canGoBack = stepIdx > 0 && step !== firstReachable;
 
   const handleSubmit = (kind: 'full' | 'callback') => {
     setSubmitting(true);
@@ -215,13 +243,9 @@ export const ConciergeRequestWizard = ({
     }, 700);
   };
 
-  const stepNumber = step === 'category' ? 1 : step === 'details' ? 2 : 3;
-  const stepLabelKey =
-    step === 'category'
-      ? 'wizard.step.category'
-      : step === 'details'
-        ? 'wizard.step.details'
-        : 'wizard.step.review';
+  const stepNumber = stepIdx + 1;
+  const stepTotal = chain.length;
+  const stepLabelKey = `wizard.step.${step}`;
 
   return (
     <div
@@ -242,7 +266,7 @@ export const ConciergeRequestWizard = ({
         <header className="border-border flex items-center justify-between border-b px-6 py-4 sm:px-8 sm:py-5">
           <div className="flex items-center gap-3">
             <span className="text-muted font-mono text-[10px] tracking-widest uppercase">
-              {String(stepNumber)}/3
+              {String(stepNumber)}/{String(stepTotal)}
             </span>
             <span className="text-fg text-sm font-medium">{t(stepLabelKey)}</span>
           </div>
@@ -276,7 +300,7 @@ export const ConciergeRequestWizard = ({
                       type="button"
                       onClick={() => {
                         setCategory(c);
-                        setStep('details');
+                        setStep(c === 'other' ? 'extras' : 'fields');
                       }}
                       className={cn(
                         'border-border bg-surface group rounded-card flex items-center gap-4 border px-4 py-4 text-left',
@@ -302,17 +326,17 @@ export const ConciergeRequestWizard = ({
             </div>
           )}
 
-          {step === 'details' && category && (
+          {step === 'fields' && category && category !== 'other' && (
             <div className="space-y-6">
               <header className="space-y-2">
                 <span className="text-muted text-xs tracking-widest uppercase">
                   {t(`wizard.category.${category}.title`)}
                 </span>
                 <h2 className="text-fg text-2xl font-light tracking-tight sm:text-3xl">
-                  {t('wizard.step.details')}
+                  {t('wizard.step.fields')}
                 </h2>
                 <p className="text-muted text-sm leading-relaxed">
-                  {category === 'other' ? t('wizard.other.lede') : t('wizard.details.allOptional')}
+                  {t('wizard.details.allOptional')}
                 </p>
               </header>
 
@@ -599,10 +623,25 @@ export const ConciergeRequestWizard = ({
                   />
                 </div>
               )}
+            </div>
+          )}
 
+          {step === 'extras' && category && (
+            <div className="space-y-6">
+              <header className="space-y-2">
+                <span className="text-muted text-xs tracking-widest uppercase">
+                  {t(`wizard.category.${category}.title`)}
+                </span>
+                <h2 className="text-fg text-2xl font-light tracking-tight sm:text-3xl">
+                  {t('wizard.step.extras')}
+                </h2>
+                <p className="text-muted text-sm leading-relaxed">
+                  {category === 'other' ? t('wizard.other.lede') : t('wizard.extras.lede')}
+                </p>
+              </header>
               <Textarea
                 label={t('wizard.details.freeFormLabel')}
-                rows={category === 'other' ? 7 : 4}
+                rows={category === 'other' ? 7 : 5}
                 placeholder={
                   category === 'other'
                     ? t('wizard.other.placeholder')
@@ -702,7 +741,7 @@ export const ConciergeRequestWizard = ({
               type="button"
               onClick={goBack}
               className={cn(
-                'text-muted hover:text-fg inline-flex items-center gap-2 text-xs tracking-widest uppercase',
+                'text-muted hover:text-fg inline-flex items-center gap-2 text-xs tracking-widest whitespace-nowrap uppercase',
                 'duration-base transition-colors',
                 'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
               )}
@@ -721,7 +760,7 @@ export const ConciergeRequestWizard = ({
               disabled={submitting}
               className={cn(
                 'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
-                'inline-flex items-center gap-3 rounded-full border px-6 py-3 text-xs tracking-widest uppercase',
+                'inline-flex items-center gap-3 rounded-full border px-6 py-3 text-xs tracking-widest whitespace-nowrap uppercase',
                 'duration-base transition-[border-color,background-color,opacity]',
                 'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
                 'disabled:cursor-not-allowed disabled:opacity-50',
@@ -730,13 +769,13 @@ export const ConciergeRequestWizard = ({
               {submitting ? t('wizard.actions.sending') : t('wizard.actions.submit')}
               <span aria-hidden="true">→</span>
             </button>
-          ) : step === 'details' ? (
+          ) : step === 'fields' || step === 'extras' ? (
             <button
               type="button"
               onClick={goNext}
               className={cn(
                 'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
-                'inline-flex items-center gap-3 rounded-full border px-6 py-3 text-xs tracking-widest uppercase',
+                'inline-flex items-center gap-3 rounded-full border px-6 py-3 text-xs tracking-widest whitespace-nowrap uppercase',
                 'duration-base transition-[border-color,background-color]',
                 'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
               )}
