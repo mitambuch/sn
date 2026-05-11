@@ -207,6 +207,7 @@
     },
     "nav": {
       "dashboard": "Accueil",
+      "catalogue": "Tout",
       "news": "Nouveautés",
       "events": "Événements",
       "properties": "Propriétés",
@@ -218,6 +219,10 @@
       "profile": "Profil",
       "inquiries": "Demandes",
       "preferences": "Préférences"
+    },
+    "catalogue": {
+      "title": "Le catalogue",
+      "lede": "Toutes les opportunités curatées par votre conciergerie, en un coup d'œil."
     }
   },
   "admin": {

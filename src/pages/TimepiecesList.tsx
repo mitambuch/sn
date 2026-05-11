@@ -68,7 +68,6 @@ export default function TimepiecesList() {
               timepiece={tp}
               href={localePath(ROUTES.ACCOUNT_TIMEPIECES + '/' + tp.slug)}
               onRequestLabel={t('common.onRequest')}
-              fullSetLabel={t('timepieces.fullSet')}
             />
           ))}
         </div>

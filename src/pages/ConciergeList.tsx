@@ -69,7 +69,6 @@ export default function ConciergeList() {
               service={s}
               href={localePath(ROUTES.ACCOUNT_CONCIERGE + '/' + s.slug)}
               categoryLabel={t(`concierge.category.${s.category}`)}
-              leadTimeLabel={t('concierge.leadTime')}
             />
           ))}
         </div>

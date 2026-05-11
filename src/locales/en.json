@@ -186,6 +186,7 @@
     },
     "nav": {
       "dashboard": "Home",
+      "catalogue": "All",
       "news": "Stories",
       "events": "Events",
       "properties": "Properties",
@@ -196,6 +197,10 @@
       "profile": "Profile",
       "inquiries": "Inquiries",
       "preferences": "Preferences"
+    },
+    "catalogue": {
+      "title": "The catalogue",
+      "lede": "Every opportunity curated by your concierge, at a glance."
     }
   },
   "admin": {

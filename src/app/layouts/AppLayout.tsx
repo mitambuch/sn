@@ -27,6 +27,7 @@ import {
   CalendarDays,
   Compass,
   Frame,
+  Grid3x3,
   Heart,
   Inbox,
   LayoutDashboard,
@@ -48,6 +49,7 @@ interface NavItem {
 
 const ACCOUNT_NAV_TOP: NavItem[] = [
   { to: ROUTES.ACCOUNT, labelKey: 'account.nav.dashboard', icon: LayoutDashboard },
+  { to: ROUTES.ACCOUNT_CATALOGUE, labelKey: 'account.nav.catalogue', icon: Grid3x3 },
   { to: ROUTES.ACCOUNT_NEWS, labelKey: 'account.nav.news', icon: Newspaper },
 ];
 

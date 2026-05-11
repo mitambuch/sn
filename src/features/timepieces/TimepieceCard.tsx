@@ -3,8 +3,10 @@
 //
 // WHAT: Apple-closed surface, 4:3 contained image (watch macro centered
 //       on neutral bg), HeartButton top-right. Body: brand · year eyebrow,
-//       model title, 2-col Card.Stats (reference mono, full-set indicator).
-//       Card.PriceBlock with "Prix" + Card.Pill "Sur demande".
+//       model title, 2-col Card.Stats (reference mono · material —
+//       the identifying couple for HNW collectors: Submariner Steel
+//       116610 vs Gold 126618 reads instantly). Card.PriceBlock with
+//       "Prix" + Card.Pill "Sur demande".
 // WHEN: TimepiecesList grid item.
 // EDIT VISUAL: change radius/shadow in src/index.css tokens.
 // ═══════════════════════════════════════════════════
@@ -19,7 +21,6 @@ interface TimepieceCardProps {
   timepiece: Timepiece;
   href: string;
   onRequestLabel: string;
-  fullSetLabel: string;
   className?: string;
 }
 
@@ -27,7 +28,6 @@ export const TimepieceCard = ({
   timepiece,
   href,
   onRequestLabel,
-  fullSetLabel,
   className,
 }: TimepieceCardProps) => {
   const { t } = useTranslation();
@@ -54,7 +54,10 @@ export const TimepieceCard = ({
         <Card.Title>{timepiece.model}</Card.Title>
         <Card.Stats>
           <Card.Stat label={t('timepieces.meta.reference')} value={timepiece.reference} mono />
-          <Card.Stat label={fullSetLabel} value={timepiece.fullSet ? '✓' : '—'} />
+          <Card.Stat
+            label={t('timepieces.meta.material')}
+            value={t(`timepieces.material.${timepiece.material}`)}
+          />
         </Card.Stats>
       </Card.Body>
       <Card.PriceBlock>

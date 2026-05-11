@@ -40,6 +40,7 @@ const NotFound = lazyWithRetry(() => import('@pages/NotFound'));
 const Login = lazyWithRetry(() => import('@pages/Login'));
 const Onboarding = lazyWithRetry(() => import('@pages/Onboarding'));
 const AccountDashboard = lazyWithRetry(() => import('@pages/AccountDashboard'));
+const AccountCatalogue = lazyWithRetry(() => import('@pages/AccountCatalogue'));
 const PropertiesList = lazyWithRetry(() => import('@pages/PropertiesList'));
 const PropertyDetail = lazyWithRetry(() => import('@pages/PropertyDetail'));
 const TimepiecesList = lazyWithRetry(() => import('@pages/TimepiecesList'));
@@ -117,6 +118,7 @@ export default function AppRoutes() {
           {/* ─── Member surface (RequireAuth via AppLayout) ─── */}
           <Route path="account" element={<AppLayout />}>
             <Route index element={<AccountDashboard />} />
+            <Route path="catalogue" element={<AccountCatalogue />} />
             <Route path="news" element={<NewsList />} />
             <Route path="news/:slug" element={<NewsDetail />} />
             <Route path="saved" element={<AccountSaved />} />
