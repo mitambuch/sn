@@ -4,15 +4,13 @@
 // WHAT: Apple-closed surface, 4:3 contained image (œuvre on neutral bg),
 //       HeartButton top-right. Body: artist · year eyebrow, italic title
 //       (art convention), 2-col Card.Stats (medium, dimensions).
-//       Card.PriceBlock footer with "Prix" + "Sur demande".
-//       At-a-glance: artist, work, medium, dimensions, price.
+//       Card.PriceBlock with "Prix" + Card.Pill "Sur demande".
 // WHEN: ArtworksList grid item.
 // EDIT VISUAL: change radius/shadow in src/index.css tokens.
 // ═══════════════════════════════════════════════════
 
 import { Card } from '@components/ui/Card';
 import { HeartButton } from '@components/ui/HeartButton';
-import { PriceTag } from '@components/ui/PriceTag';
 import { useTranslation } from 'react-i18next';
 
 import type { Artwork } from '@/types/artwork';
@@ -66,7 +64,7 @@ export const ArtworkCard = ({
         <span className="text-muted text-[10px] tracking-widest uppercase">
           {t('common.price')}
         </span>
-        <PriceTag onRequestLabel={onRequestLabel} />
+        <Card.Pill>{onRequestLabel}</Card.Pill>
       </Card.PriceBlock>
     </Card>
   );

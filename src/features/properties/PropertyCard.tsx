@@ -2,17 +2,15 @@
 // PropertyCard — domain wrapper around Card atom
 //
 // WHAT: Apple-closed surface, 4:3 image, HeartButton top-right. Body
-//       carries kind · region eyebrow + title + 2-col Card.Stats grid
-//       (surface, bedrooms). Card.PriceBlock footer with "Prix" label
-//       on left + "Sur demande" on right (edge-to-edge with subtle bg
-//       shift). At-a-glance: type, lieu, taille, prix in one look.
+//       carries kind · region eyebrow + title + 2-col Card.Stats (surface,
+//       bedrooms). Card.PriceBlock footer with "Prix" label + Card.Pill
+//       (bordered mini-tag) on the right showing "Sur demande".
 // WHEN: PropertiesList grid item, recent items cross-module strips.
 // EDIT VISUAL: change radius/shadow in src/index.css tokens.
 // ═══════════════════════════════════════════════════
 
 import { Card } from '@components/ui/Card';
 import { HeartButton } from '@components/ui/HeartButton';
-import { PriceTag } from '@components/ui/PriceTag';
 import { useTranslation } from 'react-i18next';
 
 import type { Property } from '@/types/property';
@@ -62,7 +60,7 @@ export const PropertyCard = ({
         <span className="text-muted text-[10px] tracking-widest uppercase">
           {t('common.price')}
         </span>
-        <PriceTag onRequestLabel={onRequestLabel} />
+        <Card.Pill>{onRequestLabel}</Card.Pill>
       </Card.PriceBlock>
     </Card>
   );

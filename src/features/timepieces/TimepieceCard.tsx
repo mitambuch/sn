@@ -1,17 +1,16 @@
 // ═══════════════════════════════════════════════════
 // TimepieceCard — domain wrapper around Card atom
 //
-// WHAT: Apple-closed surface, 4:3 contained image (watch macro), HeartButton
-//       top-right. Body: brand · year eyebrow, model title, 2-col Card.Stats
-//       (reference mono, full-set indicator). Card.PriceBlock footer with
-//       "Prix" + "Sur demande". At-a-glance: brand, model, ref, price.
+// WHAT: Apple-closed surface, 4:3 contained image (watch macro centered
+//       on neutral bg), HeartButton top-right. Body: brand · year eyebrow,
+//       model title, 2-col Card.Stats (reference mono, full-set indicator).
+//       Card.PriceBlock with "Prix" + Card.Pill "Sur demande".
 // WHEN: TimepiecesList grid item.
 // EDIT VISUAL: change radius/shadow in src/index.css tokens.
 // ═══════════════════════════════════════════════════
 
 import { Card } from '@components/ui/Card';
 import { HeartButton } from '@components/ui/HeartButton';
-import { PriceTag } from '@components/ui/PriceTag';
 import { useTranslation } from 'react-i18next';
 
 import type { Timepiece } from '@/types/timepiece';
@@ -62,7 +61,7 @@ export const TimepieceCard = ({
         <span className="text-muted text-[10px] tracking-widest uppercase">
           {t('common.price')}
         </span>
-        <PriceTag onRequestLabel={onRequestLabel} />
+        <Card.Pill>{onRequestLabel}</Card.Pill>
       </Card.PriceBlock>
     </Card>
   );

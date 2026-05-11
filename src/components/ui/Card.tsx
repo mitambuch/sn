@@ -311,8 +311,9 @@ interface CardPriceBlockProps {
   className?: string | undefined;
 }
 
-/** Prominent price footer — edge-to-edge with hairline divider and a
- *  subtle bg shift. Place OUTSIDE Card.Body (sits flush at card bottom). */
+/** Prominent footer block — edge-to-edge with hairline divider and a
+ *  subtle bg shift. Place OUTSIDE Card.Body (sits flush at card bottom).
+ *  Typical content: tiny uppercase label + Card.Pill on the right. */
 const CardPriceBlock = ({ children, className }: CardPriceBlockProps) => (
   <div
     className={cn(
@@ -322,6 +323,25 @@ const CardPriceBlock = ({ children, className }: CardPriceBlockProps) => (
   >
     {children}
   </div>
+);
+
+interface CardPillProps {
+  children: ReactNode;
+  className?: string | undefined;
+}
+
+/** Mini bordered pill — premium tag style for the right side of PriceBlock.
+ *  Apple App Store pricing pill vibe: hairline border, contrasting bg,
+ *  rounded-full, mono uppercase typography. */
+const CardPill = ({ children, className }: CardPillProps) => (
+  <span
+    className={cn(
+      'border-border bg-bg text-fg inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-xs tracking-widest uppercase',
+      className,
+    )}
+  >
+    {children}
+  </span>
 );
 
 Card.Media = CardMedia;
@@ -335,3 +355,4 @@ Card.Footer = CardFooter;
 Card.Stats = CardStats;
 Card.Stat = CardStat;
 Card.PriceBlock = CardPriceBlock;
+Card.Pill = CardPill;
