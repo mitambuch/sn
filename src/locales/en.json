@@ -207,6 +207,10 @@
     "catalogue": {
       "title": "The catalogue",
       "lede": "Every opportunity curated by your concierge, at a glance."
+    },
+    "exclusive": {
+      "eyebrow": "Exclusive offers",
+      "cta": "Discover today's opportunities"
     }
   },
   "admin": {

@@ -70,6 +70,29 @@ const GreetingSection = () => {
   );
 };
 
+/* ─── Section: Exclusive offers shortcut ────────────── */
+const ExclusiveShortcut = () => {
+  const { t } = useTranslation();
+  const { localePath } = useLocale();
+  return (
+    <Card to={localePath(ROUTES.ACCOUNT_CATALOGUE)} padding="lg" important>
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex min-w-0 flex-col gap-1">
+          <span className="text-muted text-xs tracking-widest uppercase">
+            {t('account.exclusive.eyebrow')}
+          </span>
+          <p className="text-fg text-base leading-snug font-medium sm:text-lg">
+            {t('account.exclusive.cta')}
+          </p>
+        </div>
+        <span className="text-fg shrink-0 text-xl leading-none" aria-hidden="true">
+          →
+        </span>
+      </div>
+    </Card>
+  );
+};
+
 /* ─── Section: Concierge card ────────────────────────── */
 const ConciergeCard = () => {
   const { t } = useTranslation();
@@ -186,8 +209,9 @@ export default function AccountDashboard() {
 
   return (
     <Container size="md">
-      <div className="space-y-16 py-16">
+      <div className="space-y-12 py-12 md:space-y-16 md:py-16">
         <GreetingSection />
+        <ExclusiveShortcut />
         <ConciergeCard />
         <RecentInquiriesSection loading={loading} />
       </div>

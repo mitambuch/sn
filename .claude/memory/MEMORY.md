@@ -30,7 +30,7 @@
 
 ## Deep dive
 
-- Full catalogue (97 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (98 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 

@@ -229,6 +229,10 @@
     "catalogue": {
       "title": "Le catalogue",
       "lede": "Toutes les opportunités curatées par votre conciergerie, en un coup d'œil."
+    },
+    "exclusive": {
+      "eyebrow": "Offres exclusives",
+      "cta": "Découvrir vos opportunités du moment"
     }
   },
   "admin": {
