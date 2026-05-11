@@ -21,6 +21,10 @@ interface PropertyCardProps {
   kindLabel: string;
   onRequestLabel: string;
   className?: string;
+  /** Mark as priority — adds pulsing outline ring. */
+  important?: boolean;
+  /** ISO end-date for limited-offer countdown. When set, renders Card.Countdown. */
+  countdownEndsAt?: string;
 }
 
 export const PropertyCard = ({
@@ -29,15 +33,24 @@ export const PropertyCard = ({
   kindLabel,
   onRequestLabel,
   className,
+  important,
+  countdownEndsAt,
 }: PropertyCardProps) => {
   const { t } = useTranslation();
   return (
-    <Card href={href} padding="none" className={className}>
+    <Card href={href} padding="none" important={important} className={className}>
       <Card.Media
         src={property.images[0]?.src}
         alt={property.images[0]?.alt ?? property.title}
         ratio="4/3"
       />
+      {countdownEndsAt && (
+        <Card.Countdown
+          endsAt={countdownEndsAt}
+          label={t('common.limitedOffer')}
+          className="top-3 left-3"
+        />
+      )}
       <Card.Overlay>
         <HeartButton
           module="property"

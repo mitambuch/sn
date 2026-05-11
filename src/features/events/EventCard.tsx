@@ -22,9 +22,21 @@ interface EventCardProps {
   categoryLabel: string;
   locale: string;
   className?: string;
+  /** Mark as priority — adds pulsing outline ring. */
+  important?: boolean;
+  /** ISO end-date for limited-offer countdown. Replaces date badge when set. */
+  countdownEndsAt?: string;
 }
 
-export const EventCard = ({ event, href, categoryLabel, locale, className }: EventCardProps) => {
+export const EventCard = ({
+  event,
+  href,
+  categoryLabel,
+  locale,
+  className,
+  important,
+  countdownEndsAt,
+}: EventCardProps) => {
   const { t } = useTranslation();
   const date = new Date(event.startsAt);
   const day = date.toLocaleDateString(locale, { day: '2-digit' });
@@ -32,13 +44,21 @@ export const EventCard = ({ event, href, categoryLabel, locale, className }: Eve
   const time = date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
 
   return (
-    <Card href={href} padding="none" className={className}>
+    <Card href={href} padding="none" important={important} className={className}>
       <Card.Media
         src={event.images[0]?.src}
         alt={event.images[0]?.alt ?? event.title}
         ratio="4/3"
       />
-      <Card.Badge top={day} bottom={month} />
+      {countdownEndsAt ? (
+        <Card.Countdown
+          endsAt={countdownEndsAt}
+          label={t('common.limitedOffer')}
+          className="top-3 left-3"
+        />
+      ) : (
+        <Card.Badge top={day} bottom={month} />
+      )}
       <Card.Overlay>
         <HeartButton
           module="event"

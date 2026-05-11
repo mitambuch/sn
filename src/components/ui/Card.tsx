@@ -31,6 +31,7 @@
 import { Image } from '@components/ui/Image';
 import { cn } from '@utils/cn';
 import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 interface CardProps {
@@ -42,6 +43,8 @@ interface CardProps {
   interactive?: boolean | undefined;
   /** Outer wrapper padding for children-only mode. Use "none" with slots. */
   padding?: 'sm' | 'md' | 'lg' | 'none' | undefined;
+  /** Flagged as priority — adds a subtle pulsing outline ring around the card. */
+  important?: boolean | undefined;
   className?: string | undefined;
   children: ReactNode;
 }
@@ -79,6 +82,7 @@ export const Card = ({
   href,
   interactive = false,
   padding = 'md',
+  important = false,
   className,
   children,
   ...rest
@@ -89,6 +93,7 @@ export const Card = ({
     baseSurface,
     effectiveInteractive && interactiveStyles,
     paddingStyles[padding],
+    important && 'animate-important motion-reduce:animate-none',
     className,
   );
 
@@ -352,9 +357,59 @@ const CardPill = ({ children, className }: CardPillProps) => (
   </span>
 );
 
+// ─── Countdown slot — live timer for "offre limitée" cards ─────────
+
+interface CardCountdownProps {
+  /** Target end date as ISO string. When passed, ticks every second until 0. */
+  endsAt: string;
+  /** Localised "OFFRE LIMITÉE" label shown above the timer. */
+  label: string;
+  /** Position class — e.g. "top-3 left-3" or "top-3 right-3". */
+  className?: string | undefined;
+}
+
+function useCountdown(endsAt: string) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  const end = new Date(endsAt).getTime();
+  const diff = Math.max(0, end - now);
+  return {
+    expired: diff === 0,
+    days: Math.floor(diff / 86_400_000),
+    hours: Math.floor((diff / 3_600_000) % 24),
+    mins: Math.floor((diff / 60_000) % 60),
+    secs: Math.floor((diff / 1000) % 60),
+  };
+}
+
+/** Frosted-glass countdown pill. Positioned via className (top-left when
+ *  Card.Badge is absent, top-right under HeartButton when it isn't).
+ *  Pointer-inert, doesn't interfere with the underlying card link. */
+const CardCountdown = ({ endsAt, label, className }: CardCountdownProps) => {
+  const { expired, days, hours, mins, secs } = useCountdown(endsAt);
+  if (expired) return null;
+  return (
+    <div
+      className={cn(
+        'bg-bg/55 border-border/40 pointer-events-none absolute z-10 flex flex-col items-center rounded-xl border px-3 py-2 backdrop-blur-md',
+        className,
+      )}
+    >
+      <span className="text-fg/80 text-[9px] tracking-widest uppercase">{label}</span>
+      <span className="text-fg mt-1 font-mono text-[11px] tracking-wider tabular-nums">
+        {days}j {hours}h {mins}m {secs}s
+      </span>
+    </div>
+  );
+};
+
 Card.Media = CardMedia;
 Card.Overlay = CardOverlay;
 Card.Badge = CardBadge;
+Card.Countdown = CardCountdown;
 Card.Body = CardBody;
 Card.Eyebrow = CardEyebrow;
 Card.Title = CardTitle;

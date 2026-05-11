@@ -73,7 +73,20 @@ function buildEntries(t: TFn, locale: string, localePath: LocalePathFn): Catalog
   const onRequest = t('common.onRequest');
   const all: CatalogueEntry[] = [];
 
+  // WHY: demo flags for "offre limitée" countdown + "important" pulsing
+  // outline. First Property of the list gets both, first Timepiece gets
+  // important only, first Event gets both (countdown replaces date badge).
+  // To wire real data: lift `endsAt` + `important` into the domain types
+  // and mocks, drop these constants.
+  const COUNTDOWN_3D_5H = new Date(Date.now() + 86_400_000 * 3 + 3_600_000 * 5).toISOString();
+  const COUNTDOWN_18H = new Date(Date.now() + 3_600_000 * 18).toISOString();
+  let firstProperty = true;
+  let firstTimepiece = true;
+  let firstEvent = true;
+
   for (const p of listProperties()) {
+    const isFirst = firstProperty;
+    firstProperty = false;
     all.push({
       module: 'property',
       id: p.id,
@@ -84,11 +97,14 @@ function buildEntries(t: TFn, locale: string, localePath: LocalePathFn): Catalog
           href={localePath(`${ROUTES.ACCOUNT_PROPERTIES}/${p.slug}`)}
           kindLabel={t(`properties.kind.${p.kind}`)}
           onRequestLabel={onRequest}
+          {...(isFirst && { important: true, countdownEndsAt: COUNTDOWN_3D_5H })}
         />
       ),
     });
   }
   for (const tp of listTimepieces()) {
+    const isFirst = firstTimepiece;
+    firstTimepiece = false;
     all.push({
       module: 'timepiece',
       id: tp.id,
@@ -98,6 +114,7 @@ function buildEntries(t: TFn, locale: string, localePath: LocalePathFn): Catalog
           timepiece={tp}
           href={localePath(`${ROUTES.ACCOUNT_TIMEPIECES}/${tp.slug}`)}
           onRequestLabel={onRequest}
+          {...(isFirst && { important: true })}
         />
       ),
     });
@@ -118,6 +135,8 @@ function buildEntries(t: TFn, locale: string, localePath: LocalePathFn): Catalog
     });
   }
   for (const e of listEvents()) {
+    const isFirst = firstEvent;
+    firstEvent = false;
     all.push({
       module: 'event',
       id: e.id,
@@ -128,6 +147,7 @@ function buildEntries(t: TFn, locale: string, localePath: LocalePathFn): Catalog
           href={localePath(`${ROUTES.ACCOUNT_EVENTS}/${e.slug}`)}
           categoryLabel={t(`events.category.${e.category}`)}
           locale={locale}
+          {...(isFirst && { important: true, countdownEndsAt: COUNTDOWN_18H })}
         />
       ),
     });

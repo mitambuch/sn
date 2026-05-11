@@ -22,6 +22,10 @@ interface TimepieceCardProps {
   href: string;
   onRequestLabel: string;
   className?: string;
+  /** Mark as priority — adds pulsing outline ring. */
+  important?: boolean;
+  /** ISO end-date for limited-offer countdown. */
+  countdownEndsAt?: string;
 }
 
 export const TimepieceCard = ({
@@ -29,16 +33,25 @@ export const TimepieceCard = ({
   href,
   onRequestLabel,
   className,
+  important,
+  countdownEndsAt,
 }: TimepieceCardProps) => {
   const { t } = useTranslation();
   return (
-    <Card href={href} padding="none" className={className}>
+    <Card href={href} padding="none" important={important} className={className}>
       <Card.Media
         src={timepiece.images[0]?.src}
         alt={timepiece.images[0]?.alt ?? `${timepiece.brand} ${timepiece.model}`}
         ratio="4/3"
         fit="contain"
       />
+      {countdownEndsAt && (
+        <Card.Countdown
+          endsAt={countdownEndsAt}
+          label={t('common.limitedOffer')}
+          className="top-3 left-3"
+        />
+      )}
       <Card.Overlay>
         <HeartButton
           module="timepiece"
