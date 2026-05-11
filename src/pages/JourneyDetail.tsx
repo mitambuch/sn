@@ -87,6 +87,7 @@ export default function JourneyDetail() {
         onClose={() => setInquiryOpen(false)}
         source="journey"
         itemTitle={journey.title}
+        targetId={journey.id}
       />
 
       <Container size="xl">

@@ -2,9 +2,10 @@
 // InquiryDrawer — right-side drawer for "Express interest" submissions
 //
 // WHAT: Slide-in drawer holding a contextualised inquiry form. Triggered
-//       from any DetailHero "Express interest" CTA. On submit, simulates
-//       transmission (push to local mock store + toast confirmation +
-//       close) — replaced by real Resend + Supabase write in lot C.
+//       from any DetailHero "Express interest" CTA. On submit, inserts
+//       a row into Supabase `inquiries` when wired + user signed in.
+//       A Postgres trigger then fires the Resend email to Salvatore.
+//       Demo mode preserved: simulates submission + toast if no backend.
 // WHEN: Mounted at the page level (PropertyDetail, future module details).
 // EDGE: Keyboard accessible — Escape closes, focus is trapped inside.
 //       prefers-reduced-motion respected on the slide animation.
@@ -12,11 +13,13 @@
 
 import { ImageUpload } from '@components/ui/ImageUpload';
 import { Textarea } from '@components/ui/Textarea';
+import { useAuth } from '@context/AuthContext';
 import { useToast } from '@hooks/useToast';
 import { cn } from '@utils/cn';
 import { type FormEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { hasSupabase, supabase } from '@/lib/supabase';
 import type { InquirySource } from '@/types/inquiry';
 
 interface InquiryDrawerProps {
@@ -26,11 +29,20 @@ interface InquiryDrawerProps {
   source: InquirySource;
   /** Item title rendered as drawer eyebrow ("Chalet sur les hauts de Verbier"). */
   itemTitle: string;
+  /** Item id (slug or uuid) — persisted as inquiry.target_id for back-office reference. */
+  targetId?: string;
 }
 
-export const InquiryDrawer = ({ open, onClose, source, itemTitle }: InquiryDrawerProps) => {
+export const InquiryDrawer = ({
+  open,
+  onClose,
+  source,
+  itemTitle,
+  targetId,
+}: InquiryDrawerProps) => {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const { session } = useAuth();
   const [message, setMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -44,12 +56,44 @@ export const InquiryDrawer = ({ open, onClose, source, itemTitle }: InquiryDrawe
     return () => document.removeEventListener('keydown', onKey);
   }, [open, onClose]);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    // WHY: simulated latency keeps the visible state honest before lot C
-    // wires real Supabase + Resend. Drop this setTimeout in the real impl.
-    setTimeout(() => {
+
+    const userId = session?.user?.id;
+    // Real insert path: Supabase wired + a real authenticated user.
+    // Dev sessions use synthetic ids (e.g. "dev-client") that won't satisfy
+    // the FK to public.profiles, so fall back to the simulated path for them.
+    const canPersist =
+      hasSupabase && supabase !== null && typeof userId === 'string' && !userId.startsWith('dev-');
+
+    if (canPersist && supabase) {
+      const insertPayload: {
+        user_id: string;
+        source: InquirySource;
+        message: string | null;
+        target_id?: string;
+      } = {
+        user_id: userId as string,
+        source,
+        message: message.trim() || null,
+      };
+      if (targetId) insertPayload.target_id = targetId;
+
+      const { error } = await supabase.from('inquiries').insert(insertPayload);
+      setSubmitting(false);
+      if (error) {
+        toast({ variant: 'error', message: error.message });
+        return;
+      }
+      toast({ variant: 'success', message: t('inquiry.success') });
+      setMessage('');
+      onClose();
+      return;
+    }
+
+    // Simulated path (demo mode / dev session).
+    window.setTimeout(() => {
       toast({ variant: 'success', message: t('inquiry.success') });
       setMessage('');
       setSubmitting(false);
@@ -114,7 +158,9 @@ export const InquiryDrawer = ({ open, onClose, source, itemTitle }: InquiryDrawe
 
         <form
           className="flex flex-1 flex-col gap-6 overflow-y-auto px-8 py-8"
-          onSubmit={handleSubmit}
+          onSubmit={e => {
+            void handleSubmit(e);
+          }}
         >
           <div className="flex flex-col gap-2">
             <span className="text-muted text-xs tracking-widest uppercase">

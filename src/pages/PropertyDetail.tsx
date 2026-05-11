@@ -104,6 +104,7 @@ export default function PropertyDetail() {
         onClose={() => setInquiryOpen(false)}
         source="property"
         itemTitle={property.title}
+        targetId={property.id}
       />
 
       <Container size="xl">

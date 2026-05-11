@@ -148,6 +148,7 @@ export default function ArtworkDetail() {
         onClose={() => setInquiryOpen(false)}
         source="artwork"
         itemTitle={`${artwork.artistName} — ${artwork.title}`}
+        targetId={artwork.id}
       />
     </Container>
   );
