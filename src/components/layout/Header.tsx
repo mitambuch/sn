@@ -70,7 +70,11 @@ export const Header = ({ className }: HeaderProps) => {
       className={cn('fixed top-0 right-0 left-0 z-50', 'px-4 py-4 md:px-8 md:py-5', className)}
     >
       <div className="mx-auto flex w-full max-w-[2440px] items-center justify-between">
-        <Logo href={localePath(ROUTES.HOME)} />
+        {/* Logo hidden on mobile when in auth surface — hamburger button
+            from AppLayout takes the top-left spot to open the drawer. */}
+        <div className={cn(isAuthSurface ? 'hidden md:block' : '')}>
+          <Logo href={localePath(ROUTES.HOME)} />
+        </div>
 
         {/* Pill nav */}
         <div

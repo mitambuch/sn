@@ -1,14 +1,14 @@
 // ═══════════════════════════════════════════════════
 // AppLayout — shell for authenticated client surfaces
 //
-// WHAT: Renders Header + a vertical module sidebar + main content for
-//       /:locale/account/* routes. Dashboard link sits at the top, then
-//       6 catalogue modules + Stories, then user nav (inquiries / profile
-//       / preferences) + sign-out. Each item carries a lucide icon so
-//       the chrome reads as a true conciergerie desk.
+// WHAT: Renders Header + vertical full-height sidebar + main content for
+//       /:locale/account/* routes. The sidebar runs floor-to-ceiling on
+//       desktop (border-r visible from top to bottom). On mobile it's a
+//       drawer hidden by default, opened via the hamburger button at
+//       top-left. Auto-closes on route change + Escape key + backdrop tap.
 // WHEN: Element of the `/:locale/account` route segment.
-// EDGE: Sidebar collapses to a horizontal scrollable bar on mobile.
-// CHANGE NAV ITEMS: edit the ACCOUNT_NAV_* arrays below.
+// EDIT NAV ITEMS: edit the ACCOUNT_NAV_* arrays below.
+// CHANGE DRAWER WIDTH: w-72 mobile, w-56 desktop in the <aside> below.
 // ═══════════════════════════════════════════════════
 
 import { RequireAuth } from '@app/guards/RequireAuth';
@@ -32,12 +32,15 @@ import {
   Inbox,
   LayoutDashboard,
   LogOut,
+  Menu,
   Newspaper,
   Settings,
   Sparkles,
   User,
   Watch,
+  X,
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
@@ -116,6 +119,35 @@ const AppShell = () => {
   const navigate = useNavigate();
   const palette = useCommandPalette();
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [prevPathname, setPrevPathname] = useState(pathname);
+
+  // Auto-close drawer on route change — derived state pattern (no effect).
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    if (drawerOpen) setDrawerOpen(false);
+  }
+
+  // Escape key closes the drawer.
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setDrawerOpen(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [drawerOpen]);
+
+  // Lock body scroll while drawer is open (mobile only — desktop sidebar is always-on).
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [drawerOpen]);
+
   const handleSignOut = async () => {
     await signOut();
     void navigate(localePath(ROUTES.HOME), { replace: true });
@@ -124,19 +156,64 @@ const AppShell = () => {
   return (
     <>
       <Header />
+
+      {/* Mobile hamburger — visible only on mobile when drawer is closed. */}
+      {!drawerOpen && (
+        <button
+          type="button"
+          onClick={() => setDrawerOpen(true)}
+          aria-label={t('a11y.openMenu')}
+          aria-controls="account-sidebar"
+          aria-expanded={drawerOpen}
+          className={cn(
+            'fixed top-4 left-4 z-50 inline-flex h-10 w-10 items-center justify-center rounded-full',
+            'border-border bg-surface/80 text-fg border backdrop-blur-md',
+            'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
+            'md:hidden',
+          )}
+        >
+          <Menu size={16} strokeWidth={1.5} aria-hidden="true" />
+        </button>
+      )}
+
+      {/* Backdrop — mobile only when drawer open. */}
+      {drawerOpen && (
+        <button
+          type="button"
+          aria-label={t('a11y.closeMenu')}
+          onClick={() => setDrawerOpen(false)}
+          className="bg-bg/60 fixed inset-0 z-30 backdrop-blur-sm md:hidden"
+        />
+      )}
+
       <aside
+        id="account-sidebar"
         className={cn(
-          'border-border bg-bg fixed top-20 right-0 left-0 z-30 border-b',
-          'md:right-auto md:bottom-0 md:w-56 md:border-r md:border-b-0',
+          'border-border bg-bg fixed top-0 bottom-0 left-0 z-40 w-72 border-r',
+          'transition-transform ease-out',
+          prefersReducedMotion ? 'duration-0' : 'duration-300',
+          'md:w-56 md:translate-x-0',
+          drawerOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
         )}
       >
         <nav
           aria-label="Account modules"
-          className={cn(
-            'flex gap-2 overflow-x-auto px-4 py-3 whitespace-nowrap',
-            'md:flex-col md:gap-1 md:px-3 md:py-4',
-          )}
+          className="flex h-full flex-col gap-1 overflow-y-auto px-3 pt-24 pb-4"
         >
+          {/* Mobile drawer close button — top-right of drawer. */}
+          <button
+            type="button"
+            onClick={() => setDrawerOpen(false)}
+            aria-label={t('a11y.closeMenu')}
+            className={cn(
+              'border-border bg-surface/80 absolute top-4 right-4 inline-flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-md',
+              'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
+              'md:hidden',
+            )}
+          >
+            <X size={14} strokeWidth={1.5} aria-hidden="true" />
+          </button>
+
           {ACCOUNT_NAV_TOP.map(item => (
             <NavLink
               key={item.to}
@@ -145,11 +222,11 @@ const AppShell = () => {
               exact={item.to === ROUTES.ACCOUNT}
             />
           ))}
-          <span className="bg-border hidden h-px w-full md:my-2 md:block" aria-hidden="true" />
+          <span className="bg-border my-2 block h-px w-full" aria-hidden="true" />
           {ACCOUNT_NAV_MODULES.map(item => (
             <NavLink key={item.to} item={item} pathname={pathname} />
           ))}
-          <span className="bg-border hidden h-px w-full md:my-2 md:block" aria-hidden="true" />
+          <span className="bg-border my-2 block h-px w-full" aria-hidden="true" />
           {ACCOUNT_NAV_USER.map(item => (
             <NavLink key={item.to} item={item} pathname={pathname} exact />
           ))}
@@ -161,7 +238,7 @@ const AppShell = () => {
             className={cn(
               'duration-base text-muted hover:text-fg flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors',
               'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
-              'md:border-border md:mt-auto md:border-t md:pt-4',
+              'border-border mt-auto border-t pt-4',
             )}
           >
             <LogOut size={16} strokeWidth={1.5} aria-hidden="true" />
@@ -169,7 +246,8 @@ const AppShell = () => {
           </button>
         </nav>
       </aside>
-      <main id="main-content" className="flex-1 pt-32 md:pt-20 md:pl-56">
+
+      <main id="main-content" className="flex-1 pt-20 md:pl-56">
         <div key={pathname} className={prefersReducedMotion ? undefined : 'animate-page-enter'}>
           <Outlet />
         </div>

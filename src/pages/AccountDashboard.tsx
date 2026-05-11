@@ -1,32 +1,27 @@
 // ═══════════════════════════════════════════════════
 // AccountDashboard — member home for /:locale/account
 //
-// WHAT: Premium concierge dashboard composing 6 sections — greeting,
-//       intent prompts, concierge card (Salvatore), inquiries summary,
-//       Stories strip, recently-added cross-module. Skeleton loaders
-//       simulate the eventual Supabase async swap.
+// WHAT: Premium concierge dashboard, deliberately minimal (3 sections) —
+//       greeting + dedicated concierge card + 3 most recent inquiries.
+//       Catalogue navigation lives in the sidebar; cross-module curated
+//       items live on /account/catalogue. The dashboard = human hub
+//       (who said hi to you + who's available + what's pending).
 // WHEN: Index route under AppLayout.
 // EDIT COPY: src/locales/{fr,en}.json under account.* — never inline.
 // ═══════════════════════════════════════════════════
 
 import { useLocale } from '@app/LocaleProvider';
 import { Container } from '@components/layout/Container';
-import { CardSkeleton } from '@components/ui/CardSkeleton';
-import { Image } from '@components/ui/Image';
 import { Skeleton } from '@components/ui/Skeleton';
 import { StatusPill } from '@components/ui/StatusPill';
 import { ROUTES } from '@constants/routes';
-import { IntentCards } from '@features/inquiry/IntentCards';
-import { TrustBadge } from '@features/trust/TrustBadge';
 import { useFakeLoading } from '@hooks/useFakeLoading';
 import { cn } from '@utils/cn';
 import { Mail, Phone } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import { listArticles, listInquiriesForUser } from '@/mocks';
-import { listEvents, listProperties, listTimepieces } from '@/mocks';
-import { unsplash } from '@/mocks/unsplash';
+import { listInquiriesForUser } from '@/mocks';
 import { currentUser } from '@/mocks/users';
 
 const Initials = ({ name }: { name: string }) => {
@@ -180,136 +175,15 @@ const RecentInquiriesSection = ({ loading }: { loading: boolean }) => {
   );
 };
 
-/* ─── Section: Stories strip ─────────────────────────── */
-const StoriesStripSection = ({ loading }: { loading: boolean }) => {
-  const { t, i18n } = useTranslation();
-  const { localePath } = useLocale();
-  const stories = listArticles().slice(0, 3);
-
-  return (
-    <section aria-labelledby="stories-heading" className="space-y-6">
-      <div className="flex items-end justify-between">
-        <h2 id="stories-heading" className="text-fg text-2xl font-light">
-          {t('account.news.heading')}
-        </h2>
-        <Link
-          to={localePath(ROUTES.ACCOUNT_NEWS)}
-          className="text-muted hover:text-fg duration-base text-xs tracking-widest uppercase transition-colors"
-        >
-          {t('common.viewAll')} →
-        </Link>
-      </div>
-      <div className="grid gap-6 md:grid-cols-3">
-        {loading
-          ? Array.from({ length: 3 }).map((_, i) => <CardSkeleton key={i} ratio="3/2" />)
-          : stories.map(story => (
-              <Link
-                key={story.id}
-                to={localePath(ROUTES.ACCOUNT_NEWS + '/' + story.slug)}
-                className="group focus-visible:ring-accent block rounded-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
-                <Image
-                  src={story.cover.src}
-                  alt={story.cover.alt}
-                  ratio="3/2"
-                  className="duration-slow transition-transform group-hover:scale-[1.02]"
-                />
-                <div className="mt-4 flex flex-col gap-2">
-                  <span className="text-muted text-xs tracking-widest uppercase">
-                    {t(`articles.kind.${story.kind}`)} ·{' '}
-                    {new Date(story.publishedAt).toLocaleDateString(i18n.language, {
-                      day: '2-digit',
-                      month: 'short',
-                    })}
-                  </span>
-                  <span className="text-fg text-base font-medium">{story.title}</span>
-                  <span className="text-muted line-clamp-2 text-sm leading-relaxed">
-                    {story.excerpt}
-                  </span>
-                </div>
-              </Link>
-            ))}
-      </div>
-    </section>
-  );
-};
-
-/* ─── Section: Recently added cross-module ───────────── */
-const RecentlyAddedSection = ({ loading }: { loading: boolean }) => {
-  const { t } = useTranslation();
-  const { localePath } = useLocale();
-  const property = listProperties()[0]!;
-  const timepiece = listTimepieces()[0]!;
-  const event = listEvents()[0]!;
-  const featured = [
-    {
-      kind: 'properties' as const,
-      title: property.title,
-      image: property.images[0],
-      href: localePath(`/account/properties/${property.slug}`),
-    },
-    {
-      kind: 'timepieces' as const,
-      title: `${timepiece.brand} ${timepiece.model}`,
-      image: timepiece.images[0],
-      href: localePath(`/account/timepieces/${timepiece.slug}`),
-    },
-    {
-      kind: 'events' as const,
-      title: event.title,
-      image: event.images[0],
-      href: localePath(`/account/events/${event.slug}`),
-    },
-  ];
-
-  return (
-    <section aria-labelledby="recent-heading" className="space-y-6">
-      <h2 id="recent-heading" className="text-fg text-2xl font-light">
-        {t('account.recentlyAdded')}
-      </h2>
-      <div className="grid gap-6 md:grid-cols-3">
-        {loading
-          ? Array.from({ length: 3 }).map((_, i) => <CardSkeleton key={i} ratio="3/4" />)
-          : featured.map(({ kind, title, image, href }) => (
-              <Link
-                key={href}
-                to={href}
-                className="group focus-visible:ring-accent block rounded-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
-                <Image
-                  src={image?.src ?? unsplash('luxury-product')}
-                  alt={image?.alt ?? title}
-                  ratio="3/4"
-                  className="duration-slow transition-transform group-hover:scale-[1.02]"
-                />
-                <div className="mt-4 flex flex-col gap-1">
-                  <span className="text-muted text-xs tracking-widest uppercase">
-                    {t(`account.nav.${kind}`)}
-                  </span>
-                  <span className="text-fg text-sm font-medium">{title}</span>
-                </div>
-              </Link>
-            ))}
-      </div>
-    </section>
-  );
-};
-
 export default function AccountDashboard() {
   const loading = useFakeLoading(450);
 
   return (
-    <Container size="xl">
-      <div className="space-y-16 py-12">
+    <Container size="md">
+      <div className="space-y-16 py-16">
         <GreetingSection />
-        <div>
-          <TrustBadge />
-        </div>
-        <IntentCards />
         <ConciergeCard />
         <RecentInquiriesSection loading={loading} />
-        <StoriesStripSection loading={loading} />
-        <RecentlyAddedSection loading={loading} />
       </div>
     </Container>
   );
