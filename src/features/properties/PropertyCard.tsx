@@ -1,12 +1,13 @@
 // ═══════════════════════════════════════════════════
 // PropertyCard — domain wrapper around Card atom
 //
-// WHAT: Apple-closed surface, 4:3 image cover, frosted-glass badge top-left
-//       (surface m²), HeartButton top-right, kind eyebrow, title, region·bedrooms
-//       meta, "on request" PriceTag in footer.
+// WHAT: Apple-closed surface, 4:3 image (full-bleed, no top-left overlay
+//       to respect the property visual), HeartButton top-right. Body
+//       carries kind · region eyebrow, title, surface · bedrooms meta,
+//       "on request" PriceTag in footer.
 // WHEN: PropertiesList grid item, recent items cross-module strips.
-// EDIT VISUAL: change radius/shadow in src/index.css tokens. 4:3 unified
-//       with all sibling domains for visual coherence on mixed grids.
+// EDIT VISUAL: change radius/shadow in src/index.css tokens. No badge —
+//       Property is a product, the image speaks for itself.
 // ═══════════════════════════════════════════════════
 
 import { Card } from '@components/ui/Card';
@@ -36,7 +37,6 @@ export const PropertyCard = ({
       alt={property.images[0]?.alt ?? property.title}
       ratio="4/3"
     />
-    <Card.Badge top={property.surfaceSqm} bottom="m²" />
     <Card.Overlay>
       <HeartButton
         module="property"
@@ -46,10 +46,12 @@ export const PropertyCard = ({
       />
     </Card.Overlay>
     <Card.Body>
-      <Card.Eyebrow>{kindLabel}</Card.Eyebrow>
+      <Card.Eyebrow>
+        {kindLabel} · {property.region}
+      </Card.Eyebrow>
       <Card.Title>{property.title}</Card.Title>
       <Card.Meta>
-        {property.region} · {property.bedrooms} ch.
+        {property.surfaceSqm} m² · {property.bedrooms} ch.
       </Card.Meta>
       <Card.Footer>
         <PriceTag onRequestLabel={onRequestLabel} />

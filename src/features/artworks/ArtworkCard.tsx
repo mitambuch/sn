@@ -1,13 +1,14 @@
 // ═══════════════════════════════════════════════════
 // ArtworkCard — domain wrapper around Card atom
 //
-// WHAT: Apple-closed surface, 4:3 contained image (œuvre on neutral bg),
-//       frosted-glass badge top-left (year · medium-short), HeartButton
-//       top-right, italic title (art convention), artist eyebrow,
-//       dimensions meta, on-request PriceTag in footer.
+// WHAT: Apple-closed surface, 4:3 contained image (œuvre on neutral bg,
+//       image speaks for itself — no top-left overlay). HeartButton
+//       top-right. Body: artist · year eyebrow, italic title (art
+//       convention), medium · dimensions meta, PriceTag footer.
 // WHEN: ArtworksList grid item.
-// EDIT VISUAL: change radius/shadow in src/index.css tokens. Italic title
-//       non-negotiable for art (publishing convention).
+// EDIT VISUAL: change radius/shadow in src/index.css tokens. No badge —
+//       Artwork is a product (the œuvre owns the frame, italic typo is
+//       the signal).
 // ═══════════════════════════════════════════════════
 
 import { Card } from '@components/ui/Card';
@@ -38,7 +39,6 @@ export const ArtworkCard = ({
       ratio="4/3"
       fit="contain"
     />
-    <Card.Badge top={artwork.year} bottom={mediumLabel} />
     <Card.Overlay>
       <HeartButton
         module="artwork"
@@ -48,10 +48,12 @@ export const ArtworkCard = ({
       />
     </Card.Overlay>
     <Card.Body>
-      <Card.Eyebrow>{artwork.artistName}</Card.Eyebrow>
+      <Card.Eyebrow>
+        {artwork.artistName} · {artwork.year}
+      </Card.Eyebrow>
       <Card.Title italic>{artwork.title}</Card.Title>
       <Card.Meta>
-        {artwork.dimensions.heightCm} × {artwork.dimensions.widthCm} cm
+        {mediumLabel} · {artwork.dimensions.heightCm} × {artwork.dimensions.widthCm} cm
       </Card.Meta>
       <Card.Footer>
         <PriceTag onRequestLabel={onRequestLabel} />

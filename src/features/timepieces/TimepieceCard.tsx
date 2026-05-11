@@ -2,12 +2,12 @@
 // TimepieceCard — domain wrapper around Card atom
 //
 // WHAT: Apple-closed surface, 4:3 image contained on neutral bg (watch
-//       macro centered), frosted-glass badge top-left (year · brand),
-//       HeartButton top-right, model title, reference (mono) meta,
-//       optional full-set hint, on-request PriceTag in footer.
+//       macro centered, image speaks for itself — no top-left overlay),
+//       HeartButton top-right. Body: brand · year eyebrow, model title,
+//       reference (mono) meta, optional full-set hint, PriceTag footer.
 // WHEN: TimepiecesList grid item.
-// EDIT VISUAL: change radius/shadow in src/index.css tokens. Ratio unified
-//       to 4:3 + contain (was 1:1) for cross-domain grid coherence.
+// EDIT VISUAL: change radius/shadow in src/index.css tokens. No badge —
+//       Timepiece is a product (macro shot owns the frame).
 // ═══════════════════════════════════════════════════
 
 import { Card } from '@components/ui/Card';
@@ -38,7 +38,6 @@ export const TimepieceCard = ({
       ratio="4/3"
       fit="contain"
     />
-    <Card.Badge top={timepiece.year} bottom={timepiece.brand} />
     <Card.Overlay>
       <HeartButton
         module="timepiece"
@@ -48,7 +47,9 @@ export const TimepieceCard = ({
       />
     </Card.Overlay>
     <Card.Body>
-      <Card.Eyebrow>{timepiece.brand}</Card.Eyebrow>
+      <Card.Eyebrow>
+        {timepiece.brand} · {timepiece.year}
+      </Card.Eyebrow>
       <Card.Title>{timepiece.model}</Card.Title>
       <Card.Meta mono>{timepiece.reference}</Card.Meta>
       {timepiece.fullSet && <Card.Meta className="mt-1">✓ {fullSetLabel}</Card.Meta>}
