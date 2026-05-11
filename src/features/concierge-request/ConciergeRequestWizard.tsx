@@ -312,7 +312,7 @@ export const ConciergeRequestWizard = ({
                   {t('wizard.step.details')}
                 </h2>
                 <p className="text-muted text-sm leading-relaxed">
-                  {t('wizard.details.allOptional')}
+                  {category === 'other' ? t('wizard.other.lede') : t('wizard.details.allOptional')}
                 </p>
               </header>
 
@@ -602,11 +602,11 @@ export const ConciergeRequestWizard = ({
 
               <Textarea
                 label={t('wizard.details.freeFormLabel')}
-                rows={category === 'travel' || category === 'timepiece' ? 4 : 6}
+                rows={category === 'other' ? 7 : 4}
                 placeholder={
-                  category === 'travel' || category === 'timepiece'
-                    ? t('wizard.details.freeFormPlaceholder')
-                    : t('wizard.details.placeholder')
+                  category === 'other'
+                    ? t('wizard.other.placeholder')
+                    : t('wizard.details.freeFormPlaceholder')
                 }
                 value={description}
                 onChange={e => setDescription(e.target.value)}

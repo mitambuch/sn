@@ -351,6 +351,10 @@
         "budgetPlaceholder": "ex. 5 000 — 50 000 CHF"
       }
     },
+    "other": {
+      "lede": "Aucun catalogue ne couvre tout. Décrivez-nous votre demande, même unique — notre conciergerie a l'habitude des cas particuliers et trouvera une voie.",
+      "placeholder": "Quel que soit votre besoin — accès privé, recherche d'objet rare, arrangement spécifique, urgence médicale — racontez-nous."
+    },
     "callback": {
       "cta": "Demander un rappel à Salvatore",
       "hint": "Sans formulaire — il revient vers vous sous 24h."

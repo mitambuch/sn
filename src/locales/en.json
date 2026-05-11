@@ -329,6 +329,10 @@
         "budgetPlaceholder": "e.g. CHF 5,000 — 50,000"
       }
     },
+    "other": {
+      "lede": "No catalogue covers everything. Tell us what you need — even one-off — our concierge knows unusual cases and will find a way.",
+      "placeholder": "Whatever you need — private access, rare object search, specific arrangement, medical urgency — just tell us."
+    },
     "callback": {
       "cta": "Request a callback from Salvatore",
       "hint": "No form — he gets back to you within 24h."
