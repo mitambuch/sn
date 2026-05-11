@@ -44,7 +44,7 @@ export const ArticleCard = ({
       <Card.Badge top={day} bottom={month} />
       <Card.Body>
         <Card.Eyebrow>{kindLabel}</Card.Eyebrow>
-        <Card.Title size="lg">{article.title}</Card.Title>
+        <Card.Title>{article.title}</Card.Title>
         <p className="text-muted text-sm leading-relaxed">{article.excerpt}</p>
       </Card.Body>
       <Card.PriceBlock>
