@@ -87,33 +87,35 @@ const ConciergeCard = () => {
             <p className="text-muted text-sm">salvatore@sawnext.studio</p>
           </div>
         </div>
-        {/* WHY: flex-1 on each button on mobile → both buttons share full width
-            side by side, never wrap to 2 lines. md:flex-none restores natural
-            width on desktop where space is plentiful. */}
+        {/* WHY: on mobile, labels "Appeler maintenant" + "Écrire un message"
+            are too long to fit in a shared-width row. We collapse to icon-only
+            (sr-only label for a11y) on mobile and reveal the label on md+. */}
         <div className="flex items-center gap-3">
           <a
             href="tel:+41215550000"
+            aria-label={t('dock.call')}
             className={cn(
               'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
-              'inline-flex flex-1 items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-xs tracking-widest whitespace-nowrap uppercase md:flex-none md:px-5 md:py-2.5',
+              'inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-full border text-xs tracking-widest whitespace-nowrap uppercase md:h-auto md:flex-none md:px-5 md:py-2.5',
               'duration-base transition-[border-color,background-color]',
               'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
             )}
           >
-            <Phone size={14} strokeWidth={1.5} aria-hidden="true" />
-            {t('dock.call')}
+            <Phone size={16} strokeWidth={1.5} aria-hidden="true" />
+            <span className="sr-only md:not-sr-only">{t('dock.call')}</span>
           </a>
           <a
             href="mailto:salvatore@sawnext.studio"
+            aria-label={t('dock.write')}
             className={cn(
               'border-border text-fg hover:border-fg/60 focus-visible:ring-accent',
-              'inline-flex flex-1 items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-xs tracking-widest whitespace-nowrap uppercase md:flex-none md:px-5 md:py-2.5',
+              'inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-full border text-xs tracking-widest whitespace-nowrap uppercase md:h-auto md:flex-none md:px-5 md:py-2.5',
               'duration-base transition-[border-color]',
               'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
             )}
           >
-            <Mail size={14} strokeWidth={1.5} aria-hidden="true" />
-            {t('dock.write')}
+            <Mail size={16} strokeWidth={1.5} aria-hidden="true" />
+            <span className="sr-only md:not-sr-only">{t('dock.write')}</span>
           </a>
         </div>
       </div>
