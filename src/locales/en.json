@@ -100,6 +100,11 @@
   },
   "account": {
     "eyebrow": "Member",
+    "greeting": {
+      "morning": "Good morning {{name}}.",
+      "afternoon": "Good afternoon {{name}}.",
+      "evening": "Good evening {{name}}."
+    },
     "dashboardTitle": "Your concierge",
     "dashboardLede": "A curated selection prepared for you, your active inquiries, and direct access to your concierge.",
     "yourInquiries": "Your inquiries",

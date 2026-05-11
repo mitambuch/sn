@@ -51,12 +51,18 @@ interface HeaderProps {
   className?: string;
 }
 
-/** Floating header — morphing logo + navigation pill. */
+/** Floating header — morphing logo + navigation pill.
+ *  WHY hide nav on auth surfaces: when /account/* or /admin/* is mounted,
+ *  the AppLayout / AdminLayout sidebar already carries the same nav (and
+ *  more). The top pill becomes pure utility — language + theme — to avoid
+ *  duplication and keep the gaze on the page content. */
 export const Header = ({ className }: HeaderProps) => {
   const scrolled = useScrolled();
   const { pathname } = useLocation();
   const { locale, setLocale, localePath } = useLocale();
   const { t } = useTranslation();
+
+  const isAuthSurface = pathname.includes('/account') || pathname.includes('/admin');
 
   return (
     <nav
@@ -75,25 +81,26 @@ export const Header = ({ className }: HeaderProps) => {
               : 'border-border/50 bg-surface/30 backdrop-blur-xl',
           )}
         >
-          {NAV_ITEMS.map(({ to, labelKey, icon: Icon }) => {
-            const href = localePath(to);
-            const label = t(labelKey);
-            return (
-              <Link
-                key={to}
-                to={href}
-                aria-current={pathname === href ? 'page' : undefined}
-                className="text-muted hover:text-accent focus-visible:ring-accent border-border/50 duration-base flex items-center gap-1.5 border-r px-3 py-2 text-sm transition-colors focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-inset sm:px-4"
-              >
-                <Icon size={14} strokeWidth={1.5} aria-hidden="true" />
-                <span className="sr-only">{label}</span>
-                <span className="hidden sm:inline" aria-hidden="true">
-                  {label}
-                </span>
-              </Link>
-            );
-          })}
-          <div className="border-border/50 border-r px-1.5 py-1 sm:px-2">
+          {!isAuthSurface &&
+            NAV_ITEMS.map(({ to, labelKey, icon: Icon }) => {
+              const href = localePath(to);
+              const label = t(labelKey);
+              return (
+                <Link
+                  key={to}
+                  to={href}
+                  aria-current={pathname === href ? 'page' : undefined}
+                  className="text-muted hover:text-accent focus-visible:ring-accent border-border/50 duration-base flex items-center gap-1.5 border-r px-3 py-2 text-sm transition-colors focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-inset sm:px-4"
+                >
+                  <Icon size={14} strokeWidth={1.5} aria-hidden="true" />
+                  <span className="sr-only">{label}</span>
+                  <span className="hidden sm:inline" aria-hidden="true">
+                    {label}
+                  </span>
+                </Link>
+              );
+            })}
+          <div className={cn('px-1.5 py-1 sm:px-2', !isAuthSurface && 'border-border/50 border-r')}>
             <LanguageSwitcher
               currentLocale={locale}
               onLocaleChange={setLocale}

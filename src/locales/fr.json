@@ -118,6 +118,11 @@
   },
   "account": {
     "eyebrow": "Membre",
+    "greeting": {
+      "morning": "Bonjour {{name}}.",
+      "afternoon": "Bon après-midi {{name}}.",
+      "evening": "Bonsoir {{name}}."
+    },
     "dashboardTitle": "Votre conciergerie",
     "dashboardLede": "Une sélection préparée pour vous, vos demandes en cours, et l’accès direct à votre conciergerie.",
     "yourInquiries": "Vos demandes",
