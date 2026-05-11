@@ -2,11 +2,11 @@
 // Login — three sign-in modes (email+password / magic link / invitation code)
 //
 // WHAT: Renders three editorial choice cards on first load. Selecting a
-//       card swaps to the matching form. On submit, simulates a successful
-//       auth in DEV (via AuthContext.__setDevSession) and navigates to
-//       /:locale/account. Magic-link mode shows a confirmation screen.
-//       Invitation-code mode redirects to /onboarding instead.
-// WHEN: /:locale/login route. AuthContext is replaced live in lot A.5.
+//       card swaps to the matching form. Calls AuthContext methods which
+//       route to Supabase when env is wired, or DEV stubs otherwise.
+//       Magic-link + invitation modes show a confirmation screen — the
+//       user completes signin by clicking the link in their inbox.
+// WHEN: /:locale/login route. AuthContext owns the live-vs-stub branch.
 // EDIT COPY: src/locales/{fr,en}.json under auth.* — never inline.
 // ═══════════════════════════════════════════════════
 
@@ -17,11 +17,12 @@ import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { useAuth } from '@context/AuthContext';
 import { cn } from '@utils/cn';
-import { type FormEvent, useState } from 'react';
+import { type FormEvent, type ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 
 type Mode = 'select' | 'email' | 'magic-link' | 'invitation' | 'magic-link-sent';
+type FormMode = 'email' | 'magic-link' | 'invitation';
 
 const ModeCard = ({
   title,
@@ -52,67 +53,222 @@ const ModeCard = ({
   </button>
 );
 
-const SubmitRow = ({
+const FormShell = ({
+  onSubmit,
+  children,
+  error,
   onCancel,
   label,
   backLabel,
+  submitting,
 }: {
+  onSubmit: (e: FormEvent) => void;
+  children: ReactNode;
+  error: string | null;
   onCancel: () => void;
   label: string;
   backLabel: string;
+  submitting: boolean;
 }) => (
-  <div className="mt-2 flex items-center gap-4">
-    <button
-      type="submit"
-      className="border-border bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent inline-flex items-center gap-3 rounded-full border px-6 py-3 text-sm tracking-widest uppercase focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-    >
-      {label}
-      <span aria-hidden="true">→</span>
-    </button>
-    <button
-      type="button"
-      onClick={onCancel}
-      className="text-muted hover:text-fg duration-base text-xs tracking-widest uppercase transition-colors"
-    >
-      ← {backLabel}
-    </button>
-  </div>
+  <form className="flex max-w-md flex-col gap-4" onSubmit={onSubmit}>
+    {children}
+    {error && <p className="text-muted text-xs leading-relaxed">{error}</p>}
+    <div className="mt-2 flex items-center gap-4">
+      <button
+        type="submit"
+        disabled={submitting}
+        className="border-border bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent inline-flex items-center gap-3 rounded-full border px-6 py-3 text-sm tracking-widest uppercase focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        {submitting ? '…' : label}
+        {!submitting && <span aria-hidden="true">→</span>}
+      </button>
+      <button
+        type="button"
+        onClick={onCancel}
+        className="text-muted hover:text-fg duration-base text-xs tracking-widest uppercase transition-colors"
+      >
+        ← {backLabel}
+      </button>
+    </div>
+  </form>
 );
+
+interface MetaInput {
+  t: (key: string) => string;
+  email: string;
+  password: string;
+  code: string;
+  setEmail: (v: string) => void;
+  setPassword: (v: string) => void;
+  setCode: (v: string) => void;
+  setMode: (m: Mode) => void;
+  navigateToAccount: () => void;
+  runAuth: (
+    action: () => Promise<{ ok: boolean; error?: string }>,
+    onOk: () => void,
+  ) => Promise<void>;
+  signIn: (e: string, p: string) => Promise<{ ok: boolean; error?: string }>;
+  signInWithMagicLink: (e: string) => Promise<{ ok: boolean; error?: string }>;
+  redeemInvitationCode: (c: string, e: string) => Promise<{ ok: boolean; error?: string }>;
+}
+
+interface FormMeta {
+  label: string;
+  onSubmit: (e: FormEvent) => void;
+  fields: ReactNode;
+}
+
+const buildMeta = (input: MetaInput): Record<FormMode, FormMeta> => {
+  const {
+    t,
+    email,
+    password,
+    code,
+    setEmail,
+    setPassword,
+    setCode,
+    setMode,
+    navigateToAccount,
+    runAuth,
+    signIn,
+    signInWithMagicLink,
+    redeemInvitationCode,
+  } = input;
+  return {
+    email: {
+      label: t('auth.signIn'),
+      onSubmit: e => {
+        e.preventDefault();
+        void runAuth(() => signIn(email, password), navigateToAccount);
+      },
+      fields: (
+        <>
+          <Input
+            label={t('auth.email')}
+            type="email"
+            autoComplete="email"
+            required
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
+          <Input
+            label={t('auth.password')}
+            type="password"
+            autoComplete="current-password"
+            required
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
+        </>
+      ),
+    },
+    'magic-link': {
+      label: t('auth.modeMagicLink'),
+      onSubmit: e => {
+        e.preventDefault();
+        void runAuth(
+          () => signInWithMagicLink(email),
+          () => setMode('magic-link-sent'),
+        );
+      },
+      fields: (
+        <Input
+          label={t('auth.email')}
+          type="email"
+          autoComplete="email"
+          required
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+        />
+      ),
+    },
+    invitation: {
+      label: t('auth.modeInvitation'),
+      onSubmit: e => {
+        e.preventDefault();
+        void runAuth(
+          () => redeemInvitationCode(code, email),
+          () => setMode('magic-link-sent'),
+        );
+      },
+      fields: (
+        <>
+          <Input
+            label={t('auth.email')}
+            type="email"
+            autoComplete="email"
+            required
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
+          <Input
+            label={t('auth.code')}
+            type="text"
+            required
+            placeholder="SAW-XXXX-XXXX"
+            value={code}
+            onChange={e => setCode(e.target.value.toUpperCase())}
+          />
+        </>
+      ),
+    },
+  };
+};
 
 export default function Login() {
   const { t } = useTranslation();
   const { localePath } = useLocale();
-  const { __setDevSession } = useAuth();
+  const { signIn, signInWithMagicLink, redeemInvitationCode } = useAuth();
   const navigate = useNavigate();
 
   const [mode, setMode] = useState<Mode>('select');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const fakeSignIn = (target: 'account' | 'onboarding') => {
-    __setDevSession('client');
-    void navigate(localePath(target === 'account' ? ROUTES.ACCOUNT : ROUTES.ONBOARDING), {
-      replace: true,
-    });
+  const resetTo = (next: Mode) => {
+    setError(null);
+    setMode(next);
   };
 
-  const handleEmailSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    fakeSignIn('account');
+  const runAuth = async (
+    action: () => Promise<{ ok: boolean; error?: string }>,
+    onOk: () => void,
+  ): Promise<void> => {
+    setSubmitting(true);
+    setError(null);
+    const result = await action();
+    setSubmitting(false);
+    if (result.ok) {
+      onOk();
+    } else {
+      setError(result.error ?? 'Erreur inconnue');
+    }
   };
 
-  const handleMagicLinkSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    setMode('magic-link-sent');
-  };
-
-  const handleInvitationSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    fakeSignIn('onboarding');
-  };
+  const meta = buildMeta({
+    t,
+    email,
+    password,
+    code,
+    setEmail,
+    setPassword,
+    setCode,
+    setMode,
+    navigateToAccount: () => {
+      void navigate(localePath(ROUTES.ACCOUNT), { replace: true });
+    },
+    runAuth,
+    signIn,
+    signInWithMagicLink,
+    redeemInvitationCode,
+  });
 
   const back = t('common.back');
+  const isFormMode = mode === 'email' || mode === 'magic-link' || mode === 'invitation';
+  const current = isFormMode ? meta[mode] : null;
 
   return (
     <Container size="md">
@@ -125,81 +281,32 @@ export default function Login() {
               <ModeCard
                 title={t('auth.modeEmail')}
                 hint={t('auth.modeEmailHint')}
-                onClick={() => setMode('email')}
+                onClick={() => resetTo('email')}
               />
               <ModeCard
                 title={t('auth.modeMagicLink')}
                 hint={t('auth.modeMagicLinkHint')}
-                onClick={() => setMode('magic-link')}
+                onClick={() => resetTo('magic-link')}
               />
               <ModeCard
                 title={t('auth.modeInvitation')}
                 hint={t('auth.modeInvitationHint')}
-                onClick={() => setMode('invitation')}
+                onClick={() => resetTo('invitation')}
               />
             </div>
           )}
 
-          {mode === 'email' && (
-            <form className="flex max-w-md flex-col gap-4" onSubmit={handleEmailSubmit}>
-              <Input
-                label={t('auth.email')}
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-              />
-              <Input
-                label={t('auth.password')}
-                type="password"
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-              />
-              <SubmitRow
-                onCancel={() => setMode('select')}
-                label={t('auth.signIn')}
-                backLabel={back}
-              />
-            </form>
-          )}
-
-          {mode === 'magic-link' && (
-            <form className="flex max-w-md flex-col gap-4" onSubmit={handleMagicLinkSubmit}>
-              <Input
-                label={t('auth.email')}
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-              />
-              <SubmitRow
-                onCancel={() => setMode('select')}
-                label={t('auth.modeMagicLink')}
-                backLabel={back}
-              />
-            </form>
-          )}
-
-          {mode === 'invitation' && (
-            <form className="flex max-w-md flex-col gap-4" onSubmit={handleInvitationSubmit}>
-              <Input
-                label={t('auth.code')}
-                type="text"
-                required
-                placeholder="SAW-XXXX-XXXX"
-                value={code}
-                onChange={e => setCode(e.target.value.toUpperCase())}
-              />
-              <SubmitRow
-                onCancel={() => setMode('select')}
-                label={t('auth.modeInvitation')}
-                backLabel={back}
-              />
-            </form>
+          {current && (
+            <FormShell
+              onSubmit={current.onSubmit}
+              error={error}
+              onCancel={() => resetTo('select')}
+              label={current.label}
+              backLabel={back}
+              submitting={submitting}
+            >
+              {current.fields}
+            </FormShell>
           )}
 
           {mode === 'magic-link-sent' && (
@@ -207,7 +314,7 @@ export default function Login() {
               <p className="text-fg text-sm leading-relaxed">{t('auth.magicLinkSent')}</p>
               <button
                 type="button"
-                onClick={() => setMode('select')}
+                onClick={() => resetTo('select')}
                 className="text-muted hover:text-fg duration-base mt-6 text-xs tracking-widest uppercase transition-colors"
               >
                 ← {t('auth.back')}

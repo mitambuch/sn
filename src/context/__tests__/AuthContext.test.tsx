@@ -22,19 +22,30 @@ describe('AuthContext', () => {
     expect(result.current.session).toBeNull();
   });
 
-  it('returns ok:false from stubbed actions until A.5 wires Supabase', async () => {
+  it('falls back to a DEV session when Supabase is not wired', async () => {
     const { result } = renderHook(() => useAuth(), { wrapper });
     await waitFor(() => expect(result.current.loading).toBe(false));
 
-    const signInResult = await result.current.signIn('a@b.test', 'pw');
-    expect(signInResult.ok).toBe(false);
-    expect(signInResult.error).toMatch(/lot A\.5/);
+    // signIn + redeemInvitationCode synthesize a client session when there's
+    // no backend — the demo flow stays walkable without env vars.
+    let signInResult: { ok: boolean; error?: string } | undefined;
+    await act(async () => {
+      signInResult = await result.current.signIn('a@b.test', 'pw');
+    });
+    expect(signInResult?.ok).toBe(true);
+    expect(result.current.user?.role).toBe('client');
 
-    const magicResult = await result.current.signInWithMagicLink('a@b.test');
-    expect(magicResult.ok).toBe(false);
+    // signInWithMagicLink resolves ok without creating a session — the user
+    // would normally complete via the email link.
+    await act(async () => {
+      const magicResult = await result.current.signInWithMagicLink('a@b.test');
+      expect(magicResult.ok).toBe(true);
+    });
 
-    const redeemResult = await result.current.redeemInvitationCode('SAW-AB23-C7DE', 'a@b.test');
-    expect(redeemResult.ok).toBe(false);
+    await act(async () => {
+      const redeemResult = await result.current.redeemInvitationCode('SAW-AB23-C7DE', 'a@b.test');
+      expect(redeemResult.ok).toBe(true);
+    });
   });
 
   it('__setDevSession populates user + session and writes localStorage', async () => {
