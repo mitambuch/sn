@@ -160,20 +160,18 @@ const RecentInquiriesSection = ({ loading }: { loading: boolean }) => {
         <Card padding="none">
           <ul className="divide-border divide-y">
             {inquiries.map(inq => (
-              <li
-                key={inq.id}
-                className="flex items-start justify-between gap-3 px-5 py-4 sm:items-center"
-              >
-                <div className="flex min-w-0 flex-1 flex-col gap-1">
-                  <span className="text-fg line-clamp-2 text-sm sm:line-clamp-none">
-                    {inq.message ?? '—'}
-                  </span>
+              <li key={inq.id} className="flex flex-col gap-2 px-5 py-4">
+                {/* Top row : meta + StatusPill — both tiny uppercase,
+                    fit easily on one line on every viewport. */}
+                <div className="flex items-center justify-between gap-3">
                   <span className="text-muted text-xs tracking-widest uppercase">
                     {t(`inquiry.sourceLabel.${inq.source}`)} ·{' '}
                     {new Date(inq.createdAt).toLocaleDateString(i18n.language)}
                   </span>
+                  <StatusPill variant={inq.status} label={t(`inquiry.status.${inq.status}`)} />
                 </div>
-                <StatusPill variant={inq.status} label={t(`inquiry.status.${inq.status}`)} />
+                {/* Body : message full-width, wraps freely. */}
+                <span className="text-fg text-sm leading-relaxed">{inq.message ?? '—'}</span>
               </li>
             ))}
           </ul>
