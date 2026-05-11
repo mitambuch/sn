@@ -205,9 +205,16 @@ const densityStyles: Record<NonNullable<CardBodyProps['density']>, string> = {
   spacious: 'p-6 gap-2',
 };
 
-/** Padded content area — wraps Eyebrow/Title/Meta/Footer. */
+/** Padded content area — wraps Eyebrow/Title/Meta/Footer.
+ *  `justify-end` anchors all children to the bottom of Body when the
+ *  card is stretched (catalogue mixed grid). Cascade behavior: adding
+ *  content pushes the cluster up, removing it lets it settle down.
+ *  Combined with Media fixed top, the empty space appears BETWEEN
+ *  Media and the bottom-anchored content cluster. */
 const CardBody = ({ children, className, density = 'comfortable' }: CardBodyProps) => (
-  <div className={cn('flex flex-1 flex-col', densityStyles[density], className)}>{children}</div>
+  <div className={cn('flex flex-1 flex-col justify-end', densityStyles[density], className)}>
+    {children}
+  </div>
 );
 
 interface CardEyebrowProps {
@@ -281,17 +288,11 @@ const statsColStyles: Record<NonNullable<CardStatsProps['cols']>, string> = {
 };
 
 /** Specs grid inside Body — label + value pairs, hairline divider above.
- *  Uses `mt-auto` so Stats sticks to the bottom of Body when Card is
- *  stretched (e.g. on the mixed catalogue grid). Breathing space ends
- *  up between Title and Stats, which reads more intentional than empty
- *  space at the bottom edge. */
+ *  Sits at the bottom of the body cluster (Body uses `justify-end` to
+ *  anchor everything bottom). `mt-3` keeps a small gap from Title. */
 const CardStats = ({ children, className, cols = 2 }: CardStatsProps) => (
   <div
-    className={cn(
-      'border-border mt-auto grid gap-4 border-t pt-3',
-      statsColStyles[cols],
-      className,
-    )}
+    className={cn('border-border mt-3 grid gap-4 border-t pt-3', statsColStyles[cols], className)}
   >
     {children}
   </div>
