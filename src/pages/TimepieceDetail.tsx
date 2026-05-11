@@ -58,12 +58,11 @@ export default function TimepieceDetail() {
   return (
     <Container size="xl">
       <div className="space-y-12 py-10 md:space-y-16 md:py-12">
-        {/* ─── Hero : image + primary info cluster ────────
-            Desktop : 2-col with right column stretched full height ;
-            title cluster anchors top, CTA anchors bottom (aligned with
-            image bottom edge). Mobile : natural stack with cluster
-            top, CTA last. */}
-        <div className="grid gap-8 lg:grid-cols-2 lg:items-stretch lg:gap-12">
+        {/* ─── Hero : image left, dense info cluster right ────────
+            Right column packs all the buying info (specs preview + price
+            + CTA) so the desktop space doesn't feel empty next to the
+            1:1 image. Description moves below as a self-contained block. */}
+        <div className="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
           <Image
             src={tp.images[0]?.src ?? ''}
             alt={tp.images[0]?.alt ?? `${tp.brand} ${tp.model}`}
@@ -73,21 +72,29 @@ export default function TimepieceDetail() {
             className="object-contain"
           />
 
-          <div className="flex flex-col gap-8 lg:justify-between">
-            <div className="flex flex-col gap-4">
-              <SectionHeader
-                eyebrow={`${tp.brand} · ${String(tp.year)}`}
-                title={tp.model}
-                lede={tp.summary}
+          <div className="flex flex-col gap-6">
+            <SectionHeader
+              eyebrow={`${tp.brand} · ${String(tp.year)}`}
+              title={tp.model}
+              lede={tp.summary}
+              size="md"
+              as="h1"
+            />
+
+            {/* Specs preview — fills the desktop space, scannable in 1s */}
+            <MetaList items={meta} />
+
+            {/* Price — structural slot. priceCHF optional in data (Sanity
+                future), falls back to "Sur demande" silent HNW convention. */}
+            <div className="border-border flex items-baseline justify-between border-t pt-4">
+              <span className="text-muted text-xs tracking-widest uppercase">
+                {t('common.price')}
+              </span>
+              <PriceTag
+                {...(tp.priceCHF !== undefined && { amount: tp.priceCHF, currency: 'CHF' })}
+                onRequestLabel={t('common.onRequest')}
                 size="md"
-                as="h1"
               />
-              <div className="flex items-center gap-3">
-                <span className="text-muted text-xs tracking-widest uppercase">
-                  {t('timepieces.meta.reference')}
-                </span>
-                <span className="text-fg font-mono text-sm tracking-wider">{tp.reference}</span>
-              </div>
             </div>
 
             <button
@@ -95,7 +102,7 @@ export default function TimepieceDetail() {
               onClick={() => setInquiryOpen(true)}
               className={cn(
                 'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
-                'inline-flex w-full items-center justify-center gap-3 rounded-full border px-6 py-3.5 text-sm tracking-widest uppercase sm:w-auto sm:self-start',
+                'mt-2 inline-flex w-full items-center justify-center gap-3 rounded-full border px-6 py-3.5 text-sm tracking-widest uppercase sm:w-auto sm:self-start',
                 'duration-base transition-[border-color,background-color]',
                 'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
               )}
@@ -106,18 +113,10 @@ export default function TimepieceDetail() {
           </div>
         </div>
 
-        {/* ─── Description + Specs ──────────────────────── */}
-        <div className="grid gap-8 lg:grid-cols-3 lg:gap-12">
-          <div className="space-y-4 lg:col-span-2">
-            <SectionHeader title={t('common.details')} size="sm" as="h2" />
-            <p className="text-muted leading-relaxed">{tp.description}</p>
-          </div>
-          <aside className="space-y-6">
-            <MetaList items={meta} />
-            <div className="border-border border-t pt-4">
-              <PriceTag onRequestLabel={t('common.onRequest')} size="md" />
-            </div>
-          </aside>
+        {/* ─── Description — full-width block ──────────────────── */}
+        <div className="space-y-4">
+          <SectionHeader title={t('common.details')} size="sm" as="h2" />
+          <p className="text-muted max-w-3xl leading-relaxed">{tp.description}</p>
         </div>
 
         {/* ─── Provenance ──────────────────────────────── */}
