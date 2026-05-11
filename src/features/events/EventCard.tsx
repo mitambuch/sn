@@ -2,17 +2,16 @@
 // EventCard — domain wrapper around Card atom
 //
 // WHAT: Apple-closed surface, 4:3 image, Card.Badge top-left (day · month
-//       date stamp), HeartButton top-right. Body: category · city eyebrow,
-//       title, 2-col Card.Stats (venue, time). Card.PriceBlock with
-//       "Heure" label + Card.Pill (Clock icon + time string).
-// WHEN: EventsList grid item.
-// EDIT VISUAL: change radius/shadow in src/index.css tokens. Card.Badge
-//       date is the canonical pattern reused by sibling temporal cards.
+//       date stamp — the temporal signature), HeartButton top-right.
+//       Body: category · city eyebrow, title, 2-col Card.Stats (venue · time).
+//       NO PriceBlock — date is already signature in badge; time is
+//       supporting info in stats; "key info" pill would just duplicate.
+// WHEN: EventsList grid item, catalogue mixed view.
+// EDIT VISUAL: change radius/shadow in src/index.css tokens.
 // ═══════════════════════════════════════════════════
 
 import { Card } from '@components/ui/Card';
 import { HeartButton } from '@components/ui/HeartButton';
-import { Clock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import type { Event } from '@/types/event';
@@ -55,16 +54,9 @@ export const EventCard = ({ event, href, categoryLabel, locale, className }: Eve
         <Card.Title>{event.title}</Card.Title>
         <Card.Stats>
           <Card.Stat label={t('events.meta.venue')} value={event.venue} />
-          <Card.Stat label={t('common.time')} value={time} />
+          <Card.Stat label={t('events.meta.time')} value={time} />
         </Card.Stats>
       </Card.Body>
-      <Card.PriceBlock>
-        <span className="text-muted text-[10px] tracking-widest uppercase">{t('common.time')}</span>
-        <Card.Pill>
-          <Clock size={11} strokeWidth={1.5} aria-hidden="true" />
-          {time}
-        </Card.Pill>
-      </Card.PriceBlock>
     </Card>
   );
 };

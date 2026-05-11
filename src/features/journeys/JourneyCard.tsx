@@ -2,16 +2,17 @@
 // JourneyCard — domain wrapper around Card atom
 //
 // WHAT: Apple-closed surface, 4:3 image, Card.Badge top-left (duration ·
-//       days), HeartButton top-right. Body: kind eyebrow, title, 2-col
-//       Card.Stats (destinations, days count). Card.PriceBlock with
-//       "Itinéraire" label + Card.Pill (Compass icon + kindLabel).
-// WHEN: JourneysList grid item.
+//       days — temporal signature), HeartButton top-right. Body: kind
+//       eyebrow, title, Card.Stats with destinations spanning 2 cols.
+//       NO PriceBlock — kind is already in eyebrow, adding it as a pill
+//       below would duplicate. Duration in badge + destinations in body
+//       cover the at-a-glance need.
+// WHEN: JourneysList grid item, catalogue mixed view.
 // EDIT VISUAL: change radius/shadow in src/index.css tokens.
 // ═══════════════════════════════════════════════════
 
 import { Card } from '@components/ui/Card';
 import { HeartButton } from '@components/ui/HeartButton';
-import { Compass } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import type { Journey } from '@/types/journey';
@@ -59,13 +60,6 @@ export const JourneyCard = ({
           />
         </Card.Stats>
       </Card.Body>
-      <Card.PriceBlock>
-        <span className="text-muted text-[10px] tracking-widest uppercase">{t('common.kind')}</span>
-        <Card.Pill>
-          <Compass size={11} strokeWidth={1.5} aria-hidden="true" />
-          {kindLabel}
-        </Card.Pill>
-      </Card.PriceBlock>
     </Card>
   );
 };
