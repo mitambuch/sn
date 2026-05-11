@@ -23,7 +23,7 @@ import {
 import { useFakeLoading } from '@hooks/useFakeLoading';
 import { cn } from '@utils/cn';
 import type { LucideIcon } from 'lucide-react';
-import { Briefcase, Compass, Frame, Mail, PartyPopper, Phone, Watch } from 'lucide-react';
+import { Briefcase, Compass, Frame, Mail, Phone, Watch } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -31,11 +31,13 @@ import { Link } from 'react-router-dom';
 import { listInquiriesForUser } from '@/mocks';
 import { currentUser } from '@/mocks/users';
 
+// Dashboard quick-shortcuts — 4 most-used categories (HNW reality at launch :
+// real estate + timepiece + art + travel). Full picker (incl. experience +
+// other) accessible via the main "Une demande personnalisée" CTA = step 1.
 const REQUEST_SHORTCUTS: { category: WizardCategory; icon: LucideIcon }[] = [
   { category: 'real-estate', icon: Briefcase },
   { category: 'timepiece', icon: Watch },
   { category: 'art', icon: Frame },
-  { category: 'experience', icon: PartyPopper },
   { category: 'travel', icon: Compass },
 ];
 
@@ -122,10 +124,9 @@ const PersonalisedRequestSection = () => {
           </span>
         </button>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-muted shrink-0 text-[10px] tracking-widest uppercase">
-            {t('wizard.shortcutsLabel')} ·
-          </span>
+        {/* Quick shortcuts — 2x2 grid mobile, flex row desktop.
+            Forces alignment with the parent column grid, no overflow wrap. */}
+        <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
           {REQUEST_SHORTCUTS.map(({ category, icon: Icon }) => (
             <button
               key={category}
@@ -133,12 +134,12 @@ const PersonalisedRequestSection = () => {
               onClick={() => openWith(category)}
               className={cn(
                 'border-border text-muted hover:text-fg hover:border-fg/40',
-                'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] tracking-widest whitespace-nowrap uppercase',
+                'inline-flex items-center justify-center gap-1.5 rounded-md border px-3 py-2.5 text-[11px] tracking-widest whitespace-nowrap uppercase',
                 'duration-base transition-[color,border-color]',
                 'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
               )}
             >
-              <Icon size={11} strokeWidth={1.5} aria-hidden="true" />
+              <Icon size={12} strokeWidth={1.5} aria-hidden="true" />
               {t(`wizard.category.${category}.title`)}
             </button>
           ))}

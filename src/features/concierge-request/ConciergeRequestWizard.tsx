@@ -170,7 +170,7 @@ export const ConciergeRequestWizard = ({
 
       <div className="border-border bg-bg rounded-t-card sm:rounded-card shadow-card-rest relative flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden border">
         {/* ─── Header ─── */}
-        <header className="border-border flex items-center justify-between border-b px-5 py-4 sm:px-6 sm:py-5">
+        <header className="border-border flex items-center justify-between border-b px-6 py-4 sm:px-8 sm:py-5">
           <div className="flex items-center gap-3">
             <span className="text-muted font-mono text-[10px] tracking-widest uppercase">
               {String(stepNumber)}/3
@@ -188,7 +188,7 @@ export const ConciergeRequestWizard = ({
         </header>
 
         {/* ─── Body ─── */}
-        <div className="flex-1 overflow-y-auto px-5 py-6 sm:px-8 sm:py-8">
+        <div className="flex-1 overflow-y-auto px-6 py-6 sm:px-8 sm:py-8">
           {step === 'category' && (
             <div className="space-y-6">
               <header className="space-y-2">
@@ -268,13 +268,13 @@ export const ConciergeRequestWizard = ({
                 <p className="text-muted text-sm leading-relaxed">{t('wizard.review.lede')}</p>
               </header>
               <dl className="border-border divide-border bg-surface shadow-card-rest rounded-card divide-y border">
-                <div className="flex flex-col gap-1 px-5 py-4">
+                <div className="flex flex-col gap-1 px-6 py-4">
                   <dt className="text-muted text-xs tracking-widest uppercase">
                     {t('wizard.review.categoryLabel')}
                   </dt>
                   <dd className="text-fg text-sm">{t(`wizard.category.${category}.title`)}</dd>
                 </div>
-                <div className="flex flex-col gap-1 px-5 py-4">
+                <div className="flex flex-col gap-1 px-6 py-4">
                   <dt className="text-muted text-xs tracking-widest uppercase">
                     {t('wizard.review.descriptionLabel')}
                   </dt>
@@ -288,7 +288,7 @@ export const ConciergeRequestWizard = ({
         </div>
 
         {/* ─── Footer ─── */}
-        <footer className="border-border flex items-center justify-between gap-3 border-t px-5 py-4 sm:px-6">
+        <footer className="border-border flex items-center justify-between gap-3 border-t px-6 py-4 sm:px-8">
           {canGoBack ? (
             <button
               type="button"
