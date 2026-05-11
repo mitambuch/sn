@@ -419,6 +419,187 @@ export const ConciergeRequestWizard = ({
                 </div>
               )}
 
+              {category === 'real-estate' && (
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <FieldSelect
+                    id="re-type"
+                    label={t('wizard.fields.real-estate.type')}
+                    value={fields.realEstateType ?? ''}
+                    onChange={v => setField('realEstateType', v)}
+                    options={[
+                      { value: 'chalet', label: t('wizard.fields.real-estate.typeChalet') },
+                      { value: 'villa', label: t('wizard.fields.real-estate.typeVilla') },
+                      { value: 'penthouse', label: t('wizard.fields.real-estate.typePenthouse') },
+                      { value: 'estate', label: t('wizard.fields.real-estate.typeEstate') },
+                      { value: 'townhouse', label: t('wizard.fields.real-estate.typeTownhouse') },
+                    ]}
+                  />
+                  <FieldText
+                    id="re-region"
+                    label={t('wizard.fields.real-estate.region')}
+                    placeholder={t('wizard.fields.real-estate.regionPlaceholder')}
+                    value={fields.realEstateRegion ?? ''}
+                    onChange={v => setField('realEstateRegion', v)}
+                  />
+                  <FieldText
+                    id="re-surface-min"
+                    type="number"
+                    label={t('wizard.fields.real-estate.surfaceMin')}
+                    value={fields.realEstateSurfaceMin ?? ''}
+                    onChange={v => setField('realEstateSurfaceMin', v)}
+                  />
+                  <FieldText
+                    id="re-surface-max"
+                    type="number"
+                    label={t('wizard.fields.real-estate.surfaceMax')}
+                    value={fields.realEstateSurfaceMax ?? ''}
+                    onChange={v => setField('realEstateSurfaceMax', v)}
+                  />
+                  <FieldText
+                    id="re-bedrooms"
+                    type="number"
+                    label={t('wizard.fields.real-estate.bedrooms')}
+                    value={fields.realEstateBedrooms ?? ''}
+                    onChange={v => setField('realEstateBedrooms', v)}
+                  />
+                  <FieldSelect
+                    id="re-availability"
+                    label={t('wizard.fields.real-estate.availability')}
+                    value={fields.realEstateAvailability ?? ''}
+                    onChange={v => setField('realEstateAvailability', v)}
+                    options={[
+                      { value: 'sale', label: t('wizard.fields.real-estate.availabilitySale') },
+                      { value: 'rent', label: t('wizard.fields.real-estate.availabilityRent') },
+                      { value: 'both', label: t('wizard.fields.real-estate.availabilityBoth') },
+                    ]}
+                  />
+                  <FieldText
+                    id="re-budget"
+                    label={t('wizard.fields.real-estate.budget')}
+                    placeholder={t('wizard.fields.real-estate.budgetPlaceholder')}
+                    value={fields.realEstateBudget ?? ''}
+                    onChange={v => setField('realEstateBudget', v)}
+                  />
+                </div>
+              )}
+
+              {category === 'art' && (
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <FieldText
+                    id="art-artist"
+                    label={t('wizard.fields.art.artist')}
+                    placeholder={t('wizard.fields.art.artistPlaceholder')}
+                    value={fields.artArtist ?? ''}
+                    onChange={v => setField('artArtist', v)}
+                  />
+                  <FieldSelect
+                    id="art-period"
+                    label={t('wizard.fields.art.period')}
+                    value={fields.artPeriod ?? ''}
+                    onChange={v => setField('artPeriod', v)}
+                    options={[
+                      { value: 'contemporary', label: t('wizard.fields.art.periodContemporary') },
+                      { value: 'modern', label: t('wizard.fields.art.periodModern') },
+                      { value: 'classic', label: t('wizard.fields.art.periodClassic') },
+                    ]}
+                  />
+                  <FieldSelect
+                    id="art-medium"
+                    label={t('wizard.fields.art.medium')}
+                    value={fields.artMedium ?? ''}
+                    onChange={v => setField('artMedium', v)}
+                    options={[
+                      { value: 'oil', label: t('wizard.fields.art.mediumOil') },
+                      { value: 'acrylic', label: t('wizard.fields.art.mediumAcrylic') },
+                      { value: 'sculpture', label: t('wizard.fields.art.mediumSculpture') },
+                      { value: 'photo', label: t('wizard.fields.art.mediumPhoto') },
+                      { value: 'print', label: t('wizard.fields.art.mediumPrint') },
+                      { value: 'mixed', label: t('wizard.fields.art.mediumMixed') },
+                    ]}
+                  />
+                  <FieldText
+                    id="art-height-max"
+                    type="number"
+                    label={t('wizard.fields.art.heightMax')}
+                    value={fields.artHeightMax ?? ''}
+                    onChange={v => setField('artHeightMax', v)}
+                  />
+                  <FieldText
+                    id="art-width-max"
+                    type="number"
+                    label={t('wizard.fields.art.widthMax')}
+                    value={fields.artWidthMax ?? ''}
+                    onChange={v => setField('artWidthMax', v)}
+                  />
+                  <FieldText
+                    id="art-budget"
+                    label={t('wizard.fields.art.budget')}
+                    placeholder={t('wizard.fields.art.budgetPlaceholder')}
+                    value={fields.artBudget ?? ''}
+                    onChange={v => setField('artBudget', v)}
+                  />
+                </div>
+              )}
+
+              {category === 'experience' && (
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <FieldSelect
+                    id="exp-type"
+                    label={t('wizard.fields.experience.type')}
+                    value={fields.experienceType ?? ''}
+                    onChange={v => setField('experienceType', v)}
+                    options={[
+                      { value: 'dinner', label: t('wizard.fields.experience.typeDinner') },
+                      { value: 'gala', label: t('wizard.fields.experience.typeGala') },
+                      { value: 'concert', label: t('wizard.fields.experience.typeConcert') },
+                      { value: 'sport', label: t('wizard.fields.experience.typeSport') },
+                      { value: 'show', label: t('wizard.fields.experience.typeShow') },
+                      { value: 'cultural', label: t('wizard.fields.experience.typeCultural') },
+                    ]}
+                  />
+                  <FieldText
+                    id="exp-date"
+                    type="date"
+                    label={t('wizard.fields.experience.date')}
+                    value={fields.experienceDate ?? ''}
+                    onChange={v => setField('experienceDate', v)}
+                  />
+                  <FieldText
+                    id="exp-location"
+                    label={t('wizard.fields.experience.location')}
+                    placeholder={t('wizard.fields.experience.locationPlaceholder')}
+                    value={fields.experienceLocation ?? ''}
+                    onChange={v => setField('experienceLocation', v)}
+                  />
+                  <FieldText
+                    id="exp-guests"
+                    type="number"
+                    label={t('wizard.fields.experience.guests')}
+                    placeholder={t('wizard.fields.experience.guestsPlaceholder')}
+                    value={fields.experienceGuests ?? ''}
+                    onChange={v => setField('experienceGuests', v)}
+                  />
+                  <FieldSelect
+                    id="exp-dress"
+                    label={t('wizard.fields.experience.dressCode')}
+                    value={fields.experienceDressCode ?? ''}
+                    onChange={v => setField('experienceDressCode', v)}
+                    options={[
+                      { value: 'casual', label: t('wizard.fields.experience.dressCasual') },
+                      { value: 'smart', label: t('wizard.fields.experience.dressSmart') },
+                      { value: 'blackTie', label: t('wizard.fields.experience.dressBlackTie') },
+                    ]}
+                  />
+                  <FieldText
+                    id="exp-budget"
+                    label={t('wizard.fields.experience.budget')}
+                    placeholder={t('wizard.fields.experience.budgetPlaceholder')}
+                    value={fields.experienceBudget ?? ''}
+                    onChange={v => setField('experienceBudget', v)}
+                  />
+                </div>
+              )}
+
               <Textarea
                 label={t('wizard.details.freeFormLabel')}
                 rows={category === 'travel' || category === 'timepiece' ? 4 : 6}
@@ -459,19 +640,22 @@ export const ConciergeRequestWizard = ({
                   .map(([key, value]) => (
                     <div key={key} className="flex flex-col gap-1 px-6 py-4">
                       <dt className="text-muted text-xs tracking-widest uppercase">
-                        {/* Try i18n lookup first then fallback to raw key */}
+                        {/* i18n lookup : map prefix → category i18n key. */}
                         {(() => {
-                          if (key.startsWith('travel')) {
-                            const sub = key.slice('travel'.length);
-                            return t(
-                              `wizard.fields.travel.${sub.charAt(0).toLowerCase()}${sub.slice(1)}`,
-                            );
-                          }
-                          if (key.startsWith('timepiece')) {
-                            const sub = key.slice('timepiece'.length);
-                            return t(
-                              `wizard.fields.timepiece.${sub.charAt(0).toLowerCase()}${sub.slice(1)}`,
-                            );
+                          const lookups: { prefix: string; ns: string }[] = [
+                            { prefix: 'travel', ns: 'travel' },
+                            { prefix: 'timepiece', ns: 'timepiece' },
+                            { prefix: 'realEstate', ns: 'real-estate' },
+                            { prefix: 'art', ns: 'art' },
+                            { prefix: 'experience', ns: 'experience' },
+                          ];
+                          for (const { prefix, ns } of lookups) {
+                            if (key.startsWith(prefix)) {
+                              const sub = key.slice(prefix.length);
+                              return t(
+                                `wizard.fields.${ns}.${sub.charAt(0).toLowerCase()}${sub.slice(1)}`,
+                              );
+                            }
                           }
                           return key;
                         })()}
