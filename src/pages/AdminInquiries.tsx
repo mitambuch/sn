@@ -36,7 +36,7 @@ export default function AdminInquiries() {
               <section
                 key={col}
                 aria-labelledby={`col-${col}`}
-                className="border-border bg-surface/30 flex flex-col gap-3 rounded-lg border p-4"
+                className="border-border bg-surface rounded-card shadow-card-rest flex flex-col gap-4 border p-5"
               >
                 <header className="flex items-center justify-between">
                   <h2 id={`col-${col}`} className="text-fg text-xs tracking-widest uppercase">
@@ -48,7 +48,7 @@ export default function AdminInquiries() {
                   {items.map(inq => (
                     <li
                       key={inq.id}
-                      className="border-border bg-bg flex flex-col gap-2 rounded-md border p-3"
+                      className="border-border bg-bg rounded-media flex flex-col gap-2 border p-4"
                     >
                       <span className="text-muted text-xs tracking-widest uppercase">
                         {inq.source}
@@ -61,7 +61,7 @@ export default function AdminInquiries() {
                     </li>
                   ))}
                   {items.length === 0 && (
-                    <li className="text-muted py-6 text-center text-xs tracking-widest uppercase">
+                    <li className="text-muted py-8 text-center text-xs tracking-widest uppercase">
                       —
                     </li>
                   )}

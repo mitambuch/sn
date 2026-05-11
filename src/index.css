@@ -39,6 +39,16 @@
 
   --font-family-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
   --font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Card depth scale — Apple-closed system (2026-05-11)
+     Used by Card atom + 7 domain cards. Tweaking here propagates everywhere.
+     Auto-mapped by Tailwind 4 to `rounded-card`, `shadow-card-rest`, etc. */
+  --radius-card: 1.25rem;
+  --radius-media: 0.875rem;
+  --shadow-card-rest: inset 0 1px 0 0 color-mix(in srgb, var(--color-fg) 8%, transparent);
+  --shadow-card-hover:
+    0 8px 24px -12px rgb(0 0 0 / 0.55),
+    inset 0 1px 0 0 color-mix(in srgb, var(--color-fg) 18%, transparent);
 }
 
 /* Light mode override (monochrome — derived from same scale, no warm tones) */
@@ -62,6 +72,12 @@
   --color-info-text: #0a3d6a;
   --color-danger-text: #7f1111;
   --color-accent-text: #1a1a1a;
+
+  /* Card depth — light mode atténué (drop shadow moins agressive sur fond clair) */
+  --shadow-card-rest: inset 0 1px 0 0 color-mix(in srgb, var(--color-fg) 5%, transparent);
+  --shadow-card-hover:
+    0 8px 24px -12px rgb(0 0 0 / 0.12),
+    inset 0 1px 0 0 color-mix(in srgb, var(--color-fg) 12%, transparent);
 }
 
 /* ─── Custom scrollbar — thin coral accent ────────────────── */

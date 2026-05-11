@@ -1,11 +1,15 @@
 // ═══════════════════════════════════════════════════
-// JourneyCard — listing card for Journeys module
-// 16:9 image, kind eyebrow, title, destinations summary, duration.
+// JourneyCard — domain wrapper around Card atom
+//
+// WHAT: Apple-closed surface with 4:3 image, kind · duration eyebrow,
+//       title, destinations summary as meta.
+// WHEN: JourneysList grid item.
+// EDIT VISUAL: change radius/shadow in src/index.css tokens. 4:3 unified
+//       with Event/Concierge for coherent mixed-catalogue grids.
 // ═══════════════════════════════════════════════════
 
+import { Card } from '@components/ui/Card';
 import { HeartButton } from '@components/ui/HeartButton';
-import { Image } from '@components/ui/Image';
-import { cn } from '@utils/cn';
 
 import type { Journey } from '@/types/journey';
 
@@ -23,36 +27,27 @@ export const JourneyCard = ({
   kindLabel,
   daysLabel,
   className,
-}: JourneyCardProps) => {
-  return (
-    <a
-      href={href}
-      className={cn(
-        'group focus-visible:ring-accent block rounded-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
-        className,
-      )}
-    >
-      <div className="relative">
-        <Image
-          src={journey.images[0]?.src ?? ''}
-          alt={journey.images[0]?.alt ?? journey.title}
-          ratio="16/9"
-          className="duration-slow transition-transform group-hover:scale-[1.02]"
-        />
-        <HeartButton
-          module="journey"
-          slug={journey.slug}
-          size="sm"
-          className="absolute top-3 right-3"
-        />
-      </div>
-      <div className="mt-4 flex flex-col gap-1">
-        <span className="text-muted text-xs tracking-widest uppercase">
-          {kindLabel} · {String(journey.durationDays)} {daysLabel}
-        </span>
-        <h3 className="text-fg text-base font-medium">{journey.title}</h3>
-        <span className="text-muted text-sm">{journey.destinations}</span>
-      </div>
-    </a>
-  );
-};
+}: JourneyCardProps) => (
+  <Card href={href} padding="none" className={className}>
+    <Card.Media
+      src={journey.images[0]?.src}
+      alt={journey.images[0]?.alt ?? journey.title}
+      ratio="4/3"
+    />
+    <Card.Overlay>
+      <HeartButton
+        module="journey"
+        slug={journey.slug}
+        size="sm"
+        className="absolute top-3 right-3"
+      />
+    </Card.Overlay>
+    <Card.Body>
+      <Card.Eyebrow>
+        {kindLabel} · {String(journey.durationDays)} {daysLabel}
+      </Card.Eyebrow>
+      <Card.Title>{journey.title}</Card.Title>
+      <Card.Meta>{journey.destinations}</Card.Meta>
+    </Card.Body>
+  </Card>
+);

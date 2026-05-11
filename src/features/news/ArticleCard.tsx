@@ -1,10 +1,15 @@
 // ═══════════════════════════════════════════════════
-// ArticleCard — listing card for news / stories module
-// 3:2 cover image, kind eyebrow, title, excerpt, read time, date.
+// ArticleCard — domain wrapper around Card atom
+//
+// WHAT: Apple-closed surface with 3:2 editorial cover, kind · date eyebrow,
+//       large light-weight title, excerpt as expanded meta, read-time hint
+//       with Clock icon in footer.
+// WHEN: NewsList grid item, account "your reading" widgets.
+// EDIT VISUAL: change radius/shadow in src/index.css tokens. 3:2 kept (not
+//       unified to 4:3) because editorial convention favours wider cover.
 // ═══════════════════════════════════════════════════
 
-import { Image } from '@components/ui/Image';
-import { cn } from '@utils/cn';
+import { Card } from '@components/ui/Card';
 import { Clock } from 'lucide-react';
 
 import type { Article } from '@/types/article';
@@ -32,31 +37,23 @@ export const ArticleCard = ({
     month: 'short',
     year: 'numeric',
   });
+
   return (
-    <a
-      href={href}
-      className={cn(
-        'group focus-visible:ring-accent block rounded-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
-        className,
-      )}
-    >
-      <Image
-        src={article.cover.src}
-        alt={article.cover.alt}
-        ratio="3/2"
-        className="duration-slow transition-transform group-hover:scale-[1.02]"
-      />
-      <div className="mt-4 flex flex-col gap-2">
-        <span className="text-muted text-xs tracking-widest uppercase">
+    <Card href={href} padding="none" className={className}>
+      <Card.Media src={article.cover.src} alt={article.cover.alt} ratio="3/2" />
+      <Card.Body>
+        <Card.Eyebrow>
           {kindLabel} · {dateLabel}
-        </span>
-        <h3 className="text-fg text-lg leading-snug font-light">{article.title}</h3>
+        </Card.Eyebrow>
+        <Card.Title size="lg">{article.title}</Card.Title>
         <p className="text-muted text-sm leading-relaxed">{article.excerpt}</p>
-        <span className="text-muted mt-1 inline-flex items-center gap-2 text-xs tracking-widest uppercase">
-          <Clock size={12} strokeWidth={1.5} aria-hidden="true" />
-          {String(article.readMinutes)} {readMinutesLabel}
-        </span>
-      </div>
-    </a>
+        <Card.Footer>
+          <Card.Meta className="inline-flex items-center gap-2 uppercase">
+            <Clock size={12} strokeWidth={1.5} aria-hidden="true" />
+            {String(article.readMinutes)} {readMinutesLabel}
+          </Card.Meta>
+        </Card.Footer>
+      </Card.Body>
+    </Card>
   );
 };
