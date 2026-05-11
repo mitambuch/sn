@@ -157,20 +157,27 @@ const RecentInquiriesSection = ({ loading }: { loading: boolean }) => {
       ) : inquiries.length === 0 ? (
         <p className="text-muted text-sm">{t('account.noInquiries')}</p>
       ) : (
-        <ul className="border-border divide-border divide-y rounded-lg border">
-          {inquiries.map(inq => (
-            <li key={inq.id} className="flex items-center justify-between gap-4 px-6 py-4">
-              <div className="flex flex-col gap-1">
-                <span className="text-fg text-sm">{inq.message ?? '—'}</span>
-                <span className="text-muted text-xs tracking-widest uppercase">
-                  {t(`inquiry.sourceLabel.${inq.source}`)} ·{' '}
-                  {new Date(inq.createdAt).toLocaleDateString(i18n.language)}
-                </span>
-              </div>
-              <StatusPill variant={inq.status} label={t(`inquiry.status.${inq.status}`)} />
-            </li>
-          ))}
-        </ul>
+        <Card padding="none">
+          <ul className="divide-border divide-y">
+            {inquiries.map(inq => (
+              <li
+                key={inq.id}
+                className="flex items-start justify-between gap-3 px-5 py-4 sm:items-center"
+              >
+                <div className="flex min-w-0 flex-1 flex-col gap-1">
+                  <span className="text-fg line-clamp-2 text-sm sm:line-clamp-none">
+                    {inq.message ?? '—'}
+                  </span>
+                  <span className="text-muted text-xs tracking-widest uppercase">
+                    {t(`inquiry.sourceLabel.${inq.source}`)} ·{' '}
+                    {new Date(inq.createdAt).toLocaleDateString(i18n.language)}
+                  </span>
+                </div>
+                <StatusPill variant={inq.status} label={t(`inquiry.status.${inq.status}`)} />
+              </li>
+            ))}
+          </ul>
+        </Card>
       )}
     </section>
   );
