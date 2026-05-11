@@ -1,12 +1,12 @@
 // ═══════════════════════════════════════════════════
 // PropertyCard — domain wrapper around Card atom
 //
-// WHAT: Apple-closed surface with 3:4 portrait image, region · kind eyebrow,
-//       title, surface m² · bedrooms meta, "on request" PriceTag in footer.
-//       Silent price convention — never "from CHF X".
+// WHAT: Apple-closed surface, 4:3 image cover, frosted-glass badge top-left
+//       (surface m²), HeartButton top-right, kind eyebrow, title, region·bedrooms
+//       meta, "on request" PriceTag in footer.
 // WHEN: PropertiesList grid item, recent items cross-module strips.
-// EDIT VISUAL: change radius/shadow in src/index.css tokens. Change ratio prop
-//       to 4/3 for a more landscape grid look (kept 3/4 for real-estate intuition).
+// EDIT VISUAL: change radius/shadow in src/index.css tokens. 4:3 unified
+//       with all sibling domains for visual coherence on mixed grids.
 // ═══════════════════════════════════════════════════
 
 import { Card } from '@components/ui/Card';
@@ -34,8 +34,9 @@ export const PropertyCard = ({
     <Card.Media
       src={property.images[0]?.src}
       alt={property.images[0]?.alt ?? property.title}
-      ratio="3/4"
+      ratio="4/3"
     />
+    <Card.Badge top={property.surfaceSqm} bottom="m²" />
     <Card.Overlay>
       <HeartButton
         module="property"
@@ -45,12 +46,10 @@ export const PropertyCard = ({
       />
     </Card.Overlay>
     <Card.Body>
-      <Card.Eyebrow>
-        {kindLabel} · {property.region}
-      </Card.Eyebrow>
+      <Card.Eyebrow>{kindLabel}</Card.Eyebrow>
       <Card.Title>{property.title}</Card.Title>
       <Card.Meta>
-        {property.surfaceSqm} m² · {property.bedrooms} ch.
+        {property.region} · {property.bedrooms} ch.
       </Card.Meta>
       <Card.Footer>
         <PriceTag onRequestLabel={onRequestLabel} />

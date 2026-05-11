@@ -1,11 +1,12 @@
 // ═══════════════════════════════════════════════════
 // ConciergeServiceCard — domain wrapper around Card atom
 //
-// WHAT: Apple-closed surface with 4:3 image, category eyebrow, title,
-//       summary as expanded meta, lead-time hint in footer.
+// WHAT: Apple-closed surface, 4:3 image, frosted-glass badge top-left
+//       (lead-time, single line — e.g. "48H"), HeartButton top-right,
+//       category eyebrow, title, summary in body, lead-time label as meta.
 // WHEN: ConciergeList grid item.
-// EDIT VISUAL: change radius/shadow in src/index.css tokens. 4:3 unified
-//       with Event/Journey (was 3:2 stand-alone before unification).
+// EDIT VISUAL: change radius/shadow in src/index.css tokens. Badge uses
+//       single-line mode (no bottom) because lead-time is a compact label.
 // ═══════════════════════════════════════════════════
 
 import { Card } from '@components/ui/Card';
@@ -34,6 +35,7 @@ export const ConciergeServiceCard = ({
       alt={service.images[0]?.alt ?? service.title}
       ratio="4/3"
     />
+    <Card.Badge top={service.leadTime} />
     <Card.Overlay>
       <HeartButton
         module="concierge"
@@ -47,9 +49,7 @@ export const ConciergeServiceCard = ({
       <Card.Title>{service.title}</Card.Title>
       <p className="text-muted text-sm leading-relaxed">{service.summary}</p>
       <Card.Footer>
-        <Card.Meta>
-          {leadTimeLabel}: {service.leadTime}
-        </Card.Meta>
+        <Card.Meta>{leadTimeLabel}</Card.Meta>
       </Card.Footer>
     </Card.Body>
   </Card>

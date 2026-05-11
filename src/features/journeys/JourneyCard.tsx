@@ -1,11 +1,11 @@
 // ═══════════════════════════════════════════════════
 // JourneyCard — domain wrapper around Card atom
 //
-// WHAT: Apple-closed surface with 4:3 image, kind · duration eyebrow,
+// WHAT: Apple-closed surface, 4:3 image, frosted-glass badge top-left
+//       (duration · "jours"), HeartButton top-right, kind eyebrow,
 //       title, destinations summary as meta.
 // WHEN: JourneysList grid item.
-// EDIT VISUAL: change radius/shadow in src/index.css tokens. 4:3 unified
-//       with Event/Concierge for coherent mixed-catalogue grids.
+// EDIT VISUAL: change radius/shadow in src/index.css tokens.
 // ═══════════════════════════════════════════════════
 
 import { Card } from '@components/ui/Card';
@@ -34,6 +34,7 @@ export const JourneyCard = ({
       alt={journey.images[0]?.alt ?? journey.title}
       ratio="4/3"
     />
+    <Card.Badge top={journey.durationDays} bottom={daysLabel} />
     <Card.Overlay>
       <HeartButton
         module="journey"
@@ -43,9 +44,7 @@ export const JourneyCard = ({
       />
     </Card.Overlay>
     <Card.Body>
-      <Card.Eyebrow>
-        {kindLabel} · {String(journey.durationDays)} {daysLabel}
-      </Card.Eyebrow>
+      <Card.Eyebrow>{kindLabel}</Card.Eyebrow>
       <Card.Title>{journey.title}</Card.Title>
       <Card.Meta>{journey.destinations}</Card.Meta>
     </Card.Body>

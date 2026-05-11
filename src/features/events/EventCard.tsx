@@ -1,12 +1,13 @@
 // ═══════════════════════════════════════════════════
 // EventCard — domain wrapper around Card atom
 //
-// WHAT: Apple-closed surface with 4:3 image, floating date badge (day + month)
-//       overlaid top-left in frosted glass, category · city eyebrow, title,
-//       venue · time meta.
+// WHAT: Apple-closed surface, 4:3 image, frosted-glass date badge top-left
+//       (day · month) via Card.Badge — the canonical pattern reused by
+//       sibling domain cards. HeartButton top-right, category eyebrow,
+//       title, venue · city · time meta.
 // WHEN: EventsList grid item.
-// EDIT VISUAL: change radius/shadow in src/index.css tokens. Date badge uses
-//       backdrop-blur over media — design signature for Events module.
+// EDIT VISUAL: change radius/shadow in src/index.css tokens. This card is
+//       the visual reference — keep its Card.Badge usage idiomatic.
 // ═══════════════════════════════════════════════════
 
 import { Card } from '@components/ui/Card';
@@ -35,12 +36,8 @@ export const EventCard = ({ event, href, categoryLabel, locale, className }: Eve
         alt={event.images[0]?.alt ?? event.title}
         ratio="4/3"
       />
+      <Card.Badge top={day} bottom={month} />
       <Card.Overlay>
-        {/* Floating date badge — frosted glass over image */}
-        <div className="bg-bg/55 border-border/40 absolute top-3 left-3 flex flex-col items-center rounded-[10px] border px-3 py-2 backdrop-blur-md">
-          <span className="text-fg text-lg leading-none font-light">{day}</span>
-          <span className="text-fg/80 mt-1 text-[10px] tracking-widest uppercase">{month}</span>
-        </div>
         <HeartButton
           module="event"
           slug={event.slug}
@@ -49,12 +46,10 @@ export const EventCard = ({ event, href, categoryLabel, locale, className }: Eve
         />
       </Card.Overlay>
       <Card.Body>
-        <Card.Eyebrow>
-          {categoryLabel} · {event.city}
-        </Card.Eyebrow>
+        <Card.Eyebrow>{categoryLabel}</Card.Eyebrow>
         <Card.Title>{event.title}</Card.Title>
         <Card.Meta>
-          {event.venue} · {time}
+          {event.venue} · {event.city} · {time}
         </Card.Meta>
       </Card.Body>
     </Card>

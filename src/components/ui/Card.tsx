@@ -158,12 +158,37 @@ interface CardOverlayProps {
   className?: string | undefined;
 }
 
-/** Absolute overlay over Media — for HeartButton, date badges, status pills.
+/** Absolute overlay over Media — for HeartButton, status pills.
  *  Children position themselves (e.g. `className="absolute top-3 right-3"`).
  *  Overlay container is pointer-inert, children are pointer-active. */
 const CardOverlay = ({ children, className }: CardOverlayProps) => (
   <div className={cn('pointer-events-none absolute inset-0 z-10 *:pointer-events-auto', className)}>
     {children}
+  </div>
+);
+
+interface CardBadgeProps {
+  /** Big top line — number, day, year, etc. */
+  top: ReactNode;
+  /** Small bottom line — unit, month, label. Omit for 1-line badges. */
+  bottom?: ReactNode | undefined;
+  className?: string | undefined;
+}
+
+/** Frosted-glass stamp pinned top-left of Media. The "domain signature" —
+ *  date for Events, year for Timepiece/Artwork, surface for Property, etc.
+ *  Always the same box shell, content varies per module. */
+const CardBadge = ({ top, bottom, className }: CardBadgeProps) => (
+  <div
+    className={cn(
+      'bg-bg/55 border-border/40 pointer-events-none absolute top-3 left-3 z-10 flex flex-col items-center rounded-xl border px-3 py-2 backdrop-blur-md',
+      className,
+    )}
+  >
+    <span className="text-fg text-lg leading-none font-light">{top}</span>
+    {bottom !== undefined && (
+      <span className="text-fg/80 mt-1 text-[10px] tracking-widest uppercase">{bottom}</span>
+    )}
   </div>
 );
 
@@ -245,6 +270,7 @@ const CardFooter = ({ children, className }: CardFooterProps) => (
 
 Card.Media = CardMedia;
 Card.Overlay = CardOverlay;
+Card.Badge = CardBadge;
 Card.Body = CardBody;
 Card.Eyebrow = CardEyebrow;
 Card.Title = CardTitle;
