@@ -213,6 +213,45 @@
       "cta": "Discover today's opportunities"
     }
   },
+  "wizard": {
+    "openCta": "A personalised request",
+    "openHint": "Tell us what you're looking for — we'll handle the rest.",
+    "shortcutsLabel": "Or in shortcut",
+    "title": "What can I find for you?",
+    "step": {
+      "category": "Category",
+      "details": "Details",
+      "review": "Summary"
+    },
+    "category": {
+      "lede": "Choose the area of your request.",
+      "real-estate": { "title": "Real estate", "hint": "Chalet, villa, penthouse" },
+      "timepiece": { "title": "Timepiece", "hint": "Collector's watches" },
+      "art": { "title": "Artwork", "hint": "Painting, sculpture, certificate" },
+      "experience": { "title": "Private experience", "hint": "Dinner, gala, access" },
+      "travel": { "title": "Bespoke travel", "hint": "Itinerary, jet, yacht" },
+      "other": { "title": "Other need", "hint": "Describe freely" }
+    },
+    "details": {
+      "lede": "Describe your need — brand, model, dates, constraints, approximate budget. The more precise, the faster we move.",
+      "placeholder": "Be as specific as possible…",
+      "photoLabel": "Reference photos (optional)",
+      "photoHint": "Helpful for a watch, an artwork, a specific object."
+    },
+    "review": {
+      "title": "Everything is ready",
+      "lede": "Your concierge will get back to you within 24 hours.",
+      "categoryLabel": "Category",
+      "descriptionLabel": "Your request"
+    },
+    "actions": {
+      "back": "Back",
+      "next": "Next",
+      "submit": "Send request",
+      "sending": "Sending…",
+      "close": "Close"
+    }
+  },
   "admin": {
     "eyebrow": "Operator",
     "dashboardTitle": "Dashboard",

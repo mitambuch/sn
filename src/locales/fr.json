@@ -235,6 +235,45 @@
       "cta": "Découvrir vos opportunités du moment"
     }
   },
+  "wizard": {
+    "openCta": "Une demande personnalisée",
+    "openHint": "Dites-nous ce que vous cherchez, nous nous en occupons.",
+    "shortcutsLabel": "Ou en raccourci",
+    "title": "Que puis-je vous trouver ?",
+    "step": {
+      "category": "Catégorie",
+      "details": "Détails",
+      "review": "Récapitulatif"
+    },
+    "category": {
+      "lede": "Choisissez le domaine de votre demande.",
+      "real-estate": { "title": "Immobilier", "hint": "Chalet, villa, penthouse" },
+      "timepiece": { "title": "Garde-temps", "hint": "Montres de collection" },
+      "art": { "title": "Œuvre d'art", "hint": "Tableau, sculpture, certificat" },
+      "experience": { "title": "Expérience privée", "hint": "Dîner, gala, accès" },
+      "travel": { "title": "Voyage sur mesure", "hint": "Itinéraire, jet, yacht" },
+      "other": { "title": "Autre besoin", "hint": "Décrivez librement" }
+    },
+    "details": {
+      "lede": "Décrivez votre besoin — marque, modèle, dates, contraintes, budget approximatif. Plus c'est précis, plus nous gagnons du temps.",
+      "placeholder": "Soyez aussi précis que possible…",
+      "photoLabel": "Photos de référence (facultatif)",
+      "photoHint": "Utile pour une montre, une œuvre, un objet précis."
+    },
+    "review": {
+      "title": "Tout est prêt",
+      "lede": "Votre conciergerie revient vers vous sous 24 heures.",
+      "categoryLabel": "Catégorie",
+      "descriptionLabel": "Votre demande"
+    },
+    "actions": {
+      "back": "Précédent",
+      "next": "Suivant",
+      "submit": "Envoyer la demande",
+      "sending": "Envoi…",
+      "close": "Fermer"
+    }
+  },
   "admin": {
     "eyebrow": "Opérateur",
     "dashboardTitle": "Tableau de bord",

@@ -16,14 +16,28 @@ import { Card } from '@components/ui/Card';
 import { Skeleton } from '@components/ui/Skeleton';
 import { StatusPill } from '@components/ui/StatusPill';
 import { ROUTES } from '@constants/routes';
+import {
+  ConciergeRequestWizard,
+  type WizardCategory,
+} from '@features/concierge-request/ConciergeRequestWizard';
 import { useFakeLoading } from '@hooks/useFakeLoading';
 import { cn } from '@utils/cn';
-import { Mail, Phone } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+import { Briefcase, Compass, Frame, Mail, PartyPopper, Phone, Watch } from 'lucide-react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { listInquiriesForUser } from '@/mocks';
 import { currentUser } from '@/mocks/users';
+
+const REQUEST_SHORTCUTS: { category: WizardCategory; icon: LucideIcon }[] = [
+  { category: 'real-estate', icon: Briefcase },
+  { category: 'timepiece', icon: Watch },
+  { category: 'art', icon: Frame },
+  { category: 'experience', icon: PartyPopper },
+  { category: 'travel', icon: Compass },
+];
 
 const Initials = ({ name }: { name: string }) => {
   const parts = name.split(' ');
@@ -67,6 +81,76 @@ const GreetingSection = () => {
         {t('account.dashboardLede')}
       </p>
     </header>
+  );
+};
+
+/* ─── Section: Personalised request CTA + shortcuts ──── */
+const PersonalisedRequestSection = () => {
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const [initialCategory, setInitialCategory] = useState<WizardCategory | undefined>(undefined);
+
+  const openWith = (category?: WizardCategory) => {
+    setInitialCategory(category);
+    setOpen(true);
+  };
+
+  return (
+    <>
+      <section className="space-y-4">
+        <button
+          type="button"
+          onClick={() => openWith()}
+          className={cn(
+            'group border-border bg-surface rounded-card shadow-card-rest',
+            'flex w-full items-center justify-between gap-4 border p-6 text-left',
+            'hover:border-fg/30 hover:shadow-card-hover transition-[border-color,box-shadow] duration-500 ease-out',
+            'animate-important motion-reduce:animate-none',
+            'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
+          )}
+        >
+          <div className="flex min-w-0 flex-col gap-1">
+            <span className="text-muted text-xs tracking-widest uppercase">
+              {t('wizard.openCta')}
+            </span>
+            <p className="text-fg text-base leading-snug font-medium sm:text-lg">
+              {t('wizard.openHint')}
+            </p>
+          </div>
+          <span className="text-fg shrink-0 text-xl leading-none" aria-hidden="true">
+            →
+          </span>
+        </button>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-muted shrink-0 text-[10px] tracking-widest uppercase">
+            {t('wizard.shortcutsLabel')} ·
+          </span>
+          {REQUEST_SHORTCUTS.map(({ category, icon: Icon }) => (
+            <button
+              key={category}
+              type="button"
+              onClick={() => openWith(category)}
+              className={cn(
+                'border-border text-muted hover:text-fg hover:border-fg/40',
+                'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] tracking-widest whitespace-nowrap uppercase',
+                'duration-base transition-[color,border-color]',
+                'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
+              )}
+            >
+              <Icon size={11} strokeWidth={1.5} aria-hidden="true" />
+              {t(`wizard.category.${category}.title`)}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <ConciergeRequestWizard
+        open={open}
+        onClose={() => setOpen(false)}
+        {...(initialCategory && { initialCategory })}
+      />
+    </>
   );
 };
 
@@ -211,6 +295,7 @@ export default function AccountDashboard() {
     <Container size="md">
       <div className="space-y-12 py-12 md:space-y-16 md:py-16">
         <GreetingSection />
+        <PersonalisedRequestSection />
         <ExclusiveShortcut />
         <ConciergeCard />
         <RecentInquiriesSection loading={loading} />
