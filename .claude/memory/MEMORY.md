@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-05-11** — [Session — Sawnext lot A.5 + A.6 : Supabase live + Resend (boucle business fermée)](sessions/2026-05-11-2103.md)
 - **2026-04-29** — [Session — Sawnext lot B "UI shell présentable" (3 vagues, 16 commits)](sessions/2026-04-29-1334.md)
 - **2026-04-28** — [Session — Sawnext Studio bootstrap + lot A infra](sessions/2026-04-28-2044.md)
-- **2026-04-24** — [Session — Morning hygiene + Dependabot #41 (uuid override)](sessions/2026-04-24-0825.md)
 
 ## Active decisions (top 5)
 
@@ -30,7 +30,7 @@
 
 ## Deep dive
 
-- Full catalogue (93 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (94 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
