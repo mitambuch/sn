@@ -263,9 +263,65 @@ interface CardFooterProps {
   className?: string | undefined;
 }
 
-/** Bottom-anchored footer inside Body — for PriceTag, CTA, time hint. */
+/** Bottom-anchored footer inside Body — for inline CTA, time hint. */
 const CardFooter = ({ children, className }: CardFooterProps) => (
   <div className={cn('mt-auto pt-3', className)}>{children}</div>
+);
+
+interface CardStatsProps {
+  children: ReactNode;
+  className?: string | undefined;
+  /** Number of equal columns (default 2). */
+  cols?: 2 | 3 | undefined;
+}
+
+const statsColStyles: Record<NonNullable<CardStatsProps['cols']>, string> = {
+  2: 'grid-cols-2',
+  3: 'grid-cols-3',
+};
+
+/** Specs grid inside Body — label + value pairs, hairline divider above.
+ *  Use for at-a-glance product info (surface, chambres, year, dimensions). */
+const CardStats = ({ children, className, cols = 2 }: CardStatsProps) => (
+  <div
+    className={cn('border-border mt-3 grid gap-4 border-t pt-3', statsColStyles[cols], className)}
+  >
+    {children}
+  </div>
+);
+
+interface CardStatProps {
+  label: ReactNode;
+  value: ReactNode;
+  className?: string | undefined;
+  /** Mono variant for technical references. */
+  mono?: boolean | undefined;
+}
+
+/** One specs cell — tiny uppercase label on top, value below. */
+const CardStat = ({ label, value, className, mono = false }: CardStatProps) => (
+  <div className={cn('flex flex-col gap-1', className)}>
+    <span className="text-muted text-[10px] tracking-widest uppercase">{label}</span>
+    <span className={cn('text-fg text-sm', mono && 'font-mono tracking-wider')}>{value}</span>
+  </div>
+);
+
+interface CardPriceBlockProps {
+  children: ReactNode;
+  className?: string | undefined;
+}
+
+/** Prominent price footer — edge-to-edge with hairline divider and a
+ *  subtle bg shift. Place OUTSIDE Card.Body (sits flush at card bottom). */
+const CardPriceBlock = ({ children, className }: CardPriceBlockProps) => (
+  <div
+    className={cn(
+      'border-border bg-bg/40 mt-auto flex items-center justify-between gap-4 border-t px-5 py-3.5',
+      className,
+    )}
+  >
+    {children}
+  </div>
 );
 
 Card.Media = CardMedia;
@@ -276,3 +332,6 @@ Card.Eyebrow = CardEyebrow;
 Card.Title = CardTitle;
 Card.Meta = CardMeta;
 Card.Footer = CardFooter;
+Card.Stats = CardStats;
+Card.Stat = CardStat;
+Card.PriceBlock = CardPriceBlock;

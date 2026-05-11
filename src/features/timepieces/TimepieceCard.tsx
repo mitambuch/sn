@@ -1,18 +1,18 @@
 // ═══════════════════════════════════════════════════
 // TimepieceCard — domain wrapper around Card atom
 //
-// WHAT: Apple-closed surface, 4:3 image contained on neutral bg (watch
-//       macro centered, image speaks for itself — no top-left overlay),
-//       HeartButton top-right. Body: brand · year eyebrow, model title,
-//       reference (mono) meta, optional full-set hint, PriceTag footer.
+// WHAT: Apple-closed surface, 4:3 contained image (watch macro), HeartButton
+//       top-right. Body: brand · year eyebrow, model title, 2-col Card.Stats
+//       (reference mono, full-set indicator). Card.PriceBlock footer with
+//       "Prix" + "Sur demande". At-a-glance: brand, model, ref, price.
 // WHEN: TimepiecesList grid item.
-// EDIT VISUAL: change radius/shadow in src/index.css tokens. No badge —
-//       Timepiece is a product (macro shot owns the frame).
+// EDIT VISUAL: change radius/shadow in src/index.css tokens.
 // ═══════════════════════════════════════════════════
 
 import { Card } from '@components/ui/Card';
 import { HeartButton } from '@components/ui/HeartButton';
 import { PriceTag } from '@components/ui/PriceTag';
+import { useTranslation } from 'react-i18next';
 
 import type { Timepiece } from '@/types/timepiece';
 
@@ -30,32 +30,40 @@ export const TimepieceCard = ({
   onRequestLabel,
   fullSetLabel,
   className,
-}: TimepieceCardProps) => (
-  <Card href={href} padding="none" className={className}>
-    <Card.Media
-      src={timepiece.images[0]?.src}
-      alt={timepiece.images[0]?.alt ?? `${timepiece.brand} ${timepiece.model}`}
-      ratio="4/3"
-      fit="contain"
-    />
-    <Card.Overlay>
-      <HeartButton
-        module="timepiece"
-        slug={timepiece.slug}
-        size="sm"
-        className="absolute top-3 right-3"
+}: TimepieceCardProps) => {
+  const { t } = useTranslation();
+  return (
+    <Card href={href} padding="none" className={className}>
+      <Card.Media
+        src={timepiece.images[0]?.src}
+        alt={timepiece.images[0]?.alt ?? `${timepiece.brand} ${timepiece.model}`}
+        ratio="4/3"
+        fit="contain"
       />
-    </Card.Overlay>
-    <Card.Body>
-      <Card.Eyebrow>
-        {timepiece.brand} · {timepiece.year}
-      </Card.Eyebrow>
-      <Card.Title>{timepiece.model}</Card.Title>
-      <Card.Meta mono>{timepiece.reference}</Card.Meta>
-      {timepiece.fullSet && <Card.Meta className="mt-1">✓ {fullSetLabel}</Card.Meta>}
-      <Card.Footer>
+      <Card.Overlay>
+        <HeartButton
+          module="timepiece"
+          slug={timepiece.slug}
+          size="sm"
+          className="absolute top-3 right-3"
+        />
+      </Card.Overlay>
+      <Card.Body>
+        <Card.Eyebrow>
+          {timepiece.brand} · {timepiece.year}
+        </Card.Eyebrow>
+        <Card.Title>{timepiece.model}</Card.Title>
+        <Card.Stats>
+          <Card.Stat label={t('timepieces.meta.reference')} value={timepiece.reference} mono />
+          <Card.Stat label={fullSetLabel} value={timepiece.fullSet ? '✓' : '—'} />
+        </Card.Stats>
+      </Card.Body>
+      <Card.PriceBlock>
+        <span className="text-muted text-[10px] tracking-widest uppercase">
+          {t('common.price')}
+        </span>
         <PriceTag onRequestLabel={onRequestLabel} />
-      </Card.Footer>
-    </Card.Body>
-  </Card>
-);
+      </Card.PriceBlock>
+    </Card>
+  );
+};
