@@ -281,10 +281,17 @@ const statsColStyles: Record<NonNullable<CardStatsProps['cols']>, string> = {
 };
 
 /** Specs grid inside Body — label + value pairs, hairline divider above.
- *  Use for at-a-glance product info (surface, chambres, year, dimensions). */
+ *  Uses `mt-auto` so Stats sticks to the bottom of Body when Card is
+ *  stretched (e.g. on the mixed catalogue grid). Breathing space ends
+ *  up between Title and Stats, which reads more intentional than empty
+ *  space at the bottom edge. */
 const CardStats = ({ children, className, cols = 2 }: CardStatsProps) => (
   <div
-    className={cn('border-border mt-3 grid gap-4 border-t pt-3', statsColStyles[cols], className)}
+    className={cn(
+      'border-border mt-auto grid gap-4 border-t pt-3',
+      statsColStyles[cols],
+      className,
+    )}
   >
     {children}
   </div>
