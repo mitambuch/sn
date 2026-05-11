@@ -253,22 +253,10 @@ const AppShell = () => {
         </div>
       </main>
       <ConciergeDock />
+      {/* CommandPalette stays mounted — accessible via Cmd+K shortcut from
+          useCommandPalette hook. Floating button removed per owner audit
+          (UI clutter without clear use). */}
       <CommandPalette open={palette.open} onClose={() => palette.setOpen(false)} />
-      {/* Floating search trigger — bottom-left, mirror of ConciergeDock */}
-      <button
-        type="button"
-        onClick={() => palette.setOpen(true)}
-        aria-label={t('search.label')}
-        className={cn(
-          'fixed bottom-4 left-4 z-(--z-overlay) hidden h-12 items-center gap-3 rounded-full border pr-5 pl-4 text-xs tracking-widest uppercase shadow-lg md:bottom-8 md:left-8 md:flex',
-          'border-border bg-bg/80 text-muted hover:text-fg hover:border-fg/40 backdrop-blur-md',
-          'duration-base transition-[border-color,color]',
-          'focus-visible:ring-accent focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
-        )}
-      >
-        <span className="font-mono text-[10px] tracking-[0.3em]">⌘ K</span>
-        <span>{t('search.cta')}</span>
-      </button>
     </>
   );
 };
