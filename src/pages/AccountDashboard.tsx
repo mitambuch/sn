@@ -12,6 +12,7 @@
 
 import { useLocale } from '@app/LocaleProvider';
 import { Container } from '@components/layout/Container';
+import { Card } from '@components/ui/Card';
 import { Skeleton } from '@components/ui/Skeleton';
 import { StatusPill } from '@components/ui/StatusPill';
 import { ROUTES } from '@constants/routes';
@@ -59,10 +60,10 @@ const GreetingSection = () => {
   return (
     <header className="flex flex-col gap-3">
       <span className="text-muted text-xs tracking-[0.3em] uppercase">{todayLabel}</span>
-      <h1 className="text-fg text-4xl font-light tracking-tight md:text-6xl">
+      <h1 className="text-fg text-3xl font-light tracking-tight text-balance sm:text-4xl md:text-5xl">
         {t(`account.greeting.${greetingKey(NOW_HOUR)}`, { name: firstName(currentUser.fullName) })}
       </h1>
-      <p className="text-muted max-w-2xl text-base leading-relaxed md:text-lg">
+      <p className="text-muted max-w-2xl text-sm leading-relaxed text-pretty sm:text-base md:text-lg">
         {t('account.dashboardLede')}
       </p>
     </header>
@@ -73,14 +74,9 @@ const GreetingSection = () => {
 const ConciergeCard = () => {
   const { t } = useTranslation();
   return (
-    <section
-      aria-labelledby="concierge-heading"
-      className="border-border bg-surface/40 rounded-lg border p-8"
-    >
-      <h2 id="concierge-heading" className="sr-only">
-        {t('account.dashboardTitle')}
-      </h2>
-      <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
+    <Card padding="lg">
+      <h2 className="sr-only">{t('account.dashboardTitle')}</h2>
+      <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between md:gap-6">
         <div className="flex items-center gap-4">
           <Initials name={currentUser.conciergeName} />
           <div>
@@ -91,12 +87,15 @@ const ConciergeCard = () => {
             <p className="text-muted text-sm">salvatore@sawnext.studio</p>
           </div>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
+        {/* WHY: flex-1 on each button on mobile → both buttons share full width
+            side by side, never wrap to 2 lines. md:flex-none restores natural
+            width on desktop where space is plentiful. */}
+        <div className="flex items-center gap-3">
           <a
             href="tel:+41215550000"
             className={cn(
               'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
-              'inline-flex items-center gap-3 rounded-full border px-5 py-2.5 text-xs tracking-widest uppercase',
+              'inline-flex flex-1 items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-xs tracking-widest whitespace-nowrap uppercase md:flex-none md:px-5 md:py-2.5',
               'duration-base transition-[border-color,background-color]',
               'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
             )}
@@ -108,7 +107,7 @@ const ConciergeCard = () => {
             href="mailto:salvatore@sawnext.studio"
             className={cn(
               'border-border text-fg hover:border-fg/60 focus-visible:ring-accent',
-              'inline-flex items-center gap-3 rounded-full border px-5 py-2.5 text-xs tracking-widest uppercase',
+              'inline-flex flex-1 items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-xs tracking-widest whitespace-nowrap uppercase md:flex-none md:px-5 md:py-2.5',
               'duration-base transition-[border-color]',
               'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
             )}
@@ -118,7 +117,7 @@ const ConciergeCard = () => {
           </a>
         </div>
       </div>
-    </section>
+    </Card>
   );
 };
 

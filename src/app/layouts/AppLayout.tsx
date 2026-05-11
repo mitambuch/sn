@@ -189,7 +189,7 @@ const AppShell = () => {
       <aside
         id="account-sidebar"
         className={cn(
-          'border-border bg-bg fixed top-0 bottom-0 left-0 z-40 w-72 border-r',
+          'border-border bg-bg fixed top-0 bottom-0 left-0 z-40 w-64 border-r',
           'transition-transform ease-out',
           prefersReducedMotion ? 'duration-0' : 'duration-300',
           'md:w-56 md:translate-x-0',

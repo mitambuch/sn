@@ -76,13 +76,15 @@ export const Header = ({ className }: HeaderProps) => {
           <Logo href={localePath(ROUTES.HOME)} />
         </div>
 
-        {/* Pill nav */}
+        {/* Pill nav — ml-auto on auth so it pushes right when Logo is hidden,
+            avoiding collision with the AppLayout hamburger button at top-left. */}
         <div
           className={cn(
             'duration-slow flex items-center rounded-full border transition-[border-color,background-color]',
             scrolled
               ? 'border-border bg-surface/60 backdrop-blur-xl'
               : 'border-border/50 bg-surface/30 backdrop-blur-xl',
+            isAuthSurface && 'ml-auto',
           )}
         >
           {!isAuthSurface &&
