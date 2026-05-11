@@ -110,10 +110,7 @@ export default function TimepieceDetail() {
             <SectionHeader title={t('common.details')} size="sm" as="h2" />
             <p className="text-muted leading-relaxed">{tp.description}</p>
           </div>
-          <aside className="space-y-3">
-            <span className="text-muted text-xs tracking-widest uppercase">
-              {t('timepieces.specifications')}
-            </span>
+          <aside>
             <MetaList items={meta} />
           </aside>
         </div>
