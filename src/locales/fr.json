@@ -258,7 +258,44 @@
       "lede": "Décrivez votre besoin — marque, modèle, dates, contraintes, budget approximatif. Plus c'est précis, plus nous gagnons du temps.",
       "placeholder": "Soyez aussi précis que possible…",
       "photoLabel": "Photos de référence (facultatif)",
-      "photoHint": "Utile pour une montre, une œuvre, un objet précis."
+      "photoHint": "Utile pour une montre, une œuvre, un objet précis.",
+      "allOptional": "Tous les champs sont facultatifs. Laissez vides ceux que vous ne savez pas encore — Salvatore reviendra vers vous pour préciser.",
+      "freeFormLabel": "Autres précisions",
+      "freeFormPlaceholder": "Tout ce qui peut nous aider…"
+    },
+    "fields": {
+      "travel": {
+        "departure": "Lieu de départ",
+        "departurePlaceholder": "Genève, Paris, Zurich…",
+        "destination": "Destination",
+        "destinationPlaceholder": "Tokyo, Patagonie, Capri…",
+        "dateStart": "Départ approximatif",
+        "dateEnd": "Retour approximatif",
+        "passengers": "Voyageurs",
+        "passengersPlaceholder": "ex. 4",
+        "budget": "Budget approximatif",
+        "budgetPlaceholder": "ex. 50 000 — 100 000 CHF"
+      },
+      "timepiece": {
+        "brand": "Marque",
+        "brandPlaceholder": "Patek Philippe, Rolex…",
+        "model": "Modèle / Référence",
+        "modelPlaceholder": "Nautilus 5711, Submariner…",
+        "yearMin": "Année min.",
+        "yearMax": "Année max.",
+        "condition": "État",
+        "conditionPlaceholder": "Pas encore défini",
+        "conditionNew": "Neuf / Non porté",
+        "conditionExcellent": "Excellent",
+        "conditionGood": "Bon état",
+        "conditionAny": "Peu importe",
+        "budget": "Budget approximatif",
+        "budgetPlaceholder": "ex. 30 000 — 80 000 CHF"
+      }
+    },
+    "callback": {
+      "cta": "Demander un rappel à Salvatore",
+      "hint": "Sans formulaire — il revient vers vous sous 24h."
     },
     "review": {
       "title": "Tout est prêt",

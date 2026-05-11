@@ -236,7 +236,44 @@
       "lede": "Describe your need — brand, model, dates, constraints, approximate budget. The more precise, the faster we move.",
       "placeholder": "Be as specific as possible…",
       "photoLabel": "Reference photos (optional)",
-      "photoHint": "Helpful for a watch, an artwork, a specific object."
+      "photoHint": "Helpful for a watch, an artwork, a specific object.",
+      "allOptional": "All fields are optional. Leave blank what you don't know yet — Salvatore will get back to clarify.",
+      "freeFormLabel": "Other details",
+      "freeFormPlaceholder": "Anything that helps us…"
+    },
+    "fields": {
+      "travel": {
+        "departure": "Departure",
+        "departurePlaceholder": "Geneva, Paris, Zurich…",
+        "destination": "Destination",
+        "destinationPlaceholder": "Tokyo, Patagonia, Capri…",
+        "dateStart": "Approx. departure",
+        "dateEnd": "Approx. return",
+        "passengers": "Passengers",
+        "passengersPlaceholder": "e.g. 4",
+        "budget": "Approximate budget",
+        "budgetPlaceholder": "e.g. CHF 50,000 — 100,000"
+      },
+      "timepiece": {
+        "brand": "Brand",
+        "brandPlaceholder": "Patek Philippe, Rolex…",
+        "model": "Model / Reference",
+        "modelPlaceholder": "Nautilus 5711, Submariner…",
+        "yearMin": "Year min.",
+        "yearMax": "Year max.",
+        "condition": "Condition",
+        "conditionPlaceholder": "Not yet defined",
+        "conditionNew": "New / Unworn",
+        "conditionExcellent": "Excellent",
+        "conditionGood": "Good condition",
+        "conditionAny": "Any",
+        "budget": "Approximate budget",
+        "budgetPlaceholder": "e.g. CHF 30,000 — 80,000"
+      }
+    },
+    "callback": {
+      "cta": "Request a callback from Salvatore",
+      "hint": "No form — he gets back to you within 24h."
     },
     "review": {
       "title": "Everything is ready",
