@@ -1,26 +1,41 @@
 // ═══════════════════════════════════════════════════
-// Manifesto — landing S02 (random pool, centred reveal)
+// Manifesto — landing S02 (typographic constellation, cinema fog)
 //
-// WHAT: 400vh dark section with sticky inner content. From a pool of 6
-//       brand-voice phrases, 3 are picked at random when the page is
-//       mounted (so each visitor reads a different rotation). Phrases
-//       are CENTRED, same typography across all three, no hierarchy
-//       game. Active phrase : opacity 1 + blur 0. Inactive : opacity
-//       0 + blur 8px. Cursor over the active phrase lights a soft
-//       radial glow behind the words. Scroll position drives the
-//       active index (slow 400vh pace).
+// WHAT: 400vh dark section with sticky inner content. From a pool of
+//       6 phrases, 3 are picked at random per session. Each phrase is
+//       BROKEN into lines with its own indentation scheme (per-phrase
+//       margin-left % per line) — the same phrase can re-flow into a
+//       different visual rhythm on the next read. White intensity is
+//       softened to feel like cinema fog. A CSS-driven fog layer
+//       drifts behind the words (two slow radial-gradient blobs +
+//       grain).
 // WHEN: After Hero + first marquee. Anchored at #s02.
-// CHANGE COPY: landing.manifesto.p{1..6} in fr.json / en.json. Add
-//       more phrases to the pool by adding pN keys — PHRASE_KEYS
-//       below picks them up.
+// CHANGE COPY: landing.manifesto.p{1..6} — each phrase = array of
+//       1-3 lines in fr.json / en.json.
+// CHANGE INDENTS: PHRASE_LAYOUTS below — N values per phrase = N
+//       lines, each % drives the line's margin-left.
 // ═══════════════════════════════════════════════════
 
 import { cn } from '@utils/cn';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const PHRASE_KEYS = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6'] as const;
+type PhraseKey = 'p1' | 'p2' | 'p3' | 'p4' | 'p5' | 'p6';
+const PHRASE_KEYS: readonly PhraseKey[] = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6'];
 const VISIBLE_COUNT = 3;
+
+// Per-phrase indentation scheme. Each value is a percentage of the
+// container width applied as margin-left to that line. Variation
+// creates a poetic visual rhythm — same words, different spatial
+// score per phrase.
+const PHRASE_LAYOUTS: Record<PhraseKey, number[]> = {
+  p1: [0, 22],
+  p2: [12, 0],
+  p3: [0, 18, 8],
+  p4: [16, 0],
+  p5: [0, 28, 12],
+  p6: [6, 24],
+};
 
 /** Fisher-Yates shuffle — small array, allocates a copy. */
 function shuffle<T>(arr: readonly T[]): T[] {
@@ -34,7 +49,7 @@ function shuffle<T>(arr: readonly T[]): T[] {
   return out;
 }
 
-/** Landing S02 — centred manifesto, 3 of 6 phrases per session. */
+/** Landing S02 — typographic constellation manifesto with cinema fog. */
 export const Manifesto = () => {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
@@ -77,40 +92,53 @@ export const Manifesto = () => {
       id="s02"
       ref={sectionRef}
       data-landing-dark="true"
-      className="bg-ink text-on-ink relative h-[400vh] overflow-hidden"
+      className="bg-ink text-on-ink/85 relative h-[400vh] overflow-hidden"
     >
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden px-5 pt-24 pb-8 md:px-12 md:pt-28 md:pb-10">
+        {/* ─── Cinema fog : two slow-drifting radial blobs behind the words ─── */}
+        <div
+          aria-hidden="true"
+          className="manifesto-fog pointer-events-none absolute inset-0 z-0"
+        />
+
         {/* Top meta */}
         <div className="text-on-ink/55 z-10 flex items-center justify-between font-mono text-[10px] tracking-widest uppercase">
           <span>↘ {t('landing.manifesto.eyebrow')}</span>
           <span>02 / 09</span>
         </div>
 
-        {/* Centred phrases — same typography across all, glow halo on hover */}
+        {/* Phrases — typographic constellation with per-phrase indent score */}
         <div className="relative z-10 flex flex-1 items-center justify-center">
           {selectedKeys.map((key, idx) => {
             const isActive = idx === active;
+            const lines = t(`landing.manifesto.${key}`, { returnObjects: true }) as
+              | readonly string[]
+              | string as readonly string[];
+            const safeLines = Array.isArray(lines) ? lines : [String(lines)];
+            const layout = PHRASE_LAYOUTS[key];
+
             return (
               <div
                 key={`${key}-${String(idx)}`}
                 aria-hidden={!isActive}
                 className={cn(
-                  'group absolute inset-0 flex cursor-default items-center justify-center px-6',
+                  'group absolute inset-0 flex cursor-default items-center justify-center px-4 md:px-12',
                   !isActive && 'pointer-events-none',
                 )}
               >
-                {/* Soft radial glow halo — visible only when cursor hovers the active phrase. */}
+                {/* Halo : visible only when hovering an active phrase */}
                 <div
                   aria-hidden="true"
                   className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-1000 ease-out group-hover:opacity-100"
                   style={{
                     background:
-                      'radial-gradient(50% 50% at 50% 50%, color-mix(in srgb, var(--color-on-ink) 6%, transparent) 0%, transparent 75%)',
+                      'radial-gradient(45% 45% at 50% 50%, color-mix(in srgb, var(--color-on-ink) 10%, transparent) 0%, transparent 70%)',
                   }}
                 />
-                <p
+
+                <div
                   className={cn(
-                    'relative max-w-5xl text-center font-mono leading-[1.15] font-medium tracking-tight uppercase',
+                    'relative w-full max-w-5xl font-mono leading-[1.05] font-medium tracking-tight uppercase',
                     'text-[clamp(1.75rem,5vw,4.5rem)]',
                     'transition-[opacity,filter,transform] duration-[1500ms] ease-out',
                     isActive
@@ -118,8 +146,16 @@ export const Manifesto = () => {
                       : 'translate-y-4 opacity-0 blur-[8px]',
                   )}
                 >
-                  {t(`landing.manifesto.${key}`)}
-                </p>
+                  {safeLines.map((line, i) => (
+                    <span
+                      key={`${String(idx)}-${String(i)}`}
+                      className="block"
+                      style={{ marginLeft: `${String(layout[i] ?? 0)}%` }}
+                    >
+                      {line}
+                    </span>
+                  ))}
+                </div>
               </div>
             );
           })}
@@ -135,7 +171,7 @@ export const Manifesto = () => {
                 aria-hidden="true"
                 className={cn(
                   'h-px w-7 transition-colors duration-500',
-                  i <= active ? 'bg-on-ink' : 'bg-on-ink/25',
+                  i <= active ? 'bg-on-ink/80' : 'bg-on-ink/20',
                 )}
               />
             ))}

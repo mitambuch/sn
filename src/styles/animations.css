@@ -222,6 +222,79 @@
   }
 }
 
+/* ─── Manifesto fog — slow-drifting cinema atmosphere on bg-ink ──
+   Two soft radial blobs translate slowly across the manifesto canvas
+   so the deep black doesn't feel static. Pure CSS, no r3f bundle. */
+
+@keyframes manifesto-fog-a {
+  0% {
+    transform: translate3d(-12%, -6%, 0);
+  }
+  50% {
+    transform: translate3d(8%, 4%, 0);
+  }
+  100% {
+    transform: translate3d(-12%, -6%, 0);
+  }
+}
+@keyframes manifesto-fog-b {
+  0% {
+    transform: translate3d(10%, 8%, 0);
+  }
+  50% {
+    transform: translate3d(-6%, -4%, 0);
+  }
+  100% {
+    transform: translate3d(10%, 8%, 0);
+  }
+}
+
+.manifesto-fog {
+  background:
+    radial-gradient(
+      40% 30% at 25% 35%,
+      color-mix(in srgb, var(--color-on-ink) 6%, transparent) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      35% 28% at 75% 65%,
+      color-mix(in srgb, var(--color-on-ink) 4%, transparent) 0%,
+      transparent 75%
+    );
+}
+.manifesto-fog::before,
+.manifesto-fog::after {
+  content: '';
+  position: absolute;
+  inset: -10%;
+  border-radius: 9999px;
+  filter: blur(80px);
+  opacity: 0.35;
+  will-change: transform;
+}
+.manifesto-fog::before {
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--color-on-ink) 10%, transparent) 0%,
+    transparent 75%
+  );
+  animation: manifesto-fog-a 22s ease-in-out infinite;
+}
+.manifesto-fog::after {
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--color-on-ink) 8%, transparent) 0%,
+    transparent 75%
+  );
+  animation: manifesto-fog-b 28s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .manifesto-fog::before,
+  .manifesto-fog::after {
+    animation: none;
+  }
+}
+
 /* ─── Sidebar mark drift — vertical text on hero side ──────
    Subtle 4px up-and-down to suggest "live coordinates" feel. */
 

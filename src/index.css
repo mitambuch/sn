@@ -26,7 +26,7 @@
   --color-fg: #0a0a0a;
   /* WHY: client brand is strictly monochrome — accent = fg (high-emphasis tone).
      The brand identity IS the absence of color. See CLAUDE.md Composition. */
-  --color-accent: #2a2a2a;
+  --color-accent: #0a0a0a;
   --color-muted: #5a5a5a;
   --color-surface: #b0b0b0;
   --color-border: #9c9c9c;

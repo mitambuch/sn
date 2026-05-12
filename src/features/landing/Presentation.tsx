@@ -2,10 +2,11 @@
 // Presentation — landing S03 (structure & méthode)
 //
 // WHAT: Header 2-col (h2 left + lead quote right) followed by a 3-col
-//       body : meta dl (left, 200px), dense paragraphs (center, 1fr),
-//       compact method triptyque (right, ~320px). The triptyque sits
-//       NEXT TO the paragraphs, not under the lead — owner direction
-//       2026-05-13 00:27.
+//       body : meta dl (left, 180px), dense paragraphs (center, 1fr),
+//       compact method triptyque (right, 320px) — owner direction
+//       2026-05-13 00:33 : "c'était bien avant comme tu vais fais la
+//       mise en page en 3 colonne". Each col stands on its own ; the
+//       triptyque lists the three method verbs in hairline rows.
 // WHEN: After Manifesto. Anchored at #s03.
 // CHANGE COPY: landing.presentation.{paragraph1,paragraph2,paragraph3}
 //       + landing.method.{identify,structure,facilitate}.{title,desc}
@@ -17,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 
 const VERBS = ['identify', 'structure', 'facilitate'] as const;
 
-/** Landing S03 — sober presentation, method triptyque sits beside the body. */
+/** Landing S03 — 3-col body : meta · paragraphs · method triptyque. */
 export const Presentation = () => {
   const { t } = useTranslation();
 
@@ -41,37 +42,35 @@ export const Presentation = () => {
         </div>
       </div>
 
-      {/* ─── Body : 2-col mirror of the header. Left = meta + paragraphs ;
-           right = method triptyque (aligns under the lead quote, same width). ─── */}
-      <div className="grid grid-cols-1 items-start gap-10 md:grid-cols-2 md:gap-16">
-        {/* Left col : meta dl + 3 dense paragraphs */}
-        <div className="flex flex-col gap-10">
-          <dl className="text-muted font-mono text-[10px] leading-loose tracking-widest uppercase">
-            {(
-              [
-                ['type', 'typeValue'],
-                ['jurisdiction', 'jurisdictionValue'],
-                ['accessKey', 'accessValue'],
-                ['verticals', 'verticalsValue'],
-                ['confidentiality', 'confidentialityValue'],
-              ] as const
-            ).map(([term, value]) => (
-              <div key={term} className="border-border flex justify-between border-b py-2">
-                <dt>{t(`landing.presentation.meta.${term}`)}</dt>
-                <dd className="text-fg">{t(`landing.presentation.meta.${value}`)}</dd>
-              </div>
-            ))}
-          </dl>
+      {/* ─── Body : 3 cols — meta · paragraphs · method triptyque ─── */}
+      <div className="grid grid-cols-1 items-start gap-10 md:grid-cols-[180px_1fr_320px] md:gap-12 lg:gap-16">
+        {/* Col 1 : meta dl */}
+        <dl className="text-muted font-mono text-[10px] leading-loose tracking-widest uppercase">
+          {(
+            [
+              ['type', 'typeValue'],
+              ['jurisdiction', 'jurisdictionValue'],
+              ['accessKey', 'accessValue'],
+              ['verticals', 'verticalsValue'],
+              ['confidentiality', 'confidentialityValue'],
+            ] as const
+          ).map(([term, value]) => (
+            <div key={term} className="border-border flex justify-between border-b py-2">
+              <dt>{t(`landing.presentation.meta.${term}`)}</dt>
+              <dd className="text-fg">{t(`landing.presentation.meta.${value}`)}</dd>
+            </div>
+          ))}
+        </dl>
 
-          <div className="text-fg space-y-6 text-base leading-relaxed md:text-[17px] md:leading-[1.7]">
-            <p>{t('landing.presentation.paragraph1')}</p>
-            <p>{t('landing.presentation.paragraph2')}</p>
-            <p>{t('landing.presentation.paragraph3')}</p>
-          </div>
+        {/* Col 2 : 3 dense paragraphs */}
+        <div className="text-fg max-w-3xl space-y-6 text-base leading-relaxed md:text-[17px] md:leading-[1.7]">
+          <p>{t('landing.presentation.paragraph1')}</p>
+          <p>{t('landing.presentation.paragraph2')}</p>
+          <p>{t('landing.presentation.paragraph3')}</p>
         </div>
 
-        {/* Right col : method triptyque — left-aligned, same width as lead quote above. */}
-        <div className="border-border border-t text-left">
+        {/* Col 3 : method triptyque (compact, hairline rows) */}
+        <div className="border-border border-t">
           {VERBS.map((verb, i) => (
             <div key={verb} className="border-border flex flex-col gap-1 border-b py-4">
               <span className="text-muted font-mono text-[10px] tracking-widest uppercase">
