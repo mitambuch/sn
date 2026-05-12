@@ -13,9 +13,43 @@
 
 import { Banner } from '@components/ui/Banner';
 import { siteConfig } from '@config/site';
+import Lenis from 'lenis';
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
+/**
+ * Smooth scroll — Lenis (fromanother.love-style "vivant" inertia).
+ * Mounted once at root. Respects prefers-reduced-motion.
+ * Duration + easing tuned to feel luxe (1.1s ease-out-expo, "luxe" curve
+ * matching the --ease-luxe motion token).
+ */
+function useSmoothScroll() {
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const lenis = new Lenis({
+      duration: 1.1,
+      easing: (t: number) => Math.min(1, 1.001 - 2 ** (-10 * t)),
+      smoothWheel: true,
+    });
+
+    let raf = 0;
+    const tick = (time: number) => {
+      lenis.raf(time);
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      lenis.destroy();
+    };
+  }, []);
+}
+
 export default function RootLayout() {
+  useSmoothScroll();
   return (
     <div className="bg-bg text-fg flex min-h-screen flex-col">
       <a
