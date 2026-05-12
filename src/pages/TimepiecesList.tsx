@@ -6,6 +6,7 @@
 import { useLocale } from '@app/LocaleProvider';
 import { Container } from '@components/layout/Container';
 import { FilterBar } from '@components/ui/FilterBar';
+import { Reveal } from '@components/ui/Reveal';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { CatalogueProactiveBanner } from '@features/catalogue/CatalogueProactiveBanner';
@@ -62,13 +63,14 @@ export default function TimepiecesList() {
         </FilterBar>
 
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map(tp => (
-            <TimepieceCard
-              key={tp.id}
-              timepiece={tp}
-              href={localePath(ROUTES.ACCOUNT_TIMEPIECES + '/' + tp.slug)}
-              onRequestLabel={t('common.onRequest')}
-            />
+          {filtered.map((tp, i) => (
+            <Reveal key={tp.id} index={i}>
+              <TimepieceCard
+                timepiece={tp}
+                href={localePath(ROUTES.ACCOUNT_TIMEPIECES + '/' + tp.slug)}
+                onRequestLabel={t('common.onRequest')}
+              />
+            </Reveal>
           ))}
         </div>
 

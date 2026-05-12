@@ -12,6 +12,7 @@
 import { useLocale } from '@app/LocaleProvider';
 import { Container } from '@components/layout/Container';
 import { FilterBar } from '@components/ui/FilterBar';
+import { Reveal } from '@components/ui/Reveal';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { CatalogueProactiveBanner } from '@features/catalogue/CatalogueProactiveBanner';
@@ -78,14 +79,15 @@ export default function PropertiesList() {
         </FilterBar>
 
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map(p => (
-            <PropertyCard
-              key={p.id}
-              property={p}
-              href={localePath(ROUTES.ACCOUNT_PROPERTIES + '/' + p.slug)}
-              kindLabel={t(KIND_LABEL_KEYS[p.kind])}
-              onRequestLabel={t('common.onRequest')}
-            />
+          {filtered.map((p, i) => (
+            <Reveal key={p.id} index={i}>
+              <PropertyCard
+                property={p}
+                href={localePath(ROUTES.ACCOUNT_PROPERTIES + '/' + p.slug)}
+                kindLabel={t(KIND_LABEL_KEYS[p.kind])}
+                onRequestLabel={t('common.onRequest')}
+              />
+            </Reveal>
           ))}
         </div>
 

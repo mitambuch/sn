@@ -17,6 +17,7 @@
 import { useLocale } from '@app/LocaleProvider';
 import { Container } from '@components/layout/Container';
 import { FilterBar } from '@components/ui/FilterBar';
+import { Reveal } from '@components/ui/Reveal';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { ArtworkCard } from '@features/artworks/ArtworkCard';
@@ -251,10 +252,10 @@ export default function AccountCatalogue() {
         </FilterBar>
 
         <div className="grid auto-rows-fr grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map(e => (
-            <div key={`${e.module}-${e.id}`} className="h-full *:h-full">
+          {filtered.map((e, i) => (
+            <Reveal key={`${e.module}-${e.id}`} index={i} className="h-full *:h-full">
               {e.card}
-            </div>
+            </Reveal>
           ))}
         </div>
 

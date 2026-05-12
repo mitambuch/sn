@@ -6,6 +6,7 @@
 import { useLocale } from '@app/LocaleProvider';
 import { Container } from '@components/layout/Container';
 import { FilterBar } from '@components/ui/FilterBar';
+import { Reveal } from '@components/ui/Reveal';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { CatalogueProactiveBanner } from '@features/catalogue/CatalogueProactiveBanner';
@@ -63,14 +64,15 @@ export default function EventsList() {
         </FilterBar>
 
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map(e => (
-            <EventCard
-              key={e.id}
-              event={e}
-              href={localePath(ROUTES.ACCOUNT_EVENTS + '/' + e.slug)}
-              categoryLabel={t(`events.category.${e.category}`)}
-              locale={i18n.language}
-            />
+          {filtered.map((e, i) => (
+            <Reveal key={e.id} index={i}>
+              <EventCard
+                event={e}
+                href={localePath(ROUTES.ACCOUNT_EVENTS + '/' + e.slug)}
+                categoryLabel={t(`events.category.${e.category}`)}
+                locale={i18n.language}
+              />
+            </Reveal>
           ))}
         </div>
 

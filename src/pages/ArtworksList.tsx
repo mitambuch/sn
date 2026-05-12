@@ -6,6 +6,7 @@
 import { useLocale } from '@app/LocaleProvider';
 import { Container } from '@components/layout/Container';
 import { FilterBar } from '@components/ui/FilterBar';
+import { Reveal } from '@components/ui/Reveal';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { ArtworkCard } from '@features/artworks/ArtworkCard';
@@ -75,14 +76,15 @@ export default function ArtworksList() {
         </FilterBar>
 
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map(a => (
-            <ArtworkCard
-              key={a.id}
-              artwork={a}
-              href={localePath(ROUTES.ACCOUNT_ARTWORKS + '/' + a.slug)}
-              onRequestLabel={t('common.onRequest')}
-              mediumLabel={t(MEDIUM_LABEL_KEYS[a.medium])}
-            />
+          {filtered.map((a, i) => (
+            <Reveal key={a.id} index={i}>
+              <ArtworkCard
+                artwork={a}
+                href={localePath(ROUTES.ACCOUNT_ARTWORKS + '/' + a.slug)}
+                onRequestLabel={t('common.onRequest')}
+                mediumLabel={t(MEDIUM_LABEL_KEYS[a.medium])}
+              />
+            </Reveal>
           ))}
         </div>
 

@@ -7,6 +7,7 @@
 import { useLocale } from '@app/LocaleProvider';
 import { Container } from '@components/layout/Container';
 import { FilterBar } from '@components/ui/FilterBar';
+import { Reveal } from '@components/ui/Reveal';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { CatalogueProactiveBanner } from '@features/catalogue/CatalogueProactiveBanner';
@@ -63,13 +64,14 @@ export default function ConciergeList() {
         </FilterBar>
 
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map(s => (
-            <ConciergeServiceCard
-              key={s.id}
-              service={s}
-              href={localePath(ROUTES.ACCOUNT_CONCIERGE + '/' + s.slug)}
-              categoryLabel={t(`concierge.category.${s.category}`)}
-            />
+          {filtered.map((s, i) => (
+            <Reveal key={s.id} index={i}>
+              <ConciergeServiceCard
+                service={s}
+                href={localePath(ROUTES.ACCOUNT_CONCIERGE + '/' + s.slug)}
+                categoryLabel={t(`concierge.category.${s.category}`)}
+              />
+            </Reveal>
           ))}
         </div>
 
