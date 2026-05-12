@@ -41,7 +41,6 @@ export default function Home() {
   const { t } = useTranslation();
   const { localePath } = useLocale();
   const [indexOpen, setIndexOpen] = useState(false);
-  const [darkActive, setDarkActive] = useState(false);
   const [compactLogo, setCompactLogo] = useState(false);
 
   // Scroll-driven logo morph : SAW↗NEXT → S↗N once past 220px.
@@ -64,38 +63,6 @@ export default function Home() {
     setIndexOpen(false);
   }, []);
 
-  // Top-corner chrome inversion : watch every section flagged dark.
-  // A dark section "actively" overlaps the top chrome when its top edge
-  // is above 64px and its bottom edge is below 64px (i.e. the chrome row
-  // is currently sitting over a black section).
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const darkSections = document.querySelectorAll<HTMLElement>('[data-landing-dark="true"]');
-    if (darkSections.length === 0) return;
-
-    const active = new Set<Element>();
-    const observer = new IntersectionObserver(
-      entries => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            active.add(entry.target);
-          } else {
-            active.delete(entry.target);
-          }
-        }
-        setDarkActive(active.size > 0);
-      },
-      { rootMargin: '0px 0px -96% 0px', threshold: 0 },
-    );
-
-    darkSections.forEach(s => {
-      observer.observe(s);
-    });
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
   const { sections, heroMarquee, finalMarquee, tickerItems } = useLandingData();
 
   return (
@@ -103,7 +70,6 @@ export default function Home() {
       <SeoHead />
       <TopProgress />
       <TopCornerChrome
-        darkActive={darkActive}
         compactLogo={compactLogo}
         indexOpen={indexOpen}
         openIndex={openIndex}
@@ -166,7 +132,6 @@ export default function Home() {
 }
 
 interface TopCornerChromeProps {
-  darkActive: boolean;
   compactLogo: boolean;
   indexOpen: boolean;
   openIndex: () => void;
@@ -175,23 +140,27 @@ interface TopCornerChromeProps {
 }
 
 /** Top-corner chrome — BrandMark (cross-fades SAW↗NEXT ↔ S↗N on scroll)
- *  + INDEX button. Inverts to bg colours when a `data-landing-dark`
- *  section overlaps the chrome row. */
+ *  + INDEX button. Renders white + `mix-blend-mode: difference` so the
+ *  chrome auto-inverts against any background (video, bg-ink, bg-bg) —
+ *  always visible, always reads as a negative print of whatever sits
+ *  below. The `darkActive` prop is kept for future hooks but no longer
+ *  drives color (mix-blend handles all backgrounds). */
 const TopCornerChrome = ({
-  darkActive,
   compactLogo,
   indexOpen,
   openIndex,
   title,
   indexLabel,
 }: TopCornerChromeProps) => {
-  const text = darkActive ? 'text-bg' : 'text-fg';
-  const border = darkActive ? 'border-bg' : 'border-fg';
-  const bar = darkActive ? 'bg-bg' : 'bg-fg';
-  const hover = darkActive ? 'hover:bg-bg hover:text-fg' : 'hover:bg-fg hover:text-bg';
+  const text = 'text-white';
+  const border = 'border-white';
+  const bar = 'bg-white';
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 top-0 z-100 flex items-center justify-between px-5 py-4 md:px-12 md:py-5">
+    <div
+      className="pointer-events-none fixed inset-x-0 top-0 z-100 flex items-center justify-between px-5 py-4 md:px-12 md:py-5"
+      style={{ mixBlendMode: 'difference' }}
+    >
       <a
         href="#s01"
         className={cn('pointer-events-auto transition-colors duration-300', text)}
@@ -225,18 +194,17 @@ const TopCornerChrome = ({
         type="button"
         onClick={openIndex}
         className={cn(
-          'pointer-events-auto inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs tracking-widest uppercase transition-colors duration-300',
+          'pointer-events-auto inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs tracking-widest uppercase',
           text,
           border,
-          hover,
         )}
         aria-haspopup="dialog"
         aria-expanded={indexOpen}
       >
         <span aria-hidden="true" className="flex flex-col gap-0.5">
-          <span className={cn('block h-px w-3.5 transition-colors duration-300', bar)} />
-          <span className={cn('block h-px w-3.5 transition-colors duration-300', bar)} />
-          <span className={cn('block h-px w-3.5 transition-colors duration-300', bar)} />
+          <span className={cn('block h-px w-3.5', bar)} />
+          <span className={cn('block h-px w-3.5', bar)} />
+          <span className={cn('block h-px w-3.5', bar)} />
         </span>
         {indexLabel}
       </button>

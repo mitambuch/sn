@@ -78,7 +78,7 @@ export const Hero = () => {
       {/* ─── Center : headline with mix-blend-difference over video ─── */}
       <div className="relative flex flex-1 items-center pt-20 pb-10">
         <h1
-          className="font-mono text-[clamp(2.5rem,9.5vw,9.5rem)] leading-[0.92] font-bold tracking-tight text-white uppercase"
+          className="font-mono text-[clamp(2.5rem,9.5vw,9.5rem)] leading-[0.92] font-medium tracking-tight text-white uppercase"
           style={{ mixBlendMode: 'difference' }}
         >
           <span className="hero-line hero-line-1 block">{t('landing.hero.line1')}</span>
