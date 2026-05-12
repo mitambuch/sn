@@ -26,6 +26,7 @@ import {
   LandingFooter,
   Marquee,
   Presentation,
+  Principles,
   TerminalBar,
   TopProgress,
 } from '@features/landing';
@@ -57,6 +58,12 @@ export default function Home() {
       num: '03',
       name: t('landing.index.s03name'),
       label: t('landing.index.s03label'),
+    },
+    {
+      href: '#s04',
+      num: '04',
+      name: t('landing.index.s04name'),
+      label: t('landing.index.s04label'),
     },
     {
       href: '#s05',
@@ -159,11 +166,12 @@ export default function Home() {
         }
       />
 
-      {/* ─── Main — TerminalBar is sticky at the end, no overlay risk ─── */}
+      {/* ─── Main — TerminalBar sits at the natural end (no overlay) ─── */}
       <main>
         <Hero />
         <Marquee items={heroMarquee} tone="dark" />
         <Presentation />
+        <Principles />
         <Domains />
         <Marquee items={finalMarquee} tone="light" />
         <Access />

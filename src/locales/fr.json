@@ -899,6 +899,30 @@
       "p3suffix": "Nous ne remplaçons aucun expert. Nous ouvrons des portes que d’autres ne voient pas.",
       "p4": "Ce qui passe par nous ne sort jamais par d’autres canaux. Aucun cas client. Aucun nom. Aucune anecdote."
     },
+    "principles": {
+      "tag": "Principes",
+      "eyebrow": "Document d’engagement / Édition 2026",
+      "p1": {
+        "mark": "I.  Confiance",
+        "prefix": "La",
+        "keyword": "Confiance",
+        "body": "n’est pas un argument. Elle se construit dans la durée, par les actes, et se vérifie quand les choses se compliquent. Nous ne la demandons pas. Nous travaillons à la mériter."
+      },
+      "p2": {
+        "mark": "II. Confidentialité",
+        "prefix": "La",
+        "keyword": "Confidentialité",
+        "body": "n’est pas une option. Aucun nom, aucune anecdote, aucun cas client ne sortira d’ici. Nos références parlent par cooptation, ou pas du tout."
+      },
+      "p3": {
+        "mark": "III. Relations",
+        "prefix": "Et au-delà des projets, ce qui compte vraiment, ce sont les",
+        "keyword": "Relations humaines",
+        "body": ". Un seul interlocuteur. Pas de plateforme, pas de chaîne où chacun se renvoie la responsabilité."
+      },
+      "footer": "Ce sur quoi on ne transige pas.",
+      "signature": "Boudry, mars 2026"
+    },
     "domains": {
       "tag": "Domaines",
       "h2line1": "Dix verticales.",
@@ -1065,12 +1089,14 @@
     "index": {
       "title": "SAW↗NEXT / Index complet",
       "footerLocation": "Boudry, Suisse",
-      "footerCount": "05 sections",
+      "footerCount": "06 sections",
       "footerEdition": "Édition Mai 2026",
       "s01name": "Introduction",
       "s01label": "Hero",
       "s03name": "Présentation",
       "s03label": "Structure",
+      "s04name": "Principes",
+      "s04label": "Document",
       "s05name": "Domaines",
       "s05label": "Services",
       "s08name": "Accès",

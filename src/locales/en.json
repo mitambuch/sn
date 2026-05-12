@@ -894,6 +894,30 @@
       "p3suffix": "We do not replace any expert. We open doors that others do not see.",
       "p4": "What comes through us never leaves through any other channel. No client case. No name. No anecdote."
     },
+    "principles": {
+      "tag": "Principles",
+      "eyebrow": "Commitment document / 2026 edition",
+      "p1": {
+        "mark": "I.  Trust",
+        "prefix": "",
+        "keyword": "Trust",
+        "body": "is not an argument. It is built over time, through actions, and verified when things get difficult. We do not ask for it. We work to deserve it."
+      },
+      "p2": {
+        "mark": "II. Confidentiality",
+        "prefix": "",
+        "keyword": "Confidentiality",
+        "body": "is not optional. No name, no anecdote, no client case will leave this house. Our references speak through cooptation, or not at all."
+      },
+      "p3": {
+        "mark": "III. Relations",
+        "prefix": "And beyond projects, what matters most are",
+        "keyword": "human relations",
+        "body": ". A single interlocutor. No platform, no chain where everyone passes responsibility."
+      },
+      "footer": "What we do not compromise on.",
+      "signature": "Boudry, March 2026"
+    },
     "domains": {
       "tag": "Domains",
       "h2line1": "Ten verticals.",
@@ -1060,12 +1084,14 @@
     "index": {
       "title": "SAW↗NEXT / Full index",
       "footerLocation": "Boudry, Switzerland",
-      "footerCount": "05 sections",
+      "footerCount": "06 sections",
       "footerEdition": "May 2026 edition",
       "s01name": "Introduction",
       "s01label": "Hero",
       "s03name": "Presentation",
       "s03label": "Structure",
+      "s04name": "Principles",
+      "s04label": "Document",
       "s05name": "Domains",
       "s05label": "Services",
       "s08name": "Access",

@@ -10,6 +10,7 @@ export { Interlocutor } from './Interlocutor';
 export { LandingFooter } from './LandingFooter';
 export { Marquee } from './Marquee';
 export { Presentation } from './Presentation';
+export { Principles } from './Principles';
 export { SectionTag } from './SectionTag';
 export { TerminalBar } from './TerminalBar';
 export { TopProgress } from './TopProgress';
