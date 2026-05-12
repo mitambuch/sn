@@ -288,9 +288,75 @@
   );
   animation: manifesto-fog-b 28s ease-in-out infinite;
 }
+
+/* ─── Cinema fog FRONT layer — wisps that drift ABOVE the words.
+   `mix-blend-mode: lighten` makes the text partially dissolve where
+   fog passes (text appears "obscured" by fog). Two slow-moving
+   blobs at different speeds + a third smaller blob for organic
+   motion. Mobile-friendly (uses %). */
+
+@keyframes manifesto-fog-c {
+  0% {
+    transform: translate3d(15%, -8%, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(-10%, 12%, 0) scale(1.15);
+  }
+  66% {
+    transform: translate3d(20%, 6%, 0) scale(0.95);
+  }
+  100% {
+    transform: translate3d(15%, -8%, 0) scale(1);
+  }
+}
+@keyframes manifesto-fog-d {
+  0% {
+    transform: translate3d(-18%, 10%, 0) scale(0.9);
+  }
+  50% {
+    transform: translate3d(8%, -14%, 0) scale(1.1);
+  }
+  100% {
+    transform: translate3d(-18%, 10%, 0) scale(0.9);
+  }
+}
+
+.manifesto-fog-top {
+  mix-blend-mode: lighten;
+  opacity: 0.55;
+}
+.manifesto-fog-top::before,
+.manifesto-fog-top::after {
+  content: '';
+  position: absolute;
+  inset: -10%;
+  border-radius: 9999px;
+  filter: blur(70px);
+  will-change: transform;
+}
+.manifesto-fog-top::before {
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--color-on-ink) 18%, transparent) 0%,
+    color-mix(in srgb, var(--color-on-ink) 8%, transparent) 35%,
+    transparent 75%
+  );
+  animation: manifesto-fog-c 32s ease-in-out infinite;
+}
+.manifesto-fog-top::after {
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--color-on-ink) 14%, transparent) 0%,
+    color-mix(in srgb, var(--color-on-ink) 6%, transparent) 30%,
+    transparent 70%
+  );
+  animation: manifesto-fog-d 38s ease-in-out infinite;
+}
 @media (prefers-reduced-motion: reduce) {
   .manifesto-fog::before,
-  .manifesto-fog::after {
+  .manifesto-fog::after,
+  .manifesto-fog-top::before,
+  .manifesto-fog-top::after {
     animation: none;
   }
 }

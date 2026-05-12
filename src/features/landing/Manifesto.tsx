@@ -92,10 +92,10 @@ export const Manifesto = () => {
       id="s02"
       ref={sectionRef}
       data-landing-dark="true"
-      className="bg-ink text-on-ink/85 relative h-[400vh]"
+      className="bg-ink text-on-ink/70 relative h-[400vh]"
     >
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden px-5 pt-24 pb-8 md:px-12 md:pt-28 md:pb-10">
-        {/* ─── Cinema fog : two slow-drifting radial blobs behind the words ─── */}
+        {/* ─── Cinema fog (back layer) — drifts behind the words ─── */}
         <div
           aria-hidden="true"
           className="manifesto-fog pointer-events-none absolute inset-0 z-0"
@@ -138,12 +138,12 @@ export const Manifesto = () => {
 
                 <div
                   className={cn(
-                    'relative w-full max-w-5xl font-mono leading-[1.05] font-medium tracking-tight uppercase',
+                    'relative mx-auto w-full max-w-5xl font-mono leading-[1.05] font-medium tracking-tight uppercase',
                     'text-[clamp(1.75rem,5vw,4.5rem)]',
-                    'transition-[opacity,filter,transform] duration-[1500ms] ease-out',
+                    'transition-[opacity,filter,transform] ease-out',
                     isActive
-                      ? 'blur-0 translate-y-0 opacity-100'
-                      : 'translate-y-4 opacity-0 blur-[8px]',
+                      ? 'blur-0 translate-y-0 scale-100 opacity-100 duration-[1600ms]'
+                      : 'translate-y-8 scale-[1.04] opacity-0 blur-[14px] duration-[2200ms]',
                   )}
                 >
                   {safeLines.map((line, i) => (
@@ -156,6 +156,14 @@ export const Manifesto = () => {
                     </span>
                   ))}
                 </div>
+
+                {/* ─── Cinema fog (front layer) — wisps drift ABOVE the words,
+                     mix-blend-mode lighten so the text partially dissolves
+                     where fog passes. Organic, animated, mobile-friendly. ─── */}
+                <div
+                  aria-hidden="true"
+                  className="manifesto-fog-top pointer-events-none absolute inset-0 z-20"
+                />
               </div>
             );
           })}
