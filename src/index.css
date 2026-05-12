@@ -274,8 +274,10 @@ body::before {
    via `style={{ viewTransitionName }}`. */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: var(--duration-slow);
-  animation-timing-function: var(--ease-luxe);
+  /* Cinematic crossfade — long enough to feel deliberate, ease-in-out-quart
+     for the "lent-vite-lent" rhythm (slow start, fast middle, slow end). */
+  animation-duration: 1600ms;
+  animation-timing-function: cubic-bezier(0.83, 0, 0.17, 1);
 }
 
 /* ─── Reveal — scroll-driven fade+slide (2026-05-12) ────────────────

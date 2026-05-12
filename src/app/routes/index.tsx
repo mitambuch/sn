@@ -65,6 +65,7 @@ const NewsList = lazyWithRetry(() => import('@pages/NewsList'));
 const NewsDetail = lazyWithRetry(() => import('@pages/NewsDetail'));
 const AccountSaved = lazyWithRetry(() => import('@pages/AccountSaved'));
 const LogoPreview = lazyWithRetry(() => import('@pages/LogoPreview'));
+const MotionShowcase = lazyWithRetry(() => import('@pages/MotionShowcase'));
 
 /* ─── Loading fallback — themed, no white flash ───────────────── */
 function PageLoader() {
@@ -107,6 +108,9 @@ export default function AppRoutes() {
 
         {/* ─── /logo — brand identity preview (no locale, no layout) ─── */}
         <Route path="/logo" element={<LogoPreview />} />
+
+        {/* ─── /motion — Phase 1-5 motion showcase (no locale, no layout) ─── */}
+        <Route path="/motion" element={<MotionShowcase />} />
 
         {/* ─── Canonical locale-prefixed tree ─── */}
         <Route path="/:locale" element={<LocaleLayout />}>

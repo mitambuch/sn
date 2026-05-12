@@ -28,11 +28,11 @@
 //     </Card>
 // ═══════════════════════════════════════════════════
 
+import { BrandLink } from '@components/ui/BrandLink';
 import { Image } from '@components/ui/Image';
 import { cn } from '@utils/cn';
 import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode } from 'react';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 interface CardProps {
   /** Renders as React Router <Link to> — SPA navigation, preferred for internal routes. */
@@ -100,9 +100,9 @@ export const Card = ({
   if (to) {
     const anchorRest = rest as AnchorHTMLAttributes<HTMLAnchorElement>;
     return (
-      <Link to={to} viewTransition className={classes} {...anchorRest}>
+      <BrandLink to={to} className={classes} {...anchorRest}>
         {children}
-      </Link>
+      </BrandLink>
     );
   }
 
