@@ -918,30 +918,12 @@
     "manifesto": {
       "eyebrow": "Manifeste / 01",
       "hint": "Continuez à dérouler",
-      "p1": {
-        "words": {
-          "w1": "Pas",
-          "w2": "d’agence.",
-          "w3": "Pas de",
-          "w4": "conciergerie."
-        }
-      },
-      "p2": {
-        "words": {
-          "w1": "Une",
-          "w2": "structure.",
-          "w3": "Un",
-          "w4": "interlocuteur."
-        }
-      },
-      "p3": {
-        "words": {
-          "w1": "Le luxe",
-          "w2": "ne se mesure pas",
-          "w3": "à ce qu’on",
-          "w4": "possède."
-        }
-      }
+      "p1": "Pas d’agence. Pas de conciergerie.",
+      "p2": "Une structure. Un interlocuteur.",
+      "p3": "Le luxe ne se mesure pas à ce qu’on possède.",
+      "p4": "Le silence est notre seule signature.",
+      "p5": "Ce qui se dit ici ne se dit nulle part ailleurs.",
+      "p6": "On ne promet pas. On agit."
     },
     "principles": {
       "tag": "Principes",

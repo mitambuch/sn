@@ -26,7 +26,6 @@ import {
   LandingFooter,
   Manifesto,
   Marquee,
-  Method,
   Presentation,
   Principles,
   TerminalBar,
@@ -136,13 +135,13 @@ export default function Home() {
         }
       />
 
-      {/* ─── Main — TerminalBar sits at the natural end (no overlay) ─── */}
-      <main>
+      {/* ─── Main — TerminalBar sits at the natural end. overflow-x clip
+           kills any horizontal scroll from negative-margin or grain overlays. ─── */}
+      <main className="overflow-x-clip">
         <Hero />
         <Marquee items={heroMarquee} tone="dark" />
         <Manifesto />
         <Presentation />
-        <Method />
         <Marquee items={finalMarquee} tone="light" />
         <Principles />
         <Domains />

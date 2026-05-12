@@ -10,7 +10,6 @@ export { Interlocutor } from './Interlocutor';
 export { LandingFooter } from './LandingFooter';
 export { Manifesto } from './Manifesto';
 export { Marquee } from './Marquee';
-export { Method } from './Method';
 export { Presentation } from './Presentation';
 export { Principles } from './Principles';
 export { SectionTag } from './SectionTag';

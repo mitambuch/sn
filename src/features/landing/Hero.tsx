@@ -53,15 +53,6 @@ export const Hero = () => {
         <span>{t('landing.hero.topRightLoc')}</span>
       </div>
 
-      {/* ─── Side vertical mark (desktop) — subtle drift to suggest live coords ─── */}
-      <span
-        aria-hidden="true"
-        className="text-muted animate-side-mark-drift absolute top-20 right-3 hidden font-mono text-[9px] tracking-[0.15em] uppercase md:block"
-        style={{ writingMode: 'vertical-rl' }}
-      >
-        {t('landing.hero.sideMark')}
-      </span>
-
       {/* ─── Center : headline with staggered line reveal ─── */}
       <div className="relative flex flex-1 items-center pt-20 pb-10">
         <h1 className="font-mono text-[clamp(2.5rem,9.5vw,9.5rem)] leading-[0.92] font-medium tracking-[-0.035em] uppercase">
