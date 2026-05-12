@@ -18,7 +18,7 @@ interface MarqueeProps {
   items: readonly string[];
   /** "dark" = bg-fg + text-bg ; "light" = bg-bg + text-fg. */
   tone?: 'dark' | 'light';
-  /** Scroll duration in seconds (one full cycle). Default 50. */
+  /** Scroll duration in seconds (one full cycle). Default 80 (slow luxe). */
   durationSec?: number;
   /** Separator glyph between items. Default ✦. */
   starGlyph?: string;
@@ -29,7 +29,7 @@ interface MarqueeProps {
 export const Marquee = ({
   items,
   tone = 'dark',
-  durationSec = 50,
+  durationSec = 80,
   starGlyph = '✦',
   className,
 }: MarqueeProps) => {
@@ -44,7 +44,7 @@ export const Marquee = ({
       )}
     >
       <div
-        className="flex font-mono text-[11px] tracking-[0.18em] whitespace-nowrap uppercase group-hover:[animation-play-state:paused]"
+        className="flex font-mono text-[11px] font-bold tracking-[0.18em] whitespace-nowrap uppercase group-hover:[animation-play-state:paused]"
         style={{
           animation: `marquee ${String(durationSec)}s linear infinite`,
         }}

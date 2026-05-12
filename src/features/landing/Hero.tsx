@@ -1,43 +1,65 @@
 // ═══════════════════════════════════════════════════
-// Hero — landing S01 (intro)
+// Hero — landing S01 (intro, cinema video bg)
 //
-// WHAT: Full-viewport opening section. Three-line headline with one cycling
-//       word inside line 3 ("voix [basse|tenue|feutrée|retenue]"). Top
-//       meta strip (mockup version + GPS), bottom three-column meta strip
-//       (structure list + champ d'action paragraph + CTAs).
+// WHAT: Full-viewport opening section. A randomly-picked Cloudinary
+//       video plays as silent autoplay loop in the background. The
+//       3-line headline uses `mix-blend-mode: difference` against the
+//       video — the words appear in pure negative against whatever is
+//       behind. One word in line 3 cycles every ~6.5s. Stagger
+//       reveal on each line at first paint. Mobile-friendly.
 // WHEN: Always the first section of the landing.
-// CHANGE CYCLING WORDS: edit CYCLING_WORDS below — must stay in the same
-//       semantic register (brand voice: retenue suisse-bancaire).
+// CHANGE CYCLING WORDS: edit CYCLING_WORDS below.
+// CHANGE VIDEO POOL: edit HERO_VIDEOS — one is picked at mount.
 // ═══════════════════════════════════════════════════
 
 import { Button } from '@components/ui/Button';
 import { useCyclingWord } from '@features/landing/useCyclingWord';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const CYCLING_WORDS = ['basse', 'tenue', 'feutrée', 'retenue'] as const;
 
-/** Landing S01 — hero opening with cycling headline word. */
+const HERO_VIDEOS = [
+  'https://res.cloudinary.com/df5khdkxl/video/upload/v1778623070/hf_20260512_191454_db3c4649-3862-496f-80bb-b4e156496be2_syjjkp.mp4',
+  'https://res.cloudinary.com/df5khdkxl/video/upload/v1778623070/hf_20260512_191448_960c9c4f-91ad-4007-95f4-780d6508252f_dxgdjv.mp4',
+  'https://res.cloudinary.com/df5khdkxl/video/upload/v1778623071/hf_20260512_194219_4de6b520-bec5-4d8d-b0e0-efd0dc34af08_eojkzr.mp4',
+  'https://res.cloudinary.com/df5khdkxl/video/upload/v1778623072/hf_20260512_194210_f78548ea-db87-488c-b92e-5cd0844ce208_lhjtcs.mp4',
+  'https://res.cloudinary.com/df5khdkxl/video/upload/v1778623071/hf_20260512_191434_99138e4d-1897-43da-b7cc-c727e965ef3a_npula7.mp4',
+  'https://res.cloudinary.com/df5khdkxl/video/upload/v1778623072/hf_20260512_191215_65634274-77d2-4171-830c-d156c1ae2837_bi2bj7.mp4',
+] as const;
+
+/** Landing S01 — hero with Cloudinary video bg + mix-blend headline. */
 export const Hero = () => {
   const { t } = useTranslation();
-  const word = useCyclingWord(CYCLING_WORDS, 4000);
+  const word = useCyclingWord(CYCLING_WORDS, 6500);
+
+  // Random pick at mount, stable across re-renders (lazy useState init
+  // — useMemo would violate react-hooks/purity because Math.random()
+  // is impure, but lazy init is allowed by the rule).
+  const [videoSrc] = useState(() => {
+    const idx = Math.floor(Math.random() * HERO_VIDEOS.length);
+    return HERO_VIDEOS[idx] ?? HERO_VIDEOS[0];
+  });
 
   return (
     <section
       id="s01"
-      className="relative flex min-h-screen flex-col overflow-hidden px-5 pt-20 pb-6 md:px-12 md:pt-20"
+      className="relative isolate flex min-h-screen flex-col overflow-hidden px-5 pt-20 pb-6 md:px-12 md:pt-20"
     >
-      {/* ─── Ambient bg — radial vignette + subtle moving glow ─── */}
-      <div
+      {/* ─── Video bg ─── */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        src={videoSrc}
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 opacity-60"
+        className="pointer-events-none absolute inset-0 -z-10 h-full w-full object-cover"
         style={{
-          background:
-            'radial-gradient(60% 40% at 50% 30%, color-mix(in srgb, var(--color-fg) 6%, transparent) 0%, transparent 70%), radial-gradient(40% 60% at 80% 80%, color-mix(in srgb, var(--color-fg) 4%, transparent) 0%, transparent 70%)',
+          maskImage: 'linear-gradient(to bottom, black 0%, black 65%, transparent 96%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 65%, transparent 96%)',
         }}
-      />
-      <div
-        aria-hidden="true"
-        className="via-fg/40 pointer-events-none absolute inset-x-0 top-0 -z-10 h-[2px] bg-gradient-to-r from-transparent to-transparent"
       />
 
       {/* ─── Top meta strip — coordonnées Boudry, terminal-style ─── */}
@@ -53,12 +75,15 @@ export const Hero = () => {
         <span>{t('landing.hero.topRightLoc')}</span>
       </div>
 
-      {/* ─── Center : headline with staggered line reveal ─── */}
+      {/* ─── Center : headline with mix-blend-difference over video ─── */}
       <div className="relative flex flex-1 items-center pt-20 pb-10">
-        <h1 className="font-mono text-[clamp(2.5rem,9.5vw,9.5rem)] leading-[0.92] font-medium tracking-[-0.035em] uppercase">
+        <h1
+          className="font-mono text-[clamp(2.5rem,9.5vw,9.5rem)] leading-[0.92] font-bold tracking-tight text-white uppercase"
+          style={{ mixBlendMode: 'difference' }}
+        >
           <span className="hero-line hero-line-1 block">{t('landing.hero.line1')}</span>
           <span className="hero-line hero-line-2 block">{t('landing.hero.line2')}</span>
-          <span className="hero-line hero-line-3 block pl-0 font-light italic md:pl-[18%]">
+          <span className="hero-line hero-line-3 block">
             {t('landing.hero.line3prefix')}{' '}
             <span key={word} className="animate-cycling-word inline-block">
               {word}
@@ -70,12 +95,11 @@ export const Hero = () => {
 
       {/* ─── Bottom 3-col meta strip ─── */}
       <div className="border-border grid grid-cols-1 items-end gap-8 border-t pt-8 md:grid-cols-[1fr_1.5fr_auto] md:gap-12">
-        {/* col 1 : structure list */}
         <div className="flex flex-col gap-3.5">
-          <span className="text-muted font-mono text-[10px] tracking-[0.1em] uppercase">
+          <span className="text-muted font-mono text-[10px] tracking-widest uppercase">
             ↘ {t('landing.hero.metaStructureLabel')}
           </span>
-          <dl className="font-mono text-[10px] leading-[1.9] tracking-[0.05em] uppercase">
+          <dl className="font-mono text-[10px] leading-[1.9] tracking-wider uppercase">
             <MetaRow term={t('landing.hero.metaType')} value={t('landing.hero.metaTypeValue')} />
             <MetaRow
               term={t('landing.hero.metaStatus')}
@@ -89,17 +113,15 @@ export const Hero = () => {
           </dl>
         </div>
 
-        {/* col 2 : champ d'action paragraph */}
         <div className="flex flex-col gap-3.5">
-          <span className="text-muted font-mono text-[10px] tracking-[0.1em] uppercase">
+          <span className="text-muted font-mono text-[10px] tracking-widest uppercase">
             ↘ {t('landing.hero.metaFieldLabel')}
           </span>
-          <p className="text-fg max-w-[460px] text-sm leading-relaxed">
+          <p className="text-fg max-w-115 text-sm leading-relaxed">
             {t('landing.hero.metaFieldText')}
           </p>
         </div>
 
-        {/* col 3 : CTAs (desktop) — Button atom variants */}
         <div className="hidden flex-col gap-2 md:flex">
           <Button
             variant="primary"
