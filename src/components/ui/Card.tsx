@@ -100,7 +100,7 @@ export const Card = ({
   if (to) {
     const anchorRest = rest as AnchorHTMLAttributes<HTMLAnchorElement>;
     return (
-      <Link to={to} className={classes} {...anchorRest}>
+      <Link to={to} viewTransition className={classes} {...anchorRest}>
         {children}
       </Link>
     );

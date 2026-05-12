@@ -266,6 +266,18 @@ body::before {
   color: var(--color-bg);
 }
 
+/* ─── View Transitions — inter-page native crossfade (2026-05-12) ───
+   Tune the default crossfade per Browser. Enabled per <Link viewTransition>
+   in Card atom (so any card → detail nav transitions). The browser
+   default = quick fade; below we slow it to the luxe duration. Shared
+   element morph (Card.Media → DetailHero image) lives in Card.Media
+   via `style={{ viewTransitionName }}`. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--duration-slow);
+  animation-timing-function: var(--ease-luxe);
+}
+
 /* ─── Reveal — scroll-driven fade+slide (2026-05-12) ────────────────
    Toggled by useReveal hook via `data-reveal="hidden|shown"`.
    Duration = --duration-slow. Easing = --ease-luxe (Apple expo-out).
