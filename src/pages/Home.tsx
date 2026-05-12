@@ -35,7 +35,7 @@ export default function Home() {
           </p>
 
           {/* Headline */}
-          <h1 className="text-fg mt-4 max-w-3xl text-4xl font-light tracking-tight text-balance md:text-6xl lg:text-7xl">
+          <h1 className="text-fg mt-4 max-w-3xl font-mono text-3xl font-bold tracking-tight text-balance uppercase md:text-4xl lg:text-5xl">
             {t('auth.tagline')}
           </h1>
 

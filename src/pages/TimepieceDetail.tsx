@@ -1,9 +1,14 @@
 // ═══════════════════════════════════════════════════
 // TimepieceDetail — /:locale/account/timepieces/:slug
 //
-// Hero image is contained (not cropped) in 4:3 — collectors want to
-// SEE the dial. MetaList specsheet is the centerpiece. Provenance
-// timeline below for trust.
+// WHAT: Detail page for a horological piece. Restructured mobile-first :
+//       hero image at top, then a single info cluster (eyebrow + title +
+//       summary + primary CTA), then description + specs side-by-side
+//       on desktop / stacked on mobile, then optional provenance +
+//       gallery, then a compact "similar items" strip.
+// WHEN: Linked from TimepiecesList, catalogue, saved collection.
+// PATTERN: drop duplicate REFERENCE mini-block (was duplicating the
+//          specs table below). Drop AudioNote until owner re-asks.
 // ═══════════════════════════════════════════════════
 
 import { useLocale } from '@app/LocaleProvider';
@@ -16,7 +21,6 @@ import { SectionHeader } from '@components/ui/SectionHeader';
 import { Timeline } from '@components/ui/Timeline';
 import { ROUTES } from '@constants/routes';
 import { SimilarItemsStrip } from '@features/catalogue/SimilarItemsStrip';
-import { AudioNote } from '@features/concierge/AudioNote';
 import { InquiryDrawer } from '@features/inquiry/InquiryDrawer';
 import { cn } from '@utils/cn';
 import { useState } from 'react';
@@ -53,19 +57,22 @@ export default function TimepieceDetail() {
 
   return (
     <Container size="xl">
-      <div className="space-y-16 py-12">
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
-          {/* Hero contained image (collector-grade detail) */}
+      <div className="space-y-12 py-10 md:space-y-16 md:py-12">
+        {/* ─── Hero : image left, dense info cluster right ────────
+            Right column packs all the buying info (specs preview + price
+            + CTA) so the desktop space doesn't feel empty next to the
+            1:1 image. Description moves below as a self-contained block. */}
+        <div className="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
           <Image
             src={tp.images[0]?.src ?? ''}
             alt={tp.images[0]?.alt ?? `${tp.brand} ${tp.model}`}
             ratio="1/1"
             eager
-            wrapperClassName="bg-surface rounded-lg"
+            wrapperClassName="bg-surface rounded-card"
             className="object-contain"
           />
 
-          <div className="space-y-8">
+          <div className="flex flex-col gap-6">
             <SectionHeader
               eyebrow={`${tp.brand} · ${String(tp.year)}`}
               title={tp.model}
@@ -74,11 +81,20 @@ export default function TimepieceDetail() {
               as="h1"
             />
 
-            <div className="space-y-2">
+            {/* Specs preview — fills the desktop space, scannable in 1s */}
+            <MetaList items={meta} />
+
+            {/* Price — structural slot. priceCHF optional in data (Sanity
+                future), falls back to "Sur demande" silent HNW convention. */}
+            <div className="border-border flex items-baseline justify-between border-t pt-4">
               <span className="text-muted text-xs tracking-widest uppercase">
-                {t('timepieces.meta.reference')}
+                {t('common.price')}
               </span>
-              <p className="text-fg font-mono text-base tracking-wider">{tp.reference}</p>
+              <PriceTag
+                {...(tp.priceCHF !== undefined && { amount: tp.priceCHF, currency: 'CHF' })}
+                onRequestLabel={t('common.onRequest')}
+                size="md"
+              />
             </div>
 
             <button
@@ -86,7 +102,7 @@ export default function TimepieceDetail() {
               onClick={() => setInquiryOpen(true)}
               className={cn(
                 'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
-                'inline-flex items-center gap-3 rounded-full border px-6 py-3 text-sm tracking-widest uppercase',
+                'mt-2 inline-flex w-full items-center justify-center gap-3 rounded-full border px-6 py-3.5 text-sm tracking-widest uppercase sm:w-auto sm:self-start',
                 'duration-base transition-[border-color,background-color]',
                 'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
               )}
@@ -97,23 +113,13 @@ export default function TimepieceDetail() {
           </div>
         </div>
 
-        <div className="grid gap-12 lg:grid-cols-3">
-          <div className="space-y-6 lg:col-span-2">
-            <SectionHeader title={t('common.details')} size="sm" as="h2" />
-            <p className="text-muted leading-relaxed">{tp.description}</p>
-          </div>
-          <aside className="space-y-6">
-            <span className="text-muted text-xs tracking-widest uppercase">
-              {t('common.details')}
-            </span>
-            <MetaList items={meta} />
-            <div className="border-border border-t pt-6">
-              <PriceTag onRequestLabel={t('common.onRequest')} size="md" />
-            </div>
-            <AudioNote transcript={t('audio.samples.timepiece')} durationSeconds={48} />
-          </aside>
+        {/* ─── Description — full-width block ──────────────────── */}
+        <div className="space-y-4">
+          <SectionHeader title={t('common.details')} size="sm" as="h2" />
+          <p className="text-muted max-w-3xl leading-relaxed">{tp.description}</p>
         </div>
 
+        {/* ─── Provenance ──────────────────────────────── */}
         {tp.provenance.length > 0 && (
           <div className="space-y-6">
             <SectionHeader title={t('timepieces.provenance')} size="sm" as="h2" />
@@ -121,6 +127,7 @@ export default function TimepieceDetail() {
           </div>
         )}
 
+        {/* ─── Gallery ─────────────────────────────────── */}
         {tp.images.length > 1 && (
           <div className="space-y-6">
             <SectionHeader title={t('timepieces.gallery')} size="sm" as="h2" />
@@ -128,6 +135,7 @@ export default function TimepieceDetail() {
           </div>
         )}
 
+        {/* ─── Similar — compact strip ──────────────────── */}
         <SimilarItemsStrip module="timepiece" currentSlug={tp.slug} />
 
         <Link

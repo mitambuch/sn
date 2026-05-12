@@ -29,11 +29,12 @@ interface FilterResetProps {
   visible: boolean;
 }
 
-/** Horizontal filter row, scrolls on mobile, wraps on desktop. */
+/** Horizontal filter row — proper breathing on mobile (no cramped chips).
+ *  Wraps on overflow; gap-2.5 gives chips enough air to read as real boxes. */
 export const FilterBar = ({ className, children }: FilterBarProps) => {
   return (
     <div
-      className={cn('border-border flex flex-wrap items-center gap-2 border-y py-3', className)}
+      className={cn('flex flex-wrap items-center gap-2.5 py-2', className)}
       role="toolbar"
       aria-label="Filters"
     >
@@ -42,7 +43,8 @@ export const FilterBar = ({ className, children }: FilterBarProps) => {
   );
 };
 
-/** Single toggle chip — selected = filled, unselected = outline. */
+/** Single toggle chip — square-ish box (rounded-md), 44px tap target on
+ *  mobile, generous padding so labels breathe. Premium box style, not pill. */
 const FilterChip = ({ label, selected = false, onToggle, className }: FilterChipProps) => {
   return (
     <button
@@ -50,12 +52,12 @@ const FilterChip = ({ label, selected = false, onToggle, className }: FilterChip
       onClick={onToggle}
       aria-pressed={selected}
       className={cn(
-        'inline-flex items-center rounded-full px-3 py-1 text-xs tracking-widest uppercase',
+        'inline-flex min-h-11 items-center rounded-md border px-4 py-2 text-xs tracking-widest whitespace-nowrap uppercase',
         'duration-base transition-[color,background-color,border-color]',
         'focus-visible:ring-accent focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
         selected
-          ? 'bg-fg text-bg border-fg border'
-          : 'border-border text-muted hover:text-fg hover:border-fg/40 border bg-transparent',
+          ? 'border-fg bg-fg text-bg'
+          : 'border-border text-muted hover:text-fg hover:border-fg/40 bg-transparent',
         className,
       )}
     >

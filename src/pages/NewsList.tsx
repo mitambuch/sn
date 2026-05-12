@@ -7,6 +7,7 @@ import { useLocale } from '@app/LocaleProvider';
 import { Container } from '@components/layout/Container';
 import { CardSkeleton } from '@components/ui/CardSkeleton';
 import { FilterBar } from '@components/ui/FilterBar';
+import { Reveal } from '@components/ui/Reveal';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { CatalogueProactiveBanner } from '@features/catalogue/CatalogueProactiveBanner';
@@ -67,15 +68,16 @@ export default function NewsList() {
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {loading
             ? Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} ratio="3/2" />)
-            : filtered.map(a => (
-                <ArticleCard
-                  key={a.id}
-                  article={a}
-                  href={localePath(ROUTES.ACCOUNT_NEWS + '/' + a.slug)}
-                  kindLabel={t(`articles.kind.${a.kind}`)}
-                  locale={i18n.language}
-                  readMinutesLabel={t('articles.readMinutes')}
-                />
+            : filtered.map((a, i) => (
+                <Reveal key={a.id} index={i}>
+                  <ArticleCard
+                    article={a}
+                    href={localePath(ROUTES.ACCOUNT_NEWS + '/' + a.slug)}
+                    kindLabel={t(`articles.kind.${a.kind}`)}
+                    locale={i18n.language}
+                    readMinutesLabel={t('articles.readMinutes')}
+                  />
+                </Reveal>
               ))}
         </div>
 

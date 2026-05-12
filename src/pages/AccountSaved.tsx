@@ -1,12 +1,17 @@
 // ═══════════════════════════════════════════════════
 // AccountSaved — /:locale/account/saved
-// "Ma collection" — every catalogue item the member has hearted,
-// grouped by module. Empty state nudges towards browsing.
+//
+// WHAT: "Ma collection" — every catalogue item the member has hearted,
+//       rendered through the unified Card atom (Apple-closed surface)
+//       so the saved view reads coherent with the rest of the catalogue.
+//       Empty state nudges towards browsing.
+// WHEN: Sidebar entry "Ma collection".
+// EDIT VISUAL: change radius/shadow in src/index.css tokens.
 // ═══════════════════════════════════════════════════
 
 import { useLocale } from '@app/LocaleProvider';
 import { Container } from '@components/layout/Container';
-import { Image } from '@components/ui/Image';
+import { Card } from '@components/ui/Card';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { type SavedModule, useSavedItems } from '@hooks/useSavedItems';
@@ -23,6 +28,7 @@ import {
   getProperty,
   getTimepiece,
 } from '@/mocks';
+
 interface SimpleImage {
   src: string;
   alt: string;
@@ -115,48 +121,47 @@ export default function AccountSaved() {
         />
 
         {resolved.length === 0 ? (
-          <div className="border-border bg-surface/40 flex flex-col items-center gap-6 rounded-lg border px-8 py-24 text-center">
-            <span className="border-border bg-bg text-muted flex h-16 w-16 items-center justify-center rounded-full border">
-              <Heart size={28} strokeWidth={1.5} aria-hidden="true" />
-            </span>
-            <div className="flex max-w-md flex-col gap-2">
-              <h2 className="text-fg text-xl font-light">{t('saved.emptyTitle')}</h2>
-              <p className="text-muted text-sm leading-relaxed">{t('saved.emptyLede')}</p>
-            </div>
-            <Link
-              to={localePath(ROUTES.ACCOUNT)}
-              className={cn(
-                'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
-                'inline-flex items-center gap-3 rounded-full border px-6 py-3 text-sm tracking-widest uppercase',
-                'duration-base transition-[border-color,background-color]',
-                'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
-              )}
-            >
-              {t('saved.emptyCta')}
-              <span aria-hidden="true">→</span>
-            </Link>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {resolved.map(item => (
+          <Card padding="none">
+            <div className="flex flex-col items-center gap-6 px-6 py-20 text-center sm:px-8">
+              <span className="border-border bg-bg text-muted flex h-16 w-16 items-center justify-center rounded-full border">
+                <Heart size={28} strokeWidth={1.5} aria-hidden="true" />
+              </span>
+              <div className="flex max-w-md flex-col gap-2">
+                <h2 className="text-fg font-mono text-xl font-bold uppercase">
+                  {t('saved.emptyTitle')}
+                </h2>
+                <p className="text-muted text-sm leading-relaxed">{t('saved.emptyLede')}</p>
+              </div>
               <Link
-                key={`${item.module}:${item.slug}`}
-                to={item.href}
-                className="group focus-visible:ring-accent block rounded-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                to={localePath(ROUTES.ACCOUNT)}
+                className={cn(
+                  'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
+                  'inline-flex items-center gap-3 rounded-full border px-6 py-3 text-sm tracking-widest uppercase',
+                  'duration-base transition-[border-color,background-color]',
+                  'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+                )}
               >
-                <Image
-                  src={item.image?.src ?? ''}
-                  alt={item.image?.alt ?? item.title}
-                  ratio="3/4"
-                  className="duration-slow transition-transform group-hover:scale-[1.02]"
-                />
-                <div className="mt-4 flex flex-col gap-1">
-                  <span className="text-muted text-xs tracking-widest uppercase">
-                    {t(MODULE_LABEL[item.module])}
-                  </span>
-                  <span className="text-fg text-sm font-medium">{item.title}</span>
-                </div>
+                {t('saved.emptyCta')}
+                <span aria-hidden="true">→</span>
               </Link>
+            </div>
+          </Card>
+        ) : (
+          <div className="grid auto-rows-fr grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {resolved.map(item => (
+              <div key={`${item.module}:${item.slug}`} className="h-full *:h-full">
+                <Card to={item.href} padding="none">
+                  <Card.Media
+                    src={item.image?.src}
+                    alt={item.image?.alt ?? item.title}
+                    ratio="4/3"
+                  />
+                  <Card.Body>
+                    <Card.Eyebrow>{t(MODULE_LABEL[item.module])}</Card.Eyebrow>
+                    <Card.Title>{item.title}</Card.Title>
+                  </Card.Body>
+                </Card>
+              </div>
             ))}
           </div>
         )}

@@ -8,7 +8,7 @@
 // ═══════════════════════════════════════════════════
 
 import { useLocale } from '@app/LocaleProvider';
-import { siteConfig } from '@config/site';
+import { BrandMark } from '@components/brand/BrandMark';
 import { ROUTES } from '@constants/routes';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -23,9 +23,10 @@ export const Footer = () => {
         <div className="flex items-center gap-4">
           <Link
             to={localePath(ROUTES.HOME)}
-            className="text-fg focus-visible:ring-accent rounded-sm text-sm font-medium tracking-tight focus-visible:ring-2 focus-visible:outline-none"
+            className="text-fg focus-visible:ring-accent rounded-sm focus-visible:ring-2 focus-visible:outline-none"
+            aria-label="SAW NEXT — home"
           >
-            {siteConfig.name}
+            <BrandMark className="text-sm" />
           </Link>
           <span className="text-muted text-xs tracking-widest uppercase">
             {t('public.footer.rights')}

@@ -1,11 +1,19 @@
 // ═══════════════════════════════════════════════════
-// JourneyCard — listing card for Journeys module
-// 16:9 image, kind eyebrow, title, destinations summary, duration.
+// JourneyCard — domain wrapper around Card atom
+//
+// WHAT: Apple-closed surface, 4:3 image, Card.Badge top-left (duration ·
+//       days — temporal signature), HeartButton top-right. Body: kind
+//       eyebrow, title, Card.Stats with destinations spanning 2 cols.
+//       NO PriceBlock — kind is already in eyebrow, adding it as a pill
+//       below would duplicate. Duration in badge + destinations in body
+//       cover the at-a-glance need.
+// WHEN: JourneysList grid item, catalogue mixed view.
+// EDIT VISUAL: change radius/shadow in src/index.css tokens.
 // ═══════════════════════════════════════════════════
 
+import { Card } from '@components/ui/Card';
 import { HeartButton } from '@components/ui/HeartButton';
-import { Image } from '@components/ui/Image';
-import { cn } from '@utils/cn';
+import { useTranslation } from 'react-i18next';
 
 import type { Journey } from '@/types/journey';
 
@@ -24,35 +32,34 @@ export const JourneyCard = ({
   daysLabel,
   className,
 }: JourneyCardProps) => {
+  const { t } = useTranslation();
   return (
-    <a
-      href={href}
-      className={cn(
-        'group focus-visible:ring-accent block rounded-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
-        className,
-      )}
-    >
-      <div className="relative">
-        <Image
-          src={journey.images[0]?.src ?? ''}
-          alt={journey.images[0]?.alt ?? journey.title}
-          ratio="16/9"
-          className="duration-slow transition-transform group-hover:scale-[1.02]"
-        />
+    <Card href={href} padding="none" className={className}>
+      <Card.Media
+        src={journey.images[0]?.src}
+        alt={journey.images[0]?.alt ?? journey.title}
+        ratio="4/3"
+      />
+      <Card.Badge top={journey.durationDays} bottom={daysLabel} />
+      <Card.Overlay>
         <HeartButton
           module="journey"
           slug={journey.slug}
           size="sm"
           className="absolute top-3 right-3"
         />
-      </div>
-      <div className="mt-4 flex flex-col gap-1">
-        <span className="text-muted text-xs tracking-widest uppercase">
-          {kindLabel} · {String(journey.durationDays)} {daysLabel}
-        </span>
-        <h3 className="text-fg text-base font-medium">{journey.title}</h3>
-        <span className="text-muted text-sm">{journey.destinations}</span>
-      </div>
-    </a>
+      </Card.Overlay>
+      <Card.Body>
+        <Card.Eyebrow>{kindLabel}</Card.Eyebrow>
+        <Card.Title>{journey.title}</Card.Title>
+        <Card.Stats>
+          <Card.Stat
+            label={t('common.itinerary')}
+            value={journey.destinations}
+            className="col-span-2"
+          />
+        </Card.Stats>
+      </Card.Body>
+    </Card>
   );
 };

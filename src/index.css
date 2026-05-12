@@ -12,19 +12,74 @@
    ═══════════════════════════════════════════════════════════════ */
 
 @theme {
-  /* Dark mode — DEFAULT (Sawnext Studio monochrome — Swiss-banking) */
+  /* Light mode — DEFAULT (Sawnext Studio monochrome, light primary 2026-05-12)
+     Owner direction : "beau fond gris" (vrai gris perceptible, pas blanc cassé)
+     + "texte pas full noir" (charcoal doux pour le confort de lecture, pas
+     d'éclat oculaire). Contraste cible ~8:1 (WCAG AAA pour texte large,
+     AA texte body). */
+  --color-bg: #bcbcbc;
+  --color-fg: #2a2a2a;
+  /* WHY: client brand is strictly monochrome — accent = fg (high-emphasis tone).
+     The brand identity IS the absence of color. See CLAUDE.md Composition. */
+  --color-accent: #2a2a2a;
+  --color-muted: #5a5a5a;
+  --color-surface: #b0b0b0;
+  --color-border: #9c9c9c;
+  --color-on-accent: #bcbcbc;
+
+  /* Semantic status colors — kept functional (errors/success/warning) */
+  --color-success: #00c853;
+  --color-warning: #e6a800;
+  --color-danger: #b91c1c;
+  --color-info: #1e88e5;
+
+  /* Text-safe variants — meet WCAG AA (4.5:1) on light bg #d8d8d8 */
+  --color-success-text: #004d1f;
+  --color-warning-text: #4d3800;
+  --color-info-text: #0a3d6a;
+  --color-danger-text: #7f1111;
+  --color-accent-text: #2a2a2a;
+
+  /* Tailwind 4 namespace: --font-* (NOT --font-family-*) so `font-sans` /
+     `font-mono` utilities map correctly. Renamed 2026-05-12 — previous
+     `--font-family-*` naming caused silent fallback to system fonts. */
+  --font-sans: 'Geist Variable', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'JetBrains Mono', monospace;
+
+  /* Card depth scale — Apple-closed system (2026-05-11)
+     Used by Card atom + 7 domain cards. Tweaking here propagates everywhere.
+     Auto-mapped by Tailwind 4 to `rounded-card`, `shadow-card-rest`, etc. */
+  --radius-card: 1.25rem;
+  --radius-media: 0.875rem;
+  --shadow-card-rest: inset 0 1px 0 0 color-mix(in srgb, var(--color-fg) 5%, transparent);
+  --shadow-card-hover:
+    0 8px 24px -12px rgb(0 0 0 / 0.12),
+    inset 0 1px 0 0 color-mix(in srgb, var(--color-fg) 12%, transparent);
+
+  /* ─── Motion — luxe easings (2026-05-12)
+     Auto-mapped by Tailwind 4 to `ease-luxe`, `ease-spring`, `ease-glide`.
+     Source : fromanother.love reveal curves + Apple product page expo-out.
+     Tweak here → propage partout (animations.css, transitions, reveals).
+     ─────────────────────────────────────────────────────────────── */
+  --ease-luxe: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-glide: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Dark mode override (monochrome — same scale, no warm tones) */
+[data-theme='dark'] {
+  /* Grain blend mode flipped : `screen` lightens (visible grain dots on dark
+     bg). `multiply` would blacken everything on dark. */
+  --grain-blend: screen;
+
   --color-bg: #0a0a0a;
   --color-fg: #f0f0f0;
-  /* WHY: client brand is strictly monochrome — accent = fg (high-emphasis tone).
-     Overrides the template's `accent identical in both modes` rule because the
-     project's brand identity IS the absence of color. See CLAUDE.md Composition. */
   --color-accent: #f0f0f0;
   --color-muted: #a0a0a0;
   --color-surface: #141414;
   --color-border: #262626;
   --color-on-accent: #0a0a0a;
 
-  /* Semantic status colors — kept functional (errors/success/warning) */
   --color-success: #6aff8a;
   --color-warning: #ffd60a;
   --color-danger: #dc2626;
@@ -37,31 +92,11 @@
   --color-info-text: #52b0ff;
   --color-accent-text: #f0f0f0;
 
-  --font-family-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-  --font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
-}
-
-/* Light mode override (monochrome — derived from same scale, no warm tones) */
-[data-theme='light'] {
-  --color-bg: #f0f0f0;
-  --color-fg: #0a0a0a;
-  --color-accent: #1a1a1a;
-  --color-muted: #5a5a5a;
-  --color-surface: #e0e0e0;
-  --color-border: #c8c8c8;
-  --color-on-accent: #f0f0f0;
-
-  --color-success: #00c853;
-  --color-warning: #e6a800;
-  --color-danger: #b91c1c;
-  --color-info: #1e88e5;
-
-  /* Text-safe variants — meet WCAG AA (4.5:1) on light bg #f0f0f0 */
-  --color-success-text: #004d1f;
-  --color-warning-text: #4d3800;
-  --color-info-text: #0a3d6a;
-  --color-danger-text: #7f1111;
-  --color-accent-text: #1a1a1a;
+  /* Card depth — dark mode plus marqué (drop shadow plus profond sur fond noir) */
+  --shadow-card-rest: inset 0 1px 0 0 color-mix(in srgb, var(--color-fg) 8%, transparent);
+  --shadow-card-hover:
+    0 8px 24px -12px rgb(0 0 0 / 0.55),
+    inset 0 1px 0 0 color-mix(in srgb, var(--color-fg) 18%, transparent);
 }
 
 /* ─── Custom scrollbar — thin coral accent ────────────────── */
@@ -89,15 +124,45 @@ html {
    ═══════════════════════════════════════════════════════════════ */
 
 :root {
-  /* Duration tokens — change here, propagates via @utility below */
+  /* Duration tokens — change here, propagates via @utility below.
+     Scale : instant (tap) → fast (hover) → base (default) → slow (modal) →
+     cinematic (hero entrance) → glacier (slow reveals). */
+  --duration-instant: 80ms;
   --duration-fast: 150ms;
   --duration-base: 300ms;
   --duration-slow: 500ms;
   --duration-cinematic: 700ms;
+  --duration-glacier: 1200ms;
 
   --transition-fast: 150ms ease;
   --transition-base: 300ms ease;
   --transition-slow: 600ms ease;
+
+  /* Reveal / Stagger — consumed by useReveal hook + Card.* stagger.
+     reveal-y-* = translate distance for slide-in. stagger-base = delay
+     between consecutive items in a grid (~60ms = fromanother rhythm). */
+  --reveal-y-sm: 12px;
+  --reveal-y-md: 28px;
+  --reveal-y-lg: 48px;
+  --stagger-fast: 30ms;
+  --stagger-base: 60ms;
+  --stagger-slow: 120ms;
+
+  /* Blur — frosted-glass tiers (sidebar overlays, drawer backdrop, modal). */
+  --blur-glass-sm: 8px;
+  --blur-glass-md: 14px;
+  --blur-glass-lg: 24px;
+
+  /* Grain — signature texture (fromanother.love inspiration, monochrome
+     version). SVG noise rendered on body::before with mix-blend-mode
+     overlay → works on dark AND light without inversion. Tweak opacity
+     here to dial grain intensity globally. */
+  /* Grain dialed for cinema 35mm feel — owner direction 2026-05-12 :
+     "beau grain de film 35mm, voir le grain vivre". Higher opacity + denser
+     texture + film-frame animation (steps cinematic). */
+  --grain-opacity: 0.45;
+  --grain-size: 240px;
+  --grain-blend: multiply;
 
   --z-below: -1;
   --z-base: 0;
@@ -121,9 +186,73 @@ html {
 
 /* ─── Global styles ────────────────────────────────────────── */
 
-body {
+/* WHY: bg-color sur html (pas body) pour que body::before z-index:-1
+   reste DERRIÈRE le content de body sans être masqué par le bg.
+   Sequence stacking : html bg → body::before (grain) → body content. */
+html {
   background-color: var(--color-bg);
+}
+
+body {
   color: var(--color-fg);
+}
+
+/* ─── Grain overlay — signature texture vivante (2026-05-12) ─────────
+   SVG fractalNoise rendered as data URL — raw output (no feColorMatrix
+   override, so the grayscale variation stays). mix-blend-mode: overlay
+   makes it work on light AND dark themes without inversion (darkens
+   below 50% luminance, lightens above). z-index -1 → grain reste
+   DERRIÈRE le texte et le content. Tweak --grain-opacity in :root
+   to dial intensity globally. */
+/* 8-frame film-grain animation — each step jumps to a distinct position,
+   evoking 24fps cinema grain. Larger shifts (15-20%) than the previous
+   subtle drift so the "vivant" is unmistakable. */
+@keyframes grainShift {
+  0% {
+    background-position: 0 0;
+  }
+  12.5% {
+    background-position: -15% 8%;
+  }
+  25% {
+    background-position: 10% -18%;
+  }
+  37.5% {
+    background-position: -8% -14%;
+  }
+  50% {
+    background-position: 14% 12%;
+  }
+  62.5% {
+    background-position: -18% 4%;
+  }
+  75% {
+    background-position: 8% -10%;
+  }
+  87.5% {
+    background-position: -4% 16%;
+  }
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: -20%; /* slack large pour animation steps avec gros shifts */
+  pointer-events: none;
+  z-index: 9998; /* TOP — required for mix-blend-mode to actually blend */
+  opacity: var(--grain-opacity);
+  mix-blend-mode: var(--grain-blend);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.70' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: var(--grain-size) var(--grain-size);
+  background-repeat: repeat;
+  animation: grainShift 2.4s steps(8) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+    opacity: calc(var(--grain-opacity) * 0.6);
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -135,6 +264,64 @@ body {
 ::selection {
   background: var(--color-accent);
   color: var(--color-bg);
+}
+
+/* ─── View Transitions — inter-page native crossfade (2026-05-12) ───
+   Tune the default crossfade per Browser. Enabled per <Link viewTransition>
+   in Card atom (so any card → detail nav transitions). The browser
+   default = quick fade; below we slow it to the luxe duration. Shared
+   element morph (Card.Media → DetailHero image) lives in Card.Media
+   via `style={{ viewTransitionName }}`. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  /* Cinematic crossfade — long enough to feel deliberate, ease-in-out-quart
+     for the "lent-vite-lent" rhythm (slow start, fast middle, slow end). */
+  animation-duration: 1600ms;
+  animation-timing-function: cubic-bezier(0.83, 0, 0.17, 1);
+}
+
+/* ─── Reveal — scroll-driven fade+slide (2026-05-12) ────────────────
+   Toggled by useReveal hook via `data-reveal="hidden|shown"`.
+   Duration = --duration-slow. Easing = --ease-luxe (Apple expo-out).
+   Distance = --reveal-y-md. Per-item delay = --reveal-delay (inline). */
+[data-reveal] {
+  transition:
+    opacity var(--duration-slow) var(--ease-luxe) var(--reveal-delay, 0ms),
+    transform var(--duration-slow) var(--ease-luxe) var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+[data-reveal='hidden'] {
+  opacity: 0;
+  transform: translateY(var(--reveal-y-md));
+}
+[data-reveal='shown'] {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    transition: none;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ─── Headings — base brand identity (2026-05-12) ──────────────────
+   "Le logo est la base des titres" (owner direction). Tous les h1-h6
+   default = Geist Mono / 700 / uppercase / tracking-tight. Composants
+   peuvent override avec `font-sans normal-case` si besoin spécifique. */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
 }
 
 /* ─── Custom utilities ─────────────────────────────────────── */
@@ -154,6 +341,10 @@ body {
 }
 
 /* ─── Duration utilities — Tailwind 4 doesn't auto-generate from :root ── */
+@utility duration-instant {
+  --tw-duration: var(--duration-instant);
+  transition-duration: var(--duration-instant);
+}
 @utility duration-fast {
   --tw-duration: var(--duration-fast);
   transition-duration: var(--duration-fast);
@@ -169,4 +360,22 @@ body {
 @utility duration-cinematic {
   --tw-duration: var(--duration-cinematic);
   transition-duration: var(--duration-cinematic);
+}
+@utility duration-glacier {
+  --tw-duration: var(--duration-glacier);
+  transition-duration: var(--duration-glacier);
+}
+
+/* ─── Blur utilities — frosted glass tiers ─────────────────────────── */
+@utility blur-glass-sm {
+  backdrop-filter: blur(var(--blur-glass-sm));
+  -webkit-backdrop-filter: blur(var(--blur-glass-sm));
+}
+@utility blur-glass-md {
+  backdrop-filter: blur(var(--blur-glass-md));
+  -webkit-backdrop-filter: blur(var(--blur-glass-md));
+}
+@utility blur-glass-lg {
+  backdrop-filter: blur(var(--blur-glass-lg));
+  -webkit-backdrop-filter: blur(var(--blur-glass-lg));
 }

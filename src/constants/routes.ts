@@ -21,6 +21,7 @@ export const ROUTES = {
 
   // ─── Client (RequireAuth) ────────────────────────────
   ACCOUNT: '/account',
+  ACCOUNT_CATALOGUE: '/account/catalogue',
   ACCOUNT_EVENTS: '/account/events',
   ACCOUNT_EVENT_DETAIL: '/account/events/:slug',
   ACCOUNT_PROPERTIES: '/account/properties',

@@ -6,11 +6,11 @@
 
 import { useLocale } from '@app/LocaleProvider';
 import { Container } from '@components/layout/Container';
+import { Card } from '@components/ui/Card';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { Stat } from '@components/ui/Stat';
 import { StatusPill } from '@components/ui/StatusPill';
 import { ROUTES } from '@constants/routes';
-import { cn } from '@utils/cn';
 import type { LucideIcon } from 'lucide-react';
 import {
   Building2,
@@ -112,26 +112,22 @@ export default function AdminDashboard() {
 
         {/* ─── Quick actions ─── */}
         <section aria-labelledby="quick-actions-heading" className="space-y-6">
-          <h2 id="quick-actions-heading" className="text-fg text-2xl font-light">
+          <h2 id="quick-actions-heading" className="text-fg font-mono text-2xl font-bold uppercase">
             {t('admin.quickActions')}
           </h2>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-8">
             {QUICK_ACTIONS.map(({ to, labelKey, icon: Icon }) => (
-              <Link
+              <Card
                 key={to}
                 to={localePath(to)}
-                className={cn(
-                  'border-border bg-surface/40 hover:border-fg/40 hover:bg-surface focus-visible:ring-accent group flex flex-col items-start gap-3 rounded-lg border p-4 text-left',
-                  'duration-base transition-[border-color,background-color,transform]',
-                  'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
-                  'motion-safe:hover:-translate-y-0.5',
-                )}
+                padding="md"
+                className="items-start gap-3 text-left"
               >
                 <span className="border-border bg-bg text-fg flex h-9 w-9 items-center justify-center rounded-full border">
                   <Icon size={16} strokeWidth={1.5} aria-hidden="true" />
                 </span>
                 <span className="text-fg text-sm leading-snug font-medium">+ {t(labelKey)}</span>
-              </Link>
+              </Card>
             ))}
           </div>
         </section>
@@ -139,7 +135,10 @@ export default function AdminDashboard() {
         {/* ─── Recent inquiries ─── */}
         <section aria-labelledby="recent-inquiries-heading" className="space-y-6">
           <div className="flex items-end justify-between">
-            <h2 id="recent-inquiries-heading" className="text-fg text-2xl font-light">
+            <h2
+              id="recent-inquiries-heading"
+              className="text-fg font-mono text-2xl font-bold uppercase"
+            >
               {t('admin.recentInquiries')}
             </h2>
             <Link
@@ -150,19 +149,21 @@ export default function AdminDashboard() {
             </Link>
           </div>
 
-          <ul className="border-border divide-border divide-y rounded-lg border">
-            {recent.map(inq => (
-              <li key={inq.id} className="flex items-center justify-between gap-4 px-6 py-4">
-                <div className="flex flex-col gap-1">
-                  <span className="text-muted text-xs tracking-widest uppercase">
-                    {inq.source} · {new Date(inq.createdAt).toLocaleDateString(i18n.language)}
-                  </span>
-                  <span className="text-fg text-sm">{inq.message ?? '—'}</span>
-                </div>
-                <StatusPill variant={inq.status} label={t(`inquiry.status.${inq.status}`)} />
-              </li>
-            ))}
-          </ul>
+          <Card padding="none">
+            <ul className="divide-border divide-y">
+              {recent.map(inq => (
+                <li key={inq.id} className="flex items-center justify-between gap-4 px-6 py-4">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-muted text-xs tracking-widest uppercase">
+                      {inq.source} · {new Date(inq.createdAt).toLocaleDateString(i18n.language)}
+                    </span>
+                    <span className="text-fg text-sm">{inq.message ?? '—'}</span>
+                  </div>
+                  <StatusPill variant={inq.status} label={t(`inquiry.status.${inq.status}`)} />
+                </li>
+              ))}
+            </ul>
+          </Card>
         </section>
       </div>
     </Container>

@@ -35,7 +35,7 @@ export const StatusPill = ({ variant, label, className }: StatusPillProps) => {
   return (
     <span
       className={cn(
-        'border-border inline-flex items-center gap-2 rounded-full border px-2.5 py-0.5 text-xs tracking-widest uppercase',
+        'border-border inline-flex shrink-0 items-center gap-2 rounded-full border px-2.5 py-0.5 text-xs tracking-widest whitespace-nowrap uppercase',
         style.text,
         className,
       )}

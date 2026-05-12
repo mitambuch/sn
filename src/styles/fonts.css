@@ -1,44 +1,28 @@
 /* ═══════════════════════════════════════════════════════════════
-   FONTS — Self-hosted for privacy, performance, and reliability.
-   No external requests to Google. GDPR/nLPD compliant.
-   Change fonts HERE → index.css @theme picks them up → done.
+   FONTS — Self-hosted Geist + Geist Mono (Vercel official)
+   No external requests. GDPR/nLPD compliant.
+   Source: `geist` npm package (Vercel) → public/fonts/*.woff2
 
-   Files in public/fonts/ (woff2, ~82KB total).
-   Source: fontsource.org (open-source font CDN).
+   IMPORTANT: full-glyph files (no unicode-range subset). Required so the
+   brand glyph ↗ (U+2197) is rendered by Geist Mono itself, not by a
+   per-glyph fallback. The Fontsource `latin` subset omitted U+2197,
+   which broke the SAW↗NEXT signature — keep the full file here.
+
+   Change fonts HERE → src/index.css @theme tokens pick them up → done.
    ═══════════════════════════════════════════════════════════════ */
 
 @font-face {
-  font-family: 'Space Grotesk';
-  src: url('/fonts/SpaceGrotesk-Regular.woff2') format('woff2');
-  font-weight: 400;
+  font-family: 'Geist Variable';
+  src: url('/fonts/Geist-Variable.woff2') format('woff2');
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
-  font-family: 'Space Grotesk';
-  src: url('/fonts/SpaceGrotesk-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Space Grotesk';
-  src: url('/fonts/SpaceGrotesk-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/JetBrainsMono-Medium.woff2') format('woff2');
-  font-weight: 500;
+  font-family: 'Geist Mono Variable';
+  src: url('/fonts/GeistMono-Variable.woff2') format('woff2');
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }

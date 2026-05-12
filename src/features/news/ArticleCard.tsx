@@ -1,11 +1,18 @@
 // ═══════════════════════════════════════════════════
-// ArticleCard — listing card for news / stories module
-// 3:2 cover image, kind eyebrow, title, excerpt, read time, date.
+// ArticleCard — domain wrapper around Card atom
+//
+// WHAT: Apple-closed surface, 4:3 cover, Card.Badge top-left (publication
+//       date day · month, canonical date stamp). Body: kind eyebrow,
+//       large light-weight title, excerpt paragraph. Card.PriceBlock with
+//       "Lecture" label + Card.Pill (Clock icon + readMinutes min).
+//       No HeartButton — articles are editorial, not "save" semantics.
+// WHEN: NewsList grid item, account "your reading" widgets.
+// EDIT VISUAL: change radius/shadow in src/index.css tokens.
 // ═══════════════════════════════════════════════════
 
-import { Image } from '@components/ui/Image';
-import { cn } from '@utils/cn';
+import { Card } from '@components/ui/Card';
 import { Clock } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import type { Article } from '@/types/article';
 
@@ -26,37 +33,29 @@ export const ArticleCard = ({
   readMinutesLabel,
   className,
 }: ArticleCardProps) => {
+  const { t } = useTranslation();
   const date = new Date(article.publishedAt);
-  const dateLabel = date.toLocaleDateString(locale, {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  });
+  const day = date.toLocaleDateString(locale, { day: '2-digit' });
+  const month = date.toLocaleDateString(locale, { month: 'short' });
+
   return (
-    <a
-      href={href}
-      className={cn(
-        'group focus-visible:ring-accent block rounded-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
-        className,
-      )}
-    >
-      <Image
-        src={article.cover.src}
-        alt={article.cover.alt}
-        ratio="3/2"
-        className="duration-slow transition-transform group-hover:scale-[1.02]"
-      />
-      <div className="mt-4 flex flex-col gap-2">
-        <span className="text-muted text-xs tracking-widest uppercase">
-          {kindLabel} · {dateLabel}
-        </span>
-        <h3 className="text-fg text-lg leading-snug font-light">{article.title}</h3>
+    <Card href={href} padding="none" className={className}>
+      <Card.Media src={article.cover.src} alt={article.cover.alt} ratio="4/3" />
+      <Card.Badge top={day} bottom={month} />
+      <Card.Body>
+        <Card.Eyebrow>{kindLabel}</Card.Eyebrow>
+        <Card.Title>{article.title}</Card.Title>
         <p className="text-muted text-sm leading-relaxed">{article.excerpt}</p>
-        <span className="text-muted mt-1 inline-flex items-center gap-2 text-xs tracking-widest uppercase">
-          <Clock size={12} strokeWidth={1.5} aria-hidden="true" />
-          {String(article.readMinutes)} {readMinutesLabel}
+      </Card.Body>
+      <Card.PriceBlock>
+        <span className="text-muted text-[10px] tracking-widest uppercase">
+          {t('common.reading')}
         </span>
-      </div>
-    </a>
+        <Card.Pill>
+          <Clock size={11} strokeWidth={1.5} aria-hidden="true" />
+          {String(article.readMinutes)} {readMinutesLabel}
+        </Card.Pill>
+      </Card.PriceBlock>
+    </Card>
   );
 };

@@ -15,6 +15,9 @@ import { Banner } from '@components/ui/Banner';
 import { siteConfig } from '@config/site';
 import { Outlet } from 'react-router-dom';
 
+// WHY: Lenis smooth scroll moved to App.tsx so it covers /motion + /logo
+// (top-level routes outside the locale tree).
+
 export default function RootLayout() {
   return (
     <div className="bg-bg text-fg flex min-h-screen flex-col">

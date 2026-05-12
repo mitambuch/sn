@@ -45,7 +45,7 @@ export const CatalogueProactiveBanner = ({ domain, className }: CatalogueProacti
             <span className="text-muted text-xs tracking-widest uppercase">
               {t('bespoke.banner.eyebrow')}
             </span>
-            <h2 className="text-fg text-2xl leading-snug font-light">
+            <h2 className="text-fg font-mono text-2xl leading-snug font-bold uppercase">
               {t(`bespoke.banner.${domain ?? 'generic'}.title`, {
                 defaultValue: t('bespoke.banner.generic.title'),
               })}

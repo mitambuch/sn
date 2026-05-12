@@ -114,6 +114,24 @@
   }
 }
 
+/* ─── Important card — pulsing outer ring for HNW priority items ─── */
+
+@keyframes pulseImportant {
+  0%,
+  100% {
+    outline-color: color-mix(in srgb, var(--color-fg) 0%, transparent);
+  }
+  50% {
+    outline-color: color-mix(in srgb, var(--color-fg) 30%, transparent);
+  }
+}
+
+@utility animate-important {
+  outline: 1px solid transparent;
+  outline-offset: 2px;
+  animation: pulseImportant 2.6s ease-in-out infinite;
+}
+
 /* ─── Reduced motion — disable ALL animations globally ────── */
 
 @media (prefers-reduced-motion: reduce) {

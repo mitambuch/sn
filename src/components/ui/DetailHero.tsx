@@ -61,7 +61,7 @@ export const DetailHero = ({
             {eyebrow && (
               <span className="text-muted text-xs tracking-[0.3em] uppercase">{eyebrow}</span>
             )}
-            <h1 className="text-fg max-w-3xl text-3xl font-light tracking-tight text-balance md:text-5xl lg:text-6xl">
+            <h1 className="text-fg max-w-3xl font-mono text-2xl font-bold tracking-tight text-balance uppercase md:text-4xl lg:text-5xl">
               {title}
             </h1>
             {caption && <p className="text-muted max-w-xl text-sm md:text-base">{caption}</p>}

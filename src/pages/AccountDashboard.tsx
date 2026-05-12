@@ -1,33 +1,46 @@
 // ═══════════════════════════════════════════════════
 // AccountDashboard — member home for /:locale/account
 //
-// WHAT: Premium concierge dashboard composing 6 sections — greeting,
-//       intent prompts, concierge card (Salvatore), inquiries summary,
-//       Stories strip, recently-added cross-module. Skeleton loaders
-//       simulate the eventual Supabase async swap.
+// WHAT: Premium concierge dashboard, deliberately minimal (3 sections) —
+//       greeting + dedicated concierge card + 3 most recent inquiries.
+//       Catalogue navigation lives in the sidebar; cross-module curated
+//       items live on /account/catalogue. The dashboard = human hub
+//       (who said hi to you + who's available + what's pending).
 // WHEN: Index route under AppLayout.
 // EDIT COPY: src/locales/{fr,en}.json under account.* — never inline.
 // ═══════════════════════════════════════════════════
 
 import { useLocale } from '@app/LocaleProvider';
 import { Container } from '@components/layout/Container';
-import { CardSkeleton } from '@components/ui/CardSkeleton';
-import { Image } from '@components/ui/Image';
+import { Card } from '@components/ui/Card';
+import { MagneticHover } from '@components/ui/MagneticHover';
 import { Skeleton } from '@components/ui/Skeleton';
 import { StatusPill } from '@components/ui/StatusPill';
 import { ROUTES } from '@constants/routes';
-import { IntentCards } from '@features/inquiry/IntentCards';
-import { TrustBadge } from '@features/trust/TrustBadge';
+import {
+  ConciergeRequestWizard,
+  type WizardCategory,
+} from '@features/concierge-request/ConciergeRequestWizard';
 import { useFakeLoading } from '@hooks/useFakeLoading';
 import { cn } from '@utils/cn';
-import { Mail, Phone } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+import { Briefcase, Compass, Frame, Mail, Phone, Watch } from 'lucide-react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import { listArticles, listInquiriesForUser } from '@/mocks';
-import { listEvents, listProperties, listTimepieces } from '@/mocks';
-import { unsplash } from '@/mocks/unsplash';
+import { listInquiriesForUser } from '@/mocks';
 import { currentUser } from '@/mocks/users';
+
+// Dashboard quick-shortcuts — 4 most-used categories (HNW reality at launch :
+// real estate + timepiece + art + travel). Full picker (incl. experience +
+// other) accessible via the main "Une demande personnalisée" CTA = step 1.
+const REQUEST_SHORTCUTS: { category: WizardCategory; icon: LucideIcon }[] = [
+  { category: 'real-estate', icon: Briefcase },
+  { category: 'timepiece', icon: Watch },
+  { category: 'art', icon: Frame },
+  { category: 'travel', icon: Compass },
+];
 
 const Initials = ({ name }: { name: string }) => {
   const parts = name.split(' ');
@@ -64,13 +77,106 @@ const GreetingSection = () => {
   return (
     <header className="flex flex-col gap-3">
       <span className="text-muted text-xs tracking-[0.3em] uppercase">{todayLabel}</span>
-      <h1 className="text-fg text-4xl font-light tracking-tight md:text-6xl">
+      <h1 className="text-fg font-mono text-2xl font-bold tracking-tight text-balance uppercase sm:text-3xl md:text-4xl">
         {t(`account.greeting.${greetingKey(NOW_HOUR)}`, { name: firstName(currentUser.fullName) })}
       </h1>
-      <p className="text-muted max-w-2xl text-base leading-relaxed md:text-lg">
+      <p className="text-muted max-w-2xl text-sm leading-relaxed text-pretty sm:text-base md:text-lg">
         {t('account.dashboardLede')}
       </p>
     </header>
+  );
+};
+
+/* ─── Section: Personalised request CTA + shortcuts ──── */
+const PersonalisedRequestSection = () => {
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const [initialCategory, setInitialCategory] = useState<WizardCategory | undefined>(undefined);
+
+  const openWith = (category?: WizardCategory) => {
+    setInitialCategory(category);
+    setOpen(true);
+  };
+
+  return (
+    <>
+      <section className="space-y-4">
+        <button
+          type="button"
+          onClick={() => openWith()}
+          className={cn(
+            'group border-border bg-surface rounded-card shadow-card-rest',
+            'flex w-full items-center justify-between gap-4 border p-6 text-left',
+            'hover:border-fg/30 hover:shadow-card-hover transition-[border-color,box-shadow] duration-500 ease-out',
+            'animate-important motion-reduce:animate-none',
+            'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
+          )}
+        >
+          <div className="flex min-w-0 flex-col gap-1">
+            <span className="text-muted text-xs tracking-widest uppercase">
+              {t('wizard.openCta')}
+            </span>
+            <p className="text-fg text-base leading-snug font-medium sm:text-lg">
+              {t('wizard.openHint')}
+            </p>
+          </div>
+          <span className="text-fg shrink-0 text-xl leading-none" aria-hidden="true">
+            →
+          </span>
+        </button>
+
+        {/* Quick shortcuts — 2x2 grid mobile, flex row desktop.
+            Forces alignment with the parent column grid, no overflow wrap. */}
+        <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+          {REQUEST_SHORTCUTS.map(({ category, icon: Icon }) => (
+            <MagneticHover key={category} radius={70} strength={0.22}>
+              <button
+                type="button"
+                onClick={() => openWith(category)}
+                className={cn(
+                  'border-border text-muted hover:text-fg hover:border-fg/40',
+                  'inline-flex w-full items-center justify-center gap-1.5 rounded-md border px-3 py-2.5 text-[11px] tracking-widest whitespace-nowrap uppercase',
+                  'duration-base transition-[color,border-color]',
+                  'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
+                )}
+              >
+                <Icon size={12} strokeWidth={1.5} aria-hidden="true" />
+                {t(`wizard.category.${category}.title`)}
+              </button>
+            </MagneticHover>
+          ))}
+        </div>
+      </section>
+
+      <ConciergeRequestWizard
+        open={open}
+        onClose={() => setOpen(false)}
+        {...(initialCategory && { initialCategory })}
+      />
+    </>
+  );
+};
+
+/* ─── Section: Exclusive offers shortcut ────────────── */
+const ExclusiveShortcut = () => {
+  const { t } = useTranslation();
+  const { localePath } = useLocale();
+  return (
+    <Card to={localePath(ROUTES.ACCOUNT_CATALOGUE)} padding="lg" important>
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex min-w-0 flex-col gap-1">
+          <span className="text-muted text-xs tracking-widest uppercase">
+            {t('account.exclusive.eyebrow')}
+          </span>
+          <p className="text-fg text-base leading-snug font-medium sm:text-lg">
+            {t('account.exclusive.cta')}
+          </p>
+        </div>
+        <span className="text-fg shrink-0 text-xl leading-none" aria-hidden="true">
+          →
+        </span>
+      </div>
+    </Card>
   );
 };
 
@@ -78,14 +184,9 @@ const GreetingSection = () => {
 const ConciergeCard = () => {
   const { t } = useTranslation();
   return (
-    <section
-      aria-labelledby="concierge-heading"
-      className="border-border bg-surface/40 rounded-lg border p-8"
-    >
-      <h2 id="concierge-heading" className="sr-only">
-        {t('account.dashboardTitle')}
-      </h2>
-      <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
+    <Card padding="lg">
+      <h2 className="sr-only">{t('account.dashboardTitle')}</h2>
+      <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between md:gap-6">
         <div className="flex items-center gap-4">
           <Initials name={currentUser.conciergeName} />
           <div>
@@ -96,34 +197,39 @@ const ConciergeCard = () => {
             <p className="text-muted text-sm">salvatore@sawnext.studio</p>
           </div>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
+        {/* WHY: on mobile, labels "Appeler maintenant" + "Écrire un message"
+            are too long to fit in a shared-width row. We collapse to icon-only
+            (sr-only label for a11y) on mobile and reveal the label on md+. */}
+        <div className="flex items-center gap-3">
           <a
             href="tel:+41215550000"
+            aria-label={t('dock.call')}
             className={cn(
               'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
-              'inline-flex items-center gap-3 rounded-full border px-5 py-2.5 text-xs tracking-widest uppercase',
+              'inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-full border text-xs tracking-widest whitespace-nowrap uppercase md:h-auto md:flex-none md:px-5 md:py-2.5',
               'duration-base transition-[border-color,background-color]',
               'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
             )}
           >
-            <Phone size={14} strokeWidth={1.5} aria-hidden="true" />
-            {t('dock.call')}
+            <Phone size={16} strokeWidth={1.5} aria-hidden="true" />
+            <span className="sr-only md:not-sr-only">{t('dock.call')}</span>
           </a>
           <a
             href="mailto:salvatore@sawnext.studio"
+            aria-label={t('dock.write')}
             className={cn(
               'border-border text-fg hover:border-fg/60 focus-visible:ring-accent',
-              'inline-flex items-center gap-3 rounded-full border px-5 py-2.5 text-xs tracking-widest uppercase',
+              'inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-full border text-xs tracking-widest whitespace-nowrap uppercase md:h-auto md:flex-none md:px-5 md:py-2.5',
               'duration-base transition-[border-color]',
               'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
             )}
           >
-            <Mail size={14} strokeWidth={1.5} aria-hidden="true" />
-            {t('dock.write')}
+            <Mail size={16} strokeWidth={1.5} aria-hidden="true" />
+            <span className="sr-only md:not-sr-only">{t('dock.write')}</span>
           </a>
         </div>
       </div>
-    </section>
+    </Card>
   );
 };
 
@@ -136,7 +242,7 @@ const RecentInquiriesSection = ({ loading }: { loading: boolean }) => {
   return (
     <section aria-labelledby="inquiries-heading" className="space-y-6">
       <div className="flex items-end justify-between">
-        <h2 id="inquiries-heading" className="text-fg text-2xl font-light">
+        <h2 id="inquiries-heading" className="text-fg font-mono text-2xl font-bold uppercase">
           {t('account.yourInquiries')}
         </h2>
         <Link
@@ -161,136 +267,26 @@ const RecentInquiriesSection = ({ loading }: { loading: boolean }) => {
       ) : inquiries.length === 0 ? (
         <p className="text-muted text-sm">{t('account.noInquiries')}</p>
       ) : (
-        <ul className="border-border divide-border divide-y rounded-lg border">
-          {inquiries.map(inq => (
-            <li key={inq.id} className="flex items-center justify-between gap-4 px-6 py-4">
-              <div className="flex flex-col gap-1">
-                <span className="text-fg text-sm">{inq.message ?? '—'}</span>
-                <span className="text-muted text-xs tracking-widest uppercase">
-                  {t(`inquiry.sourceLabel.${inq.source}`)} ·{' '}
-                  {new Date(inq.createdAt).toLocaleDateString(i18n.language)}
-                </span>
-              </div>
-              <StatusPill variant={inq.status} label={t(`inquiry.status.${inq.status}`)} />
-            </li>
-          ))}
-        </ul>
+        <Card padding="none">
+          <ul className="divide-border divide-y">
+            {inquiries.map(inq => (
+              <li key={inq.id} className="flex flex-col gap-2 px-5 py-4">
+                {/* Top row : meta + StatusPill — both tiny uppercase,
+                    fit easily on one line on every viewport. */}
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-muted text-xs tracking-widest uppercase">
+                    {t(`inquiry.sourceLabel.${inq.source}`)} ·{' '}
+                    {new Date(inq.createdAt).toLocaleDateString(i18n.language)}
+                  </span>
+                  <StatusPill variant={inq.status} label={t(`inquiry.status.${inq.status}`)} />
+                </div>
+                {/* Body : message full-width, wraps freely. */}
+                <span className="text-fg text-sm leading-relaxed">{inq.message ?? '—'}</span>
+              </li>
+            ))}
+          </ul>
+        </Card>
       )}
-    </section>
-  );
-};
-
-/* ─── Section: Stories strip ─────────────────────────── */
-const StoriesStripSection = ({ loading }: { loading: boolean }) => {
-  const { t, i18n } = useTranslation();
-  const { localePath } = useLocale();
-  const stories = listArticles().slice(0, 3);
-
-  return (
-    <section aria-labelledby="stories-heading" className="space-y-6">
-      <div className="flex items-end justify-between">
-        <h2 id="stories-heading" className="text-fg text-2xl font-light">
-          {t('account.news.heading')}
-        </h2>
-        <Link
-          to={localePath(ROUTES.ACCOUNT_NEWS)}
-          className="text-muted hover:text-fg duration-base text-xs tracking-widest uppercase transition-colors"
-        >
-          {t('common.viewAll')} →
-        </Link>
-      </div>
-      <div className="grid gap-6 md:grid-cols-3">
-        {loading
-          ? Array.from({ length: 3 }).map((_, i) => <CardSkeleton key={i} ratio="3/2" />)
-          : stories.map(story => (
-              <Link
-                key={story.id}
-                to={localePath(ROUTES.ACCOUNT_NEWS + '/' + story.slug)}
-                className="group focus-visible:ring-accent block rounded-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
-                <Image
-                  src={story.cover.src}
-                  alt={story.cover.alt}
-                  ratio="3/2"
-                  className="duration-slow transition-transform group-hover:scale-[1.02]"
-                />
-                <div className="mt-4 flex flex-col gap-2">
-                  <span className="text-muted text-xs tracking-widest uppercase">
-                    {t(`articles.kind.${story.kind}`)} ·{' '}
-                    {new Date(story.publishedAt).toLocaleDateString(i18n.language, {
-                      day: '2-digit',
-                      month: 'short',
-                    })}
-                  </span>
-                  <span className="text-fg text-base font-medium">{story.title}</span>
-                  <span className="text-muted line-clamp-2 text-sm leading-relaxed">
-                    {story.excerpt}
-                  </span>
-                </div>
-              </Link>
-            ))}
-      </div>
-    </section>
-  );
-};
-
-/* ─── Section: Recently added cross-module ───────────── */
-const RecentlyAddedSection = ({ loading }: { loading: boolean }) => {
-  const { t } = useTranslation();
-  const { localePath } = useLocale();
-  const property = listProperties()[0]!;
-  const timepiece = listTimepieces()[0]!;
-  const event = listEvents()[0]!;
-  const featured = [
-    {
-      kind: 'properties' as const,
-      title: property.title,
-      image: property.images[0],
-      href: localePath(`/account/properties/${property.slug}`),
-    },
-    {
-      kind: 'timepieces' as const,
-      title: `${timepiece.brand} ${timepiece.model}`,
-      image: timepiece.images[0],
-      href: localePath(`/account/timepieces/${timepiece.slug}`),
-    },
-    {
-      kind: 'events' as const,
-      title: event.title,
-      image: event.images[0],
-      href: localePath(`/account/events/${event.slug}`),
-    },
-  ];
-
-  return (
-    <section aria-labelledby="recent-heading" className="space-y-6">
-      <h2 id="recent-heading" className="text-fg text-2xl font-light">
-        {t('account.recentlyAdded')}
-      </h2>
-      <div className="grid gap-6 md:grid-cols-3">
-        {loading
-          ? Array.from({ length: 3 }).map((_, i) => <CardSkeleton key={i} ratio="3/4" />)
-          : featured.map(({ kind, title, image, href }) => (
-              <Link
-                key={href}
-                to={href}
-                className="group focus-visible:ring-accent block rounded-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
-                <Image
-                  src={image?.src ?? unsplash('luxury-product')}
-                  alt={image?.alt ?? title}
-                  ratio="3/4"
-                  className="duration-slow transition-transform group-hover:scale-[1.02]"
-                />
-                <div className="mt-4 flex flex-col gap-1">
-                  <span className="text-muted text-xs tracking-widest uppercase">
-                    {t(`account.nav.${kind}`)}
-                  </span>
-                  <span className="text-fg text-sm font-medium">{title}</span>
-                </div>
-              </Link>
-            ))}
-      </div>
     </section>
   );
 };
@@ -299,17 +295,13 @@ export default function AccountDashboard() {
   const loading = useFakeLoading(450);
 
   return (
-    <Container size="xl">
-      <div className="space-y-16 py-12">
+    <Container size="md">
+      <div className="space-y-12 py-12 md:space-y-16 md:py-16">
         <GreetingSection />
-        <div>
-          <TrustBadge />
-        </div>
-        <IntentCards />
+        <PersonalisedRequestSection />
+        <ExclusiveShortcut />
         <ConciergeCard />
         <RecentInquiriesSection loading={loading} />
-        <StoriesStripSection loading={loading} />
-        <RecentlyAddedSection loading={loading} />
       </div>
     </Container>
   );

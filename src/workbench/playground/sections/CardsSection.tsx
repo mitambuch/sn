@@ -106,14 +106,14 @@ export function CardsSection() {
       </h3>
       <div className="space-y-6">
         <div className="grid gap-4 sm:grid-cols-3">
-          <Card hover padding="lg">
-            <p className="text-fg text-sm font-medium">hover card</p>
-            <p className="text-muted mt-1 text-xs">scale + glow on hover</p>
-            <Copyable text="hover padding='lg'" className="mt-3" />
+          <Card interactive padding="lg">
+            <p className="text-fg text-sm font-medium">interactive card</p>
+            <p className="text-muted mt-1 text-xs">lift + drop shadow on hover</p>
+            <Copyable text="interactive padding='lg'" className="mt-3" />
           </Card>
           <Card padding="md">
             <p className="text-fg text-sm font-medium">default card</p>
-            <p className="text-muted mt-1 text-xs">glass + backdrop-blur</p>
+            <p className="text-muted mt-1 text-xs">inner top highlight, no lift</p>
             <Copyable text="padding='md'" className="mt-3" />
           </Card>
           <Card padding="sm">
@@ -124,14 +124,14 @@ export function CardsSection() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
-          <Card hover padding="lg">
+          <Card interactive padding="lg">
             <span className="text-muted font-mono text-[10px] tracking-[0.2em] uppercase">
               total users
             </span>
             <p className="text-fg mt-2 text-3xl font-bold">12,847</p>
             <p className="text-success-text mt-1 text-xs font-medium">+14.2% from last month</p>
           </Card>
-          <Card hover padding="lg">
+          <Card interactive padding="lg">
             <div className="flex items-center gap-4">
               <Avatar src="https://i.pravatar.cc/150?u=profile" alt="profile" size="lg" />
               <div>

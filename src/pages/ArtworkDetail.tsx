@@ -54,7 +54,7 @@ export default function ArtworkDetail() {
           <span className="text-muted text-xs tracking-widest uppercase">
             {artwork.artistName} · {artwork.year}
           </span>
-          <h1 className="text-fg max-w-3xl text-3xl font-light tracking-tight italic md:text-5xl">
+          <h1 className="text-fg max-w-3xl font-mono text-3xl font-bold tracking-tight uppercase italic md:text-5xl">
             {artwork.title}
           </h1>
           <Image

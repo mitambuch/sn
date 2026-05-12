@@ -4,7 +4,7 @@ Complete inventory of every component, hook, utility, script, command, and confi
 
 ---
 
-## UI Components (37)
+## UI Components (41)
 
 All in `src/components/ui/`. Every component accepts `className` and uses `cn()`.
 

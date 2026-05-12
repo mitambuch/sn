@@ -40,6 +40,7 @@ const NotFound = lazyWithRetry(() => import('@pages/NotFound'));
 const Login = lazyWithRetry(() => import('@pages/Login'));
 const Onboarding = lazyWithRetry(() => import('@pages/Onboarding'));
 const AccountDashboard = lazyWithRetry(() => import('@pages/AccountDashboard'));
+const AccountCatalogue = lazyWithRetry(() => import('@pages/AccountCatalogue'));
 const PropertiesList = lazyWithRetry(() => import('@pages/PropertiesList'));
 const PropertyDetail = lazyWithRetry(() => import('@pages/PropertyDetail'));
 const TimepiecesList = lazyWithRetry(() => import('@pages/TimepiecesList'));
@@ -63,6 +64,8 @@ const AdminCatalogue = lazyWithRetry(() => import('@pages/AdminCatalogue'));
 const NewsList = lazyWithRetry(() => import('@pages/NewsList'));
 const NewsDetail = lazyWithRetry(() => import('@pages/NewsDetail'));
 const AccountSaved = lazyWithRetry(() => import('@pages/AccountSaved'));
+const LogoPreview = lazyWithRetry(() => import('@pages/LogoPreview'));
+const MotionShowcase = lazyWithRetry(() => import('@pages/MotionShowcase'));
 
 /* ─── Loading fallback — themed, no white flash ───────────────── */
 function PageLoader() {
@@ -103,6 +106,12 @@ export default function AppRoutes() {
         <Route path={ROUTES.PLAYGROUND} element={<LocaleRedirect />} />
         <Route path={ROUTES.LAB} element={<LocaleRedirect />} />
 
+        {/* ─── /logo — brand identity preview (no locale, no layout) ─── */}
+        <Route path="/logo" element={<LogoPreview />} />
+
+        {/* ─── /motion — Phase 1-5 motion showcase (no locale, no layout) ─── */}
+        <Route path="/motion" element={<MotionShowcase />} />
+
         {/* ─── Canonical locale-prefixed tree ─── */}
         <Route path="/:locale" element={<LocaleLayout />}>
           {/* ─── Public surface ─── */}
@@ -117,6 +126,7 @@ export default function AppRoutes() {
           {/* ─── Member surface (RequireAuth via AppLayout) ─── */}
           <Route path="account" element={<AppLayout />}>
             <Route index element={<AccountDashboard />} />
+            <Route path="catalogue" element={<AccountCatalogue />} />
             <Route path="news" element={<NewsList />} />
             <Route path="news/:slug" element={<NewsDetail />} />
             <Route path="saved" element={<AccountSaved />} />

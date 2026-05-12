@@ -1,20 +1,23 @@
 // ═══════════════════════════════════════════════════
-// SimilarItemsStrip — 3-up "you might also like" strip for detail pages
+// SimilarItemsStrip — compact "you might also like" strip
 //
-// WHAT: Reads the active module's full list, excludes the current slug,
-//       picks the next 3 items (rotating), renders compact cards with
-//       3:4 image + title + module label. Heart toggle preserved.
+// WHAT: Renders 3 alternative items from the same module as compact
+//       Card-atom listings (4:3 landscape, low body). On mobile the
+//       strip is 2 columns (compact tiles), 3 columns on desktop.
 // WHEN: Mount at the bottom of every DetailPage above the back link.
+// EDIT VISUAL: change ratio in Card.Media below + col counts.
 // ═══════════════════════════════════════════════════
+//
+// HEIGHT DESIGN: previously 3:4 portrait + 3-col grid → ~500px per
+// card stacked vertically on mobile = 1500px section. Now 4:3 + 2-col
+// mobile = ~200px per card, much lighter scroll cost.
 
 import { useLocale } from '@app/LocaleProvider';
-import { HeartButton } from '@components/ui/HeartButton';
-import { Image } from '@components/ui/Image';
+import { Card } from '@components/ui/Card';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import type { SavedModule } from '@hooks/useSavedItems';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 
 import {
   listArtworks,
@@ -45,6 +48,15 @@ const ROUTE_BY_MODULE: Record<SavedModule, string> = {
   event: ROUTES.ACCOUNT_EVENTS,
   journey: ROUTES.ACCOUNT_JOURNEYS,
   concierge: ROUTES.ACCOUNT_CONCIERGE,
+};
+
+const NAV_KEY_BY_MODULE: Record<SavedModule, string> = {
+  property: 'account.nav.properties',
+  timepiece: 'account.nav.timepieces',
+  artwork: 'account.nav.artworks',
+  event: 'account.nav.events',
+  journey: 'account.nav.journeys',
+  concierge: 'account.nav.concierge',
 };
 
 function listSimilar(module: SavedModule, currentSlug: string): SimilarItem[] {
@@ -120,51 +132,21 @@ export const SimilarItemsStrip = ({ module, currentSlug }: SimilarItemsStripProp
   if (items.length === 0) return null;
 
   return (
-    <section aria-labelledby="similar-heading" className="space-y-6 pb-16">
+    <section aria-labelledby="similar-heading" className="space-y-6">
       <SectionHeader title={t('common.similar')} size="sm" as="h2" />
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6">
         {items.map(item => (
-          <Link
+          <Card
             key={item.slug}
-            id={item.slug === items[0]?.slug ? 'similar-heading' : undefined}
             to={localePath(ROUTE_BY_MODULE[module] + '/' + item.slug)}
-            className="group focus-visible:ring-accent relative block rounded-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            padding="none"
           >
-            <div className="relative">
-              <Image
-                src={item.imageSrc ?? ''}
-                alt={item.imageAlt ?? item.title}
-                ratio="3/4"
-                className="duration-slow transition-transform group-hover:scale-[1.02]"
-              />
-              <HeartButton
-                module={module}
-                slug={item.slug}
-                size="sm"
-                className="absolute top-3 right-3"
-              />
-            </div>
-            <div className="mt-3 flex flex-col gap-1">
-              <span className="text-muted text-xs tracking-widest uppercase">
-                {t(
-                  `account.nav.${
-                    module === 'property'
-                      ? 'properties'
-                      : module === 'timepiece'
-                        ? 'timepieces'
-                        : module === 'artwork'
-                          ? 'artworks'
-                          : module === 'event'
-                            ? 'events'
-                            : module === 'journey'
-                              ? 'journeys'
-                              : 'concierge'
-                  }`,
-                )}
-              </span>
-              <span className="text-fg text-sm font-medium">{item.title}</span>
-            </div>
-          </Link>
+            <Card.Media src={item.imageSrc} alt={item.imageAlt ?? item.title} ratio="4/3" />
+            <Card.Body density="compact">
+              <Card.Eyebrow>{t(NAV_KEY_BY_MODULE[module])}</Card.Eyebrow>
+              <Card.Title>{item.title}</Card.Title>
+            </Card.Body>
+          </Card>
         ))}
       </div>
     </section>

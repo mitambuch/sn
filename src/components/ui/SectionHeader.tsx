@@ -21,9 +21,9 @@ interface SectionHeaderProps {
 }
 
 const sizeStyles: Record<NonNullable<SectionHeaderProps['size']>, string> = {
-  sm: 'text-2xl md:text-3xl',
-  md: 'text-3xl md:text-5xl',
-  lg: 'text-4xl md:text-6xl lg:text-7xl',
+  sm: 'text-xl md:text-2xl',
+  md: 'text-2xl md:text-3xl',
+  lg: 'text-3xl md:text-4xl lg:text-5xl',
 };
 
 const alignStyles: Record<NonNullable<SectionHeaderProps['align']>, string> = {
@@ -44,7 +44,12 @@ export const SectionHeader = ({
   return (
     <header className={cn('flex w-full flex-col gap-4', alignStyles[align], className)}>
       {eyebrow && <span className="text-muted text-xs tracking-[0.3em] uppercase">{eyebrow}</span>}
-      <Tag className={cn('text-fg font-light tracking-tight text-balance', sizeStyles[size])}>
+      <Tag
+        className={cn(
+          'text-fg font-mono font-bold tracking-tight text-balance uppercase',
+          sizeStyles[size],
+        )}
+      >
         {title}
       </Tag>
       {lede && (

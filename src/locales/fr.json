@@ -27,6 +27,12 @@
     "readMore": "Lire la suite",
     "comingSoon": "Cette section est en préparation. Elle sera disponible prochainement.",
     "onRequest": "Sur demande",
+    "price": "Prix",
+    "time": "Heure",
+    "itinerary": "Itinéraire",
+    "availability": "Disponibilité",
+    "reading": "Lecture",
+    "limitedOffer": "Offre limitée",
     "from": "À partir de",
     "viewAll": "Voir l’ensemble",
     "details": "Détails",
@@ -112,6 +118,11 @@
   },
   "account": {
     "eyebrow": "Membre",
+    "greeting": {
+      "morning": "Bonjour {{name}}.",
+      "afternoon": "Bon après-midi {{name}}.",
+      "evening": "Bonsoir {{name}}."
+    },
     "dashboardTitle": "Votre conciergerie",
     "dashboardLede": "Une sélection préparée pour vous, vos demandes en cours, et l’accès direct à votre conciergerie.",
     "yourInquiries": "Vos demandes",
@@ -202,6 +213,7 @@
     },
     "nav": {
       "dashboard": "Accueil",
+      "catalogue": "Tout",
       "news": "Nouveautés",
       "events": "Événements",
       "properties": "Propriétés",
@@ -213,6 +225,157 @@
       "profile": "Profil",
       "inquiries": "Demandes",
       "preferences": "Préférences"
+    },
+    "catalogue": {
+      "title": "Le catalogue",
+      "lede": "Toutes les opportunités curatées par votre conciergerie, en un coup d'œil."
+    },
+    "exclusive": {
+      "eyebrow": "Offres exclusives",
+      "cta": "Découvrir vos opportunités du moment"
+    }
+  },
+  "wizard": {
+    "openCta": "Une demande personnalisée",
+    "openHint": "Dites-nous ce que vous cherchez, nous nous en occupons.",
+    "shortcutsLabel": "Ou en raccourci",
+    "title": "Que puis-je vous trouver ?",
+    "step": {
+      "category": "Catégorie",
+      "details": "Détails",
+      "fields": "Critères",
+      "extras": "Précisions",
+      "review": "Récapitulatif"
+    },
+    "category": {
+      "lede": "Choisissez le domaine de votre demande.",
+      "real-estate": { "title": "Immobilier", "hint": "Chalet, villa, penthouse" },
+      "timepiece": { "title": "Garde-temps", "hint": "Montres de collection" },
+      "art": { "title": "Œuvre d'art", "hint": "Tableau, sculpture, certificat" },
+      "experience": { "title": "Expérience privée", "hint": "Dîner, gala, accès" },
+      "travel": { "title": "Voyage sur mesure", "hint": "Itinéraire, jet, yacht" },
+      "other": { "title": "Autre besoin", "hint": "Décrivez librement" }
+    },
+    "details": {
+      "lede": "Décrivez votre besoin — marque, modèle, dates, contraintes, budget approximatif. Plus c'est précis, plus nous gagnons du temps.",
+      "placeholder": "Soyez aussi précis que possible…",
+      "photoLabel": "Photos de référence (facultatif)",
+      "photoHint": "Utile pour une montre, une œuvre, un objet précis.",
+      "allOptional": "Tous les champs sont facultatifs. Laissez vides ceux que vous ne savez pas encore — Salvatore reviendra vers vous pour préciser.",
+      "freeFormLabel": "Autres précisions",
+      "freeFormPlaceholder": "Tout ce qui peut nous aider…"
+    },
+    "extras": {
+      "lede": "Ajoutez des photos et précisez tout ce qui peut nous aider à mieux comprendre."
+    },
+    "fields": {
+      "travel": {
+        "departure": "Lieu de départ",
+        "departurePlaceholder": "Genève, Paris, Zurich…",
+        "destination": "Destination",
+        "destinationPlaceholder": "Tokyo, Patagonie, Capri…",
+        "dateStart": "Départ approximatif",
+        "dateEnd": "Retour approximatif",
+        "passengers": "Voyageurs",
+        "passengersPlaceholder": "ex. 4",
+        "budget": "Budget approximatif",
+        "budgetPlaceholder": "ex. 50 000 — 100 000 CHF"
+      },
+      "timepiece": {
+        "brand": "Marque",
+        "brandPlaceholder": "Patek Philippe, Rolex…",
+        "model": "Modèle / Référence",
+        "modelPlaceholder": "Nautilus 5711, Submariner…",
+        "yearMin": "Année min.",
+        "yearMax": "Année max.",
+        "condition": "État",
+        "conditionPlaceholder": "Pas encore défini",
+        "conditionNew": "Neuf / Non porté",
+        "conditionExcellent": "Excellent",
+        "conditionGood": "Bon état",
+        "conditionAny": "Peu importe",
+        "budget": "Budget approximatif",
+        "budgetPlaceholder": "ex. 30 000 — 80 000 CHF"
+      },
+      "real-estate": {
+        "type": "Type de bien",
+        "typeChalet": "Chalet",
+        "typeVilla": "Villa",
+        "typePenthouse": "Penthouse",
+        "typeEstate": "Domaine",
+        "typeTownhouse": "Hôtel particulier",
+        "region": "Région recherchée",
+        "regionPlaceholder": "Megève, Cap-Ferrat, Lac Léman…",
+        "surfaceMin": "Surface min. (m²)",
+        "surfaceMax": "Surface max. (m²)",
+        "bedrooms": "Chambres min.",
+        "availability": "Vente ou location",
+        "availabilitySale": "Vente",
+        "availabilityRent": "Location",
+        "availabilityBoth": "Les deux",
+        "budget": "Budget approximatif",
+        "budgetPlaceholder": "ex. 5 — 10 M CHF"
+      },
+      "art": {
+        "artist": "Artiste (si en tête)",
+        "artistPlaceholder": "Picasso, Basquiat, Soulages…",
+        "period": "Période",
+        "periodContemporary": "Contemporain (post-2000)",
+        "periodModern": "Moderne (1900-2000)",
+        "periodClassic": "Classique (avant 1900)",
+        "medium": "Médium",
+        "mediumOil": "Huile",
+        "mediumAcrylic": "Acrylique",
+        "mediumSculpture": "Sculpture",
+        "mediumPhoto": "Photographie",
+        "mediumPrint": "Estampe",
+        "mediumMixed": "Mixte",
+        "heightMax": "Hauteur max. (cm)",
+        "widthMax": "Largeur max. (cm)",
+        "budget": "Budget approximatif",
+        "budgetPlaceholder": "ex. 50 000 — 500 000 CHF"
+      },
+      "experience": {
+        "type": "Type d'expérience",
+        "typeDinner": "Dîner privé",
+        "typeGala": "Gala",
+        "typeConcert": "Concert / Opéra",
+        "typeSport": "Événement sportif",
+        "typeShow": "Spectacle",
+        "typeCultural": "Visite culturelle",
+        "date": "Date approximative",
+        "location": "Lieu / Région",
+        "locationPlaceholder": "Paris, Monaco, Genève…",
+        "guests": "Nombre d'invités",
+        "guestsPlaceholder": "ex. 12",
+        "dressCode": "Code vestimentaire",
+        "dressCasual": "Libre",
+        "dressSmart": "Smart casual",
+        "dressBlackTie": "Black-tie",
+        "budget": "Budget approximatif",
+        "budgetPlaceholder": "ex. 5 000 — 50 000 CHF"
+      }
+    },
+    "other": {
+      "lede": "Aucun catalogue ne couvre tout. Décrivez-nous votre demande, même unique — notre conciergerie a l'habitude des cas particuliers et trouvera une voie.",
+      "placeholder": "Quel que soit votre besoin — accès privé, recherche d'objet rare, arrangement spécifique, urgence médicale — racontez-nous."
+    },
+    "callback": {
+      "cta": "Demander un rappel à Salvatore",
+      "hint": "Sans formulaire — il revient vers vous sous 24h."
+    },
+    "review": {
+      "title": "Tout est prêt",
+      "lede": "Votre conciergerie revient vers vous sous 24 heures.",
+      "categoryLabel": "Catégorie",
+      "descriptionLabel": "Votre demande"
+    },
+    "actions": {
+      "back": "Précédent",
+      "next": "Suivant",
+      "submit": "Envoyer la demande",
+      "sending": "Envoi…",
+      "close": "Fermer"
     }
   },
   "admin": {

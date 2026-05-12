@@ -1,15 +1,19 @@
 // ═══════════════════════════════════════════════════
-// TimepieceCard — listing card for Timepieces module
+// TimepieceCard — domain wrapper around Card atom
 //
-// WHAT: Macro 1:1 image, brand · year eyebrow, model + reference,
-//       full-set indicator, on-request price footer.
+// WHAT: Apple-closed surface, 4:3 contained image (watch macro centered
+//       on neutral bg), HeartButton top-right. Body: brand · year eyebrow,
+//       model title, 2-col Card.Stats (reference mono · material —
+//       the identifying couple for HNW collectors: Submariner Steel
+//       116610 vs Gold 126618 reads instantly). Card.PriceBlock with
+//       "Prix" + Card.Pill "Sur demande".
 // WHEN: TimepiecesList grid item.
+// EDIT VISUAL: change radius/shadow in src/index.css tokens.
 // ═══════════════════════════════════════════════════
 
+import { Card } from '@components/ui/Card';
 import { HeartButton } from '@components/ui/HeartButton';
-import { Image } from '@components/ui/Image';
-import { PriceTag } from '@components/ui/PriceTag';
-import { cn } from '@utils/cn';
+import { useTranslation } from 'react-i18next';
 
 import type { Timepiece } from '@/types/timepiece';
 
@@ -17,55 +21,64 @@ interface TimepieceCardProps {
   timepiece: Timepiece;
   href: string;
   onRequestLabel: string;
-  fullSetLabel: string;
   className?: string;
+  /** Mark as priority — adds pulsing outline ring. */
+  important?: boolean;
+  /** ISO end-date for limited-offer countdown. */
+  countdownEndsAt?: string;
 }
 
 export const TimepieceCard = ({
   timepiece,
   href,
   onRequestLabel,
-  fullSetLabel,
   className,
+  important,
+  countdownEndsAt,
 }: TimepieceCardProps) => {
+  const { t } = useTranslation();
   return (
-    <a
-      href={href}
-      className={cn(
-        'group focus-visible:ring-accent block rounded-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
-        className,
-      )}
-    >
-      <div className="relative">
-        <Image
-          src={timepiece.images[0]?.src ?? ''}
-          alt={timepiece.images[0]?.alt ?? `${timepiece.brand} ${timepiece.model}`}
-          ratio="1/1"
-          wrapperClassName="bg-surface"
-          className="duration-slow object-contain transition-transform group-hover:scale-[1.03]"
+    <Card href={href} padding="none" important={important} className={className}>
+      <Card.Media
+        src={timepiece.images[0]?.src}
+        alt={timepiece.images[0]?.alt ?? `${timepiece.brand} ${timepiece.model}`}
+        ratio="4/3"
+        fit="contain"
+      />
+      {countdownEndsAt && (
+        <Card.Countdown
+          endsAt={countdownEndsAt}
+          label={t('common.limitedOffer')}
+          className="top-3 left-3"
         />
+      )}
+      <Card.Overlay>
         <HeartButton
           module="timepiece"
           slug={timepiece.slug}
           size="sm"
           className="absolute top-3 right-3"
         />
-      </div>
-      <div className="mt-4 flex flex-col gap-1">
-        <span className="text-muted text-xs tracking-widest uppercase">
+      </Card.Overlay>
+      <Card.Body>
+        <Card.Eyebrow>
           {timepiece.brand} · {timepiece.year}
+        </Card.Eyebrow>
+        <Card.Title>{timepiece.model}</Card.Title>
+        <Card.Stats>
+          <Card.Stat label={t('timepieces.meta.reference')} value={timepiece.reference} mono />
+          <Card.Stat
+            label={t('timepieces.meta.material')}
+            value={t(`timepieces.material.${timepiece.material}`)}
+          />
+        </Card.Stats>
+      </Card.Body>
+      <Card.PriceBlock>
+        <span className="text-muted text-[10px] tracking-widest uppercase">
+          {t('common.price')}
         </span>
-        <h3 className="text-fg text-base font-medium">{timepiece.model}</h3>
-        <span className="text-muted font-mono text-xs tracking-wider">{timepiece.reference}</span>
-        {timepiece.fullSet && (
-          <span className="text-muted mt-1 text-xs tracking-widest uppercase">
-            ✓ {fullSetLabel}
-          </span>
-        )}
-        <div className="mt-2">
-          <PriceTag onRequestLabel={onRequestLabel} />
-        </div>
-      </div>
-    </a>
+        <Card.Pill>{onRequestLabel}</Card.Pill>
+      </Card.PriceBlock>
+    </Card>
   );
 };

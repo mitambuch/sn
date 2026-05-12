@@ -10,6 +10,12 @@
     "readMore": "Read more",
     "comingSoon": "This section is in preparation. It will be available shortly.",
     "onRequest": "On request",
+    "price": "Price",
+    "time": "Time",
+    "itinerary": "Itinerary",
+    "availability": "Availability",
+    "reading": "Reading",
+    "limitedOffer": "Limited offer",
     "from": "From",
     "viewAll": "View all",
     "details": "Details",
@@ -94,6 +100,11 @@
   },
   "account": {
     "eyebrow": "Member",
+    "greeting": {
+      "morning": "Good morning {{name}}.",
+      "afternoon": "Good afternoon {{name}}.",
+      "evening": "Good evening {{name}}."
+    },
     "dashboardTitle": "Your concierge",
     "dashboardLede": "A curated selection prepared for you, your active inquiries, and direct access to your concierge.",
     "yourInquiries": "Your inquiries",
@@ -181,6 +192,7 @@
     },
     "nav": {
       "dashboard": "Home",
+      "catalogue": "All",
       "news": "Stories",
       "events": "Events",
       "properties": "Properties",
@@ -191,6 +203,157 @@
       "profile": "Profile",
       "inquiries": "Inquiries",
       "preferences": "Preferences"
+    },
+    "catalogue": {
+      "title": "The catalogue",
+      "lede": "Every opportunity curated by your concierge, at a glance."
+    },
+    "exclusive": {
+      "eyebrow": "Exclusive offers",
+      "cta": "Discover today's opportunities"
+    }
+  },
+  "wizard": {
+    "openCta": "A personalised request",
+    "openHint": "Tell us what you're looking for — we'll handle the rest.",
+    "shortcutsLabel": "Or in shortcut",
+    "title": "What can I find for you?",
+    "step": {
+      "category": "Category",
+      "details": "Details",
+      "fields": "Criteria",
+      "extras": "Specifics",
+      "review": "Summary"
+    },
+    "category": {
+      "lede": "Choose the area of your request.",
+      "real-estate": { "title": "Real estate", "hint": "Chalet, villa, penthouse" },
+      "timepiece": { "title": "Timepiece", "hint": "Collector's watches" },
+      "art": { "title": "Artwork", "hint": "Painting, sculpture, certificate" },
+      "experience": { "title": "Private experience", "hint": "Dinner, gala, access" },
+      "travel": { "title": "Bespoke travel", "hint": "Itinerary, jet, yacht" },
+      "other": { "title": "Other need", "hint": "Describe freely" }
+    },
+    "details": {
+      "lede": "Describe your need — brand, model, dates, constraints, approximate budget. The more precise, the faster we move.",
+      "placeholder": "Be as specific as possible…",
+      "photoLabel": "Reference photos (optional)",
+      "photoHint": "Helpful for a watch, an artwork, a specific object.",
+      "allOptional": "All fields are optional. Leave blank what you don't know yet — Salvatore will get back to clarify.",
+      "freeFormLabel": "Other details",
+      "freeFormPlaceholder": "Anything that helps us…"
+    },
+    "extras": {
+      "lede": "Add photos and any details that help us understand better."
+    },
+    "fields": {
+      "travel": {
+        "departure": "Departure",
+        "departurePlaceholder": "Geneva, Paris, Zurich…",
+        "destination": "Destination",
+        "destinationPlaceholder": "Tokyo, Patagonia, Capri…",
+        "dateStart": "Approx. departure",
+        "dateEnd": "Approx. return",
+        "passengers": "Passengers",
+        "passengersPlaceholder": "e.g. 4",
+        "budget": "Approximate budget",
+        "budgetPlaceholder": "e.g. CHF 50,000 — 100,000"
+      },
+      "timepiece": {
+        "brand": "Brand",
+        "brandPlaceholder": "Patek Philippe, Rolex…",
+        "model": "Model / Reference",
+        "modelPlaceholder": "Nautilus 5711, Submariner…",
+        "yearMin": "Year min.",
+        "yearMax": "Year max.",
+        "condition": "Condition",
+        "conditionPlaceholder": "Not yet defined",
+        "conditionNew": "New / Unworn",
+        "conditionExcellent": "Excellent",
+        "conditionGood": "Good condition",
+        "conditionAny": "Any",
+        "budget": "Approximate budget",
+        "budgetPlaceholder": "e.g. CHF 30,000 — 80,000"
+      },
+      "real-estate": {
+        "type": "Property type",
+        "typeChalet": "Chalet",
+        "typeVilla": "Villa",
+        "typePenthouse": "Penthouse",
+        "typeEstate": "Estate",
+        "typeTownhouse": "Townhouse",
+        "region": "Region sought",
+        "regionPlaceholder": "Megève, Cap-Ferrat, Lake Geneva…",
+        "surfaceMin": "Surface min. (m²)",
+        "surfaceMax": "Surface max. (m²)",
+        "bedrooms": "Bedrooms min.",
+        "availability": "Sale or rent",
+        "availabilitySale": "Sale",
+        "availabilityRent": "Rent",
+        "availabilityBoth": "Either",
+        "budget": "Approximate budget",
+        "budgetPlaceholder": "e.g. CHF 5 — 10 M"
+      },
+      "art": {
+        "artist": "Artist (if in mind)",
+        "artistPlaceholder": "Picasso, Basquiat, Soulages…",
+        "period": "Period",
+        "periodContemporary": "Contemporary (post-2000)",
+        "periodModern": "Modern (1900-2000)",
+        "periodClassic": "Classic (before 1900)",
+        "medium": "Medium",
+        "mediumOil": "Oil",
+        "mediumAcrylic": "Acrylic",
+        "mediumSculpture": "Sculpture",
+        "mediumPhoto": "Photography",
+        "mediumPrint": "Print",
+        "mediumMixed": "Mixed",
+        "heightMax": "Height max. (cm)",
+        "widthMax": "Width max. (cm)",
+        "budget": "Approximate budget",
+        "budgetPlaceholder": "e.g. CHF 50,000 — 500,000"
+      },
+      "experience": {
+        "type": "Experience type",
+        "typeDinner": "Private dinner",
+        "typeGala": "Gala",
+        "typeConcert": "Concert / Opera",
+        "typeSport": "Sporting event",
+        "typeShow": "Show",
+        "typeCultural": "Cultural visit",
+        "date": "Approx. date",
+        "location": "Location / Region",
+        "locationPlaceholder": "Paris, Monaco, Geneva…",
+        "guests": "Guests",
+        "guestsPlaceholder": "e.g. 12",
+        "dressCode": "Dress code",
+        "dressCasual": "Casual",
+        "dressSmart": "Smart casual",
+        "dressBlackTie": "Black-tie",
+        "budget": "Approximate budget",
+        "budgetPlaceholder": "e.g. CHF 5,000 — 50,000"
+      }
+    },
+    "other": {
+      "lede": "No catalogue covers everything. Tell us what you need — even one-off — our concierge knows unusual cases and will find a way.",
+      "placeholder": "Whatever you need — private access, rare object search, specific arrangement, medical urgency — just tell us."
+    },
+    "callback": {
+      "cta": "Request a callback from Salvatore",
+      "hint": "No form — he gets back to you within 24h."
+    },
+    "review": {
+      "title": "Everything is ready",
+      "lede": "Your concierge will get back to you within 24 hours.",
+      "categoryLabel": "Category",
+      "descriptionLabel": "Your request"
+    },
+    "actions": {
+      "back": "Back",
+      "next": "Next",
+      "submit": "Send request",
+      "sending": "Sending…",
+      "close": "Close"
     }
   },
   "admin": {
