@@ -42,34 +42,36 @@ export const Presentation = () => {
         </div>
       </div>
 
-      {/* ─── Body : 3 cols — meta · paragraphs · method triptyque ─── */}
-      <div className="grid grid-cols-1 items-start gap-10 md:grid-cols-[180px_1fr_320px] md:gap-12 lg:gap-16">
-        {/* Col 1 : meta dl */}
-        <dl className="text-muted font-mono text-[10px] leading-loose tracking-widest uppercase">
-          {(
-            [
-              ['type', 'typeValue'],
-              ['jurisdiction', 'jurisdictionValue'],
-              ['accessKey', 'accessValue'],
-              ['verticals', 'verticalsValue'],
-              ['confidentiality', 'confidentialityValue'],
-            ] as const
-          ).map(([term, value]) => (
-            <div key={term} className="border-border flex justify-between border-b py-2">
-              <dt>{t(`landing.presentation.meta.${term}`)}</dt>
-              <dd className="text-fg">{t(`landing.presentation.meta.${value}`)}</dd>
-            </div>
-          ))}
-        </dl>
+      {/* ─── Body : mirror header — left = meta + paragraphs sub-grid,
+           right = method triptyque (same width as the lead quote above). ─── */}
+      <div className="grid grid-cols-1 items-start gap-10 md:grid-cols-2 md:gap-16">
+        {/* Left half : meta (180px) + paragraphs (1fr) — sub-grid */}
+        <div className="grid grid-cols-1 items-start gap-10 md:grid-cols-[180px_1fr] md:gap-10">
+          <dl className="text-muted font-mono text-[10px] leading-loose tracking-widest uppercase">
+            {(
+              [
+                ['type', 'typeValue'],
+                ['jurisdiction', 'jurisdictionValue'],
+                ['accessKey', 'accessValue'],
+                ['verticals', 'verticalsValue'],
+                ['confidentiality', 'confidentialityValue'],
+              ] as const
+            ).map(([term, value]) => (
+              <div key={term} className="border-border flex justify-between border-b py-2">
+                <dt>{t(`landing.presentation.meta.${term}`)}</dt>
+                <dd className="text-fg">{t(`landing.presentation.meta.${value}`)}</dd>
+              </div>
+            ))}
+          </dl>
 
-        {/* Col 2 : 3 dense paragraphs */}
-        <div className="text-fg max-w-3xl space-y-6 text-base leading-relaxed md:text-[17px] md:leading-[1.7]">
-          <p>{t('landing.presentation.paragraph1')}</p>
-          <p>{t('landing.presentation.paragraph2')}</p>
-          <p>{t('landing.presentation.paragraph3')}</p>
+          <div className="text-fg space-y-6 text-base leading-relaxed md:text-[17px] md:leading-[1.7]">
+            <p>{t('landing.presentation.paragraph1')}</p>
+            <p>{t('landing.presentation.paragraph2')}</p>
+            <p>{t('landing.presentation.paragraph3')}</p>
+          </div>
         </div>
 
-        {/* Col 3 : method triptyque (compact, hairline rows) */}
+        {/* Right half : method triptyque — same width as lead quote above */}
         <div className="border-border border-t">
           {VERBS.map((verb, i) => (
             <div key={verb} className="border-border flex flex-col gap-1 border-b py-4">

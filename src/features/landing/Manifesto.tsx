@@ -92,7 +92,7 @@ export const Manifesto = () => {
       id="s02"
       ref={sectionRef}
       data-landing-dark="true"
-      className="bg-ink text-on-ink/85 relative h-[400vh] overflow-hidden"
+      className="bg-ink text-on-ink/85 relative h-[400vh]"
     >
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden px-5 pt-24 pb-8 md:px-12 md:pt-28 md:pb-10">
         {/* ─── Cinema fog : two slow-drifting radial blobs behind the words ─── */}
