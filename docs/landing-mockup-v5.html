@@ -1,0 +1,2139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAW↗NEXT — v5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #fafaf8;
+    --ink: #0a0a0a;
+    --gray: #6e6e6e;
+    --gray-light: #b8b8b8;
+    --light: #f0eeea;
+    --line: rgba(10, 10, 10, 0.12);
+    --line-strong: rgba(10, 10, 10, 0.6);
+    --pad: 24px;
+    --pad-lg: 48px;
+    --bar-h: 56px;
+  }
+
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Geist Mono', monospace;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.4;
+    padding-bottom: var(--bar-h);
+  }
+
+  /* ============================================ */
+  /* TOP PROGRESS BAR                              */
+  /* ============================================ */
+  .top-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: var(--ink);
+    width: 0%;
+    z-index: 200;
+    transition: width 0.1s linear;
+  }
+
+  /* ============================================ */
+  /* TOP CORNER : INDEX BUTTON                     */
+  /* ============================================ */
+  .top-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 12px var(--pad-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+    mix-blend-mode: difference;
+    color: white;
+  }
+  .top-bar > * { pointer-events: auto; }
+
+  .top-bar .logo-mini {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .top-bar .right-meta {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .top-bar .dot-live {
+    width: 6px; height: 6px;
+    background: white;
+    border-radius: 50%;
+    display: inline-block;
+    animation: pulse 1.4s ease infinite;
+    margin-right: 6px;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .index-btn {
+    background: transparent;
+    border: 1px solid currentColor;
+    color: inherit;
+    padding: 6px 14px;
+    font-family: inherit;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .index-btn:hover { background: currentColor; color: var(--ink); }
+  .index-btn .lines {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .index-btn .lines span {
+    width: 12px;
+    height: 1px;
+    background: currentColor;
+  }
+
+  /* ============================================ */
+  /* INDEX OVERLAY (menu plein écran)              */
+  /* ============================================ */
+  .index-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--ink);
+    color: var(--bg);
+    z-index: 300;
+    padding: 32px var(--pad-lg);
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-100%);
+    transition: transform 0.5s cubic-bezier(0.7, 0, 0.3, 1);
+  }
+  .index-overlay.open { transform: translateY(0); }
+
+  .index-overlay .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 80px;
+  }
+  .index-overlay .top .close {
+    background: transparent;
+    border: 1px solid var(--bg);
+    color: var(--bg);
+    padding: 8px 14px;
+    font-family: inherit;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .index-overlay .top .close:hover { background: var(--bg); color: var(--ink); }
+
+  .index-overlay nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .index-overlay nav a {
+    color: var(--bg);
+    text-decoration: none;
+    display: grid;
+    grid-template-columns: 60px 1fr auto auto;
+    align-items: center;
+    gap: 32px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(250,250,248,0.15);
+    transition: padding 0.25s, background 0.25s;
+  }
+  .index-overlay nav a:hover {
+    padding-left: 24px;
+  }
+  .index-overlay nav a .num {
+    font-size: 11px;
+    color: rgba(250,250,248,0.5);
+    letter-spacing: 0.05em;
+  }
+  .index-overlay nav a .name {
+    font-size: clamp(28px, 5vw, 64px);
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    font-weight: 500;
+    line-height: 1;
+  }
+  .index-overlay nav a:hover .name {
+    font-style: oblique 8deg;
+  }
+  .index-overlay nav a .label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(250,250,248,0.5);
+  }
+  .index-overlay nav a .arr {
+    font-size: 18px;
+  }
+
+  .index-overlay .bottom {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(250,250,248,0.5);
+    padding-top: 32px;
+    border-top: 1px solid rgba(250,250,248,0.2);
+    margin-top: 48px;
+  }
+
+  /* ============================================ */
+  /* BOTTOM TERMINAL BAR (fixed)                   */
+  /* ============================================ */
+  .terminal-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 150;
+    height: var(--bar-h);
+    background: var(--ink);
+    color: var(--bg);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    border-top: 1px solid var(--ink);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+  }
+
+  .terminal-bar .left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 0 var(--pad-lg) 0 var(--pad);
+    height: 100%;
+    border-right: 1px solid rgba(250,250,248,0.15);
+  }
+  .terminal-bar .logo {
+    font-weight: 600;
+    font-size: 12px;
+  }
+  .terminal-bar .time-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    font-size: 9px;
+    line-height: 1.2;
+    color: rgba(250,250,248,0.6);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .terminal-bar .time-block .time {
+    font-size: 11px;
+    color: var(--bg);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .terminal-bar .status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(250,250,248,0.7);
+  }
+  .terminal-bar .status .dot {
+    width: 6px; height: 6px;
+    background: #00ff95;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(0, 255, 149, 0.6);
+    animation: pulse 1.4s ease infinite;
+  }
+
+  .terminal-bar .center {
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .ticker-stream {
+    display: flex;
+    gap: 0;
+    animation: ticker-scroll 50s linear infinite;
+    white-space: nowrap;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(250,250,248,0.85);
+  }
+  .ticker-stream .item {
+    padding: 0 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .ticker-stream .sep {
+    color: rgba(250,250,248,0.3);
+  }
+
+  @keyframes ticker-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .terminal-bar .right {
+    display: flex;
+    height: 100%;
+    border-left: 1px solid rgba(250,250,248,0.15);
+  }
+  .terminal-bar .right a {
+    color: var(--bg);
+    text-decoration: none;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: background 0.2s;
+    border-left: 1px solid rgba(250,250,248,0.15);
+  }
+  .terminal-bar .right a:first-child { border-left: none; }
+  .terminal-bar .right a:hover { background: rgba(250,250,248,0.1); }
+  .terminal-bar .right a.primary { background: var(--bg); color: var(--ink); }
+  .terminal-bar .right a.primary:hover { background: rgba(250,250,248,0.85); }
+
+  /* ============================================ */
+  /* MARQUEE BANDS (entre sections)                */
+  /* ============================================ */
+  .marquee {
+    background: var(--ink);
+    color: var(--bg);
+    overflow: hidden;
+    padding: 14px 0;
+    border-top: 1px solid rgba(250,250,248,0.1);
+    border-bottom: 1px solid rgba(250,250,248,0.1);
+  }
+  .marquee-inverse {
+    background: var(--bg);
+    color: var(--ink);
+    border-color: var(--line);
+  }
+  .marquee-stream {
+    display: flex;
+    animation: ticker-scroll 40s linear infinite;
+    white-space: nowrap;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .marquee-stream .item {
+    padding: 0 32px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .marquee-stream .star {
+    display: inline-block;
+    transform: scale(0.7);
+    opacity: 0.7;
+  }
+
+  /* ============================================ */
+  /* BUTTONS                                       */
+  /* ============================================ */
+  .btn {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 13px 20px;
+    border: 1px solid var(--ink);
+    background: var(--bg);
+    color: var(--ink);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--ink); color: var(--bg); }
+  .btn-primary { background: var(--ink); color: var(--bg); }
+  .btn-primary:hover { background: var(--bg); color: var(--ink); }
+  .btn .arr { transition: transform 0.2s; }
+  .btn:hover .arr { transform: translate(2px, -2px); }
+
+  /* ============================================ */
+  /* SECTION TAG                                   */
+  /* ============================================ */
+  .sec-tag {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gray);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sec-tag .num { color: var(--ink); font-weight: 500; }
+  .sec-tag .dot {
+    width: 3px; height: 3px;
+    background: var(--ink);
+    border-radius: 50%;
+  }
+
+  /* SCRAMBLE TARGET */
+  .scramble {
+    display: inline-block;
+  }
+
+  /* ============================================ */
+  /* 01 — HERO                                     */
+  /* ============================================ */
+  .s01 {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 56px var(--pad-lg) 24px;
+    position: relative;
+  }
+
+  .s01-top {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .s01-top .left { color: var(--gray); }
+  .s01-top .center {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .s01-top .right { 
+    text-align: right; 
+    color: var(--gray);
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+  }
+  .s01-top .right .gps { display: inline-flex; align-items: center; gap: 6px; }
+  .s01-top .right .gps::before {
+    content: '';
+    width: 4px; height: 4px;
+    background: var(--ink);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .s01-center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 80px 0 40px;
+    position: relative;
+  }
+
+  .s01-headline {
+    font-weight: 500;
+    font-size: clamp(40px, 9.5vw, 152px);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+  }
+  .s01-headline .line {
+    display: block;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: lineReveal 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+  .s01-headline .line:nth-child(1) { animation-delay: 0.2s; }
+  .s01-headline .line:nth-child(2) { animation-delay: 0.35s; }
+  .s01-headline .line:nth-child(3) { animation-delay: 0.5s; }
+
+  @keyframes lineReveal {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .s01-headline .em {
+    display: block;
+    padding-left: 18%;
+    font-weight: 300;
+    font-style: oblique 8deg;
+  }
+
+  .s01-side-mark {
+    position: absolute;
+    right: 0;
+    top: 80px;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    text-align: right;
+    color: var(--gray);
+    line-height: 1.8;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  .s01-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr auto;
+    gap: 48px;
+    align-items: end;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+  }
+
+  .s01-bottom .col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .s01-bottom .label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gray);
+  }
+
+  .s01-bottom .text {
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 460px;
+  }
+
+  .s01-bottom .meta-list {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.9;
+  }
+  .s01-bottom .meta-list .row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+    padding: 6px 0;
+  }
+  .s01-bottom .meta-list .row .v { color: var(--ink); font-weight: 500; }
+
+  .s01-ctas {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* CYCLING WORDS */
+  .cycler {
+    display: inline-flex;
+    flex-direction: column;
+    height: 1em;
+    overflow: hidden;
+    vertical-align: top;
+    position: relative;
+    min-width: 2ch;
+  }
+  .cycler .word {
+    height: 1em;
+    line-height: 1em;
+    animation: cycle 12s steps(1) infinite;
+  }
+  @keyframes cycle {
+    0%, 33% { transform: translateY(0); }
+    34%, 66% { transform: translateY(-100%); }
+    67%, 99% { transform: translateY(-200%); }
+    100% { transform: translateY(0); }
+  }
+
+  /* ============================================ */
+  /* 02 — STICKY MANIFESTE                         */
+  /* ============================================ */
+  .s02 {
+    background: var(--ink);
+    color: var(--bg);
+    height: 300vh;
+    position: relative;
+  }
+  .s02-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 32px var(--pad-lg);
+    overflow: hidden;
+  }
+  .s02-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.5;
+  }
+
+  .s02-words-wrap {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .s02-phrase {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: clamp(28px, 6vw, 96px);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .s02-phrase.active { opacity: 1; transform: translateY(0); }
+  .s02-phrase em {
+    font-weight: 300;
+    font-style: oblique 8deg;
+  }
+
+  .s02-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.55;
+  }
+  .s02-progress {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .s02-progress .step {
+    width: 28px;
+    height: 1px;
+    background: rgba(255,255,255,0.25);
+    transition: background 0.3s;
+  }
+  .s02-progress .step.active { background: rgba(255,255,255,1); }
+
+  /* ============================================ */
+  /* 03 — PRÉSENTATION                             */
+  /* ============================================ */
+  .s03 {
+    padding: 120px var(--pad-lg);
+    border-bottom: 1px solid var(--line);
+  }
+  .s03-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 80px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--line);
+  }
+  .s03-header .left { display: flex; flex-direction: column; gap: 16px; }
+  .s03-header h2 {
+    font-size: clamp(28px, 4vw, 64px);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .s03-header .lead-quote {
+    font-size: clamp(16px, 1.7vw, 22px);
+    line-height: 1.4;
+    font-weight: 400;
+    color: var(--ink);
+    align-self: end;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+  .s03-header .lead-quote::before {
+    content: '↘';
+    display: block;
+    margin-bottom: 14px;
+    color: var(--ink);
+    font-size: 14px;
+  }
+
+  .s03-body {
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .s03-body .col-meta {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 2;
+    color: var(--gray);
+  }
+  .s03-body .col-meta .row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+    padding: 8px 0;
+  }
+  .s03-body .col-meta .row span:last-child { color: var(--ink); }
+  .s03-body .col-text {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .s03-body .col-text p { margin-bottom: 20px; }
+  .s03-body .col-text strong { font-weight: 500; }
+
+  /* ============================================ */
+  /* 04 — PILIERS (manifeste éditorial)            */
+  /* ============================================ */
+  .s04 {
+    padding: 140px var(--pad-lg);
+    background: var(--ink);
+    color: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .s04-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 96px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.7;
+  }
+
+  .s04-body {
+    display: grid;
+    grid-template-columns: 1fr 8fr;
+    gap: 64px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .s04-index { padding-top: 8px; }
+
+  .s04-index .pillar-mark {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(250,250,248,0.4);
+    padding: 12px 0;
+    border-top: 1px solid rgba(250,250,248,0.15);
+    transition: color 0.25s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: default;
+  }
+  .s04-index .pillar-mark.active { color: var(--bg); }
+  .s04-index .pillar-mark .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(250,250,248,0.3);
+    transition: background 0.25s;
+  }
+  .s04-index .pillar-mark.active .dot { background: var(--bg); }
+
+  .s04-manifesto {
+    font-size: clamp(20px, 2.4vw, 32px);
+    line-height: 1.45;
+    font-weight: 400;
+    color: rgba(250,250,248,0.7);
+    max-width: 900px;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+
+  .s04-manifesto .keyword {
+    font-weight: 600;
+    color: var(--bg);
+    font-size: 1em;
+    padding: 0 2px;
+    border-bottom: 1px solid var(--bg);
+  }
+
+  .s04-manifesto p {
+    margin-bottom: 32px;
+    transition: opacity 0.3s ease;
+  }
+  .s04-manifesto p:last-child { margin-bottom: 0; }
+
+  .s04-footer {
+    margin-top: 96px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(250,250,248,0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.55;
+  }
+
+  /* ============================================ */
+  /* 05 — DOMAINES                                 */
+  /* ============================================ */
+  .s05 {
+    padding: 120px var(--pad-lg) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .s05-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 64px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--line);
+  }
+  .s05-header h2 {
+    font-size: clamp(28px, 4vw, 64px);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .s05-header .meta {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gray);
+    text-align: right;
+    line-height: 1.9;
+  }
+  .s05-grid {
+    display: grid;
+    grid-template-columns: 5fr 4fr;
+    gap: 48px;
+    padding-bottom: 120px;
+    align-items: start;
+  }
+  .s05-list { border-top: 1px solid var(--line); }
+  .s05-item {
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    gap: 24px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+    transition: padding 0.25s;
+    align-items: center;
+  }
+  .s05-item:hover { padding-left: 12px; }
+  .s05-item .num {
+    font-size: 10px;
+    color: var(--gray);
+    letter-spacing: 0.05em;
+  }
+  .s05-item .name {
+    font-size: clamp(16px, 1.8vw, 22px);
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    font-weight: 400;
+  }
+  .s05-item .arr {
+    font-size: 14px;
+    color: var(--gray);
+    transition: transform 0.25s, color 0.25s;
+  }
+  .s05-item.active .arr,
+  .s05-item:hover .arr { color: var(--ink); transform: translate(3px, -3px); }
+  .s05-item.active .name { font-weight: 500; }
+
+  .s05-preview {
+    position: sticky;
+    top: 80px;
+    background: var(--light);
+    padding: 40px;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+  }
+  .s05-preview .tag {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gray);
+    margin-bottom: 16px;
+  }
+  .s05-preview .title {
+    font-size: clamp(24px, 3vw, 40px);
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    font-weight: 500;
+    margin-bottom: 32px;
+  }
+  .s05-preview .desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink);
+    margin-bottom: 32px;
+  }
+  .s05-preview .features {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: auto;
+  }
+  .s05-preview .features .feat {
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ============================================ */
+  /* 06 — EXPÉRIENCES                              */
+  /* ============================================ */
+  .s06 {
+    padding: 120px var(--pad-lg);
+    border-bottom: 1px solid var(--line);
+  }
+  .s06-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: end;
+    margin-bottom: 48px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+  }
+  .s06-header h2 {
+    font-size: clamp(28px, 4vw, 64px);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .s06-header .meta {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gray);
+    text-align: right;
+    line-height: 1.9;
+  }
+  .s06-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+  }
+  .s06-grid .col-right {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .s06-grid .col-right .exp-card { flex: 1; }
+  .exp-card {
+    background: var(--light);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 280px;
+    border: 1px solid var(--line);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .exp-card::after {
+    content: '';
+    position: absolute;
+    top: 16px; right: 16px;
+    width: 8px; height: 8px;
+    background: var(--ink);
+    border-radius: 50%;
+    opacity: 0.3;
+    transition: opacity 0.2s;
+  }
+  .exp-card:hover::after { opacity: 1; background: #00ff95; box-shadow: 0 0 8px rgba(0,255,149,0.6); }
+  .exp-card:hover { background: var(--ink); color: var(--bg); transform: translateY(-2px); }
+  .exp-card:hover .gray-on-card { color: rgba(255,255,255,0.6); }
+  .exp-card.large { min-height: 580px; }
+  .exp-card .top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gray);
+  }
+  .gray-on-card { color: var(--gray); }
+  .exp-card .title {
+    font-size: clamp(20px, 2.4vw, 36px);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: -0.015em;
+    font-weight: 500;
+    margin-top: 24px;
+  }
+  .exp-card.large .title {
+    font-size: clamp(32px, 4.5vw, 64px);
+  }
+  .exp-card .bottom {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+  }
+
+  /* ============================================ */
+  /* 07 — MANIFESTE 2                              */
+  /* ============================================ */
+  .s07 {
+    background: var(--ink);
+    color: var(--bg);
+    min-height: 90vh;
+    padding: 48px var(--pad-lg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .s07-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.5;
+  }
+  .s07-middle {
+    font-size: clamp(36px, 7.5vw, 124px);
+    line-height: 0.92;
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    font-weight: 500;
+    padding: 80px 0;
+  }
+  .s07-middle .em {
+    display: block;
+    padding-left: 12%;
+    font-weight: 300;
+    font-style: oblique 8deg;
+  }
+  .s07-bottom {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    border-top: 1px solid rgba(255,255,255,0.25);
+    padding-top: 20px;
+  }
+  .s07-bottom .item {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.65;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .s07-bottom .item .num { opacity: 0.5; font-size: 9px; }
+
+  /* ============================================ */
+  /* 08 — ACCÈS                                    */
+  /* ============================================ */
+  .s08 { border-bottom: 1px solid var(--line); }
+  .acces-main {
+    padding: 120px var(--pad-lg);
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 80px;
+    min-height: 80vh;
+    align-items: center;
+  }
+  .acces-main .left {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .acces-main .left .tag {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gray);
+  }
+  .acces-main .left h2 {
+    font-size: clamp(48px, 9vw, 144px);
+    line-height: 0.88;
+    text-transform: uppercase;
+    letter-spacing: -0.035em;
+    font-weight: 500;
+  }
+  .acces-main .right {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .acces-main .right .desc {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink);
+    max-width: 520px;
+  }
+  .acces-main .right .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line-strong);
+    border: 1px solid var(--line-strong);
+    margin-top: 16px;
+  }
+  .acces-main .right .step {
+    background: var(--bg);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .acces-main .right .step .num {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gray);
+  }
+  .acces-main .right .step .label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+  }
+  .acces-main .right .step .info {
+    font-size: 12px;
+    color: var(--gray);
+    line-height: 1.4;
+  }
+
+  .acces-secondary {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 40px var(--pad-lg);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: center;
+  }
+  .acces-secondary .left {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+  }
+  .acces-secondary .tag {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.5;
+  }
+  .acces-secondary .title {
+    font-size: clamp(20px, 2.5vw, 32px);
+    text-transform: uppercase;
+    letter-spacing: -0.015em;
+    font-weight: 500;
+  }
+  .acces-secondary .desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    max-width: 480px;
+    line-height: 1.5;
+  }
+  .acces-secondary .btn { background: var(--bg); color: var(--ink); border-color: var(--bg); }
+  .acces-secondary .btn:hover { background: transparent; color: var(--bg); }
+
+  /* ============================================ */
+  /* 09 — INTERLOCUTEUR                            */
+  /* ============================================ */
+  .s09 {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    min-height: 90vh;
+    border-bottom: 1px solid var(--line);
+  }
+  .s09 .left {
+    background: var(--light);
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid var(--line);
+  }
+  .s09 .left .top-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .s09 .left .photo-placeholder {
+    margin: 32px 0;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    max-width: 280px;
+    background: linear-gradient(135deg, #ddd 0%, #bbb 100%);
+    border: 1px solid var(--gray-light);
+    align-self: center;
+  }
+  .s09 .left .name {
+    font-size: clamp(28px, 4.2vw, 64px);
+    line-height: 0.92;
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    font-weight: 500;
+  }
+  .s09 .right {
+    padding: 64px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 32px;
+    max-width: 600px;
+  }
+  .s09 .right .header-text {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gray);
+  }
+  .s09 .right .role {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .s09 .right .bio {
+    font-size: 18px;
+    line-height: 1.45;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+  .s09 .right .channels {
+    border-top: 1px solid var(--line);
+    margin-top: 8px;
+  }
+  .s09 .right .channels a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: padding 0.2s;
+  }
+  .s09 .right .channels a:hover { padding-left: 8px; }
+  .s09 .right .channels a span:last-child { color: var(--gray); }
+
+  /* ============================================ */
+  /* 10 — FOOTER                                   */
+  /* ============================================ */
+  footer {
+    padding: 80px var(--pad-lg) 24px;
+    overflow: hidden;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    margin-bottom: 64px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .footer-top .col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .footer-top .col .label {
+    color: var(--gray);
+    margin-bottom: 12px;
+    font-size: 10px;
+  }
+  .footer-top .col a {
+    color: var(--ink);
+    text-decoration: none;
+    padding: 4px 0;
+    border-bottom: 1px solid transparent;
+    width: fit-content;
+    transition: border-color 0.2s;
+  }
+  .footer-top .col a:hover { border-bottom-color: var(--ink); }
+  .footer-top .col span { padding: 4px 0; }
+
+  .footer-logo {
+    font-size: clamp(80px, 28vw, 440px);
+    line-height: 0.85;
+    letter-spacing: -0.055em;
+    text-align: center;
+    font-weight: 600;
+    margin: 0 -56px 24px;
+    white-space: nowrap;
+  }
+  .footer-bottom {
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gray);
+  }
+  .footer-bottom .center { text-align: center; }
+  .footer-bottom .right { text-align: right; }
+
+  /* ============================================ */
+  /* MOBILE                                        */
+  /* ============================================ */
+  @media (max-width: 900px) {
+    :root { --pad-lg: 20px; --pad: 16px; --bar-h: 52px; }
+
+    .top-bar { padding: 10px var(--pad); }
+    .top-bar .right-meta { display: none; }
+
+    /* Terminal bar mobile : compact */
+    .terminal-bar {
+      grid-template-columns: 1fr auto;
+    }
+    .terminal-bar .left {
+      padding: 0 var(--pad);
+      gap: 12px;
+      border-right: none;
+    }
+    .terminal-bar .left .status { display: none; }
+    .terminal-bar .left .time-block { display: none; }
+    .terminal-bar .center { display: none; }
+    .terminal-bar .right a { padding: 0 14px; font-size: 9px; }
+    .terminal-bar .right a span { display: none; }
+
+    /* HERO */
+    .s01 { padding: 56px var(--pad-lg) 24px; }
+    .s01-top { grid-template-columns: 1fr; gap: 8px; text-align: left; }
+    .s01-top .right, .s01-top .left, .s01-top .center { text-align: left; justify-content: flex-start; }
+    .s01-headline .em { padding-left: 0; }
+    .s01-side-mark { display: none; }
+    .s01-bottom { grid-template-columns: 1fr; gap: 24px; }
+    .s01-ctas { display: none; }
+
+    /* STICKY */
+    .s02 { height: 250vh; }
+
+    /* PRESENTATION */
+    .s03 { padding: 80px var(--pad-lg); }
+    .s03-header { grid-template-columns: 1fr; gap: 24px; margin-bottom: 48px; }
+    .s03-body { grid-template-columns: 1fr; gap: 32px; }
+
+    /* PILIERS */
+    .s04 { padding: 80px var(--pad-lg); }
+    .s04-top { flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 48px; }
+    .s04-body { grid-template-columns: 1fr; gap: 32px; }
+    .s04-manifesto { font-size: 18px; }
+    .s04-footer { flex-direction: column; align-items: flex-start; gap: 12px; }
+
+    /* DOMAINES */
+    .s05 { padding: 80px var(--pad-lg) 0; }
+    .s05-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .s05-header .meta { text-align: left; }
+    .s05-grid { grid-template-columns: 1fr; gap: 24px; padding-bottom: 60px; }
+    .s05-preview { position: static; min-height: auto; padding: 28px; }
+    .s05-item { padding: 16px 0; }
+
+    /* EXPERIENCES */
+    .s06 { padding: 80px var(--pad-lg); }
+    .s06-header { grid-template-columns: 1fr; gap: 24px; }
+    .s06-header .meta { text-align: left; }
+    .s06-grid { grid-template-columns: 1fr; }
+    .exp-card { min-height: 200px; padding: 24px; }
+    .exp-card.large { min-height: 280px; }
+
+    /* MANIFESTE 2 */
+    .s07 { padding: 32px var(--pad-lg); min-height: 80vh; }
+    .s07-middle { padding: 48px 0; }
+    .s07-middle .em { padding-left: 0; }
+    .s07-bottom { grid-template-columns: 1fr 1fr; }
+
+    /* ACCES */
+    .acces-main { grid-template-columns: 1fr; padding: 64px var(--pad-lg); gap: 32px; }
+    .acces-main .right .steps { grid-template-columns: 1fr; }
+    .acces-secondary { grid-template-columns: 1fr; padding: 24px var(--pad-lg); gap: 16px; }
+    .acces-secondary .left { flex-direction: column; gap: 8px; align-items: flex-start; }
+
+    /* INTERLOCUTEUR */
+    .s09 { grid-template-columns: 1fr; }
+    .s09 .left { border-right: none; border-bottom: 1px solid var(--line); padding: 32px; }
+    .s09 .right { padding: 32px; }
+
+    /* FOOTER */
+    footer { padding: 60px var(--pad-lg) 24px; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-logo { font-size: 88px; margin: 0 0 24px; }
+    .footer-bottom { grid-template-columns: 1fr; gap: 6px; }
+    .footer-bottom .center, .footer-bottom .right { text-align: left; }
+
+    /* MARQUEE */
+    .marquee { padding: 12px 0; }
+    .marquee-stream { font-size: 10px; }
+
+    /* INDEX OVERLAY */
+    .index-overlay nav a {
+      grid-template-columns: 40px 1fr auto;
+      gap: 16px;
+    }
+    .index-overlay nav a .label { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .footer-top { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP PROGRESS BAR -->
+<div class="top-progress" id="topProgress"></div>
+
+<!-- TOP CORNER BAR -->
+<div class="top-bar">
+  <div class="logo-mini">SAW↗NEXT</div>
+  <div class="right-meta">
+    <span><span class="dot-live"></span>SESSION ACTIVE</span>
+    <button class="index-btn" id="indexOpen">
+      <span class="lines"><span></span><span></span><span></span></span>
+      INDEX
+    </button>
+  </div>
+</div>
+
+<!-- INDEX OVERLAY -->
+<div class="index-overlay" id="indexOverlay">
+  <div class="top">
+    <span>SAW↗NEXT&nbsp;&#8239;/&#8239;&nbsp;Index complet</span>
+    <button class="close" id="indexClose">Fermer&nbsp;✕</button>
+  </div>
+  <nav>
+    <a href="#s01"><span class="num">01</span><span class="name">Introduction</span><span class="label">Hero</span><span class="arr">↗</span></a>
+    <a href="#s02"><span class="num">02</span><span class="name">Manifeste I</span><span class="label">Statement</span><span class="arr">↗</span></a>
+    <a href="#s03"><span class="num">03</span><span class="name">Présentation</span><span class="label">Structure</span><span class="arr">↗</span></a>
+    <a href="#s04"><span class="num">04</span><span class="name">Principes</span><span class="label">Document</span><span class="arr">↗</span></a>
+    <a href="#s05"><span class="num">05</span><span class="name">Domaines</span><span class="label">10 verticales</span><span class="arr">↗</span></a>
+    <a href="#s06"><span class="num">06</span><span class="name">Expériences</span><span class="label">Saison</span><span class="arr">↗</span></a>
+    <a href="#s07"><span class="num">07</span><span class="name">Manifeste II</span><span class="label">Statement</span><span class="arr">↗</span></a>
+    <a href="#s08"><span class="num">08</span><span class="name">Accès</span><span class="label">Cooptation</span><span class="arr">↗</span></a>
+    <a href="#s09"><span class="num">09</span><span class="name">Interlocuteur</span><span class="label">Contact</span><span class="arr">↗</span></a>
+  </nav>
+  <div class="bottom">
+    <span>↘&nbsp;Boudry, Suisse</span>
+    <span>09 sections</span>
+    <span>Édition Mai 2026</span>
+  </div>
+</div>
+
+<!-- BOTTOM TERMINAL BAR -->
+<div class="terminal-bar">
+  <div class="left">
+    <div class="logo">SAW↗NEXT</div>
+    <div class="time-block">
+      <span class="time" id="liveTime">00:00:00</span>
+      <span>CH&#8239;/&#8239;CET</span>
+    </div>
+    <div class="status">
+      <span class="dot"></span>
+      Cooptation ouverte
+    </div>
+  </div>
+  <div class="center">
+    <div class="ticker-stream" id="terminalTicker">
+      <!-- Ticker items générés en JS pour le loop infini -->
+    </div>
+  </div>
+  <div class="right">
+    <a href="#s08"><span>Espace privé</span>&nbsp;↗</a>
+    <a href="#s08" class="primary"><span>Demander un accès</span>&nbsp;↗</a>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 01 HERO                                       -->
+<!-- ============================================ -->
+<section class="s01" id="s01">
+  <div class="s01-top">
+    <div class="left">Mockup v5&#8239;/&#8239;Disposition</div>
+    <div class="center">
+      <span style="font-weight: 600; font-size: 13px;">SAW↗NEXT</span>
+    </div>
+    <div class="right">
+      <span class="gps">46.50° N, 6.83° E</span>
+      <span>Boudry&#8239;/&#8239;NE</span>
+    </div>
+  </div>
+
+  <div class="s01-side-mark">
+    01&#8239;/&#8239;Introduction
+  </div>
+
+  <div class="s01-center">
+    <h1 class="s01-headline">
+      <span class="line">Certaines portes</span>
+      <span class="line">ne s'ouvrent qu'à</span>
+      <span class="line em">voix basse.</span>
+    </h1>
+  </div>
+
+  <div class="s01-bottom">
+    <div class="col">
+      <div class="label">↘&nbsp;Structure</div>
+      <div class="meta-list">
+        <div class="row"><span>Type</span><span class="v">Indépendante</span></div>
+        <div class="row"><span>Statut</span><span class="v">Suisse</span></div>
+        <div class="row"><span>Modèle</span><span class="v">Cooptation</span></div>
+        <div class="row"><span>Établi</span><span class="v">2025</span></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="label">↘&nbsp;Champ d'action</div>
+      <div class="text">
+        Services privés, projets confidentiels, accès off-market. Un interlocuteur unique. Pas d'agence, pas de plateforme.
+      </div>
+    </div>
+    <div class="col s01-ctas">
+      <a href="#s08" class="btn btn-primary">Demander un accès&nbsp;<span class="arr">↗</span></a>
+      <a href="#s08" class="btn">Espace privé&nbsp;<span class="arr">↗</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE 1 (après hero) -->
+<div class="marquee">
+  <div class="marquee-stream">
+    <span class="item">Édition Mai 2026</span><span class="item">✦</span>
+    <span class="item">Cooptation ouverte</span><span class="item">✦</span>
+    <span class="item">03 expériences actives</span><span class="item">✦</span>
+    <span class="item">10 verticales</span><span class="item">✦</span>
+    <span class="item">Cercle restreint</span><span class="item">✦</span>
+    <span class="item">Boudry, Suisse</span><span class="item">✦</span>
+    <span class="item">Saison en cours</span><span class="item">✦</span>
+    <span class="item">Édition Mai 2026</span><span class="item">✦</span>
+    <span class="item">Cooptation ouverte</span><span class="item">✦</span>
+    <span class="item">03 expériences actives</span><span class="item">✦</span>
+    <span class="item">10 verticales</span><span class="item">✦</span>
+    <span class="item">Cercle restreint</span><span class="item">✦</span>
+    <span class="item">Boudry, Suisse</span><span class="item">✦</span>
+    <span class="item">Saison en cours</span><span class="item">✦</span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 02 MANIFESTE STICKY                           -->
+<!-- ============================================ -->
+<section class="s02" id="s02">
+  <div class="s02-sticky">
+    <div class="s02-top">
+      <span>↘&nbsp;Manifeste&#8239;/&#8239;01</span>
+      <span>02&#8239;/&#8239;09</span>
+    </div>
+
+    <div class="s02-words-wrap">
+      <div class="s02-phrase active" data-step="0">
+        Pas d'agence.<br>Pas de conciergerie.
+      </div>
+      <div class="s02-phrase" data-step="1">
+        Une structure.<br>Un interlocuteur.
+      </div>
+      <div class="s02-phrase" data-step="2">
+        Le luxe<br>ne se mesure pas<br>à ce qu'on <em>possède.</em>
+      </div>
+    </div>
+
+    <div class="s02-bottom">
+      <span>Continuez à dérouler&nbsp;↓</span>
+      <div class="s02-progress">
+        <span class="step active" data-step="0"></span>
+        <span class="step" data-step="1"></span>
+        <span class="step" data-step="2"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 03 PRÉSENTATION                               -->
+<!-- ============================================ -->
+<section class="s03" id="s03">
+  <div class="s03-header">
+    <div class="left">
+      <div class="sec-tag"><span class="num">03</span><span class="dot"></span><span>Présentation</span></div>
+      <h2>Structure<br>&amp; méthode.</h2>
+    </div>
+    <div class="lead-quote">
+      Indépendants par structure. Discrets par discipline. Sélectifs par nécessité.
+    </div>
+  </div>
+
+  <div class="s03-body">
+    <div class="col-meta">
+      <div class="row"><span>Type</span><span>Indépendante</span></div>
+      <div class="row"><span>Juridiction</span><span>Suisse</span></div>
+      <div class="row"><span>Accès</span><span>Cooptation</span></div>
+      <div class="row"><span>Verticales</span><span>10</span></div>
+      <div class="row"><span>Confidentialité</span><span>Stricte</span></div>
+    </div>
+    <div class="col-text">
+      <p>SAW↗NEXT accompagne clients privés et entrepreneurs sur des projets, opportunités et expériences qui sortent du cadre standard.</p>
+      <p>Le réseau couvre les univers du sport, de l'horlogerie, de la finance, de l'immobilier et de l'art. Il s'est construit par cooptation, pas par démarchage.</p>
+    </div>
+    <div class="col-text">
+      <p>Notre rôle : <strong>identifier, structurer, faciliter</strong>. Nous ne remplaçons aucun expert. Nous ouvrons des portes que d'autres ne voient pas.</p>
+      <p>Ce qui passe par nous ne sort jamais par d'autres canaux. Aucun cas client. Aucun nom. Aucune anecdote.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE 2 (avant piliers) -->
+<div class="marquee">
+  <div class="marquee-stream">
+    <span class="item">↘&nbsp;Principes</span><span class="item">/</span>
+    <span class="item">I. Confiance</span><span class="item">/</span>
+    <span class="item">II. Confidentialité</span><span class="item">/</span>
+    <span class="item">III. Relations humaines</span><span class="item">/</span>
+    <span class="item">Document d'engagement</span><span class="item">/</span>
+    <span class="item">Édition 2026</span><span class="item">/</span>
+    <span class="item">↘&nbsp;Principes</span><span class="item">/</span>
+    <span class="item">I. Confiance</span><span class="item">/</span>
+    <span class="item">II. Confidentialité</span><span class="item">/</span>
+    <span class="item">III. Relations humaines</span><span class="item">/</span>
+    <span class="item">Document d'engagement</span><span class="item">/</span>
+    <span class="item">Édition 2026</span><span class="item">/</span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 04 PILIERS                                    -->
+<!-- ============================================ -->
+<section class="s04" id="s04">
+  <div class="s04-top">
+    <span>↘&nbsp;04&#8239;/&#8239;Principes</span>
+    <span>Document d'engagement&#8239;/&#8239;Édition 2026</span>
+  </div>
+
+  <div class="s04-body">
+    <div class="s04-index">
+      <div class="pillar-mark" data-pillar="0">
+        <span>I.&nbsp;&nbsp;Confiance</span>
+        <span class="dot"></span>
+      </div>
+      <div class="pillar-mark" data-pillar="1">
+        <span>II.&nbsp;Confidentialité</span>
+        <span class="dot"></span>
+      </div>
+      <div class="pillar-mark" data-pillar="2">
+        <span>III.&nbsp;Relations</span>
+        <span class="dot"></span>
+      </div>
+    </div>
+
+    <div class="s04-manifesto">
+      <p data-pillar="0">
+        La <span class="keyword">Confiance</span> n'est pas un argument. Elle se construit dans la durée, par les actes, et se vérifie quand les choses se compliquent. Nous ne la demandons pas. Nous travaillons à la mériter.
+      </p>
+      <p data-pillar="1">
+        La <span class="keyword">Confidentialité</span> n'est pas une option. Aucun nom, aucune anecdote, aucun cas client ne sortira d'ici. Nos références parlent par cooptation, ou pas du tout.
+      </p>
+      <p data-pillar="2">
+        Et au-delà des projets, ce qui compte vraiment, ce sont les <span class="keyword">Relations humaines</span>. Un seul interlocuteur. Pas de plateforme, pas de chaîne où chacun se renvoie la responsabilité.
+      </p>
+    </div>
+  </div>
+
+  <div class="s04-footer">
+    <span>Ce sur quoi on ne transige pas.</span>
+    <span>— Boudry, mars 2026</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 05 DOMAINES                                   -->
+<!-- ============================================ -->
+<section class="s05" id="s05">
+  <div class="s05-header">
+    <div>
+      <div class="sec-tag" style="margin-bottom: 16px;"><span class="num">05</span><span class="dot"></span><span>Domaines</span></div>
+      <h2>Dix verticales.<br>Une logique.</h2>
+    </div>
+    <div class="meta">
+      Survolez chaque ligne<br>
+      pour explorer&nbsp;↘
+    </div>
+  </div>
+
+  <div class="s05-grid">
+    <ul class="s05-list">
+      <li class="s05-item active" data-key="01"><span class="num">01&#8239;/&#8239;10</span><span class="name">Haute horlogerie</span><span class="arr">↗</span></li>
+      <li class="s05-item" data-key="02"><span class="num">02&#8239;/&#8239;10</span><span class="name">Biens off-market</span><span class="arr">↗</span></li>
+      <li class="s05-item" data-key="03"><span class="num">03&#8239;/&#8239;10</span><span class="name">Immobilier sur mesure</span><span class="arr">↗</span></li>
+      <li class="s05-item" data-key="04"><span class="num">04&#8239;/&#8239;10</span><span class="name">Art &amp; collection</span><span class="arr">↗</span></li>
+      <li class="s05-item" data-key="05"><span class="num">05&#8239;/&#8239;10</span><span class="name">Voyages &amp; expériences</span><span class="arr">↗</span></li>
+      <li class="s05-item" data-key="06"><span class="num">06&#8239;/&#8239;10</span><span class="name">Événementiel VIP</span><span class="arr">↗</span></li>
+      <li class="s05-item" data-key="07"><span class="num">07&#8239;/&#8239;10</span><span class="name">Lifestyle management</span><span class="arr">↗</span></li>
+      <li class="s05-item" data-key="08"><span class="num">08&#8239;/&#8239;10</span><span class="name">Mise en relation</span><span class="arr">↗</span></li>
+      <li class="s05-item" data-key="09"><span class="num">09&#8239;/&#8239;10</span><span class="name">Gestion de patrimoine</span><span class="arr">↗</span></li>
+      <li class="s05-item" data-key="10"><span class="num">10&#8239;/&#8239;10</span><span class="name">Carrière sportive</span><span class="arr">↗</span></li>
+    </ul>
+
+    <div class="s05-preview">
+      <div class="tag">Domaine sélectionné&#8239;/&#8239;01</div>
+      <div class="title">Haute<br>horlogerie.</div>
+      <div class="desc">
+        Accès direct aux manufactures. Au-delà de l'acte d'achat, nous créons la relation entre le client et la maison.
+      </div>
+      <div class="features">
+        <div class="feat"><span>Visites privées</span><span>↗</span></div>
+        <div class="feat"><span>Pièces rares</span><span>↗</span></div>
+        <div class="feat"><span>Créations personnalisées</span><span>↗</span></div>
+        <div class="feat"><span>Rencontres avec les artisans</span><span>↗</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE 3 (avant expériences) -->
+<div class="marquee marquee-inverse">
+  <div class="marquee-stream">
+    <span class="item">↘&nbsp;Expériences signature</span><span class="item">✦</span>
+    <span class="item">Mai 2026</span><span class="item">✦</span>
+    <span class="item">Saison en cours</span><span class="item">✦</span>
+    <span class="item">03 expériences ouvertes</span><span class="item">✦</span>
+    <span class="item">Mise à jour mensuelle</span><span class="item">✦</span>
+    <span class="item">Liste complète en espace privé</span><span class="item">✦</span>
+    <span class="item">↘&nbsp;Expériences signature</span><span class="item">✦</span>
+    <span class="item">Mai 2026</span><span class="item">✦</span>
+    <span class="item">Saison en cours</span><span class="item">✦</span>
+    <span class="item">03 expériences ouvertes</span><span class="item">✦</span>
+    <span class="item">Mise à jour mensuelle</span><span class="item">✦</span>
+    <span class="item">Liste complète en espace privé</span><span class="item">✦</span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 06 EXPÉRIENCES                                -->
+<!-- ============================================ -->
+<section class="s06" id="s06">
+  <div class="s06-header">
+    <div>
+      <div class="sec-tag" style="margin-bottom: 16px;"><span class="num">06</span><span class="dot"></span><span>Expériences signature</span></div>
+      <h2>Saison<br>en cours.</h2>
+    </div>
+    <div class="meta">
+      Mise à jour mensuelle<br>
+      03 expériences ouvertes<br>
+      Liste complète&#8239;/&#8239;espace privé ↗
+    </div>
+  </div>
+
+  <div class="s06-grid">
+    <div class="exp-card large">
+      <div class="top">
+        <span class="gray-on-card">Featured&#8239;/&#8239;Sport</span>
+        <span class="gray-on-card">01&#8239;/&#8239;03</span>
+      </div>
+      <div class="title">Grand Prix<br>de [—]</div>
+      <div class="bottom">
+        <span>Formule 1</span>
+        <span>Mai 2026&nbsp;↗</span>
+      </div>
+    </div>
+    <div class="col-right">
+      <div class="exp-card">
+        <div class="top">
+          <span class="gray-on-card">Cinéma</span>
+          <span class="gray-on-card">02&#8239;/&#8239;03</span>
+        </div>
+        <div class="title">Festival<br>de [—]</div>
+        <div class="bottom">
+          <span>Festival</span>
+          <span>Mai 2026&nbsp;↗</span>
+        </div>
+      </div>
+      <div class="exp-card">
+        <div class="top">
+          <span class="gray-on-card">Musique</span>
+          <span class="gray-on-card">03&#8239;/&#8239;03</span>
+        </div>
+        <div class="title">Concert<br>privé [—]</div>
+        <div class="bottom">
+          <span>Live</span>
+          <span>Mai 2026&nbsp;↗</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 07 MANIFESTE 2                                -->
+<!-- ============================================ -->
+<section class="s07" id="s07">
+  <div class="s07-top">
+    <span>↘&nbsp;Manifeste&#8239;/&#8239;02</span>
+    <span>07&#8239;/&#8239;09</span>
+  </div>
+
+  <div class="s07-middle">
+    On ne parle pas<br>
+    de ce qu'on fait.<br>
+    <span class="em">On le fait, puis on se tait.</span>
+  </div>
+
+  <div class="s07-bottom">
+    <div class="item"><span class="num">01</span><span>Discrétion</span></div>
+    <div class="item"><span class="num">02</span><span>Cooptation</span></div>
+    <div class="item"><span class="num">03</span><span>Action</span></div>
+    <div class="item"><span class="num">04</span><span>Silence</span></div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 08 ACCÈS                                      -->
+<!-- ============================================ -->
+<section class="s08" id="s08">
+  <div class="acces-main">
+    <div class="left">
+      <div class="tag">↘&nbsp;08.A&#8239;/&#8239;Première porte</div>
+      <h2>Demander<br>un accès.</h2>
+    </div>
+    <div class="right">
+      <div class="desc">
+        L'accès se fait par cooptation. Une qualification courte, un échange direct, puis transmission d'un code personnel si la collaboration est validée.
+      </div>
+      <div class="steps">
+        <div class="step">
+          <span class="num">01</span>
+          <span class="label">Formulaire</span>
+          <span class="info">Qualification courte. Anonyme possible.</span>
+        </div>
+        <div class="step">
+          <span class="num">02</span>
+          <span class="label">Échange</span>
+          <span class="info">Conversation directe. Pas de relais.</span>
+        </div>
+        <div class="step">
+          <span class="num">03</span>
+          <span class="label">Accès</span>
+          <span class="info">Code transmis si validation.</span>
+        </div>
+      </div>
+      <div>
+        <a href="#" class="btn btn-primary">Ouvrir le formulaire&nbsp;<span class="arr">↗</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="acces-secondary">
+    <div class="left">
+      <span class="tag">↘&nbsp;08.B&#8239;/&#8239;Client existant</span>
+      <span class="title">Espace privé.</span>
+      <span class="desc">Pour les clients disposant d'un code d'accès personnel.</span>
+    </div>
+    <a href="#" class="btn">Se connecter&nbsp;<span class="arr">↗</span></a>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 09 INTERLOCUTEUR                              -->
+<!-- ============================================ -->
+<section class="s09" id="s09">
+  <div class="left">
+    <div class="top-meta">
+      <span>↘&nbsp;09&#8239;/&#8239;Interlocuteur</span>
+      <span>↗</span>
+    </div>
+    <div class="photo-placeholder"></div>
+    <div class="name">Salvatore<br>Montemagno.</div>
+  </div>
+  <div class="right">
+    <div class="header-text">Votre point de contact unique</div>
+    <div class="role">Fondateur opérationnel</div>
+    <div class="bio">
+      Chaque échange commence par une conversation. Un seul interlocuteur, du premier contact à la réalisation.
+    </div>
+    <div class="channels">
+      <a href="tel:+41787498170"><span>Téléphone direct</span><span>+41 78 749 81 70&nbsp;↗</span></a>
+      <a href="mailto:info@saw-next.ch"><span>Email</span><span>info@saw-next.ch&nbsp;↗</span></a>
+      <a href="https://wa.me/41787498170"><span>WhatsApp sécurisé</span><span>Ouvrir&nbsp;↗</span></a>
+      <a href="#"><span>LinkedIn</span><span>Profil&nbsp;↗</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE FINAL (avant footer) -->
+<div class="marquee">
+  <div class="marquee-stream">
+    <span class="item">SAW↗NEXT</span><span class="item">✦</span>
+    <span class="item">© 2026</span><span class="item">✦</span>
+    <span class="item">Boudry, Suisse</span><span class="item">✦</span>
+    <span class="item">Tous droits réservés</span><span class="item">✦</span>
+    <span class="item">Document confidentiel</span><span class="item">✦</span>
+    <span class="item">Cooptation uniquement</span><span class="item">✦</span>
+    <span class="item">SAW↗NEXT</span><span class="item">✦</span>
+    <span class="item">© 2026</span><span class="item">✦</span>
+    <span class="item">Boudry, Suisse</span><span class="item">✦</span>
+    <span class="item">Tous droits réservés</span><span class="item">✦</span>
+    <span class="item">Document confidentiel</span><span class="item">✦</span>
+    <span class="item">Cooptation uniquement</span><span class="item">✦</span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 10 FOOTER                                     -->
+<!-- ============================================ -->
+<footer>
+  <div class="footer-top">
+    <div class="col">
+      <span class="label">↘&nbsp;Navigation</span>
+      <a href="#s01">Intro</a>
+      <a href="#s03">Présentation</a>
+      <a href="#s05">Domaines</a>
+      <a href="#s06">Expériences</a>
+      <a href="#s08">Accès</a>
+    </div>
+    <div class="col">
+      <span class="label">↘&nbsp;Légal</span>
+      <a href="#">Mentions légales</a>
+      <a href="#">Confidentialité</a>
+      <a href="#">CGU</a>
+    </div>
+    <div class="col">
+      <span class="label">↘&nbsp;Contact</span>
+      <a href="tel:+41787498170">+41 78 749 81 70</a>
+      <a href="mailto:info@saw-next.ch">info@saw-next.ch</a>
+      <a href="https://wa.me/41787498170">WhatsApp</a>
+    </div>
+    <div class="col">
+      <span class="label">↘&nbsp;Siège</span>
+      <span>Boudry, Suisse</span>
+      <span>NE&#8239;/&#8239;Canton de Neuchâtel</span>
+      <span>Indépendant</span>
+    </div>
+  </div>
+
+  <div class="footer-logo">SAW↗NEXT</div>
+
+  <div class="footer-bottom">
+    <span>© 2026 SAW Next</span>
+    <span class="center">Document confidentiel</span>
+    <span class="right">v0.5&#8239;/&#8239;Mockup</span>
+  </div>
+</footer>
+
+<script>
+  // ============== LIVE TIME (CH/CET) ==============
+  function updateTime() {
+    const now = new Date();
+    const opts = { timeZone: 'Europe/Zurich', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    const t = now.toLocaleTimeString('fr-CH', opts);
+    const el = document.getElementById('liveTime');
+    if (el) el.textContent = t;
+  }
+  updateTime();
+  setInterval(updateTime, 1000);
+
+  // ============== TICKER (terminal bar) ==============
+  const tickerItems = [
+    '↗ Édition Mai 2026', '✦',
+    'Cooptation ouverte', '✦',
+    '03 expériences actives', '✦',
+    'Saison en cours', '✦',
+    '10 verticales / cercle restreint', '✦',
+    'Boudry, Suisse', '✦',
+    'Document confidentiel', '✦',
+    'Mise à jour mensuelle', '✦'
+  ];
+  const tickerEl = document.getElementById('terminalTicker');
+  if (tickerEl) {
+    // Duplique le contenu 4 fois pour assurer un défilement continu
+    const html = tickerItems.map((it, i) => {
+      return `<span class="${it === '✦' ? 'item sep' : 'item'}">${it}</span>`;
+    }).join('');
+    tickerEl.innerHTML = html + html + html + html;
+  }
+
+  // ============== TOP PROGRESS BAR ==============
+  const topProgress = document.getElementById('topProgress');
+  window.addEventListener('scroll', () => {
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (window.scrollY / total) * 100;
+    topProgress.style.width = progress + '%';
+  });
+
+  // ============== INDEX OVERLAY ==============
+  const overlay = document.getElementById('indexOverlay');
+  const openBtn = document.getElementById('indexOpen');
+  const closeBtn = document.getElementById('indexClose');
+  openBtn.addEventListener('click', () => overlay.classList.add('open'));
+  closeBtn.addEventListener('click', () => overlay.classList.remove('open'));
+  overlay.querySelectorAll('nav a').forEach(a => {
+    a.addEventListener('click', () => overlay.classList.remove('open'));
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') overlay.classList.remove('open');
+  });
+
+  // ============== STICKY MANIFESTE PROGRESSION ==============
+  const stickySection = document.getElementById('s02');
+  const phrases = document.querySelectorAll('.s02-phrase');
+  const steps = document.querySelectorAll('.s02-progress .step');
+
+  window.addEventListener('scroll', () => {
+    if (!stickySection) return;
+    const rect = stickySection.getBoundingClientRect();
+    const total = stickySection.offsetHeight - window.innerHeight;
+    const scrolled = -rect.top;
+    const progress = Math.max(0, Math.min(1, scrolled / total));
+    const step = Math.min(phrases.length - 1, Math.floor(progress * phrases.length));
+
+    phrases.forEach((p, i) => p.classList.toggle('active', i === step));
+    steps.forEach((s, i) => s.classList.toggle('active', i <= step));
+  });
+
+  // ============== PILIERS SYNC ==============
+  const pillarParagraphs = document.querySelectorAll('.s04-manifesto p');
+  const pillarMarks = document.querySelectorAll('.s04-index .pillar-mark');
+
+  const pillarObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const pillar = entry.target.getAttribute('data-pillar');
+        pillarMarks.forEach(m => m.classList.toggle('active', m.getAttribute('data-pillar') === pillar));
+      }
+    });
+  }, { threshold: 0.5 });
+  pillarParagraphs.forEach(p => pillarObserver.observe(p));
+
+  pillarMarks.forEach(mark => {
+    mark.addEventListener('mouseenter', () => {
+      const pillar = mark.getAttribute('data-pillar');
+      pillarMarks.forEach(m => m.classList.toggle('active', m === mark));
+      pillarParagraphs.forEach(p => {
+        p.style.opacity = p.getAttribute('data-pillar') === pillar ? '1' : '0.3';
+      });
+    });
+    mark.addEventListener('mouseleave', () => {
+      pillarParagraphs.forEach(p => p.style.opacity = '');
+    });
+  });
+
+  // ============== DOMAINES PREVIEW ==============
+  const domaineData = {
+    '01': { tag: 'Domaine / 01', title: 'Haute<br>horlogerie.', desc: 'Accès direct aux manufactures. Au-delà de l\'acte d\'achat, nous créons la relation entre le client et la maison.', feats: ['Visites privées', 'Pièces rares', 'Créations personnalisées', 'Rencontres avec les artisans'] },
+    '02': { tag: 'Domaine / 02', title: 'Biens<br>off-market.', desc: 'Propriétés et actifs rares hors marché public. Cercle restreint. Transactions confidentielles.', feats: ['Propriétés d\'exception', 'Investissements confidentiels', 'Actifs rares', 'Opportunités stratégiques'] },
+    '03': { tag: 'Domaine / 03', title: 'Immobilier<br>sur mesure.', desc: 'Conception et coordination de propriétés d\'exception. Architectes sélectionnés.', feats: ['Compréhension des attentes', 'Sélection des partenaires', 'Coordination', 'Suivi sur la durée'] },
+    '04': { tag: 'Domaine / 04', title: 'Art<br>&amp; collection.', desc: 'Acquisitions d\'œuvres et d\'objets rares. Mise en relation avec galeristes et experts.', feats: ['Grands maîtres', 'Artistes contemporains', 'Objets de collection', 'Expertise'] },
+    '05': { tag: 'Domaine / 05', title: 'Voyages<br>&amp; expériences.', desc: 'Voyages entièrement sur mesure. Aviation privée, croisières, séjours confidentiels.', feats: ['Aviation privée', 'Yachting', 'Villas privées', 'Événements internationaux'] },
+    '06': { tag: 'Domaine / 06', title: 'Événementiel<br>VIP.', desc: 'Accès privilégiés aux plus grands rendez-vous internationaux. Hospitalité sur mesure.', feats: ['Sport haut niveau', 'Festivals culturels', 'Concerts privés', 'Dîners exclusifs'] },
+    '07': { tag: 'Domaine / 07', title: 'Lifestyle<br>management.', desc: 'Tout ce qui ne rentre pas ailleurs. Recherche, organisation, accompagnement.', feats: ['Objets rares', 'Événements privés', 'Lieux exclusifs', 'Projets personnels'] },
+    '08': { tag: 'Domaine / 08', title: 'Mise en<br>relation.', desc: 'Connexions confidentielles entre clients, investisseurs, entrepreneurs.', feats: ['Opportunités d\'affaires', 'Collaborations', 'Investissements', 'Projets communs'] },
+    '09': { tag: 'Domaine / 09', title: 'Gestion<br>de patrimoine.', desc: 'Pont avec des partenaires financiers suisses de premier plan.', feats: ['Solutions d\'investissement', 'Gestion de portefeuille', 'Planification patrimoniale', 'Transmission'] },
+    '10': { tag: 'Domaine / 10', title: 'Carrière<br>sportive.', desc: 'Accompagnement d\'athlètes de haut niveau. Gestion d\'image, structuration.', feats: ['Gestion d\'image', 'Partenariats de marque', 'Projets entrepreneuriaux', 'Conseil stratégique'] }
+  };
+
+  const preview = document.querySelector('.s05-preview');
+  document.querySelectorAll('.s05-item').forEach(item => {
+    item.addEventListener('mouseenter', () => {
+      document.querySelectorAll('.s05-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      const key = item.getAttribute('data-key');
+      const d = domaineData[key];
+      if (!d) return;
+      preview.querySelector('.tag').textContent = d.tag;
+      preview.querySelector('.title').innerHTML = d.title;
+      preview.querySelector('.desc').textContent = d.desc;
+      preview.querySelector('.features').innerHTML = d.feats.map(f => `<div class="feat"><span>${f}</span><span>↗</span></div>`).join('');
+    });
+  });
+
+  // ============== TEXT SCRAMBLE (sur les h2 quand ils entrent) ==============
+  const chars = '!<>-_\\/[]{}—=+*^?#________';
+  function scrambleText(el, finalText, duration = 800) {
+    const start = Date.now();
+    function update() {
+      const now = Date.now();
+      const elapsed = now - start;
+      const progress = Math.min(1, elapsed / duration);
+      let out = '';
+      for (let i = 0; i < finalText.length; i++) {
+        const charProgress = (progress * finalText.length) - i;
+        if (charProgress >= 1) out += finalText[i];
+        else if (charProgress > 0) out += chars[Math.floor(Math.random() * chars.length)];
+        else out += finalText[i];
+      }
+      el.textContent = out;
+      if (progress < 1) requestAnimationFrame(update);
+      else el.textContent = finalText;
+    }
+    update();
+  }
+  // (scramble disabled for now, just available)
+</script>
+
+</body>
+</html>

@@ -91,6 +91,41 @@
   }
 }
 
+/* ─── Terminal pulse — bottom-bar status dot heartbeat ──────
+   Soft 1.4s opacity cycle. Used by the landing TerminalBar
+   green dot ("Cooptation ouverte") and by mix-blend-mode top
+   bar live dot. */
+
+@keyframes terminal-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* ─── Cycling word — typographic hero word swap ────────────
+   Used by the landing Hero (S01) on each cycled word — small
+   fade-in + translate-down so the swap reads as deliberate,
+   not as a flicker. Distance kept short for retenue. */
+
+@keyframes cycling-word {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility animate-cycling-word {
+  animation: cycling-word 0.5s var(--ease-luxe, ease-out) forwards;
+}
+
 /* ─── Equalizer — vertical bars pulse (loaders) ────────── */
 
 @keyframes equalizer {

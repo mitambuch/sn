@@ -114,9 +114,12 @@ export default function AppRoutes() {
 
         {/* ─── Canonical locale-prefixed tree ─── */}
         <Route path="/:locale" element={<LocaleLayout />}>
-          {/* ─── Public surface ─── */}
+          {/* ─── Landing — full-bleed (no PublicLayout chrome).
+                TerminalBar (fixed bottom) + INDEX overlay are the chrome. ─── */}
+          <Route index element={<Home />} />
+
+          {/* ─── Public surface (Header + Footer) ─── */}
           <Route element={<PublicLayout />}>
-            <Route index element={<Home />} />
             <Route path="playground" element={<Playground />} />
             <Route path="lab" element={<Lab />} />
             <Route path="login" element={<Login />} />

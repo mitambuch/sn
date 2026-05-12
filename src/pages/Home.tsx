@@ -1,62 +1,167 @@
 // ═══════════════════════════════════════════════════
 // Home — Sawnext public landing
 //
-// WHAT: Renders a sober, monochrome landing for the public surface.
-//       Brand mark + Swiss tagline + tightly-set intro paragraph + a
-//       single "access your space" CTA pointing to /login.
-// WHEN: Index of /:locale/.
-// EDIT COPY: src/locales/{fr,en}.json under public.* — never inline.
+// WHAT: Renders the public landing page (v0.6 baseline). Composes the
+//       spine sections (Hero S01, Presentation S03, Access S08,
+//       Interlocutor S09, Footer) with the persistent chrome
+//       (TopProgress + IndexOverlay + TerminalBar). The non-spine
+//       sections (S02 sticky manifesto, S04 piliers, S05 domaines,
+//       S06 expériences, S07 manifeste II) ship in the next pass.
+// WHEN: Index of /:locale/, mounted OUTSIDE PublicLayout (no Header /
+//       no Footer) so the TerminalBar acts as the chrome.
+// EDIT COPY: src/locales/{fr,en}.json under landing.* — never inline.
 // ═══════════════════════════════════════════════════
 
-import { useLocale } from '@app/LocaleProvider';
 import { SeoHead } from '@components/features/SeoHead';
-import { Container } from '@components/layout/Container';
-import { ROUTES } from '@constants/routes';
+import {
+  Access,
+  Hero,
+  type IndexEntry,
+  IndexOverlay,
+  Interlocutor,
+  LandingFooter,
+  Marquee,
+  Presentation,
+  TerminalBar,
+  TopProgress,
+} from '@features/landing';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 
 export default function Home() {
   const { t } = useTranslation();
-  const { localePath } = useLocale();
+  const [indexOpen, setIndexOpen] = useState(false);
+
+  const openIndex = useCallback(() => {
+    setIndexOpen(true);
+  }, []);
+  const closeIndex = useCallback(() => {
+    setIndexOpen(false);
+  }, []);
+
+  const sections: IndexEntry[] = [
+    {
+      href: '#s01',
+      num: '01',
+      name: t('landing.index.s01name'),
+      label: t('landing.index.s01label'),
+    },
+    {
+      href: '#s03',
+      num: '03',
+      name: t('landing.index.s03name'),
+      label: t('landing.index.s03label'),
+    },
+    {
+      href: '#s08',
+      num: '08',
+      name: t('landing.index.s08name'),
+      label: t('landing.index.s08label'),
+    },
+    {
+      href: '#s09',
+      num: '09',
+      name: t('landing.index.s09name'),
+      label: t('landing.index.s09label'),
+    },
+  ];
+
+  const heroMarquee = [
+    t('landing.marquee.edition'),
+    t('landing.marquee.coopOpen'),
+    t('landing.marquee.experiencesActive'),
+    t('landing.marquee.verticals'),
+    t('landing.marquee.circle'),
+    t('landing.marquee.location'),
+    t('landing.marquee.season'),
+  ];
+
+  const finalMarquee = [
+    t('landing.marquee.brand'),
+    t('landing.marquee.copyright'),
+    t('landing.marquee.location'),
+    t('landing.marquee.rightsReserved'),
+    t('landing.marquee.confidential'),
+    t('landing.marquee.cooptationOnly'),
+  ];
+
+  const tickerItems = [
+    `↗ ${t('landing.marquee.edition')}`,
+    t('landing.marquee.coopOpen'),
+    t('landing.marquee.experiencesActive'),
+    t('landing.marquee.season'),
+    t('landing.marquee.verticalsCircle'),
+    t('landing.marquee.location'),
+    t('landing.marquee.confidential'),
+    t('landing.marquee.monthlyUpdate'),
+  ];
 
   return (
     <>
       <SeoHead />
-      <Container size="md">
-        <section className="flex min-h-[calc(100vh-10rem)] flex-col justify-center py-24">
-          {/* Brand mark — initials, monochrome, no decoration */}
-          <span aria-hidden="true" className="text-fg font-mono text-xs tracking-[0.4em] uppercase">
-            S — N
+
+      <TopProgress />
+
+      {/* ─── Top corner : INDEX button (mix-blend pending — fg/bg pour l'instant) ─── */}
+      <div className="pointer-events-none fixed inset-x-0 top-0 z-[100] flex items-center justify-between px-5 py-3 md:px-12">
+        <span className="text-fg pointer-events-auto font-mono text-[11px] font-semibold tracking-[0.02em]">
+          SAW↗NEXT
+        </span>
+        <div className="pointer-events-auto flex items-center gap-4 font-mono text-[10px] tracking-widest uppercase">
+          <span className="text-fg hidden items-center md:flex">
+            <span
+              aria-hidden="true"
+              className="bg-fg mr-1.5 inline-block h-1.5 w-1.5 rounded-full"
+              style={{ animation: 'terminal-pulse 1.4s ease-in-out infinite' }}
+            />
+            {t('landing.sessionActive')}
           </span>
+          <button
+            type="button"
+            onClick={openIndex}
+            className="border-fg text-fg hover:bg-fg hover:text-bg inline-flex items-center gap-2 border px-3.5 py-1.5 text-[10px] tracking-[0.12em] uppercase transition-colors"
+          >
+            <span aria-hidden="true" className="flex flex-col gap-[2px]">
+              <span className="bg-fg block h-px w-3" />
+              <span className="bg-fg block h-px w-3" />
+              <span className="bg-fg block h-px w-3" />
+            </span>
+            {t('landing.indexButton')}
+          </button>
+        </div>
+      </div>
 
-          {/* Tagline */}
-          <p className="text-muted mt-12 text-xs tracking-[0.3em] uppercase">
-            {t('public.tagline')}
-          </p>
+      <IndexOverlay
+        open={indexOpen}
+        onClose={closeIndex}
+        sections={sections}
+        location={t('landing.index.footerLocation')}
+        count={t('landing.index.footerCount')}
+        edition={t('landing.index.footerEdition')}
+        closeLabel={t('common.close')}
+        title={t('landing.index.title')}
+      />
 
-          {/* Headline */}
-          <h1 className="text-fg mt-4 max-w-3xl font-mono text-3xl font-bold tracking-tight text-balance uppercase md:text-4xl lg:text-5xl">
-            {t('auth.tagline')}
-          </h1>
+      <main className="pb-13 md:pb-14">
+        <Hero />
+        <Marquee items={heroMarquee} tone="dark" />
+        <Presentation />
+        <Marquee items={finalMarquee} tone="light" />
+        <Access />
+        <Interlocutor />
+        <Marquee items={finalMarquee} tone="dark" />
+        <LandingFooter />
+      </main>
 
-          {/* Lede */}
-          <p className="text-muted mt-6 max-w-xl text-base leading-relaxed text-pretty md:text-lg">
-            {t('public.intro')}
-          </p>
-
-          {/* Hairline + CTA */}
-          <div className="mt-12 flex flex-col items-start gap-6">
-            <span className="bg-fg block h-px w-12" aria-hidden="true" />
-            <Link
-              to={localePath(ROUTES.LOGIN)}
-              className="border-border text-fg duration-base hover:border-fg/60 focus-visible:ring-accent inline-flex items-center gap-3 rounded-full border px-6 py-3 text-sm tracking-widest uppercase transition-[border-color,background-color,color] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-            >
-              {t('public.loginCta')}
-              <span aria-hidden="true">→</span>
-            </Link>
-          </div>
-        </section>
-      </Container>
+      <TerminalBar
+        tickerItems={tickerItems}
+        statusLabel={t('landing.terminal.status')}
+        tzLabel={t('landing.terminal.tz')}
+        primaryCtaLabel={t('landing.cta.requestAccess')}
+        primaryCtaHref="#s08"
+        secondaryCtaLabel={t('landing.cta.privateArea')}
+        secondaryCtaHref="#s08"
+      />
     </>
   );
 }
