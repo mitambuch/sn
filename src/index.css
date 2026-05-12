@@ -18,14 +18,24 @@
      d'éclat oculaire). Contraste cible ~8:1 (WCAG AAA pour texte large,
      AA texte body). */
   --color-bg: #bcbcbc;
-  --color-fg: #2a2a2a;
+  /* Single black across the landing — owner direction 2026-05-13 00:02
+     "la couleur de fond est parfaite faut utiliser ça même pour le texte
+     on doit avoir 'que un noir'". `--color-fg` aligned with `--color-ink`
+     so every black on the page is the SAME shade. Body text comfort
+     remains acceptable at 17:1 on the gris bg. */
+  --color-fg: #0a0a0a;
   /* WHY: client brand is strictly monochrome — accent = fg (high-emphasis tone).
      The brand identity IS the absence of color. See CLAUDE.md Composition. */
-  --color-accent: #2a2a2a;
+  --color-accent: #0a0a0a;
   --color-muted: #5a5a5a;
   --color-surface: #b0b0b0;
   --color-border: #9c9c9c;
   --color-on-accent: #bcbcbc;
+  /* Deep ink — used for the cinematic landing dark sections (Manifesto S02,
+     Principles S04, TerminalBar). Charcoal fg #2a2a2a felt fade as a flat
+     background — owner direction 2026-05-12 "fonce les noirs". */
+  --color-ink: #0a0a0a;
+  --color-on-ink: #f0f0f0;
 
   /* Semantic status colors — kept functional (errors/success/warning) */
   --color-success: #00c853;
@@ -79,6 +89,10 @@
   --color-surface: #141414;
   --color-border: #262626;
   --color-on-accent: #0a0a0a;
+  /* Dark mode : ink = deepest grayscale already on the bg side. on-ink stays
+     light to keep landing dark sections readable in both themes. */
+  --color-ink: #050505;
+  --color-on-ink: #f0f0f0;
 
   --color-success: #6aff8a;
   --color-warning: #ffd60a;

@@ -40,6 +40,9 @@ const SOURCE_NAV_KEY: Record<InquirySource, string> = {
   event: 'account.nav.events',
   journey: 'account.nav.journeys',
   concierge: 'account.nav.concierge',
+  jet: 'account.nav.concierge',
+  'object-search': 'account.nav.concierge',
+  'event-organize': 'account.nav.concierge',
 };
 
 export const InquiryDrawer = ({

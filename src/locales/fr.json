@@ -850,5 +850,346 @@
       "imprint": "Mentions légales",
       "privacy": "Confidentialité"
     }
+  },
+  "landing": {
+    "sessionActive": "Session active",
+    "indexButton": "Index",
+    "hero": {
+      "topLeft": "Édition v0.6 / Disposition",
+      "topCenter": "SAW↗NEXT",
+      "topRightGps": "46.50° N, 6.83° E",
+      "topRightLoc": "Boudry / NE",
+      "sideMark": "01 / Introduction",
+      "cyclePhrases": {
+        "cp1": {
+          "before": "Pas une agence. Pas une ",
+          "highlight": "conciergerie",
+          "after": "."
+        },
+        "cp2": { "before": "", "highlight": "Bespoke", "after": " par discipline." },
+        "cp3": {
+          "before": "Services privés. Suisse. Par ",
+          "highlight": "cooptation",
+          "after": "."
+        },
+        "cp4": {
+          "before": "Nous ouvrons des ",
+          "highlight": "portes",
+          "after": " que d’autres ne voient pas."
+        },
+        "cp5": {
+          "before": "Un seul interlocuteur. Un réseau. Une ",
+          "highlight": "exigence",
+          "after": "."
+        },
+        "cp6": {
+          "before": "Ce qui ne se trouve pas en ",
+          "highlight": "vitrine",
+          "after": "."
+        },
+        "cp7": {
+          "before": "Structure indépendante. Cercle ",
+          "highlight": "restreint",
+          "after": "."
+        },
+        "cp8": { "before": "Pour ceux qui en ont la ", "highlight": "patience", "after": "." }
+      },
+      "line1": "Certaines portes",
+      "line2": "ne s’ouvrent qu’à",
+      "line3prefix": "voix",
+      "metaStructureLabel": "Structure",
+      "metaType": "Type",
+      "metaTypeValue": "Indépendante",
+      "metaStatus": "Statut",
+      "metaStatusValue": "Suisse",
+      "metaModel": "Modèle",
+      "metaModelValue": "Cooptation",
+      "metaEstablished": "Établi",
+      "metaEstablishedValue": "2025",
+      "metaFieldLabel": "Champ d’action",
+      "metaFieldText": "Services privés, projets confidentiels, accès off-market. Un interlocuteur unique. Pas d’agence, pas de plateforme."
+    },
+    "presentation": {
+      "tag": "Présentation",
+      "h2line1": "Structure",
+      "h2line2": "& méthode.",
+      "lead": "Indépendants par structure. Discrets par discipline. Sélectifs par nécessité.",
+      "meta": {
+        "type": "Type",
+        "typeValue": "Indépendante",
+        "jurisdiction": "Juridiction",
+        "jurisdictionValue": "Suisse",
+        "accessKey": "Accès",
+        "accessValue": "Cooptation",
+        "verticals": "Verticales",
+        "verticalsValue": "10",
+        "confidentiality": "Confidentialité",
+        "confidentialityValue": "Stricte"
+      },
+      "p1": "SAW↗NEXT accompagne clients privés et entrepreneurs sur des projets, opportunités et expériences qui sortent du cadre standard.",
+      "p2": "Le réseau couvre les univers du sport, de l’horlogerie, de la finance, de l’immobilier et de l’art. Il s’est construit par cooptation, pas par démarchage.",
+      "paragraph1": "SAW↗NEXT accompagne clients privés et entrepreneurs sur des projets, opportunités et expériences qui sortent du cadre standard. Le réseau couvre les univers du sport, de l’horlogerie, de la finance, de l’immobilier et de l’art. Il s’est construit par cooptation, pas par démarchage.",
+      "paragraph2": "Notre rôle tient en trois verbes : identifier, structurer, faciliter. Nous ne remplaçons aucun expert. Nous ouvrons des portes que d’autres ne voient pas. Ce qui passe par nous ne sort jamais par d’autres canaux. Aucun cas client. Aucun nom. Aucune anecdote.",
+      "paragraph3": "Pas de discours commercial. Pas de pitch. Une conversation, une qualification, puis — si le projet entre dans nos compétences — un engagement écrit. Le rythme est celui du dossier, pas celui d’une plateforme. Chaque collaboration commence par un cadre : périmètre, livrables, points de contrôle, durée. Aucune zone grise."
+    },
+    "method": {
+      "tag": "Méthode",
+      "eyebrow": "Trois verbes, un engagement",
+      "act": "Acte",
+      "identify": {
+        "title": "Identifier.",
+        "desc": "Lire le brief, isoler le besoin réel, distinguer la commande du symptôme. Cinq questions, jamais plus."
+      },
+      "structure": {
+        "title": "Structurer.",
+        "desc": "Cadrer le périmètre, sélectionner les partenaires utiles, écrire le plan. Tout est consigné, tout est daté."
+      },
+      "facilitate": {
+        "title": "Faciliter.",
+        "desc": "Lever les obstacles silencieusement, jusqu’à la livraison. La discrétion est un livrable comme un autre."
+      }
+    },
+    "manifesto": {
+      "eyebrow": "Manifeste / 01",
+      "hint": "Continuez à dérouler",
+      "p1": ["Pas d’agence.", "Pas de conciergerie."],
+      "p2": ["Une structure.", "Un interlocuteur."],
+      "p3": ["Le luxe", "ne se mesure pas", "à ce qu’on possède."],
+      "p4": ["Le silence est", "notre seule signature."],
+      "p5": ["Ce qui se dit", "ici ne se dit", "nulle part ailleurs."],
+      "p6": ["On ne promet pas.", "On agit."]
+    },
+    "principles": {
+      "tag": "Principes",
+      "eyebrow": "Document d’engagement / Édition 2026",
+      "p1": {
+        "mark": "I.  Confiance",
+        "prefix": "La",
+        "keyword": "Confiance",
+        "body": "n’est pas un argument. Elle se construit dans la durée, par les actes, et se vérifie quand les choses se compliquent. Nous ne la demandons pas. Nous travaillons à la mériter."
+      },
+      "p2": {
+        "mark": "II. Confidentialité",
+        "prefix": "La",
+        "keyword": "Confidentialité",
+        "body": "n’est pas une option. Aucun nom, aucune anecdote, aucun cas client ne sortira d’ici. Nos références parlent par cooptation, ou pas du tout."
+      },
+      "p3": {
+        "mark": "III. Relations",
+        "prefix": "Et au-delà des projets, ce qui compte vraiment, ce sont les",
+        "keyword": "Relations humaines",
+        "body": ". Un seul interlocuteur. Pas de plateforme, pas de chaîne où chacun se renvoie la responsabilité."
+      },
+      "footer": "Ce sur quoi on ne transige pas.",
+      "signature": "Boudry, mars 2026"
+    },
+    "domains": {
+      "tag": "Domaines",
+      "h2line1": "Dix verticales.",
+      "h2line2": "Une logique.",
+      "metaTop": "Survolez chaque ligne",
+      "metaBottom": "pour explorer ↘",
+      "previewTag": "Domaine sélectionné",
+      "01": {
+        "name": "Haute horlogerie",
+        "title": "Haute horlogerie.",
+        "desc": "Accès direct aux manufactures. Au-delà de l’acte d’achat, nous créons la relation entre le client et la maison.",
+        "feat1": "Visites privées",
+        "feat2": "Pièces rares",
+        "feat3": "Créations personnalisées",
+        "feat4": "Rencontres avec les artisans"
+      },
+      "02": {
+        "name": "Biens off-market",
+        "title": "Biens off-market.",
+        "desc": "Propriétés et actifs rares hors marché public. Cercle restreint. Transactions confidentielles.",
+        "feat1": "Propriétés d’exception",
+        "feat2": "Investissements confidentiels",
+        "feat3": "Actifs rares",
+        "feat4": "Opportunités stratégiques"
+      },
+      "03": {
+        "name": "Immobilier sur mesure",
+        "title": "Immobilier sur mesure.",
+        "desc": "Conception et coordination de propriétés d’exception. Architectes sélectionnés.",
+        "feat1": "Compréhension des attentes",
+        "feat2": "Sélection des partenaires",
+        "feat3": "Coordination",
+        "feat4": "Suivi sur la durée"
+      },
+      "04": {
+        "name": "Art & collection",
+        "title": "Art & collection.",
+        "desc": "Acquisitions d’œuvres et d’objets rares. Mise en relation avec galeristes et experts.",
+        "feat1": "Grands maîtres",
+        "feat2": "Artistes contemporains",
+        "feat3": "Objets de collection",
+        "feat4": "Expertise"
+      },
+      "05": {
+        "name": "Voyages & expériences",
+        "title": "Voyages & expériences.",
+        "desc": "Voyages entièrement sur mesure. Aviation privée, croisières, séjours confidentiels.",
+        "feat1": "Aviation privée",
+        "feat2": "Yachting",
+        "feat3": "Villas privées",
+        "feat4": "Événements internationaux"
+      },
+      "06": {
+        "name": "Événementiel VIP",
+        "title": "Événementiel VIP.",
+        "desc": "Accès privilégiés aux plus grands rendez-vous internationaux. Hospitalité sur mesure.",
+        "feat1": "Sport haut niveau",
+        "feat2": "Festivals culturels",
+        "feat3": "Concerts privés",
+        "feat4": "Dîners exclusifs"
+      },
+      "07": {
+        "name": "Lifestyle management",
+        "title": "Lifestyle management.",
+        "desc": "Tout ce qui ne rentre pas ailleurs. Recherche, organisation, accompagnement.",
+        "feat1": "Objets rares",
+        "feat2": "Événements privés",
+        "feat3": "Lieux exclusifs",
+        "feat4": "Projets personnels"
+      },
+      "08": {
+        "name": "Mise en relation",
+        "title": "Mise en relation.",
+        "desc": "Connexions confidentielles entre clients, investisseurs, entrepreneurs.",
+        "feat1": "Opportunités d’affaires",
+        "feat2": "Collaborations",
+        "feat3": "Investissements",
+        "feat4": "Projets communs"
+      },
+      "09": {
+        "name": "Gestion de patrimoine",
+        "title": "Gestion de patrimoine.",
+        "desc": "Pont avec des partenaires financiers suisses de premier plan.",
+        "feat1": "Solutions d’investissement",
+        "feat2": "Gestion de portefeuille",
+        "feat3": "Planification patrimoniale",
+        "feat4": "Transmission"
+      },
+      "10": {
+        "name": "Carrière sportive",
+        "title": "Carrière sportive.",
+        "desc": "Accompagnement d’athlètes de haut niveau. Gestion d’image, structuration.",
+        "feat1": "Gestion d’image",
+        "feat2": "Partenariats de marque",
+        "feat3": "Projets entrepreneuriaux",
+        "feat4": "Conseil stratégique"
+      }
+    },
+    "access": {
+      "tagPrimary": "Première porte",
+      "h2line1": "Demander",
+      "h2line2": "un accès.",
+      "description": "L’accès se fait par cooptation. Une qualification courte, un échange direct, puis transmission d’un code personnel si la collaboration est validée.",
+      "step1Label": "Formulaire",
+      "step1Info": "Qualification courte. Anonyme possible.",
+      "step2Label": "Échange",
+      "step2Info": "Conversation directe. Pas de relais.",
+      "step3Label": "Accès",
+      "step3Info": "Code transmis si validation.",
+      "behindEyebrow": "Ce qui se passe derrière",
+      "behind1Num": "01 · Saison",
+      "behind1Title": "Événements signature",
+      "behind1Desc": "Accès aux rendez-vous fermés : Formule 1, festivals, concerts privés, dîners curatés.",
+      "behind1Hint": "Aperçu en espace privé ↗",
+      "behind2Num": "02 · Cercle",
+      "behind2Title": "Off-market",
+      "behind2Desc": "Propriétés d’exception, montres rares, œuvres et opportunités confidentielles — hors marché public.",
+      "behind2Hint": "Sur cooptation uniquement ↗",
+      "behind3Num": "03 · Méthode",
+      "behind3Title": "Une seule ligne",
+      "behind3Desc": "Un interlocuteur, du premier mot à la réalisation. Pas d’agence, pas de plateforme, pas de relais.",
+      "behind3Hint": "Salvatore, directement ↗",
+      "openForm": "Ouvrir le formulaire",
+      "openFormSoon": "Disponible prochainement — contact direct via Salvatore",
+      "drawerTitle": "Demander un accès.",
+      "drawerLede": "Quelques mots pour qu’on se comprenne avant l’échange. Anonyme possible.",
+      "drawerPlaceholder": "Qui vous a parlé de nous, ce que vous cherchez, et quand vous aimeriez en parler.",
+      "tagSecondary": "Client existant",
+      "privateAreaTitle": "Espace privé.",
+      "privateAreaDesc": "Pour les clients disposant d’un code d’accès personnel.",
+      "connect": "Se connecter"
+    },
+    "interlocutor": {
+      "eyebrow": "Interlocuteur",
+      "header": "Votre point de contact unique",
+      "role": "Fondateur opérationnel",
+      "bio": "Chaque échange commence par une conversation. Un seul interlocuteur, du premier contact à la réalisation.",
+      "phone": "Téléphone direct",
+      "email": "Email",
+      "whatsapp": "WhatsApp sécurisé",
+      "whatsappAction": "Ouvrir",
+      "linkedin": "LinkedIn",
+      "linkedinAction": "Profil"
+    },
+    "footer": {
+      "colNavLabel": "Navigation",
+      "navIntro": "Intro",
+      "navPresentation": "Présentation",
+      "navAccess": "Accès",
+      "navContact": "Contact",
+      "colLegalLabel": "Légal",
+      "legalMentions": "Mentions légales",
+      "legalPrivacy": "Confidentialité",
+      "legalTerms": "CGU",
+      "colContactLabel": "Contact",
+      "colSeatLabel": "Siège",
+      "seatCity": "Boudry, Suisse",
+      "seatCanton": "NE / Canton de Neuchâtel",
+      "seatType": "Indépendant",
+      "copyright": "© 2026 SAW Next",
+      "confidential": "Document confidentiel",
+      "version": "v0.6 / Édition Mai 2026"
+    },
+    "index": {
+      "title": "SAW↗NEXT / Index complet",
+      "footerLocation": "Boudry, Suisse",
+      "footerCount": "07 sections",
+      "footerEdition": "Édition Mai 2026",
+      "s01name": "Introduction",
+      "s01label": "Hero",
+      "s02name": "Manifeste",
+      "s02label": "Statement",
+      "s03name": "Présentation",
+      "s03label": "Structure",
+      "s04name": "Principes",
+      "s04label": "Document",
+      "s05name": "Domaines",
+      "s05label": "Services",
+      "s08name": "Accès",
+      "s08label": "Cooptation",
+      "s09name": "Interlocuteur",
+      "s09label": "Contact"
+    },
+    "marquee": {
+      "edition": "Édition Mai 2026",
+      "coopOpen": "Cooptation ouverte",
+      "experiencesActive": "03 expériences actives",
+      "verticals": "10 verticales",
+      "verticalsCircle": "10 verticales / cercle restreint",
+      "circle": "Cercle restreint",
+      "location": "Boudry, Suisse",
+      "season": "Saison en cours",
+      "monthlyUpdate": "Mise à jour mensuelle",
+      "brand": "SAW↗NEXT",
+      "copyright": "© 2026",
+      "rightsReserved": "Tous droits réservés",
+      "confidential": "Document confidentiel",
+      "cooptationOnly": "Cooptation uniquement"
+    },
+    "terminal": {
+      "status": "Cooptation ouverte",
+      "tz": "CH / CET"
+    },
+    "cta": {
+      "requestAccess": "Demander un accès",
+      "privateArea": "Espace privé",
+      "contactDirect": "Contact direct"
+    }
   }
 }
