@@ -856,14 +856,34 @@
       "topRightLoc": "Boudry / NE",
       "sideMark": "01 / Introduction",
       "cyclePhrases": {
-        "cp1": "Not an agency. Not a concierge.",
-        "cp2": "Bespoke by discipline.",
-        "cp3": "Private services. Swiss. By cooptation.",
-        "cp4": "We open doors others do not see.",
-        "cp5": "One interlocutor. One network. One standard.",
-        "cp6": "What you will not find in shop windows.",
-        "cp7": "Independent structure. Restricted circle.",
-        "cp8": "For those who have the patience."
+        "cp1": { "before": "Not an agency. Not a ", "highlight": "concierge", "after": "." },
+        "cp2": { "before": "", "highlight": "Bespoke", "after": " by discipline." },
+        "cp3": {
+          "before": "Private services. Swiss. By ",
+          "highlight": "cooptation",
+          "after": "."
+        },
+        "cp4": {
+          "before": "We open ",
+          "highlight": "doors",
+          "after": " others do not see."
+        },
+        "cp5": {
+          "before": "One interlocutor. One network. One ",
+          "highlight": "standard",
+          "after": "."
+        },
+        "cp6": {
+          "before": "What you will not find in ",
+          "highlight": "shop windows",
+          "after": "."
+        },
+        "cp7": {
+          "before": "Independent structure. Restricted ",
+          "highlight": "circle",
+          "after": "."
+        },
+        "cp8": { "before": "For those who have the ", "highlight": "patience", "after": "." }
       },
       "line1": "Certain doors",
       "line2": "open only to",

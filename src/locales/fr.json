@@ -861,14 +861,38 @@
       "topRightLoc": "Boudry / NE",
       "sideMark": "01 / Introduction",
       "cyclePhrases": {
-        "cp1": "Pas une agence. Pas une conciergerie.",
-        "cp2": "Bespoke par discipline.",
-        "cp3": "Services privés. Suisse. Par cooptation.",
-        "cp4": "Nous ouvrons des portes que d’autres ne voient pas.",
-        "cp5": "Un seul interlocuteur. Un réseau. Une exigence.",
-        "cp6": "Ce qui ne se trouve pas en vitrine.",
-        "cp7": "Structure indépendante. Cercle restreint.",
-        "cp8": "Pour ceux qui en ont la patience."
+        "cp1": {
+          "before": "Pas une agence. Pas une ",
+          "highlight": "conciergerie",
+          "after": "."
+        },
+        "cp2": { "before": "", "highlight": "Bespoke", "after": " par discipline." },
+        "cp3": {
+          "before": "Services privés. Suisse. Par ",
+          "highlight": "cooptation",
+          "after": "."
+        },
+        "cp4": {
+          "before": "Nous ouvrons des ",
+          "highlight": "portes",
+          "after": " que d’autres ne voient pas."
+        },
+        "cp5": {
+          "before": "Un seul interlocuteur. Un réseau. Une ",
+          "highlight": "exigence",
+          "after": "."
+        },
+        "cp6": {
+          "before": "Ce qui ne se trouve pas en ",
+          "highlight": "vitrine",
+          "after": "."
+        },
+        "cp7": {
+          "before": "Structure indépendante. Cercle ",
+          "highlight": "restreint",
+          "after": "."
+        },
+        "cp8": { "before": "Pour ceux qui en ont la ", "highlight": "patience", "after": "." }
       },
       "line1": "Certaines portes",
       "line2": "ne s’ouvrent qu’à",

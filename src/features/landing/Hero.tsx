@@ -1,16 +1,21 @@
 // ═══════════════════════════════════════════════════
-// Hero — landing S01 (terminal typewriter + cycling video bg)
+// Hero — landing S01 (typewriter + key-word negative + video cycle)
 //
-// WHAT: Full-viewport opening section. A Cloudinary video plays as
-//       silent autoplay background ; on each phrase change, a new
-//       random video from the pool replaces the previous one. The
-//       single-line headline TYPES OUT one of 8 phrases (60ms/char),
-//       HOLDS for 2.4s with a blinking caret, then ERASES (32ms/char)
-//       before the next phrase. Headline is in mix-blend-difference
-//       so the text auto-inverts against any video frame.
+// WHAT: Full-viewport opening. A Cloudinary video plays autoplay-loop-
+//       muted in the background ; on each phrase change, a new random
+//       video swaps in. A dark overlay (bg-black/35) dims the video so
+//       the text stays readable everywhere. The headline TYPES OUT one
+//       of 8 phrases (90ms/char), HOLDS 4.5s with blinking caret, then
+//       ERASES (50ms/char) before the next phrase. Each phrase has
+//       ONE key word rendered in `mix-blend-mode: difference` — the
+//       rest stays plain white, only the key word inverts against the
+//       video. text-wrap: balance keeps the line break in 2 lines.
+//       All meta (GPS coords + structure dl + champ d'action + CTAs)
+//       sits in the bottom strip — center is reserved for the
+//       typewriter alone.
 // WHEN: Always the first section of the landing.
-// CHANGE PHRASES: edit landing.hero.cyclePhrases.cp1..cp8 in i18n.
-// CHANGE VIDEO POOL: edit HERO_VIDEOS — random one per phrase.
+// CHANGE PHRASES: edit landing.hero.cyclePhrases.cpN.{before,highlight,
+//       after} in i18n.
 // ═══════════════════════════════════════════════════
 
 import { Button } from '@components/ui/Button';
@@ -27,11 +32,20 @@ const HERO_VIDEOS = [
 ] as const;
 
 const PHRASE_KEYS = ['cp1', 'cp2', 'cp3', 'cp4', 'cp5', 'cp6', 'cp7', 'cp8'] as const;
-const TYPE_SPEED_MS = 60;
-const ERASE_SPEED_MS = 32;
-const HOLD_MS = 2400;
+const TYPE_SPEED_MS = 90;
+const ERASE_SPEED_MS = 50;
+const HOLD_MS = 4500;
 
 type TypewriterPhase = 'typing' | 'holding' | 'erasing';
+interface PhraseParts {
+  before: string;
+  highlight: string;
+  after: string;
+}
+
+function fullPhrase(p: PhraseParts): string {
+  return p.before + p.highlight + p.after;
+}
 
 /** Landing S01 — typewriter hero over cycling video bg. */
 export const Hero = () => {
@@ -40,26 +54,25 @@ export const Hero = () => {
   const [text, setText] = useState('');
   const [phase, setPhase] = useState<TypewriterPhase>('typing');
 
-  // Random video at mount (lazy init, useState — react-hooks/purity safe).
   const [videoSrc, setVideoSrc] = useState<string>(() => {
     const idx = Math.floor(Math.random() * HERO_VIDEOS.length);
     return HERO_VIDEOS[idx] ?? HERO_VIDEOS[0];
   });
 
+  const key = PHRASE_KEYS[phraseIdx] ?? 'cp1';
+  const parts = t(`landing.hero.cyclePhrases.${key}`, { returnObjects: true }) as PhraseParts;
+  const full = fullPhrase(parts);
+
   // Typewriter loop : type → hold → erase → next phrase → repeat.
-  // All state updates routed via setTimeout to satisfy React 19's
-  // `react-hooks/set-state-in-effect` rule (no synchronous setState
-  // in effect bodies).
+  // All setState routed via setTimeout (React 19 set-state-in-effect rule).
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const key = PHRASE_KEYS[phraseIdx] ?? 'cp1';
-    const fullText = t(`landing.hero.cyclePhrases.${key}`);
     let timer: number;
 
     if (phase === 'typing') {
-      if (text.length < fullText.length) {
+      if (text.length < full.length) {
         timer = window.setTimeout(() => {
-          setText(fullText.slice(0, text.length + 1));
+          setText(full.slice(0, text.length + 1));
         }, TYPE_SPEED_MS);
       } else {
         timer = window.setTimeout(() => {
@@ -84,9 +97,9 @@ export const Hero = () => {
     return () => {
       window.clearTimeout(timer);
     };
-  }, [text, phase, phraseIdx, t]);
+  }, [text, phase, full]);
 
-  // Swap to a different random video on each phrase change.
+  // Swap to a random video on each phrase change.
   const isInitialMount = useRef(true);
   useEffect(() => {
     if (isInitialMount.current) {
@@ -102,7 +115,7 @@ export const Hero = () => {
       id="s01"
       className="relative isolate flex min-h-screen flex-col overflow-hidden px-5 pt-20 pb-6 md:px-12 md:pt-20"
     >
-      {/* ─── Video bg — swaps on each phrase change ─── */}
+      {/* ─── Video bg (full height, no mask) ─── */}
       <video
         autoPlay
         loop
@@ -111,104 +124,134 @@ export const Hero = () => {
         preload="metadata"
         src={videoSrc}
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 h-full w-full object-cover"
-        style={{
-          maskImage: 'linear-gradient(to bottom, black 0%, black 88%, transparent 100%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 88%, transparent 100%)',
-        }}
+        className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover"
       />
+      {/* ─── Dark overlay — dims video enough that white text reads ─── */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-black/35" />
 
-      {/* ─── Top meta strip — coordonnées Boudry, in negative over video ─── */}
-      <div
-        className="hidden items-center justify-end gap-4 border-b border-white pb-5 font-mono text-[10px] tracking-widest text-white uppercase md:flex"
-        style={{ mixBlendMode: 'difference' }}
-      >
-        <span className="inline-flex items-center gap-1.5">
-          <span
-            aria-hidden="true"
-            className="inline-block h-1 w-1 rounded-full bg-white"
-            style={{ animation: 'terminal-pulse 1.4s ease-in-out infinite' }}
-          />
-          {t('landing.hero.topRightGps')}
-        </span>
-        <span>{t('landing.hero.topRightLoc')}</span>
-      </div>
-
-      {/* ─── Center : typewriter headline with mix-blend-difference ─── */}
-      <div className="relative flex flex-1 items-center pt-20 pb-10">
+      {/* ─── Center : typewriter headline, key word in negative ─── */}
+      <div className="relative flex flex-1 items-center pt-10 pb-10">
         <h1
-          className="font-mono text-[clamp(1.75rem,5.5vw,5.5rem)] leading-[1.05] font-medium tracking-tight text-white uppercase"
-          style={{ mixBlendMode: 'difference' }}
+          className="max-w-5xl font-mono text-[clamp(2rem,5.5vw,5.5rem)] leading-[1.15] font-medium tracking-tight text-balance text-white uppercase"
           aria-live="polite"
         >
-          {text}
+          <TypewriterRender parts={parts} text={text} />
           <span aria-hidden="true" className="caret-blink ml-1 inline-block align-baseline">
             ▎
           </span>
         </h1>
       </div>
 
-      {/* ─── Bottom 3-col meta strip ─── */}
-      <div className="border-border grid grid-cols-1 items-end gap-8 border-t pt-8 md:grid-cols-[1fr_1.5fr_auto] md:gap-12">
-        <div className="flex flex-col gap-3.5">
-          <span className="text-muted font-mono text-[10px] tracking-widest uppercase">
-            ↘ {t('landing.hero.metaStructureLabel')}
+      {/* ─── Bottom strip — GPS row + 3-col meta + CTAs (all here now) ─── */}
+      <div className="relative flex flex-col gap-6 border-t border-white/25 pt-6">
+        {/* GPS hairline row */}
+        <div className="hidden items-center justify-end gap-4 font-mono text-[10px] tracking-widest text-white/80 uppercase md:flex">
+          <span className="inline-flex items-center gap-1.5">
+            <span
+              aria-hidden="true"
+              className="inline-block h-1 w-1 rounded-full bg-white"
+              style={{ animation: 'terminal-pulse 1.4s ease-in-out infinite' }}
+            />
+            {t('landing.hero.topRightGps')}
           </span>
-          <dl className="font-mono text-[10px] leading-[1.9] tracking-wider uppercase">
-            <MetaRow term={t('landing.hero.metaType')} value={t('landing.hero.metaTypeValue')} />
-            <MetaRow
-              term={t('landing.hero.metaStatus')}
-              value={t('landing.hero.metaStatusValue')}
-            />
-            <MetaRow term={t('landing.hero.metaModel')} value={t('landing.hero.metaModelValue')} />
-            <MetaRow
-              term={t('landing.hero.metaEstablished')}
-              value={t('landing.hero.metaEstablishedValue')}
-            />
-          </dl>
+          <span>{t('landing.hero.topRightLoc')}</span>
         </div>
 
-        <div className="flex flex-col gap-3.5">
-          <span className="text-muted font-mono text-[10px] tracking-widest uppercase">
-            ↘ {t('landing.hero.metaFieldLabel')}
-          </span>
-          <p className="text-fg max-w-115 text-sm leading-relaxed">
-            {t('landing.hero.metaFieldText')}
-          </p>
-        </div>
+        {/* 3-col meta */}
+        <div className="grid grid-cols-1 items-end gap-8 md:grid-cols-[1fr_1.5fr_auto] md:gap-12">
+          <div className="flex flex-col gap-3.5">
+            <span className="font-mono text-[10px] tracking-widest text-white/60 uppercase">
+              ↘ {t('landing.hero.metaStructureLabel')}
+            </span>
+            <dl className="font-mono text-[10px] leading-[1.9] tracking-wider text-white/85 uppercase">
+              <MetaRow term={t('landing.hero.metaType')} value={t('landing.hero.metaTypeValue')} />
+              <MetaRow
+                term={t('landing.hero.metaStatus')}
+                value={t('landing.hero.metaStatusValue')}
+              />
+              <MetaRow
+                term={t('landing.hero.metaModel')}
+                value={t('landing.hero.metaModelValue')}
+              />
+              <MetaRow
+                term={t('landing.hero.metaEstablished')}
+                value={t('landing.hero.metaEstablishedValue')}
+              />
+            </dl>
+          </div>
 
-        <div className="hidden flex-col gap-2 md:flex">
-          <Button
-            variant="primary"
-            size="md"
-            onClick={() => {
-              document.getElementById('s08')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="font-mono text-xs tracking-widest uppercase"
-          >
-            {t('landing.cta.requestAccess')}
-            <span aria-hidden="true">↗</span>
-          </Button>
-          <Button
-            variant="secondary"
-            size="md"
-            onClick={() => {
-              document.getElementById('s09')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="font-mono text-xs tracking-widest uppercase"
-          >
-            {t('landing.cta.contactDirect')}
-            <span aria-hidden="true">↗</span>
-          </Button>
+          <div className="flex flex-col gap-3.5">
+            <span className="font-mono text-[10px] tracking-widest text-white/60 uppercase">
+              ↘ {t('landing.hero.metaFieldLabel')}
+            </span>
+            <p className="max-w-115 text-sm leading-relaxed text-white">
+              {t('landing.hero.metaFieldText')}
+            </p>
+          </div>
+
+          <div className="hidden flex-col gap-2 md:flex">
+            <Button
+              variant="primary"
+              size="md"
+              onClick={() => {
+                document.getElementById('s08')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="font-mono text-xs tracking-widest uppercase"
+            >
+              {t('landing.cta.requestAccess')}
+              <span aria-hidden="true">↗</span>
+            </Button>
+            <Button
+              variant="secondary"
+              size="md"
+              onClick={() => {
+                document.getElementById('s09')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="font-mono text-xs tracking-widest text-white uppercase"
+            >
+              {t('landing.cta.contactDirect')}
+              <span aria-hidden="true">↗</span>
+            </Button>
+          </div>
         </div>
       </div>
     </section>
   );
 };
 
+/** Renders the typewriter text with the highlight word in `mix-blend
+ *  difference` once typing reaches it. Slices `text` into the visible
+ *  portion of before / highlight / after based on cumulative length. */
+const TypewriterRender = ({ parts, text }: { parts: PhraseParts; text: string }) => {
+  const beforeLen = parts.before.length;
+  const highlightLen = parts.highlight.length;
+  const len = text.length;
+
+  if (len <= beforeLen) {
+    return <span>{text}</span>;
+  }
+
+  if (len <= beforeLen + highlightLen) {
+    return (
+      <>
+        <span>{parts.before}</span>
+        <span style={{ mixBlendMode: 'difference' }}>{text.slice(beforeLen)}</span>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <span>{parts.before}</span>
+      <span style={{ mixBlendMode: 'difference' }}>{parts.highlight}</span>
+      <span>{text.slice(beforeLen + highlightLen)}</span>
+    </>
+  );
+};
+
 const MetaRow = ({ term, value }: { term: string; value: string }) => (
-  <div className="border-border flex justify-between border-b py-1.5">
-    <dt className="text-muted">{term}</dt>
-    <dd className="text-fg font-medium">{value}</dd>
+  <div className="flex justify-between border-b border-white/20 py-1.5">
+    <dt className="text-white/60">{term}</dt>
+    <dd className="font-medium text-white">{value}</dd>
   </div>
 );
