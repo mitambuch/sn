@@ -57,8 +57,8 @@ export const Hero = () => {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 h-full w-full object-cover"
         style={{
-          maskImage: 'linear-gradient(to bottom, black 0%, black 65%, transparent 96%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 65%, transparent 96%)',
+          maskImage: 'linear-gradient(to bottom, black 0%, black 88%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 88%, transparent 100%)',
         }}
       />
 
