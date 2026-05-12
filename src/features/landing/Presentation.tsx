@@ -9,17 +9,15 @@
 // ═══════════════════════════════════════════════════
 
 import { SectionTag } from '@features/landing/SectionTag';
-import { useReveal } from '@hooks/useReveal';
 import { useTranslation } from 'react-i18next';
 
-/** Landing S03 — sober presentation block. */
+/** Landing S03 — sober presentation block. Always rendered (no reveal). */
 export const Presentation = () => {
   const { t } = useTranslation();
-  const ref = useReveal<HTMLDivElement>();
 
   return (
     <section id="s03" className="border-border border-b px-5 py-24 md:px-12 md:py-32">
-      <div ref={ref}>
+      <div>
         {/* ─── Header ─── */}
         <div className="border-border mb-16 grid grid-cols-1 items-end gap-8 border-b pb-8 md:grid-cols-2 md:gap-12">
           <div className="flex flex-col gap-4">

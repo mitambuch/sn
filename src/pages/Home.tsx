@@ -1,12 +1,13 @@
 // ═══════════════════════════════════════════════════
 // Home — Sawnext public landing
 //
-// WHAT: Renders the public landing page (v0.6 baseline). Composes the
-//       spine sections (Hero S01, Presentation S03, Access S08,
-//       Interlocutor S09, Footer) with the persistent chrome
-//       (TopProgress + IndexOverlay + TerminalBar). The non-spine
-//       sections (S02 sticky manifesto, S04 piliers, S05 domaines,
-//       S06 expériences, S07 manifeste II) ship in the next pass.
+// WHAT: Composes the public landing (v0.6 baseline) — Hero S01 →
+//       Manifesto S02 (sticky 300vh) → Presentation S03 → Principles
+//       S04 (blur-reveal) → Domains S05 → Access S08 → Interlocutor
+//       S09 → Footer + the persistent chrome (TopProgress + INDEX
+//       overlay + sticky-at-end TerminalBar). Top-corner chrome
+//       (BrandMark + INDEX button) inverts to white when the user
+//       scrolls into a section flagged `data-landing-dark="true"`.
 // WHEN: Index of /:locale/, mounted OUTSIDE PublicLayout (no Header /
 //       no Footer) so the TerminalBar acts as the chrome.
 // EDIT COPY: src/locales/{fr,en}.json under landing.* — never inline.
@@ -24,13 +25,15 @@ import {
   IndexOverlay,
   Interlocutor,
   LandingFooter,
+  Manifesto,
   Marquee,
   Presentation,
   Principles,
   TerminalBar,
   TopProgress,
 } from '@features/landing';
-import { useCallback, useState } from 'react';
+import { cn } from '@utils/cn';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -38,6 +41,7 @@ export default function Home() {
   const { t } = useTranslation();
   const { localePath } = useLocale();
   const [indexOpen, setIndexOpen] = useState(false);
+  const [darkActive, setDarkActive] = useState(false);
 
   const openIndex = useCallback(() => {
     setIndexOpen(true);
@@ -46,12 +50,50 @@ export default function Home() {
     setIndexOpen(false);
   }, []);
 
+  // Top-corner chrome inversion : watch every section flagged dark.
+  // A dark section "actively" overlaps the top chrome when its top edge
+  // is above 64px and its bottom edge is below 64px (i.e. the chrome row
+  // is currently sitting over a black section).
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const darkSections = document.querySelectorAll<HTMLElement>('[data-landing-dark="true"]');
+    if (darkSections.length === 0) return;
+
+    const active = new Set<Element>();
+    const observer = new IntersectionObserver(
+      entries => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            active.add(entry.target);
+          } else {
+            active.delete(entry.target);
+          }
+        }
+        setDarkActive(active.size > 0);
+      },
+      { rootMargin: '0px 0px -96% 0px', threshold: 0 },
+    );
+
+    darkSections.forEach(s => {
+      observer.observe(s);
+    });
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   const sections: IndexEntry[] = [
     {
       href: '#s01',
       num: '01',
       name: t('landing.index.s01name'),
       label: t('landing.index.s01label'),
+    },
+    {
+      href: '#s02',
+      num: '02',
+      name: t('landing.index.s02name'),
+      label: t('landing.index.s02label'),
     },
     {
       href: '#s03',
@@ -118,29 +160,14 @@ export default function Home() {
   return (
     <>
       <SeoHead />
-
       <TopProgress />
-
-      {/* ─── Top corner : BrandMark (left, big enough to read) + INDEX (right) ─── */}
-      <div className="pointer-events-none fixed inset-x-0 top-0 z-100 flex items-center justify-between px-5 py-4 md:px-12 md:py-5">
-        <a href="#s01" className="pointer-events-auto" aria-label={t('landing.index.title')}>
-          <BrandMark className="text-fg text-base md:text-lg" />
-        </a>
-        <button
-          type="button"
-          onClick={openIndex}
-          className="border-fg text-fg hover:bg-fg hover:text-bg pointer-events-auto inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs tracking-widest uppercase transition-colors"
-          aria-haspopup="dialog"
-          aria-expanded={indexOpen}
-        >
-          <span aria-hidden="true" className="flex flex-col gap-0.5">
-            <span className="bg-fg block h-px w-3.5" />
-            <span className="bg-fg block h-px w-3.5" />
-            <span className="bg-fg block h-px w-3.5" />
-          </span>
-          {t('landing.indexButton')}
-        </button>
-      </div>
+      <TopCornerChrome
+        darkActive={darkActive}
+        indexOpen={indexOpen}
+        openIndex={openIndex}
+        title={t('landing.index.title')}
+        indexLabel={t('landing.indexButton')}
+      />
 
       <IndexOverlay
         open={indexOpen}
@@ -170,7 +197,9 @@ export default function Home() {
       <main>
         <Hero />
         <Marquee items={heroMarquee} tone="dark" />
+        <Manifesto />
         <Presentation />
+        <Marquee items={finalMarquee} tone="light" />
         <Principles />
         <Domains />
         <Marquee items={finalMarquee} tone="light" />
@@ -192,3 +221,57 @@ export default function Home() {
     </>
   );
 }
+
+interface TopCornerChromeProps {
+  darkActive: boolean;
+  indexOpen: boolean;
+  openIndex: () => void;
+  title: string;
+  indexLabel: string;
+}
+
+/** Top-corner chrome (BrandMark left + INDEX button right). Inverts to bg
+ *  colours when a `data-landing-dark` section overlaps the chrome row. */
+const TopCornerChrome = ({
+  darkActive,
+  indexOpen,
+  openIndex,
+  title,
+  indexLabel,
+}: TopCornerChromeProps) => {
+  const text = darkActive ? 'text-bg' : 'text-fg';
+  const border = darkActive ? 'border-bg' : 'border-fg';
+  const bar = darkActive ? 'bg-bg' : 'bg-fg';
+  const hover = darkActive ? 'hover:bg-bg hover:text-fg' : 'hover:bg-fg hover:text-bg';
+
+  return (
+    <div className="pointer-events-none fixed inset-x-0 top-0 z-100 flex items-center justify-between px-5 py-4 md:px-12 md:py-5">
+      <a
+        href="#s01"
+        className={cn('pointer-events-auto transition-colors duration-300', text)}
+        aria-label={title}
+      >
+        <BrandMark className="text-base md:text-lg" />
+      </a>
+      <button
+        type="button"
+        onClick={openIndex}
+        className={cn(
+          'pointer-events-auto inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs tracking-widest uppercase transition-colors duration-300',
+          text,
+          border,
+          hover,
+        )}
+        aria-haspopup="dialog"
+        aria-expanded={indexOpen}
+      >
+        <span aria-hidden="true" className="flex flex-col gap-0.5">
+          <span className={cn('block h-px w-3.5 transition-colors duration-300', bar)} />
+          <span className={cn('block h-px w-3.5 transition-colors duration-300', bar)} />
+          <span className={cn('block h-px w-3.5 transition-colors duration-300', bar)} />
+        </span>
+        {indexLabel}
+      </button>
+    </div>
+  );
+};

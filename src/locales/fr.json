@@ -899,6 +899,25 @@
       "p3suffix": "Nous ne remplaçons aucun expert. Nous ouvrons des portes que d’autres ne voient pas.",
       "p4": "Ce qui passe par nous ne sort jamais par d’autres canaux. Aucun cas client. Aucun nom. Aucune anecdote."
     },
+    "manifesto": {
+      "eyebrow": "Manifeste / 01",
+      "hint": "Continuez à dérouler",
+      "p1": {
+        "line1": "Pas d’agence.",
+        "line2": "Pas de conciergerie.",
+        "line3": ""
+      },
+      "p2": {
+        "line1": "Une structure.",
+        "line2": "Un interlocuteur.",
+        "line3": ""
+      },
+      "p3": {
+        "line1": "Le luxe",
+        "line2": "ne se mesure pas",
+        "line3": "à ce qu’on possède."
+      }
+    },
     "principles": {
       "tag": "Principes",
       "eyebrow": "Document d’engagement / Édition 2026",
@@ -1089,10 +1108,12 @@
     "index": {
       "title": "SAW↗NEXT / Index complet",
       "footerLocation": "Boudry, Suisse",
-      "footerCount": "06 sections",
+      "footerCount": "07 sections",
       "footerEdition": "Édition Mai 2026",
       "s01name": "Introduction",
       "s01label": "Hero",
+      "s02name": "Manifeste",
+      "s02label": "Statement",
       "s03name": "Présentation",
       "s03label": "Structure",
       "s04name": "Principes",
