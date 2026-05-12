@@ -266,6 +266,76 @@ body::before {
   color: var(--color-bg);
 }
 
+/* ─── Brand preloader — SAW↗NEXT true SVG stroke-draw (2026-05-12) ──
+   Phase 1 (draw) : <path stroke-dasharray=path-length stroke-dashoffset=
+     path-length → 0> traces the actual contour of each letter in the
+     Geist Mono font (loaded via opentype.js at runtime, see hook in
+     BrandPreloader.tsx).
+   Phase 2 (fill) : stroke fades, fill solid bold appears.
+   Phase 3 (hold + exit) : welcome copy holds, then full overlay fade.
+   pathLength=1 normalizes the dash math regardless of actual letter
+   curves length. */
+.preloader-svg-wrap {
+  width: min(82vw, 960px);
+  display: flex;
+  justify-content: center;
+  /* Subtle "zoom-in" feel + initial blur defocus → focus, gives the
+     "le décor se compose autour de toi" immersion. */
+  transform: scale(0.92);
+  filter: blur(3px);
+  animation: preloader-focus 5s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+.preloader-svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.preloader-svg-path {
+  fill: transparent;
+  stroke: var(--color-fg);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pathlength: 1;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: preloader-stroke 4s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+@keyframes preloader-focus {
+  to {
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+.preloader-svg-wrap[data-phase='fill'] .preloader-svg-path,
+.preloader-svg-wrap[data-phase='hold'] .preloader-svg-path,
+.preloader-svg-wrap[data-phase='exit'] .preloader-svg-path {
+  fill: var(--color-fg);
+  stroke-width: 0;
+  transition:
+    fill 1.1s cubic-bezier(0.65, 0, 0.35, 1),
+    stroke-width 1.1s cubic-bezier(0.65, 0, 0.35, 1);
+}
+@keyframes preloader-stroke {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes preloader-fade {
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .preloader-svg-path {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+    fill: var(--color-fg) !important;
+    stroke-width: 0 !important;
+    transition: none !important;
+  }
+}
+
 /* ─── View Transitions — inter-page native crossfade (2026-05-12) ───
    Tune the default crossfade per Browser. Enabled per <Link viewTransition>
    in Card atom (so any card → detail nav transitions). The browser

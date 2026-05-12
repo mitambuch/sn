@@ -1,12 +1,32 @@
+import { BrandPreloader } from '@components/brand/BrandPreloader';
 import { ErrorBoundary } from '@components/features/ErrorBoundary';
 import { ToastContainer } from '@components/ui/Toast';
 import { AuthProvider } from '@context/AuthContext';
 import { ThemeProvider } from '@context/ThemeContext';
 import Lenis from 'lenis';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter, useLocation } from 'react-router-dom';
 
 import AppRoutes from './routes';
+
+const PRELOADER_SEEN_KEY = '__sn_preloader_seen';
+
+function readPreloaderSeen(): boolean {
+  if (typeof window === 'undefined') return true;
+  try {
+    return window.sessionStorage.getItem(PRELOADER_SEEN_KEY) === '1';
+  } catch {
+    return true; // Safari private mode → skip preloader rather than crash
+  }
+}
+
+function markPreloaderSeen(): void {
+  try {
+    window.sessionStorage.setItem(PRELOADER_SEEN_KEY, '1');
+  } catch {
+    // ignore
+  }
+}
 
 /**
  * Smooth scroll — Lenis (fromanother.love-style "vivant" inertia).
@@ -42,8 +62,17 @@ function useSmoothScroll() {
 function AppContent() {
   const { pathname } = useLocation();
   useSmoothScroll();
+  const [showPreloader, setShowPreloader] = useState(() => !readPreloaderSeen());
   return (
     <ErrorBoundary resetKeys={[pathname]}>
+      {showPreloader && (
+        <BrandPreloader
+          onComplete={() => {
+            markPreloaderSeen();
+            setShowPreloader(false);
+          }}
+        />
+      )}
       <AppRoutes />
       <ToastContainer />
     </ErrorBoundary>
