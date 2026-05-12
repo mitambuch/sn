@@ -37,8 +37,11 @@
   --color-info-text: #52b0ff;
   --color-accent-text: #f0f0f0;
 
-  --font-family-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-  --font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  /* Tailwind 4 namespace: --font-* (NOT --font-family-*) so `font-sans` /
+     `font-mono` utilities map correctly. Renamed 2026-05-12 — previous
+     `--font-family-*` naming caused silent fallback to system fonts. */
+  --font-sans: 'Geist Variable', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'JetBrains Mono', monospace;
 
   /* Card depth scale — Apple-closed system (2026-05-11)
      Used by Card atom + 7 domain cards. Tweaking here propagates everywhere.

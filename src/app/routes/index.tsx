@@ -64,6 +64,7 @@ const AdminCatalogue = lazyWithRetry(() => import('@pages/AdminCatalogue'));
 const NewsList = lazyWithRetry(() => import('@pages/NewsList'));
 const NewsDetail = lazyWithRetry(() => import('@pages/NewsDetail'));
 const AccountSaved = lazyWithRetry(() => import('@pages/AccountSaved'));
+const LogoPreview = lazyWithRetry(() => import('@pages/LogoPreview'));
 
 /* ─── Loading fallback — themed, no white flash ───────────────── */
 function PageLoader() {
@@ -103,6 +104,9 @@ export default function AppRoutes() {
         <Route path={ROUTES.HOME} element={<LocaleRedirect />} />
         <Route path={ROUTES.PLAYGROUND} element={<LocaleRedirect />} />
         <Route path={ROUTES.LAB} element={<LocaleRedirect />} />
+
+        {/* ─── /logo — brand identity preview (no locale, no layout) ─── */}
+        <Route path="/logo" element={<LogoPreview />} />
 
         {/* ─── Canonical locale-prefixed tree ─── */}
         <Route path="/:locale" element={<LocaleLayout />}>
