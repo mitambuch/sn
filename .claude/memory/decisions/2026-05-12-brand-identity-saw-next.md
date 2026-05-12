@@ -9,13 +9,41 @@ status: active
 
 # Brand identity — SAW↗NEXT logo system + fonts + arrow vocabulary
 
-## Logo
+## ⚠️ RÈGLE ABSOLUE — `<BrandMark />` est la SEULE manière de rendre le logo
+
+**Owner explicit 2026-05-12 21:10** (après pixel-perfect validation à
+weight 600 + offset -0.09em) :
+> *"VERROUILLE C'EST LE LOGO PIXEL PERFECT — c'est LA RÈGLE LA PLUS
+> IMPORTANTE, on doit TOUJOURS avoir ce rendu."*
+
+```tsx
+import { BrandMark } from '@components/brand/BrandMark';
+
+<BrandMark className="text-9xl" />                  {/* SAW↗NEXT display */}
+<BrandMark className="text-3xl" />                  {/* SAW↗NEXT header */}
+<BrandMark variant="short" className="text-6xl" />  {/* S↗N short form */}
+```
+
+**INTERDIT** :
+- Hand-roll `SAW↗NEXT` ou `S↗N` directement dans du JSX
+- Recopier le ↗ inline dans un h1/p/span sans passer par `<BrandMark />`
+- Wrapper le ↗ dans un span custom avec un offset/transform différent
+- Override le `font-bold` ou le `font-mono` du composant
+
+**Source de vérité** : `src/components/brand/BrandMark.tsx`. Si l'offset
+vertical doit changer (cap-height align), tweak la constante `ARROW_OFFSET`
+dans ce fichier — un endroit unique, propage partout.
+
+## Spec du rendu validé (pixel-perfect 2026-05-12 21:10)
 
 - **Forme longue** : `SAW↗NEXT`
 - **Forme courte** : `S↗N`
-- **Font** : Geist Mono Variable, weight **700** (bold)
+- **Font** : Geist Mono Variable, weight **600** (`font-semibold` partout :
+  texte + flèche). Owner a comparé 700 vs 600 → 600 retenu comme final
 - **Casse** : capitales uniquement
-- **Flèche** : `↗` exclusivement (Unicode U+2197, "North East Arrow")
+- **Flèche** : `↗` exclusivement (Unicode U+2197)
+- **Offset vertical du ↗** : `translateY(-0.09em)` — cap-height align (collée
+  en haut du mot, pas centrée em-middle qui est le rendu natif Geist Mono)
 - **Aucun espace** autour de la flèche
 - La flèche **fait partie intégrante du mot** — non séparable
 

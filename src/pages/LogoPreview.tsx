@@ -1,11 +1,14 @@
 // ═══════════════════════════════════════════════════
 // LogoPreview — Brand identity validation page
 //
-// WHAT: Renders the SAW↗NEXT logo in multiple sizes + the arrow vocabulary
-//       set, in Geist Mono Variable bold. Owner-facing reference page.
-// WHEN: Open /logo to verify brand compliance (font, glyph, spacing, case).
+// WHAT: Renders the SAW↗NEXT logo (via <BrandMark />) in multiple sizes
+//       + the arrow vocabulary set. Owner-facing reference page.
+// WHEN: Open /logo to verify brand compliance (font, glyph, vertical
+//       alignment, spacing, case).
 // RULE: .claude/memory/decisions/2026-05-12-brand-identity-saw-next.md
 // ═══════════════════════════════════════════════════
+
+import { BrandMark } from '@components/brand/BrandMark';
 
 const ARROWS = [
   { glyph: '↗', code: 'U+2197', usage: 'signature · accent · identité' },
@@ -30,9 +33,7 @@ export default function LogoPreview() {
           <p className="text-muted font-mono text-xs tracking-widest uppercase">
             Long form / display — Geist Mono Variable / 700 / caps
           </p>
-          <h1 className="font-mono text-6xl leading-none font-bold tracking-tight sm:text-8xl md:text-9xl">
-            SAW↗NEXT
-          </h1>
+          <BrandMark className="text-6xl leading-none sm:text-8xl md:text-9xl" />
         </section>
 
         {/* ─── Header size ─── */}
@@ -40,7 +41,7 @@ export default function LogoPreview() {
           <p className="text-muted font-mono text-xs tracking-widest uppercase">
             Long form / header size
           </p>
-          <p className="font-mono text-2xl font-bold tracking-tight sm:text-3xl">SAW↗NEXT</p>
+          <BrandMark className="text-2xl sm:text-3xl" />
         </section>
 
         {/* ─── Inline body ─── */}
@@ -48,7 +49,7 @@ export default function LogoPreview() {
           <p className="text-muted font-mono text-xs tracking-widest uppercase">
             Long form / inline body
           </p>
-          <p className="font-mono text-base font-bold tracking-tight">SAW↗NEXT</p>
+          <BrandMark className="text-base" />
         </section>
 
         {/* ─── Short form ─── */}
@@ -56,9 +57,7 @@ export default function LogoPreview() {
           <p className="text-muted font-mono text-xs tracking-widest uppercase">
             Short form / display
           </p>
-          <p className="font-mono text-6xl leading-none font-bold tracking-tight sm:text-8xl">
-            S↗N
-          </p>
+          <BrandMark variant="short" className="text-6xl leading-none sm:text-8xl" />
         </section>
 
         {/* ─── Arrow vocabulary — 4 authorised ─── */}
@@ -103,10 +102,14 @@ export default function LogoPreview() {
           <p className="text-muted font-mono text-xs tracking-widest uppercase">Spec</p>
           <ul className="font-mono text-sm leading-relaxed">
             <li>
+              Component : <span className="font-bold">&lt;BrandMark /&gt;</span> (never hand-roll)
+            </li>
+            <li>
               Font : <span className="font-bold">Geist Mono Variable</span>
             </li>
             <li>
-              Weight : <span className="font-bold">700</span>
+              Weight : <span className="font-semibold">600</span> (font-semibold — validé
+              pixel-perfect 2026-05-12)
             </li>
             <li>
               Case : <span className="font-bold">UPPERCASE</span>
@@ -115,10 +118,11 @@ export default function LogoPreview() {
               Arrow : <span className="font-bold">↗ U+2197 (Unicode character, never SVG)</span>
             </li>
             <li>
-              Spacing : <span className="font-bold">aucun espace autour de ↗</span>
+              Arrow offset : <span className="font-semibold">translateY(-0.09em)</span> — cap-height
+              align
             </li>
             <li>
-              Integrity : <span className="font-bold">↗ part of word, non-separable</span>
+              Spacing : <span className="font-bold">aucun espace autour de ↗</span>
             </li>
           </ul>
         </section>
