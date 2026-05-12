@@ -13,6 +13,7 @@
 import { useLocale } from '@app/LocaleProvider';
 import { Container } from '@components/layout/Container';
 import { Card } from '@components/ui/Card';
+import { MagneticHover } from '@components/ui/MagneticHover';
 import { Skeleton } from '@components/ui/Skeleton';
 import { StatusPill } from '@components/ui/StatusPill';
 import { ROUTES } from '@constants/routes';
@@ -128,20 +129,21 @@ const PersonalisedRequestSection = () => {
             Forces alignment with the parent column grid, no overflow wrap. */}
         <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
           {REQUEST_SHORTCUTS.map(({ category, icon: Icon }) => (
-            <button
-              key={category}
-              type="button"
-              onClick={() => openWith(category)}
-              className={cn(
-                'border-border text-muted hover:text-fg hover:border-fg/40',
-                'inline-flex items-center justify-center gap-1.5 rounded-md border px-3 py-2.5 text-[11px] tracking-widest whitespace-nowrap uppercase',
-                'duration-base transition-[color,border-color]',
-                'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
-              )}
-            >
-              <Icon size={12} strokeWidth={1.5} aria-hidden="true" />
-              {t(`wizard.category.${category}.title`)}
-            </button>
+            <MagneticHover key={category} radius={70} strength={0.22}>
+              <button
+                type="button"
+                onClick={() => openWith(category)}
+                className={cn(
+                  'border-border text-muted hover:text-fg hover:border-fg/40',
+                  'inline-flex w-full items-center justify-center gap-1.5 rounded-md border px-3 py-2.5 text-[11px] tracking-widest whitespace-nowrap uppercase',
+                  'duration-base transition-[color,border-color]',
+                  'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
+                )}
+              >
+                <Icon size={12} strokeWidth={1.5} aria-hidden="true" />
+                {t(`wizard.category.${category}.title`)}
+              </button>
+            </MagneticHover>
           ))}
         </div>
       </section>
