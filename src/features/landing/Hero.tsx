@@ -62,12 +62,15 @@ export const Hero = () => {
         }}
       />
 
-      {/* ─── Top meta strip — coordonnées Boudry, terminal-style ─── */}
-      <div className="border-border text-muted hidden items-center justify-end gap-4 border-b pb-5 font-mono text-[10px] tracking-widest uppercase md:flex">
+      {/* ─── Top meta strip — coordonnées Boudry, in negative over video ─── */}
+      <div
+        className="hidden items-center justify-end gap-4 border-b border-white pb-5 font-mono text-[10px] tracking-widest text-white uppercase md:flex"
+        style={{ mixBlendMode: 'difference' }}
+      >
         <span className="inline-flex items-center gap-1.5">
           <span
             aria-hidden="true"
-            className="bg-fg inline-block h-1 w-1 rounded-full"
+            className="inline-block h-1 w-1 rounded-full bg-white"
             style={{ animation: 'terminal-pulse 1.4s ease-in-out infinite' }}
           />
           {t('landing.hero.topRightGps')}
