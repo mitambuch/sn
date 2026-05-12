@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-05-13** — [Session — Landing public iteration marathon (22:44 → 00:50)](sessions/2026-05-13-0050-landing-iteration-marathon.md)
 - **2026-05-12** — [Session — Landing publique spine (22:44 → 23:13)](sessions/2026-05-12-2300-landing-spine.md)
 - **2026-05-12** — [Session — Design-night motion stack (Phase 1-5) + brand identity SAW↗NEXT](sessions/2026-05-12-2000-design-night-motion-stack.md)
-- **2026-05-12** — [Session — Sawnext design-night : Apple-closed cards + wizard fluide + mobile-first restructure](sessions/2026-05-12-0123.md)
 
 ## Active decisions (top 5)
 
@@ -30,7 +30,7 @@
 
 ## Deep dive
 
-- Full catalogue (102 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (103 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
