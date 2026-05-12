@@ -61,13 +61,13 @@ export const Presentation = () => {
           </dl>
 
           {/* col 2 : paragraph one */}
-          <div className="text-fg space-y-5 text-sm leading-[1.6]">
+          <div className="text-fg space-y-5 text-base leading-relaxed">
             <p>{t('landing.presentation.p1')}</p>
             <p>{t('landing.presentation.p2')}</p>
           </div>
 
           {/* col 3 : paragraph two */}
-          <div className="text-fg space-y-5 text-sm leading-[1.6]">
+          <div className="text-fg space-y-5 text-base leading-relaxed">
             <p>
               {t('landing.presentation.p3prefix')}{' '}
               <strong className="font-medium">{t('landing.presentation.p3emphasis')}</strong>.{' '}

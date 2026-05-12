@@ -12,8 +12,10 @@
 // EDIT COPY: src/locales/{fr,en}.json under landing.* — never inline.
 // ═══════════════════════════════════════════════════
 
+import { useLocale } from '@app/LocaleProvider';
 import { BrandMark } from '@components/brand/BrandMark';
 import { SeoHead } from '@components/features/SeoHead';
+import { ROUTES } from '@constants/routes';
 import {
   Access,
   Domains,
@@ -29,9 +31,11 @@ import {
 } from '@features/landing';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
   const { t } = useTranslation();
+  const { localePath } = useLocale();
   const [indexOpen, setIndexOpen] = useState(false);
 
   const openIndex = useCallback(() => {
@@ -140,10 +144,23 @@ export default function Home() {
         edition={t('landing.index.footerEdition')}
         closeLabel={t('common.close')}
         title={t('landing.index.title')}
+        primaryCtaLabel={t('landing.cta.requestAccess')}
+        primaryCtaHref="#s08"
+        secondaryCtaLabel={t('landing.cta.privateArea')}
+        secondaryCtaNode={
+          <Link
+            to={localePath(ROUTES.LOGIN)}
+            onClick={closeIndex}
+            className="border-bg text-bg hover:bg-bg hover:text-fg inline-flex items-center justify-between gap-3 rounded-full border px-6 py-4 font-mono text-xs tracking-widest uppercase transition-colors md:py-5 md:text-sm"
+          >
+            <span>{t('landing.cta.privateArea')}</span>
+            <span aria-hidden="true">↗</span>
+          </Link>
+        }
       />
 
-      {/* ─── Main — generous bottom padding clears the fixed TerminalBar ─── */}
-      <main className="pb-20 md:pb-24">
+      {/* ─── Main — TerminalBar is sticky at the end, no overlay risk ─── */}
+      <main>
         <Hero />
         <Marquee items={heroMarquee} tone="dark" />
         <Presentation />
@@ -153,17 +170,17 @@ export default function Home() {
         <Interlocutor />
         <Marquee items={finalMarquee} tone="dark" />
         <LandingFooter />
-      </main>
 
-      <TerminalBar
-        tickerItems={tickerItems}
-        statusLabel={t('landing.terminal.status')}
-        tzLabel={t('landing.terminal.tz')}
-        primaryCtaLabel={t('landing.cta.requestAccess')}
-        primaryCtaHref="#s08"
-        secondaryCtaLabel={t('landing.cta.privateArea')}
-        secondaryCtaHref="#s08"
-      />
+        <TerminalBar
+          tickerItems={tickerItems}
+          statusLabel={t('landing.terminal.status')}
+          tzLabel={t('landing.terminal.tz')}
+          primaryCtaLabel={t('landing.cta.requestAccess')}
+          primaryCtaHref="#s08"
+          secondaryCtaLabel={t('landing.cta.privateArea')}
+          secondaryCtaHref={localePath(ROUTES.LOGIN)}
+        />
+      </main>
     </>
   );
 }

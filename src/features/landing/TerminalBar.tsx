@@ -1,12 +1,15 @@
 // ═══════════════════════════════════════════════════
 // TerminalBar — fixed bottom signature bar
 //
-// WHAT: Always-visible black bar at the bottom of the landing. Holds the
-//       SAW↗NEXT wordmark, live Europe/Zurich time (refreshing every 1s),
-//       a "cooptation ouverte" status dot, an infinite ticker, and the two
-//       conversion CTAs (Espace privé + Demander un accès).
-// WHEN: Mounted once by the landing root. Hides cleanly on mobile by
-//       collapsing the ticker and status (CTAs always remain).
+// WHAT: Sticky-at-bottom black bar holding the SAW↗NEXT wordmark, live
+//       Europe/Zurich time (refreshing every 1s), a "cooptation ouverte"
+//       status dot, an infinite ticker, and the two conversion CTAs.
+//       Position : `sticky bottom-0` placed as the LAST child of `main`,
+//       so the bar sticks to the viewport bottom while scrolling and
+//       sits naturally at the end of the page (no overlay on content).
+// WHEN: Mounted once by the landing root inside `<main>`. Hides cleanly
+//       on mobile by collapsing the ticker and status (CTAs always
+//       remain visible — conversion path is sacred).
 // CHANGE HEIGHT: h-14 (56px desktop) / h-13 (52px mobile via responsive).
 // CHANGE TIMEZONE: 'Europe/Zurich' in updateTime() — leave as CH/CET.
 // ═══════════════════════════════════════════════════
@@ -68,7 +71,7 @@ export const TerminalBar = ({
   return (
     <div
       role="contentinfo"
-      className="bg-fg text-bg fixed right-0 bottom-0 left-0 z-[150] grid h-13 grid-cols-[auto_1fr_auto] items-center font-mono text-[11px] tracking-wider md:h-14"
+      className="bg-fg text-bg sticky bottom-0 z-[150] grid h-13 grid-cols-[auto_1fr_auto] items-center font-mono text-[11px] tracking-wider md:h-14"
     >
       {/* ─── Left : brand + time + status ─── */}
       <div className="border-bg/15 flex h-full items-center gap-3 px-4 md:gap-6 md:border-r md:pr-12 md:pl-6">

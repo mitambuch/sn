@@ -50,21 +50,33 @@ export const Access = () => {
             {t('landing.access.description')}
           </p>
 
-          {/* 3-step grid — Apple-closed Card atoms (compact density) */}
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-            {[1, 2, 3].map(n => (
-              <Card key={n} padding="lg" className="min-h-[170px]">
-                <span className="text-muted mb-3 font-mono text-[10px] tracking-widest uppercase">
-                  {String(n).padStart(2, '0')}
-                </span>
-                <span className="text-fg mb-2 font-mono text-sm font-medium tracking-wider uppercase">
-                  {t(`landing.access.step${String(n)}Label`)}
-                </span>
-                <span className="text-muted text-xs leading-relaxed">
-                  {t(`landing.access.step${String(n)}Info`)}
-                </span>
-              </Card>
-            ))}
+          {/* ─── "Ce qui se passe derrière" — premium teaser, value-prop ─── */}
+          <div className="flex flex-col gap-4">
+            <span className="text-muted font-mono text-[10px] tracking-widest uppercase">
+              ↘ {t('landing.access.behindEyebrow')}
+            </span>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              {[1, 2, 3].map(n => (
+                <Card key={n} padding="none" className="min-h-60 md:min-h-72">
+                  <Card.Body density="spacious" className="gap-3">
+                    <Card.Eyebrow className="text-fg/80 font-mono">
+                      {t(`landing.access.behind${String(n)}Num`)}
+                    </Card.Eyebrow>
+                    <Card.Title size="lg" className="text-fg">
+                      {t(`landing.access.behind${String(n)}Title`)}
+                    </Card.Title>
+                    <Card.Meta className="text-muted text-sm leading-relaxed">
+                      {t(`landing.access.behind${String(n)}Desc`)}
+                    </Card.Meta>
+                    <Card.Footer className="border-border mt-auto border-t pt-3">
+                      <span className="text-fg/70 font-mono text-[10px] tracking-widest uppercase">
+                        {t(`landing.access.behind${String(n)}Hint`)}
+                      </span>
+                    </Card.Footer>
+                  </Card.Body>
+                </Card>
+              ))}
+            </div>
           </div>
 
           <div>
