@@ -24,6 +24,25 @@ type PhraseKey = 'p1' | 'p2' | 'p3' | 'p4' | 'p5' | 'p6';
 const PHRASE_KEYS: readonly PhraseKey[] = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6'];
 const VISIBLE_COUNT = 3;
 
+// Visible-band scroll progress windows per phrase. Between bands, NO
+// phrase is active — only the fog drifts. Owner direction 2026-05-13 :
+// "quand le texte disparait l'autre ne réapparaisse pas tout de suite".
+const VISIBLE_BANDS: readonly [number, number][] = [
+  [0.04, 0.26],
+  [0.4, 0.62],
+  [0.76, 0.96],
+];
+
+function computeActive(progress: number): number {
+  for (let i = 0; i < VISIBLE_BANDS.length; i++) {
+    const band = VISIBLE_BANDS[i];
+    if (!band) continue;
+    const [start, end] = band;
+    if (progress >= start && progress <= end) return i;
+  }
+  return -1;
+}
+
 // Per-phrase indentation scheme. Each value is a percentage of the
 // container width applied as margin-left to that line. Variation
 // creates a poetic visual rhythm — same words, different spatial
@@ -70,8 +89,7 @@ export const Manifesto = () => {
       if (total <= 0) return;
       const scrolled = -rect.top;
       const progress = Math.max(0, Math.min(1, scrolled / total));
-      const step = Math.min(VISIBLE_COUNT - 1, Math.floor(progress * VISIBLE_COUNT));
-      setActive(step);
+      setActive(computeActive(progress));
     };
 
     const onScroll = () => {
@@ -140,10 +158,10 @@ export const Manifesto = () => {
                   className={cn(
                     'relative mx-auto w-full max-w-5xl font-mono leading-[1.05] font-medium tracking-tight uppercase',
                     'text-[clamp(1.75rem,5vw,4.5rem)]',
-                    'transition-[opacity,filter,transform] ease-out',
+                    'transition-[opacity,filter,transform,text-shadow] ease-out',
                     isActive
-                      ? 'blur-0 translate-y-0 scale-100 opacity-100 duration-[1600ms]'
-                      : 'translate-y-8 scale-[1.04] opacity-0 blur-[14px] duration-[2200ms]',
+                      ? 'manifesto-phrase-lit blur-0 translate-y-0 scale-100 opacity-100 duration-[1800ms]'
+                      : 'translate-y-8 scale-[1.04] opacity-0 blur-[16px] duration-[2400ms]',
                   )}
                 >
                   {safeLines.map((line, i) => (

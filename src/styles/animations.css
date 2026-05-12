@@ -275,18 +275,36 @@
 .manifesto-fog::before {
   background: radial-gradient(
     closest-side,
-    color-mix(in srgb, var(--color-on-ink) 10%, transparent) 0%,
-    transparent 75%
+    color-mix(in srgb, var(--color-on-ink) 12%, transparent) 0%,
+    color-mix(in srgb, var(--color-on-ink) 5%, transparent) 50%,
+    transparent 85%
   );
+  filter: blur(140px);
+  opacity: 0.4;
   animation: manifesto-fog-a 22s ease-in-out infinite;
 }
 .manifesto-fog::after {
   background: radial-gradient(
     closest-side,
-    color-mix(in srgb, var(--color-on-ink) 8%, transparent) 0%,
-    transparent 75%
+    color-mix(in srgb, var(--color-on-ink) 9%, transparent) 0%,
+    color-mix(in srgb, var(--color-on-ink) 4%, transparent) 45%,
+    transparent 85%
   );
+  filter: blur(140px);
+  opacity: 0.4;
   animation: manifesto-fog-b 28s ease-in-out infinite;
+}
+
+/* ─── Active phrase illumination — soft halo "lit by the fog" ──
+   3-layer text-shadow (close + medium + wide) simulates a spotlight
+   wrapping the active words. Activated by the `manifesto-phrase-lit`
+   class on the centered phrase wrapper. */
+
+.manifesto-phrase-lit {
+  text-shadow:
+    0 0 18px color-mix(in srgb, var(--color-on-ink) 28%, transparent),
+    0 0 48px color-mix(in srgb, var(--color-on-ink) 14%, transparent),
+    0 0 100px color-mix(in srgb, var(--color-on-ink) 7%, transparent);
 }
 
 /* ─── Cinema fog FRONT layer — wisps that drift ABOVE the words.
