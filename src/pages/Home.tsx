@@ -26,6 +26,7 @@ import {
   LandingFooter,
   Manifesto,
   Marquee,
+  Method,
   Presentation,
   Principles,
   TerminalBar,
@@ -141,6 +142,7 @@ export default function Home() {
         <Marquee items={heroMarquee} tone="dark" />
         <Manifesto />
         <Presentation />
+        <Method />
         <Marquee items={finalMarquee} tone="light" />
         <Principles />
         <Domains />

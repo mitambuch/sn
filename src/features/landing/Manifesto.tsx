@@ -136,6 +136,17 @@ export const Manifesto = () => {
           <span>02 / 09</span>
         </div>
 
+        {/* Massive phrase number watermark — Pentagram-style depth layer.
+            Sits behind the words at very low opacity, scales to viewport. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 flex items-center justify-center"
+        >
+          <span className="text-on-ink/[0.06] font-mono text-[clamp(18rem,55vw,55rem)] leading-none font-bold tracking-tighter select-none">
+            {String(active + 1).padStart(2, '0')}
+          </span>
+        </div>
+
         {/* Random-grid word constellation — each phrase is its own grid layer */}
         <div className="relative z-10 flex-1">
           {PHRASES.map((words, idx) => {
