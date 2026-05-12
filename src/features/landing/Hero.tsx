@@ -10,6 +10,7 @@
 //       semantic register (brand voice: retenue suisse-bancaire).
 // ═══════════════════════════════════════════════════
 
+import { Button } from '@components/ui/Button';
 import { useCyclingWord } from '@features/landing/useCyclingWord';
 import { useTranslation } from 'react-i18next';
 
@@ -23,20 +24,15 @@ export const Hero = () => {
   return (
     <section
       id="s01"
-      className="relative flex min-h-screen flex-col px-5 pt-14 pb-6 md:px-12 md:pt-14"
+      className="relative flex min-h-screen flex-col px-5 pt-20 pb-6 md:px-12 md:pt-20"
     >
-      {/* ─── Top meta strip ─── */}
-      <div className="border-border grid grid-cols-1 items-center gap-2 border-b pb-5 font-mono text-[10px] tracking-[0.1em] uppercase md:grid-cols-[1fr_auto_1fr]">
-        <span className="text-muted">{t('landing.hero.topLeft')}</span>
-        <span className="text-fg hidden font-semibold md:inline">
-          {t('landing.hero.topCenter')}
+      {/* ─── Top meta strip — coordonnées Boudry, terminal-style ─── */}
+      <div className="border-border text-muted hidden items-center justify-end gap-4 border-b pb-5 font-mono text-[10px] tracking-widest uppercase md:flex">
+        <span className="inline-flex items-center gap-1.5">
+          <span aria-hidden="true" className="bg-fg inline-block h-1 w-1 rounded-full" />
+          {t('landing.hero.topRightGps')}
         </span>
-        <span className="text-muted hidden items-center justify-end gap-4 md:flex">
-          <span className="bg-fg inline-flex items-center gap-1.5 before:inline-block before:h-1 before:w-1 before:rounded-full before:bg-current before:content-['']">
-            <span>{t('landing.hero.topRightGps')}</span>
-          </span>
-          <span>{t('landing.hero.topRightLoc')}</span>
-        </span>
+        <span>{t('landing.hero.topRightLoc')}</span>
       </div>
 
       {/* ─── Side vertical mark (desktop) ─── */}
@@ -97,22 +93,30 @@ export const Hero = () => {
           </p>
         </div>
 
-        {/* col 3 : CTAs (desktop) */}
+        {/* col 3 : CTAs (desktop) — Button atom variants */}
         <div className="hidden flex-col gap-2 md:flex">
-          <a
-            href="#s08"
-            className="border-fg bg-fg text-bg hover:bg-bg hover:text-fg inline-flex items-center gap-2.5 border px-5 py-3 font-mono text-[11px] tracking-[0.08em] uppercase transition-colors"
+          <Button
+            variant="primary"
+            size="md"
+            onClick={() => {
+              document.getElementById('s08')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="font-mono text-xs tracking-widest uppercase"
           >
             {t('landing.cta.requestAccess')}
             <span aria-hidden="true">↗</span>
-          </a>
-          <a
-            href="#s08"
-            className="border-fg text-fg hover:bg-fg hover:text-bg inline-flex items-center gap-2.5 border px-5 py-3 font-mono text-[11px] tracking-[0.08em] uppercase transition-colors"
+          </Button>
+          <Button
+            variant="secondary"
+            size="md"
+            onClick={() => {
+              document.getElementById('s09')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="font-mono text-xs tracking-widest uppercase"
           >
-            {t('landing.cta.privateArea')}
+            {t('landing.cta.contactDirect')}
             <span aria-hidden="true">↗</span>
-          </a>
+          </Button>
         </div>
       </div>
     </section>

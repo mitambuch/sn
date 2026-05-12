@@ -899,6 +899,104 @@
       "p3suffix": "Nous ne remplaçons aucun expert. Nous ouvrons des portes que d’autres ne voient pas.",
       "p4": "Ce qui passe par nous ne sort jamais par d’autres canaux. Aucun cas client. Aucun nom. Aucune anecdote."
     },
+    "domains": {
+      "tag": "Domaines",
+      "h2line1": "Dix verticales.",
+      "h2line2": "Une logique.",
+      "metaTop": "Survolez chaque ligne",
+      "metaBottom": "pour explorer ↘",
+      "previewTag": "Domaine sélectionné",
+      "01": {
+        "name": "Haute horlogerie",
+        "title": "Haute horlogerie.",
+        "desc": "Accès direct aux manufactures. Au-delà de l’acte d’achat, nous créons la relation entre le client et la maison.",
+        "feat1": "Visites privées",
+        "feat2": "Pièces rares",
+        "feat3": "Créations personnalisées",
+        "feat4": "Rencontres avec les artisans"
+      },
+      "02": {
+        "name": "Biens off-market",
+        "title": "Biens off-market.",
+        "desc": "Propriétés et actifs rares hors marché public. Cercle restreint. Transactions confidentielles.",
+        "feat1": "Propriétés d’exception",
+        "feat2": "Investissements confidentiels",
+        "feat3": "Actifs rares",
+        "feat4": "Opportunités stratégiques"
+      },
+      "03": {
+        "name": "Immobilier sur mesure",
+        "title": "Immobilier sur mesure.",
+        "desc": "Conception et coordination de propriétés d’exception. Architectes sélectionnés.",
+        "feat1": "Compréhension des attentes",
+        "feat2": "Sélection des partenaires",
+        "feat3": "Coordination",
+        "feat4": "Suivi sur la durée"
+      },
+      "04": {
+        "name": "Art & collection",
+        "title": "Art & collection.",
+        "desc": "Acquisitions d’œuvres et d’objets rares. Mise en relation avec galeristes et experts.",
+        "feat1": "Grands maîtres",
+        "feat2": "Artistes contemporains",
+        "feat3": "Objets de collection",
+        "feat4": "Expertise"
+      },
+      "05": {
+        "name": "Voyages & expériences",
+        "title": "Voyages & expériences.",
+        "desc": "Voyages entièrement sur mesure. Aviation privée, croisières, séjours confidentiels.",
+        "feat1": "Aviation privée",
+        "feat2": "Yachting",
+        "feat3": "Villas privées",
+        "feat4": "Événements internationaux"
+      },
+      "06": {
+        "name": "Événementiel VIP",
+        "title": "Événementiel VIP.",
+        "desc": "Accès privilégiés aux plus grands rendez-vous internationaux. Hospitalité sur mesure.",
+        "feat1": "Sport haut niveau",
+        "feat2": "Festivals culturels",
+        "feat3": "Concerts privés",
+        "feat4": "Dîners exclusifs"
+      },
+      "07": {
+        "name": "Lifestyle management",
+        "title": "Lifestyle management.",
+        "desc": "Tout ce qui ne rentre pas ailleurs. Recherche, organisation, accompagnement.",
+        "feat1": "Objets rares",
+        "feat2": "Événements privés",
+        "feat3": "Lieux exclusifs",
+        "feat4": "Projets personnels"
+      },
+      "08": {
+        "name": "Mise en relation",
+        "title": "Mise en relation.",
+        "desc": "Connexions confidentielles entre clients, investisseurs, entrepreneurs.",
+        "feat1": "Opportunités d’affaires",
+        "feat2": "Collaborations",
+        "feat3": "Investissements",
+        "feat4": "Projets communs"
+      },
+      "09": {
+        "name": "Gestion de patrimoine",
+        "title": "Gestion de patrimoine.",
+        "desc": "Pont avec des partenaires financiers suisses de premier plan.",
+        "feat1": "Solutions d’investissement",
+        "feat2": "Gestion de portefeuille",
+        "feat3": "Planification patrimoniale",
+        "feat4": "Transmission"
+      },
+      "10": {
+        "name": "Carrière sportive",
+        "title": "Carrière sportive.",
+        "desc": "Accompagnement d’athlètes de haut niveau. Gestion d’image, structuration.",
+        "feat1": "Gestion d’image",
+        "feat2": "Partenariats de marque",
+        "feat3": "Projets entrepreneuriaux",
+        "feat4": "Conseil stratégique"
+      }
+    },
     "access": {
       "tagPrimary": "Première porte",
       "h2line1": "Demander",
@@ -912,6 +1010,9 @@
       "step3Info": "Code transmis si validation.",
       "openForm": "Ouvrir le formulaire",
       "openFormSoon": "Disponible prochainement — contact direct via Salvatore",
+      "drawerTitle": "Demander un accès.",
+      "drawerLede": "Quelques mots pour qu’on se comprenne avant l’échange. Anonyme possible.",
+      "drawerPlaceholder": "Qui vous a parlé de nous, ce que vous cherchez, et quand vous aimeriez en parler.",
       "tagSecondary": "Client existant",
       "privateAreaTitle": "Espace privé.",
       "privateAreaDesc": "Pour les clients disposant d’un code d’accès personnel.",
@@ -951,12 +1052,14 @@
     "index": {
       "title": "SAW↗NEXT / Index complet",
       "footerLocation": "Boudry, Suisse",
-      "footerCount": "04 sections",
+      "footerCount": "05 sections",
       "footerEdition": "Édition Mai 2026",
       "s01name": "Introduction",
       "s01label": "Hero",
       "s03name": "Présentation",
       "s03label": "Structure",
+      "s05name": "Domaines",
+      "s05label": "Services",
       "s08name": "Accès",
       "s08label": "Cooptation",
       "s09name": "Interlocuteur",
@@ -984,7 +1087,8 @@
     },
     "cta": {
       "requestAccess": "Demander un accès",
-      "privateArea": "Espace privé"
+      "privateArea": "Espace privé",
+      "contactDirect": "Contact direct"
     }
   }
 }

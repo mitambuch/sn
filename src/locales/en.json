@@ -894,6 +894,104 @@
       "p3suffix": "We do not replace any expert. We open doors that others do not see.",
       "p4": "What comes through us never leaves through any other channel. No client case. No name. No anecdote."
     },
+    "domains": {
+      "tag": "Domains",
+      "h2line1": "Ten verticals.",
+      "h2line2": "One logic.",
+      "metaTop": "Hover any line",
+      "metaBottom": "to explore ↘",
+      "previewTag": "Selected domain",
+      "01": {
+        "name": "Fine watchmaking",
+        "title": "Fine watchmaking.",
+        "desc": "Direct access to manufactures. Beyond the act of purchase, we craft the relationship between client and house.",
+        "feat1": "Private visits",
+        "feat2": "Rare pieces",
+        "feat3": "Personal commissions",
+        "feat4": "Time with the artisans"
+      },
+      "02": {
+        "name": "Off-market assets",
+        "title": "Off-market assets.",
+        "desc": "Properties and rare assets outside the public market. Restricted circle. Confidential transactions.",
+        "feat1": "Exceptional properties",
+        "feat2": "Confidential investments",
+        "feat3": "Rare assets",
+        "feat4": "Strategic opportunities"
+      },
+      "03": {
+        "name": "Bespoke real estate",
+        "title": "Bespoke real estate.",
+        "desc": "Design and coordination of exceptional properties. Selected architects.",
+        "feat1": "Brief alignment",
+        "feat2": "Partner selection",
+        "feat3": "Coordination",
+        "feat4": "Long-term follow-through"
+      },
+      "04": {
+        "name": "Art & collection",
+        "title": "Art & collection.",
+        "desc": "Acquisition of works and rare objects. Connections to galleries and experts.",
+        "feat1": "Old masters",
+        "feat2": "Contemporary artists",
+        "feat3": "Collectibles",
+        "feat4": "Expertise"
+      },
+      "05": {
+        "name": "Travel & experiences",
+        "title": "Travel & experiences.",
+        "desc": "Fully bespoke travel. Private aviation, charters, confidential stays.",
+        "feat1": "Private aviation",
+        "feat2": "Yachting",
+        "feat3": "Private villas",
+        "feat4": "International events"
+      },
+      "06": {
+        "name": "VIP events",
+        "title": "VIP events.",
+        "desc": "Privileged access to the greatest international gatherings. Tailored hospitality.",
+        "feat1": "High-level sport",
+        "feat2": "Cultural festivals",
+        "feat3": "Private concerts",
+        "feat4": "Exclusive dinners"
+      },
+      "07": {
+        "name": "Lifestyle management",
+        "title": "Lifestyle management.",
+        "desc": "Everything that does not fit elsewhere. Research, coordination, follow-through.",
+        "feat1": "Rare objects",
+        "feat2": "Private events",
+        "feat3": "Exclusive venues",
+        "feat4": "Personal projects"
+      },
+      "08": {
+        "name": "Introductions",
+        "title": "Introductions.",
+        "desc": "Confidential connections between clients, investors, entrepreneurs.",
+        "feat1": "Deal flow",
+        "feat2": "Collaborations",
+        "feat3": "Co-investments",
+        "feat4": "Joint projects"
+      },
+      "09": {
+        "name": "Wealth management",
+        "title": "Wealth management.",
+        "desc": "A bridge to top-tier Swiss financial partners.",
+        "feat1": "Investment solutions",
+        "feat2": "Portfolio management",
+        "feat3": "Wealth planning",
+        "feat4": "Succession"
+      },
+      "10": {
+        "name": "Sports careers",
+        "title": "Sports careers.",
+        "desc": "Support for elite athletes. Image management, structuring.",
+        "feat1": "Image management",
+        "feat2": "Brand partnerships",
+        "feat3": "Entrepreneurial ventures",
+        "feat4": "Strategic counsel"
+      }
+    },
     "access": {
       "tagPrimary": "First door",
       "h2line1": "Request",
@@ -907,6 +1005,9 @@
       "step3Info": "Code issued upon validation.",
       "openForm": "Open the form",
       "openFormSoon": "Available soon — direct contact via Salvatore",
+      "drawerTitle": "Request access.",
+      "drawerLede": "A few words so we’re aligned before the conversation. Anonymous possible.",
+      "drawerPlaceholder": "Who introduced us, what you’re looking for, and when you’d like to talk.",
       "tagSecondary": "Existing client",
       "privateAreaTitle": "Private area.",
       "privateAreaDesc": "For clients with a personal access code.",
@@ -946,12 +1047,14 @@
     "index": {
       "title": "SAW↗NEXT / Full index",
       "footerLocation": "Boudry, Switzerland",
-      "footerCount": "04 sections",
+      "footerCount": "05 sections",
       "footerEdition": "May 2026 edition",
       "s01name": "Introduction",
       "s01label": "Hero",
       "s03name": "Presentation",
       "s03label": "Structure",
+      "s05name": "Domains",
+      "s05label": "Services",
       "s08name": "Access",
       "s08label": "Cooptation",
       "s09name": "Contact",
@@ -979,7 +1082,8 @@
     },
     "cta": {
       "requestAccess": "Request access",
-      "privateArea": "Private area"
+      "privateArea": "Private area",
+      "contactDirect": "Direct contact"
     }
   }
 }

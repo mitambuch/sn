@@ -12,9 +12,11 @@
 // EDIT COPY: src/locales/{fr,en}.json under landing.* — never inline.
 // ═══════════════════════════════════════════════════
 
+import { BrandMark } from '@components/brand/BrandMark';
 import { SeoHead } from '@components/features/SeoHead';
 import {
   Access,
+  Domains,
   Hero,
   type IndexEntry,
   IndexOverlay,
@@ -51,6 +53,12 @@ export default function Home() {
       num: '03',
       name: t('landing.index.s03name'),
       label: t('landing.index.s03label'),
+    },
+    {
+      href: '#s05',
+      num: '05',
+      name: t('landing.index.s05name'),
+      label: t('landing.index.s05label'),
     },
     {
       href: '#s08',
@@ -102,33 +110,25 @@ export default function Home() {
 
       <TopProgress />
 
-      {/* ─── Top corner : INDEX button (mix-blend pending — fg/bg pour l'instant) ─── */}
-      <div className="pointer-events-none fixed inset-x-0 top-0 z-[100] flex items-center justify-between px-5 py-3 md:px-12">
-        <span className="text-fg pointer-events-auto font-mono text-[11px] font-semibold tracking-[0.02em]">
-          SAW↗NEXT
-        </span>
-        <div className="pointer-events-auto flex items-center gap-4 font-mono text-[10px] tracking-widest uppercase">
-          <span className="text-fg hidden items-center md:flex">
-            <span
-              aria-hidden="true"
-              className="bg-fg mr-1.5 inline-block h-1.5 w-1.5 rounded-full"
-              style={{ animation: 'terminal-pulse 1.4s ease-in-out infinite' }}
-            />
-            {t('landing.sessionActive')}
+      {/* ─── Top corner : BrandMark (left, big enough to read) + INDEX (right) ─── */}
+      <div className="pointer-events-none fixed inset-x-0 top-0 z-100 flex items-center justify-between px-5 py-4 md:px-12 md:py-5">
+        <a href="#s01" className="pointer-events-auto" aria-label={t('landing.index.title')}>
+          <BrandMark className="text-fg text-base md:text-lg" />
+        </a>
+        <button
+          type="button"
+          onClick={openIndex}
+          className="border-fg text-fg hover:bg-fg hover:text-bg pointer-events-auto inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs tracking-widest uppercase transition-colors"
+          aria-haspopup="dialog"
+          aria-expanded={indexOpen}
+        >
+          <span aria-hidden="true" className="flex flex-col gap-0.5">
+            <span className="bg-fg block h-px w-3.5" />
+            <span className="bg-fg block h-px w-3.5" />
+            <span className="bg-fg block h-px w-3.5" />
           </span>
-          <button
-            type="button"
-            onClick={openIndex}
-            className="border-fg text-fg hover:bg-fg hover:text-bg inline-flex items-center gap-2 border px-3.5 py-1.5 text-[10px] tracking-[0.12em] uppercase transition-colors"
-          >
-            <span aria-hidden="true" className="flex flex-col gap-[2px]">
-              <span className="bg-fg block h-px w-3" />
-              <span className="bg-fg block h-px w-3" />
-              <span className="bg-fg block h-px w-3" />
-            </span>
-            {t('landing.indexButton')}
-          </button>
-        </div>
+          {t('landing.indexButton')}
+        </button>
       </div>
 
       <IndexOverlay
@@ -142,10 +142,12 @@ export default function Home() {
         title={t('landing.index.title')}
       />
 
-      <main className="pb-13 md:pb-14">
+      {/* ─── Main — generous bottom padding clears the fixed TerminalBar ─── */}
+      <main className="pb-20 md:pb-24">
         <Hero />
         <Marquee items={heroMarquee} tone="dark" />
         <Presentation />
+        <Domains />
         <Marquee items={finalMarquee} tone="light" />
         <Access />
         <Interlocutor />
