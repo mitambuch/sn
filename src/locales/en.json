@@ -855,6 +855,16 @@
       "topRightGps": "46.50° N, 6.83° E",
       "topRightLoc": "Boudry / NE",
       "sideMark": "01 / Introduction",
+      "cyclePhrases": {
+        "cp1": "Not an agency. Not a concierge.",
+        "cp2": "Bespoke by discipline.",
+        "cp3": "Private services. Swiss. By cooptation.",
+        "cp4": "We open doors others do not see.",
+        "cp5": "One interlocutor. One network. One standard.",
+        "cp6": "What you will not find in shop windows.",
+        "cp7": "Independent structure. Restricted circle.",
+        "cp8": "For those who have the patience."
+      },
       "line1": "Certain doors",
       "line2": "open only to",
       "line3prefix": "a",

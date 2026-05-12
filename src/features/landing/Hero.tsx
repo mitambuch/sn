@@ -1,23 +1,21 @@
 // ═══════════════════════════════════════════════════
-// Hero — landing S01 (intro, cinema video bg)
+// Hero — landing S01 (terminal typewriter + cycling video bg)
 //
-// WHAT: Full-viewport opening section. A randomly-picked Cloudinary
-//       video plays as silent autoplay loop in the background. The
-//       3-line headline uses `mix-blend-mode: difference` against the
-//       video — the words appear in pure negative against whatever is
-//       behind. One word in line 3 cycles every ~6.5s. Stagger
-//       reveal on each line at first paint. Mobile-friendly.
+// WHAT: Full-viewport opening section. A Cloudinary video plays as
+//       silent autoplay background ; on each phrase change, a new
+//       random video from the pool replaces the previous one. The
+//       single-line headline TYPES OUT one of 8 phrases (60ms/char),
+//       HOLDS for 2.4s with a blinking caret, then ERASES (32ms/char)
+//       before the next phrase. Headline is in mix-blend-difference
+//       so the text auto-inverts against any video frame.
 // WHEN: Always the first section of the landing.
-// CHANGE CYCLING WORDS: edit CYCLING_WORDS below.
-// CHANGE VIDEO POOL: edit HERO_VIDEOS — one is picked at mount.
+// CHANGE PHRASES: edit landing.hero.cyclePhrases.cp1..cp8 in i18n.
+// CHANGE VIDEO POOL: edit HERO_VIDEOS — random one per phrase.
 // ═══════════════════════════════════════════════════
 
 import { Button } from '@components/ui/Button';
-import { useCyclingWord } from '@features/landing/useCyclingWord';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-const CYCLING_WORDS = ['basse', 'tenue', 'feutrée', 'retenue'] as const;
 
 const HERO_VIDEOS = [
   'https://res.cloudinary.com/df5khdkxl/video/upload/v1778623070/hf_20260512_191454_db3c4649-3862-496f-80bb-b4e156496be2_syjjkp.mp4',
@@ -28,25 +26,83 @@ const HERO_VIDEOS = [
   'https://res.cloudinary.com/df5khdkxl/video/upload/v1778623072/hf_20260512_191215_65634274-77d2-4171-830c-d156c1ae2837_bi2bj7.mp4',
 ] as const;
 
-/** Landing S01 — hero with Cloudinary video bg + mix-blend headline. */
+const PHRASE_KEYS = ['cp1', 'cp2', 'cp3', 'cp4', 'cp5', 'cp6', 'cp7', 'cp8'] as const;
+const TYPE_SPEED_MS = 60;
+const ERASE_SPEED_MS = 32;
+const HOLD_MS = 2400;
+
+type TypewriterPhase = 'typing' | 'holding' | 'erasing';
+
+/** Landing S01 — typewriter hero over cycling video bg. */
 export const Hero = () => {
   const { t } = useTranslation();
-  const word = useCyclingWord(CYCLING_WORDS, 6500);
+  const [phraseIdx, setPhraseIdx] = useState(0);
+  const [text, setText] = useState('');
+  const [phase, setPhase] = useState<TypewriterPhase>('typing');
 
-  // Random pick at mount, stable across re-renders (lazy useState init
-  // — useMemo would violate react-hooks/purity because Math.random()
-  // is impure, but lazy init is allowed by the rule).
-  const [videoSrc] = useState(() => {
+  // Random video at mount (lazy init, useState — react-hooks/purity safe).
+  const [videoSrc, setVideoSrc] = useState<string>(() => {
     const idx = Math.floor(Math.random() * HERO_VIDEOS.length);
     return HERO_VIDEOS[idx] ?? HERO_VIDEOS[0];
   });
+
+  // Typewriter loop : type → hold → erase → next phrase → repeat.
+  // All state updates routed via setTimeout to satisfy React 19's
+  // `react-hooks/set-state-in-effect` rule (no synchronous setState
+  // in effect bodies).
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const key = PHRASE_KEYS[phraseIdx] ?? 'cp1';
+    const fullText = t(`landing.hero.cyclePhrases.${key}`);
+    let timer: number;
+
+    if (phase === 'typing') {
+      if (text.length < fullText.length) {
+        timer = window.setTimeout(() => {
+          setText(fullText.slice(0, text.length + 1));
+        }, TYPE_SPEED_MS);
+      } else {
+        timer = window.setTimeout(() => {
+          setPhase('holding');
+        }, 0);
+      }
+    } else if (phase === 'holding') {
+      timer = window.setTimeout(() => {
+        setPhase('erasing');
+      }, HOLD_MS);
+    } else if (text.length > 0) {
+      timer = window.setTimeout(() => {
+        setText(text.slice(0, -1));
+      }, ERASE_SPEED_MS);
+    } else {
+      timer = window.setTimeout(() => {
+        setPhraseIdx(i => (i + 1) % PHRASE_KEYS.length);
+        setPhase('typing');
+      }, 0);
+    }
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [text, phase, phraseIdx, t]);
+
+  // Swap to a different random video on each phrase change.
+  const isInitialMount = useRef(true);
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    const idx = Math.floor(Math.random() * HERO_VIDEOS.length);
+    setVideoSrc(HERO_VIDEOS[idx] ?? HERO_VIDEOS[0]);
+  }, [phraseIdx]);
 
   return (
     <section
       id="s01"
       className="relative isolate flex min-h-screen flex-col overflow-hidden px-5 pt-20 pb-6 md:px-12 md:pt-20"
     >
-      {/* ─── Video bg ─── */}
+      {/* ─── Video bg — swaps on each phrase change ─── */}
       <video
         autoPlay
         loop
@@ -78,20 +134,16 @@ export const Hero = () => {
         <span>{t('landing.hero.topRightLoc')}</span>
       </div>
 
-      {/* ─── Center : headline with mix-blend-difference over video ─── */}
+      {/* ─── Center : typewriter headline with mix-blend-difference ─── */}
       <div className="relative flex flex-1 items-center pt-20 pb-10">
         <h1
-          className="font-mono text-[clamp(2.5rem,9.5vw,9.5rem)] leading-[0.92] font-medium tracking-tight text-white uppercase"
+          className="font-mono text-[clamp(1.75rem,5.5vw,5.5rem)] leading-[1.05] font-medium tracking-tight text-white uppercase"
           style={{ mixBlendMode: 'difference' }}
+          aria-live="polite"
         >
-          <span className="hero-line hero-line-1 block">{t('landing.hero.line1')}</span>
-          <span className="hero-line hero-line-2 block">{t('landing.hero.line2')}</span>
-          <span className="hero-line hero-line-3 block">
-            {t('landing.hero.line3prefix')}{' '}
-            <span key={word} className="animate-cycling-word inline-block">
-              {word}
-            </span>
-            .
+          {text}
+          <span aria-hidden="true" className="caret-blink ml-1 inline-block align-baseline">
+            ▎
           </span>
         </h1>
       </div>

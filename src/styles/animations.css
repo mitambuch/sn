@@ -222,6 +222,30 @@
   }
 }
 
+/* ─── Caret blink — terminal typewriter cursor in the hero ─────
+   1s step-blink (no ease, hard on/off) for the classic terminal feel.
+   Used by the typewriter `▎` glyph in the hero headline. */
+
+@keyframes caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.caret-blink {
+  animation: caret-blink 1s steps(1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .caret-blink {
+    animation: none;
+    opacity: 1;
+  }
+}
+
 /* ─── Manifesto fog — slow-drifting cinema atmosphere on bg-ink ──
    Two soft radial blobs translate slowly across the manifesto canvas
    so the deep black doesn't feel static. Pure CSS, no r3f bundle. */

@@ -860,6 +860,16 @@
       "topRightGps": "46.50° N, 6.83° E",
       "topRightLoc": "Boudry / NE",
       "sideMark": "01 / Introduction",
+      "cyclePhrases": {
+        "cp1": "Pas une agence. Pas une conciergerie.",
+        "cp2": "Bespoke par discipline.",
+        "cp3": "Services privés. Suisse. Par cooptation.",
+        "cp4": "Nous ouvrons des portes que d’autres ne voient pas.",
+        "cp5": "Un seul interlocuteur. Un réseau. Une exigence.",
+        "cp6": "Ce qui ne se trouve pas en vitrine.",
+        "cp7": "Structure indépendante. Cercle restreint.",
+        "cp8": "Pour ceux qui en ont la patience."
+      },
       "line1": "Certaines portes",
       "line2": "ne s’ouvrent qu’à",
       "line3prefix": "voix",
