@@ -89,7 +89,7 @@ export const FreeFormInquiryDrawer = ({
             <span className="text-muted text-xs tracking-widest uppercase">
               {t(`inquiry.sourceLabel.${source}`)}
             </span>
-            <h2 className="text-fg text-xl font-light">{intentTitle}</h2>
+            <h2 className="text-fg font-mono text-xl font-bold uppercase">{intentTitle}</h2>
             <p className="text-muted mt-2 text-sm leading-relaxed">{intentLede}</p>
           </div>
           <button

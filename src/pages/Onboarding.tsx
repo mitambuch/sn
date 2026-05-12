@@ -106,7 +106,7 @@ export default function Onboarding() {
           <span className="text-muted text-xs tracking-[0.3em] uppercase">
             {t(`${stepCopy}.eyebrow`)}
           </span>
-          <h1 className="text-fg max-w-xl text-4xl font-light tracking-tight text-balance md:text-6xl lg:text-7xl">
+          <h1 className="text-fg max-w-xl font-mono text-3xl font-bold tracking-tight text-balance uppercase md:text-4xl lg:text-5xl">
             {t(`${stepCopy}.title`)}
           </h1>
           <p className="text-muted max-w-xl text-base leading-relaxed text-pretty md:text-lg">

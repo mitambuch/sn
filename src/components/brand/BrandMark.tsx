@@ -27,7 +27,7 @@ const ARROW_OFFSET = '-0.09em';
 const Arrow = () => (
   <span
     aria-hidden="true"
-    className="inline-block font-semibold"
+    className="inline-block font-bold"
     style={{ transform: `translateY(${ARROW_OFFSET})` }}
   >
     ↗
@@ -39,10 +39,7 @@ export const BrandMark = ({ variant = 'full', className }: BrandMarkProps) => {
   const ariaLabel = variant === 'full' ? 'SAW NEXT' : 'SN';
 
   return (
-    <span
-      aria-label={ariaLabel}
-      className={cn('font-mono font-semibold tracking-tight', className)}
-    >
+    <span aria-label={ariaLabel} className={cn('font-mono font-bold tracking-tight', className)}>
       {variant === 'full' ? (
         <>
           SAW

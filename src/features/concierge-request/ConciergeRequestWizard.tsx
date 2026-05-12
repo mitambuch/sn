@@ -285,7 +285,7 @@ export const ConciergeRequestWizard = ({
           {step === 'category' && (
             <div className="space-y-6">
               <header className="space-y-2">
-                <h2 className="text-fg text-2xl font-light tracking-tight sm:text-3xl">
+                <h2 className="text-fg font-mono text-2xl font-bold tracking-tight uppercase sm:text-3xl">
                   {t('wizard.title')}
                 </h2>
                 <p className="text-muted text-sm leading-relaxed">{t('wizard.category.lede')}</p>
@@ -332,7 +332,7 @@ export const ConciergeRequestWizard = ({
                 <span className="text-muted text-xs tracking-widest uppercase">
                   {t(`wizard.category.${category}.title`)}
                 </span>
-                <h2 className="text-fg text-2xl font-light tracking-tight sm:text-3xl">
+                <h2 className="text-fg font-mono text-2xl font-bold tracking-tight uppercase sm:text-3xl">
                   {t('wizard.step.fields')}
                 </h2>
                 <p className="text-muted text-sm leading-relaxed">
@@ -632,7 +632,7 @@ export const ConciergeRequestWizard = ({
                 <span className="text-muted text-xs tracking-widest uppercase">
                   {t(`wizard.category.${category}.title`)}
                 </span>
-                <h2 className="text-fg text-2xl font-light tracking-tight sm:text-3xl">
+                <h2 className="text-fg font-mono text-2xl font-bold tracking-tight uppercase sm:text-3xl">
                   {t('wizard.step.extras')}
                 </h2>
                 <p className="text-muted text-sm leading-relaxed">
@@ -661,7 +661,7 @@ export const ConciergeRequestWizard = ({
           {step === 'review' && category && (
             <div className="space-y-6">
               <header className="space-y-2">
-                <h2 className="text-fg text-2xl font-light tracking-tight sm:text-3xl">
+                <h2 className="text-fg font-mono text-2xl font-bold tracking-tight uppercase sm:text-3xl">
                   {t('wizard.review.title')}
                 </h2>
                 <p className="text-muted text-sm leading-relaxed">{t('wizard.review.lede')}</p>

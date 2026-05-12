@@ -112,7 +112,7 @@ export default function AdminDashboard() {
 
         {/* ─── Quick actions ─── */}
         <section aria-labelledby="quick-actions-heading" className="space-y-6">
-          <h2 id="quick-actions-heading" className="text-fg text-2xl font-light">
+          <h2 id="quick-actions-heading" className="text-fg font-mono text-2xl font-bold uppercase">
             {t('admin.quickActions')}
           </h2>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-8">
@@ -135,7 +135,10 @@ export default function AdminDashboard() {
         {/* ─── Recent inquiries ─── */}
         <section aria-labelledby="recent-inquiries-heading" className="space-y-6">
           <div className="flex items-end justify-between">
-            <h2 id="recent-inquiries-heading" className="text-fg text-2xl font-light">
+            <h2
+              id="recent-inquiries-heading"
+              className="text-fg font-mono text-2xl font-bold uppercase"
+            >
               {t('admin.recentInquiries')}
             </h2>
             <Link

@@ -190,7 +190,7 @@ const CardBadge = ({ top, bottom, className }: CardBadgeProps) => (
       className,
     )}
   >
-    <span className="text-fg text-lg leading-none font-light">{top}</span>
+    <span className="text-fg font-mono text-lg leading-none font-bold uppercase">{top}</span>
     {bottom !== undefined && (
       <span className="text-fg/80 mt-1 text-[10px] tracking-widest uppercase">{bottom}</span>
     )}
@@ -242,7 +242,7 @@ interface CardTitleProps {
 
 const titleSizes: Record<NonNullable<CardTitleProps['size']>, string> = {
   base: 'text-base font-medium',
-  lg: 'text-lg font-light leading-snug',
+  lg: 'text-lg font-mono font-bold uppercase leading-snug',
 };
 
 /** Title of the card — h3 default, supports italic for artworks. */

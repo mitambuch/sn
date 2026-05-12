@@ -50,7 +50,7 @@ const IntentCard = ({ eyebrow, title, hint, icon: Icon, onClick }: IntentCardPro
       <Icon size={18} strokeWidth={1.5} aria-hidden="true" />
     </span>
     <span className="text-muted text-xs tracking-widest uppercase">{eyebrow}</span>
-    <span className="text-fg text-lg leading-snug font-light">{title}</span>
+    <span className="text-fg font-mono text-lg leading-snug font-bold uppercase">{title}</span>
     <span className="text-muted text-sm leading-relaxed">{hint}</span>
     <span
       aria-hidden="true"
@@ -71,7 +71,7 @@ export const IntentCards = () => {
     <>
       <section aria-labelledby="intent-heading" className="space-y-6">
         <div className="flex items-end justify-between">
-          <h2 id="intent-heading" className="text-fg text-2xl font-light">
+          <h2 id="intent-heading" className="text-fg font-mono text-2xl font-bold uppercase">
             {t('account.intent.heading')}
           </h2>
           <span className="text-muted text-xs tracking-widest uppercase">

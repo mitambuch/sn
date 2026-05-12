@@ -121,7 +121,7 @@ export const BespokeRequestDrawer = ({
             <span className="text-muted text-xs tracking-widest uppercase">
               {t('bespoke.eyebrow')}
             </span>
-            <h2 className="text-fg text-xl font-light">{t('bespoke.title')}</h2>
+            <h2 className="text-fg font-mono text-xl font-bold uppercase">{t('bespoke.title')}</h2>
             <p className="text-muted mt-2 text-sm leading-relaxed">{t('bespoke.lede')}</p>
           </div>
           <button

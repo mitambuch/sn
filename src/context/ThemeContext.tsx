@@ -15,8 +15,11 @@ export const THEME_STORAGE_KEY = 'app-theme';
 
 /** Detect system preference for dark mode. */
 function getSystemTheme(): Theme {
-  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return 'dark';
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  // WHY: light is the primary theme for Sawnext (owner decision 2026-05-12).
+  // We ignore the system preference and default to light unless the user has
+  // explicitly toggled to dark (stored in localStorage).
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return 'light';
+  return 'light';
 }
 
 // WHY: Safari private mode and some iframes throw on localStorage access — must wrap in try/catch
@@ -38,7 +41,7 @@ function setStoredTheme(theme: string): void {
 
 /** Get stored theme or fall back to system preference. */
 function getInitialTheme(): Theme {
-  if (typeof window === 'undefined') return 'dark';
+  if (typeof window === 'undefined') return 'light';
   const stored = getStoredTheme();
   if (stored === 'light' || stored === 'dark') return stored;
   return getSystemTheme();

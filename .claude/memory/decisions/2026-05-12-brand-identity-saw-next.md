@@ -38,8 +38,9 @@ dans ce fichier — un endroit unique, propage partout.
 
 - **Forme longue** : `SAW↗NEXT`
 - **Forme courte** : `S↗N`
-- **Font** : Geist Mono Variable, weight **600** (`font-semibold` partout :
-  texte + flèche). Owner a comparé 700 vs 600 → 600 retenu comme final
+- **Font** : Geist Mono Variable, weight **700** (`font-bold` partout :
+  texte + flèche). Owner a testé 600 (font-semibold) en visualisation
+  mais refresh manqué → revert 700 final 2026-05-12 21:24
 - **Casse** : capitales uniquement
 - **Flèche** : `↗` exclusivement (Unicode U+2197)
 - **Offset vertical du ↗** : `translateY(-0.09em)` — cap-height align (collée

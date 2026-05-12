@@ -230,7 +230,7 @@ export const AdminItemDrawer = ({ open, module, editingSlug, onClose }: AdminIte
             <span className="text-muted text-xs tracking-widest uppercase">
               {t(`admin.modules.${module}`)}
             </span>
-            <h2 className="text-fg text-xl font-light">
+            <h2 className="text-fg font-mono text-xl font-bold uppercase">
               {editingSlug ? t('admin.editTitle') : t('admin.newTitle')}
             </h2>
           </div>

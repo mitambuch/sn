@@ -108,8 +108,8 @@ export default function LogoPreview() {
               Font : <span className="font-bold">Geist Mono Variable</span>
             </li>
             <li>
-              Weight : <span className="font-semibold">600</span> (font-semibold — validé
-              pixel-perfect 2026-05-12)
+              Weight : <span className="font-bold">700</span> (font-bold — validé pixel-perfect
+              2026-05-12)
             </li>
             <li>
               Case : <span className="font-bold">UPPERCASE</span>

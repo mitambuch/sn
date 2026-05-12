@@ -110,7 +110,7 @@ export const ScheduleCallDrawer = ({ open, onClose }: ScheduleCallDrawerProps) =
             <span className="text-muted text-xs tracking-widest uppercase">
               {t('schedule.eyebrow')}
             </span>
-            <h2 className="text-fg text-xl font-light">{t('schedule.title')}</h2>
+            <h2 className="text-fg font-mono text-xl font-bold uppercase">{t('schedule.title')}</h2>
             <p className="text-muted mt-2 text-sm leading-relaxed">{t('schedule.lede')}</p>
           </div>
           <button

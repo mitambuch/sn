@@ -127,7 +127,9 @@ export default function AccountSaved() {
                 <Heart size={28} strokeWidth={1.5} aria-hidden="true" />
               </span>
               <div className="flex max-w-md flex-col gap-2">
-                <h2 className="text-fg text-xl font-light">{t('saved.emptyTitle')}</h2>
+                <h2 className="text-fg font-mono text-xl font-bold uppercase">
+                  {t('saved.emptyTitle')}
+                </h2>
                 <p className="text-muted text-sm leading-relaxed">{t('saved.emptyLede')}</p>
               </div>
               <Link

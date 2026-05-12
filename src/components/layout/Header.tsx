@@ -1,7 +1,7 @@
 import { useLocale } from '@app/LocaleProvider';
+import { BrandMark } from '@components/brand/BrandMark';
 import { LanguageSwitcher } from '@components/ui/LanguageSwitcher';
 import { ThemeToggle } from '@components/ui/ThemeToggle';
-import { siteConfig } from '@config/site';
 import { ROUTES } from '@constants/routes';
 import { cn } from '@utils/cn';
 import type { LucideIcon } from 'lucide-react';
@@ -38,9 +38,10 @@ function Logo({ href }: { href: string }) {
   return (
     <Link
       to={href}
-      className="text-fg focus-visible:ring-accent max-w-[7rem] truncate rounded-sm text-sm font-medium tracking-tight focus-visible:ring-2 focus-visible:outline-none md:max-w-none md:text-base"
+      className="text-fg focus-visible:ring-accent rounded-sm focus-visible:ring-2 focus-visible:outline-none"
+      aria-label="SAW NEXT — home"
     >
-      {siteConfig.name}
+      <BrandMark className="text-base md:text-lg" />
     </Link>
   );
 }

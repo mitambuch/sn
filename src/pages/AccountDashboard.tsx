@@ -76,7 +76,7 @@ const GreetingSection = () => {
   return (
     <header className="flex flex-col gap-3">
       <span className="text-muted text-xs tracking-[0.3em] uppercase">{todayLabel}</span>
-      <h1 className="text-fg text-3xl font-light tracking-tight text-balance sm:text-4xl md:text-5xl">
+      <h1 className="text-fg font-mono text-2xl font-bold tracking-tight text-balance uppercase sm:text-3xl md:text-4xl">
         {t(`account.greeting.${greetingKey(NOW_HOUR)}`, { name: firstName(currentUser.fullName) })}
       </h1>
       <p className="text-muted max-w-2xl text-sm leading-relaxed text-pretty sm:text-base md:text-lg">
@@ -240,7 +240,7 @@ const RecentInquiriesSection = ({ loading }: { loading: boolean }) => {
   return (
     <section aria-labelledby="inquiries-heading" className="space-y-6">
       <div className="flex items-end justify-between">
-        <h2 id="inquiries-heading" className="text-fg text-2xl font-light">
+        <h2 id="inquiries-heading" className="text-fg font-mono text-2xl font-bold uppercase">
           {t('account.yourInquiries')}
         </h2>
         <Link

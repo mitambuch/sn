@@ -87,7 +87,9 @@ export const JetCharterDrawer = ({ open, onClose }: JetCharterDrawerProps) => {
             <span className="text-muted text-xs tracking-widest uppercase">
               {t('account.intent.jet.eyebrow')}
             </span>
-            <h2 className="text-fg text-xl font-light">{t('jet.drawerTitle')}</h2>
+            <h2 className="text-fg font-mono text-xl font-bold uppercase">
+              {t('jet.drawerTitle')}
+            </h2>
             <p className="text-muted mt-2 text-sm leading-relaxed">{t('jet.drawerLede')}</p>
           </div>
           <button
