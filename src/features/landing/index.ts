@@ -16,3 +16,4 @@ export { SectionTag } from './SectionTag';
 export { TerminalBar } from './TerminalBar';
 export { TopProgress } from './TopProgress';
 export { useCyclingWord } from './useCyclingWord';
+export { useLandingData } from './useLandingData';

@@ -38,7 +38,7 @@ export const Access = () => {
       >
         <div className="flex flex-col gap-8">
           <SectionTag num="08.A" label={t('landing.access.tagPrimary')} />
-          <h2 className="font-mono text-[clamp(3rem,9vw,9rem)] leading-[0.88] font-medium tracking-[-0.035em] uppercase">
+          <h2 className="font-mono text-[clamp(1.75rem,4vw,4rem)] leading-[0.95] font-medium tracking-tight uppercase">
             {t('landing.access.h2line1')}
             <br />
             {t('landing.access.h2line2')}
@@ -96,7 +96,7 @@ export const Access = () => {
       </div>
 
       {/* ─── Secondary panel — existing clients ─── */}
-      <div className="bg-fg text-bg grid grid-cols-1 items-center gap-6 px-5 py-8 md:grid-cols-[1fr_auto] md:gap-12 md:px-12 md:py-10">
+      <div className="bg-ink text-on-ink grid grid-cols-1 items-center gap-6 px-5 py-8 md:grid-cols-[1fr_auto] md:gap-12 md:px-12 md:py-10">
         <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:gap-6">
           <span className="text-bg/50 font-mono text-[10px] tracking-widest uppercase">
             ↘ {t('landing.access.tagSecondary')}

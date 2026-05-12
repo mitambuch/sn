@@ -26,6 +26,11 @@
   --color-surface: #b0b0b0;
   --color-border: #9c9c9c;
   --color-on-accent: #bcbcbc;
+  /* Deep ink — used for the cinematic landing dark sections (Manifesto S02,
+     Principles S04, TerminalBar). Charcoal fg #2a2a2a felt fade as a flat
+     background — owner direction 2026-05-12 "fonce les noirs". */
+  --color-ink: #0a0a0a;
+  --color-on-ink: #f0f0f0;
 
   /* Semantic status colors — kept functional (errors/success/warning) */
   --color-success: #00c853;
@@ -79,6 +84,10 @@
   --color-surface: #141414;
   --color-border: #262626;
   --color-on-accent: #0a0a0a;
+  /* Dark mode : ink = deepest grayscale already on the bg side. on-ink stays
+     light to keep landing dark sections readable in both themes. */
+  --color-ink: #050505;
+  --color-on-ink: #f0f0f0;
 
   --color-success: #6aff8a;
   --color-warning: #ffd60a;

@@ -39,7 +39,7 @@ export const Marquee = ({
     <div
       className={cn(
         'group relative overflow-hidden border-y py-3.5',
-        tone === 'dark' ? 'bg-fg text-bg border-fg/10' : 'bg-bg text-fg border-border',
+        tone === 'dark' ? 'bg-ink text-on-ink border-on-ink/10' : 'bg-bg text-fg border-border',
         className,
       )}
     >
@@ -52,7 +52,7 @@ export const Marquee = ({
         {stream.map((item, i) => (
           <span key={`${item}-${String(i)}`} className="inline-flex items-center gap-3.5 px-8">
             {item}
-            <span aria-hidden="true" className={tone === 'dark' ? 'text-bg/40' : 'text-fg/30'}>
+            <span aria-hidden="true" className={tone === 'dark' ? 'text-on-ink/40' : 'text-fg/30'}>
               {starGlyph}
             </span>
           </span>

@@ -71,7 +71,7 @@ export const TerminalBar = ({
   return (
     <div
       role="contentinfo"
-      className="bg-fg text-bg relative grid h-13 grid-cols-[auto_1fr_auto] items-center font-mono text-[11px] tracking-wider md:h-14"
+      className="bg-ink text-on-ink relative grid h-13 grid-cols-[auto_1fr_auto] items-center font-mono text-[11px] tracking-wider md:h-14"
     >
       {/* ─── Left : brand + time + status ─── */}
       <div className="border-bg/15 flex h-full items-center gap-3 px-4 md:gap-6 md:border-r md:pr-12 md:pl-6">

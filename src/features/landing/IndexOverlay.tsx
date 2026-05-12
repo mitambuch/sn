@@ -84,7 +84,7 @@ export const IndexOverlay = ({
       aria-label={title}
       aria-hidden={!open}
       className={cn(
-        'bg-fg text-bg fixed inset-0 z-[300] flex flex-col overflow-y-auto px-5 py-6 transition-transform duration-500 md:px-12 md:py-8',
+        'bg-ink text-on-ink fixed inset-0 z-[300] flex flex-col overflow-y-auto px-5 py-6 transition-transform duration-500 md:px-12 md:py-8',
         '[transition-timing-function:cubic-bezier(0.7,0,0.3,1)]',
         open ? 'translate-y-0' : 'pointer-events-none -translate-y-full',
       )}

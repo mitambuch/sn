@@ -21,7 +21,6 @@ import {
   Access,
   Domains,
   Hero,
-  type IndexEntry,
   IndexOverlay,
   Interlocutor,
   LandingFooter,
@@ -31,6 +30,7 @@ import {
   Principles,
   TerminalBar,
   TopProgress,
+  useLandingData,
 } from '@features/landing';
 import { cn } from '@utils/cn';
 import { useCallback, useEffect, useState } from 'react';
@@ -82,80 +82,7 @@ export default function Home() {
     };
   }, []);
 
-  const sections: IndexEntry[] = [
-    {
-      href: '#s01',
-      num: '01',
-      name: t('landing.index.s01name'),
-      label: t('landing.index.s01label'),
-    },
-    {
-      href: '#s02',
-      num: '02',
-      name: t('landing.index.s02name'),
-      label: t('landing.index.s02label'),
-    },
-    {
-      href: '#s03',
-      num: '03',
-      name: t('landing.index.s03name'),
-      label: t('landing.index.s03label'),
-    },
-    {
-      href: '#s04',
-      num: '04',
-      name: t('landing.index.s04name'),
-      label: t('landing.index.s04label'),
-    },
-    {
-      href: '#s05',
-      num: '05',
-      name: t('landing.index.s05name'),
-      label: t('landing.index.s05label'),
-    },
-    {
-      href: '#s08',
-      num: '08',
-      name: t('landing.index.s08name'),
-      label: t('landing.index.s08label'),
-    },
-    {
-      href: '#s09',
-      num: '09',
-      name: t('landing.index.s09name'),
-      label: t('landing.index.s09label'),
-    },
-  ];
-
-  const heroMarquee = [
-    t('landing.marquee.edition'),
-    t('landing.marquee.coopOpen'),
-    t('landing.marquee.experiencesActive'),
-    t('landing.marquee.verticals'),
-    t('landing.marquee.circle'),
-    t('landing.marquee.location'),
-    t('landing.marquee.season'),
-  ];
-
-  const finalMarquee = [
-    t('landing.marquee.brand'),
-    t('landing.marquee.copyright'),
-    t('landing.marquee.location'),
-    t('landing.marquee.rightsReserved'),
-    t('landing.marquee.confidential'),
-    t('landing.marquee.cooptationOnly'),
-  ];
-
-  const tickerItems = [
-    `↗ ${t('landing.marquee.edition')}`,
-    t('landing.marquee.coopOpen'),
-    t('landing.marquee.experiencesActive'),
-    t('landing.marquee.season'),
-    t('landing.marquee.verticalsCircle'),
-    t('landing.marquee.location'),
-    t('landing.marquee.confidential'),
-    t('landing.marquee.monthlyUpdate'),
-  ];
+  const { sections, heroMarquee, finalMarquee, tickerItems } = useLandingData();
 
   return (
     <>

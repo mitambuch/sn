@@ -64,7 +64,7 @@ export const Principles = () => {
       id="s04"
       ref={sectionRef}
       data-landing-dark="true"
-      className="bg-fg text-bg relative flex min-h-screen flex-col overflow-hidden px-5 py-24 md:px-12 md:py-32"
+      className="bg-ink text-on-ink relative flex min-h-screen flex-col overflow-hidden px-5 py-24 md:px-12 md:py-32"
     >
       {/* ─── Top meta strip ─── */}
       <div className="text-bg/70 mb-16 flex items-baseline justify-between font-mono text-[10px] tracking-widest uppercase md:mb-24">

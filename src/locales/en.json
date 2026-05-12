@@ -889,10 +889,27 @@
       },
       "p1": "SAW↗NEXT supports private clients and entrepreneurs on projects, opportunities and experiences that fall outside the standard frame.",
       "p2": "The network spans sport, watchmaking, finance, real estate and art. It was built through cooptation, not outreach.",
-      "p3prefix": "Our role:",
-      "p3emphasis": "identify, structure, facilitate",
-      "p3suffix": "We do not replace any expert. We open doors that others do not see.",
-      "p4": "What comes through us never leaves through any other channel. No client case. No name. No anecdote."
+      "p3": "Our role rests on three verbs: identify, structure, facilitate. We do not replace any expert. We open doors that others do not see.",
+      "p4": "What comes through us never leaves through any other channel. No client case. No name. No anecdote.",
+      "p5": "No sales pitch. No demo. A conversation, a qualification, then — if the project sits within our scope — a written engagement.",
+      "p6": "The pace is that of the case, not of a platform. We work in short, intense periods, followed by a clear transmission of what has been done, what remains, and what must wait.",
+      "p7": "Every collaboration starts with a frame: scope, deliverables, checkpoints, duration. No grey areas. No engagement without a signature.",
+      "triptyqueIntro": "Our method, in three verbs",
+      "triptyqueAct": "Act",
+      "triptyque": {
+        "identify": {
+          "title": "Identify",
+          "desc": "Read the brief, isolate the real need, distinguish the request from the symptom. Five questions, never more."
+        },
+        "structure": {
+          "title": "Structure",
+          "desc": "Frame the scope, select the useful partners, write the plan. Everything is recorded, everything is dated."
+        },
+        "facilitate": {
+          "title": "Facilitate",
+          "desc": "Lift obstacles silently, all the way to delivery. Discretion is a deliverable like any other."
+        }
+      }
     },
     "manifesto": {
       "eyebrow": "Manifesto / 01",

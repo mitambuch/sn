@@ -58,7 +58,7 @@ export const Manifesto = () => {
       id="s02"
       ref={sectionRef}
       data-landing-dark="true"
-      className="bg-fg text-bg relative h-[300vh] md:h-[300vh]"
+      className="bg-ink text-on-ink relative h-[300vh] md:h-[300vh]"
     >
       <div className="sticky top-0 flex h-screen flex-col justify-between overflow-hidden px-5 py-8 md:px-12 md:py-10">
         {/* Top meta */}

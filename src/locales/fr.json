@@ -894,10 +894,27 @@
       },
       "p1": "SAW↗NEXT accompagne clients privés et entrepreneurs sur des projets, opportunités et expériences qui sortent du cadre standard.",
       "p2": "Le réseau couvre les univers du sport, de l’horlogerie, de la finance, de l’immobilier et de l’art. Il s’est construit par cooptation, pas par démarchage.",
-      "p3prefix": "Notre rôle :",
-      "p3emphasis": "identifier, structurer, faciliter",
-      "p3suffix": "Nous ne remplaçons aucun expert. Nous ouvrons des portes que d’autres ne voient pas.",
-      "p4": "Ce qui passe par nous ne sort jamais par d’autres canaux. Aucun cas client. Aucun nom. Aucune anecdote."
+      "p3": "Notre rôle tient en trois verbes : identifier, structurer, faciliter. Nous ne remplaçons aucun expert. Nous ouvrons des portes que d’autres ne voient pas.",
+      "p4": "Ce qui passe par nous ne sort jamais par d’autres canaux. Aucun cas client. Aucun nom. Aucune anecdote.",
+      "p5": "Pas de discours commercial. Pas de pitch. Une conversation, une qualification, puis — si le projet entre dans nos compétences — un engagement écrit.",
+      "p6": "Le rythme est celui du dossier, pas celui d’une plateforme. Nous travaillons par périodes courtes et intenses, suivies d’une transmission claire de ce qui a été fait, de ce qui reste, de ce qui doit attendre.",
+      "p7": "Chaque collaboration commence par un cadre : périmètre, livrables, points de contrôle, durée. Aucune zone grise. Aucun engagement sans signature.",
+      "triptyqueIntro": "Notre méthode, en trois verbes",
+      "triptyqueAct": "Acte",
+      "triptyque": {
+        "identify": {
+          "title": "Identifier",
+          "desc": "Lire le brief, isoler le besoin réel, distinguer la commande du symptôme. Cinq questions, jamais plus."
+        },
+        "structure": {
+          "title": "Structurer",
+          "desc": "Cadrer le périmètre, sélectionner les partenaires utiles, écrire le plan. Tout est consigné, tout est daté."
+        },
+        "facilitate": {
+          "title": "Faciliter",
+          "desc": "Lever les obstacles silencieusement, jusqu’à la livraison. La discrétion est un livrable comme un autre."
+        }
+      }
     },
     "manifesto": {
       "eyebrow": "Manifeste / 01",
