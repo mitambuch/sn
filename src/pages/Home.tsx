@@ -42,6 +42,20 @@ export default function Home() {
   const { localePath } = useLocale();
   const [indexOpen, setIndexOpen] = useState(false);
   const [darkActive, setDarkActive] = useState(false);
+  const [compactLogo, setCompactLogo] = useState(false);
+
+  // Scroll-driven logo morph : SAW↗NEXT → S↗N once past 220px.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const onScroll = () => {
+      setCompactLogo(window.scrollY > 220);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, []);
 
   const openIndex = useCallback(() => {
     setIndexOpen(true);
@@ -90,6 +104,7 @@ export default function Home() {
       <TopProgress />
       <TopCornerChrome
         darkActive={darkActive}
+        compactLogo={compactLogo}
         indexOpen={indexOpen}
         openIndex={openIndex}
         title={t('landing.index.title')}
@@ -151,16 +166,19 @@ export default function Home() {
 
 interface TopCornerChromeProps {
   darkActive: boolean;
+  compactLogo: boolean;
   indexOpen: boolean;
   openIndex: () => void;
   title: string;
   indexLabel: string;
 }
 
-/** Top-corner chrome (BrandMark left + INDEX button right). Inverts to bg
- *  colours when a `data-landing-dark` section overlaps the chrome row. */
+/** Top-corner chrome — BrandMark (cross-fades SAW↗NEXT ↔ S↗N on scroll)
+ *  + INDEX button. Inverts to bg colours when a `data-landing-dark`
+ *  section overlaps the chrome row. */
 const TopCornerChrome = ({
   darkActive,
+  compactLogo,
   indexOpen,
   openIndex,
   title,
@@ -178,7 +196,29 @@ const TopCornerChrome = ({
         className={cn('pointer-events-auto transition-colors duration-300', text)}
         aria-label={title}
       >
-        <BrandMark className="text-base md:text-lg" />
+        <span className="relative inline-flex h-5 items-center md:h-6">
+          <BrandMark
+            variant="full"
+            className={cn(
+              'absolute inset-y-0 left-0 inline-flex items-center text-base whitespace-nowrap transition-[opacity,transform] duration-500 ease-out md:text-lg',
+              compactLogo
+                ? 'pointer-events-none -translate-y-1 opacity-0 blur-[2px]'
+                : 'blur-0 translate-y-0 opacity-100',
+            )}
+          />
+          <BrandMark
+            variant="short"
+            className={cn(
+              'absolute inset-y-0 left-0 inline-flex items-center text-base whitespace-nowrap transition-[opacity,transform] duration-500 ease-out md:text-lg',
+              compactLogo
+                ? 'blur-0 translate-y-0 opacity-100'
+                : 'pointer-events-none translate-y-1 opacity-0 blur-[2px]',
+            )}
+          />
+          {/* Invisible sizer keeps the anchor box wide enough to land
+              the full mark when scrolled to top. */}
+          <BrandMark variant="full" className="invisible text-base whitespace-nowrap md:text-lg" />
+        </span>
       </a>
       <button
         type="button"

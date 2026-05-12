@@ -915,19 +915,28 @@
       "eyebrow": "Manifesto / 01",
       "hint": "Keep scrolling",
       "p1": {
-        "line1": "No agency.",
-        "line2": "No concierge desk.",
-        "line3": ""
+        "words": {
+          "w1": "No",
+          "w2": "agency.",
+          "w3": "No",
+          "w4": "concierge desk."
+        }
       },
       "p2": {
-        "line1": "One structure.",
-        "line2": "One interlocutor.",
-        "line3": ""
+        "words": {
+          "w1": "One",
+          "w2": "structure.",
+          "w3": "One",
+          "w4": "interlocutor."
+        }
       },
       "p3": {
-        "line1": "Luxury",
-        "line2": "is not measured",
-        "line3": "by what you own."
+        "words": {
+          "w1": "Luxury",
+          "w2": "is not measured",
+          "w3": "by what",
+          "w4": "you own."
+        }
       }
     },
     "principles": {

@@ -920,19 +920,28 @@
       "eyebrow": "Manifeste / 01",
       "hint": "Continuez à dérouler",
       "p1": {
-        "line1": "Pas d’agence.",
-        "line2": "Pas de conciergerie.",
-        "line3": ""
+        "words": {
+          "w1": "Pas",
+          "w2": "d’agence.",
+          "w3": "Pas de",
+          "w4": "conciergerie."
+        }
       },
       "p2": {
-        "line1": "Une structure.",
-        "line2": "Un interlocuteur.",
-        "line3": ""
+        "words": {
+          "w1": "Une",
+          "w2": "structure.",
+          "w3": "Un",
+          "w4": "interlocuteur."
+        }
       },
       "p3": {
-        "line1": "Le luxe",
-        "line2": "ne se mesure pas",
-        "line3": "à ce qu’on possède."
+        "words": {
+          "w1": "Le luxe",
+          "w2": "ne se mesure pas",
+          "w3": "à ce qu’on",
+          "w4": "possède."
+        }
       }
     },
     "principles": {

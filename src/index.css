@@ -18,7 +18,12 @@
      d'éclat oculaire). Contraste cible ~8:1 (WCAG AAA pour texte large,
      AA texte body). */
   --color-bg: #bcbcbc;
-  --color-fg: #2a2a2a;
+  /* Single black across the landing — owner direction 2026-05-13 00:02
+     "la couleur de fond est parfaite faut utiliser ça même pour le texte
+     on doit avoir 'que un noir'". `--color-fg` aligned with `--color-ink`
+     so every black on the page is the SAME shade. Body text comfort
+     remains acceptable at 17:1 on the gris bg. */
+  --color-fg: #0a0a0a;
   /* WHY: client brand is strictly monochrome — accent = fg (high-emphasis tone).
      The brand identity IS the absence of color. See CLAUDE.md Composition. */
   --color-accent: #2a2a2a;
