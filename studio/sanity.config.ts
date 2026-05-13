@@ -15,6 +15,7 @@ import { presentationTool } from 'sanity/presentation';
 import { structureTool } from 'sanity/structure';
 import { media } from 'sanity-plugin-media';
 
+import { makeShareDocumentAction } from './actions/shareDocumentAction';
 import { Logo } from './components/Logo';
 import { StudioLayout } from './components/StudioLayout';
 import { schemaTypes } from './schemas';
@@ -36,6 +37,10 @@ const DEFAULT_LOCALE = 'fr';
 
 // Studio title — branded per-client via env. Falls back to "Studio".
 const STUDIO_TITLE = process.env.SANITY_STUDIO_BRAND_NAME ?? 'Studio';
+
+// "Partager cette fiche…" Document Action — bound to the site URL once,
+// then attached to every shareable document via the document.actions hook.
+const shareDocumentAction = makeShareDocumentAction({ siteUrl: PREVIEW_URL });
 
 export default defineConfig({
   name: 'steaksoap-studio',
@@ -94,12 +99,15 @@ export default defineConfig({
   },
 
   document: {
-    // Block create / delete / duplicate / unpublish on singletons
+    // Block create / delete / duplicate / unpublish on singletons.
+    // Append the "Partager cette fiche" action on every shareable doc —
+    // the action component itself filters by schema type, so safe to
+    // append unconditionally.
     actions: (prev, context) => {
-      if (SINGLETON_TYPES.includes(context.schemaType)) {
-        return prev.filter(a => !['duplicate', 'unpublish', 'delete'].includes(a.action ?? ''));
-      }
-      return prev;
+      const base = SINGLETON_TYPES.includes(context.schemaType)
+        ? prev.filter(a => !['duplicate', 'unpublish', 'delete'].includes(a.action ?? ''))
+        : prev;
+      return [...base, shareDocumentAction];
     },
 
     // "View" button (top-right of the editor) — opens the rendered draft

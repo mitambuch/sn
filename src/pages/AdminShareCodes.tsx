@@ -15,10 +15,12 @@ import { Container } from '@components/layout/Container';
 import { DataTable, type DataTableColumn } from '@components/ui/DataTable';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { useToast } from '@hooks/useToast';
-import { type FormEvent, useEffect, useState } from 'react';
+import { type FormEvent, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router-dom';
 
 import { generateAndInsertShareCode } from '@/lib/shareCode';
+import { buildShareMessage, buildWhatsAppUrl } from '@/lib/sharing';
 import { hasSupabase, supabase } from '@/lib/supabase';
 import {
   formatShareCode,
@@ -65,18 +67,36 @@ const mapRow = (r: RawShareCodeRow): ShareCode => ({
   note: r.note,
 });
 
-// eslint-disable-next-line max-lines-per-function -- admin page with list + form + states
+const SHARE_BASE_URL = typeof window !== 'undefined' ? window.location.origin : '';
+
+const isValidDocType = (value: string | null): value is ShareableDocType =>
+  value !== null &&
+  ['event', 'property', 'timepiece', 'artwork', 'journey', 'conciergeService', 'article'].includes(
+    value,
+  );
+
+// eslint-disable-next-line max-lines-per-function -- admin page with list + form + states + revoke + share
 export default function AdminShareCodes() {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
+
+  // Prefill from URL query params (deeplinked from Sanity Studio Document Action).
+  const initialDocType = useMemo<ShareableDocType>(() => {
+    const q = searchParams.get('docType');
+    return isValidDocType(q) ? q : 'event';
+  }, [searchParams]);
+  const initialDocId = useMemo(() => searchParams.get('docId') ?? '', [searchParams]);
 
   const [rows, setRows] = useState<ShareCode[]>([]);
   const [loading, setLoading] = useState(hasSupabase);
   const [submitting, setSubmitting] = useState(false);
 
-  // Form state for "Generate new code"
-  const [docType, setDocType] = useState<ShareableDocType>('event');
-  const [docId, setDocId] = useState('');
+  // Form state for "Generate new code" — initialized from URL query
+  // params on mount. If Salva re-deeplinks from Studio to a different
+  // doc, the new tab gets a fresh mount with the right initial values.
+  const [docType, setDocType] = useState<ShareableDocType>(initialDocType);
+  const [docId, setDocId] = useState(initialDocId);
   const [expiresDays, setExpiresDays] = useState<string>('');
   const [maxViews, setMaxViews] = useState<string>('');
   const [note, setNote] = useState('');
@@ -108,6 +128,37 @@ export default function AdminShareCodes() {
   const handleCopy = (canonical: string) => {
     void navigator.clipboard.writeText(formatShareCode(canonical));
     toast({ variant: 'success', message: 'Code copié.' });
+  };
+
+  const handleCopyUrl = (canonical: string) => {
+    const url = `${SHARE_BASE_URL}/share/${formatShareCode(canonical)}`;
+    void navigator.clipboard.writeText(url);
+    toast({ variant: 'success', message: 'URL copiée.' });
+  };
+
+  const handleRevoke = async (id: string, displayCode: string) => {
+    if (!supabase) return;
+    const confirmed = window.confirm(
+      `Révoquer le code ${displayCode} ? Le destinataire ne pourra plus l'utiliser (action réversible côté DB).`,
+    );
+    if (!confirmed) return;
+    const { error } = await supabase.from('share_codes').update({ status: 'revoked' }).eq('id', id);
+    if (error) {
+      toast({ variant: 'error', message: `Révocation échouée : ${error.message}` });
+      return;
+    }
+    setRows(prev => prev.map(r => (r.id === id ? { ...r, status: 'revoked' } : r)));
+    toast({ variant: 'success', message: 'Code révoqué.' });
+  };
+
+  const buildWhatsLinkFor = (r: ShareCode): string => {
+    const url = `${SHARE_BASE_URL}/share/${formatShareCode(r.code)}`;
+    const message = buildShareMessage({
+      docType: r.sanityDocType,
+      title: null,
+      url,
+    });
+    return buildWhatsAppUrl(message);
   };
 
   const handleGenerate = async (e: FormEvent) => {
@@ -189,7 +240,19 @@ export default function AdminShareCodes() {
     {
       key: 'status',
       label: 'Statut',
-      render: r => <span className="text-muted text-xs tracking-widest uppercase">{r.status}</span>,
+      render: r => (
+        <span
+          className={`text-xs tracking-widest uppercase ${
+            r.status === 'active'
+              ? 'text-fg'
+              : r.status === 'revoked'
+                ? 'text-muted line-through'
+                : 'text-muted'
+          }`}
+        >
+          {r.status}
+        </span>
+      ),
     },
     {
       key: 'views',
@@ -205,17 +268,47 @@ export default function AdminShareCodes() {
       render: r => (r.expiresAt ? new Date(r.expiresAt).toLocaleDateString('fr-CH') : '—'),
     },
     {
-      key: 'url',
-      label: 'URL',
+      key: 'actions',
+      label: 'Actions',
       render: r => (
-        <a
-          href={`/share/${formatShareCode(r.code)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-fg/70 hover:text-fg font-mono text-[10px] tracking-widest uppercase"
-        >
-          Ouvrir ↗
-        </a>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              handleCopyUrl(r.code);
+            }}
+            className="text-fg/70 hover:text-fg font-mono text-[10px] tracking-widest uppercase"
+          >
+            URL
+          </button>
+          <a
+            href={buildWhatsLinkFor(r)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-fg/70 hover:text-fg font-mono text-[10px] tracking-widest uppercase"
+          >
+            WhatsApp ↗
+          </a>
+          <a
+            href={`/share/${formatShareCode(r.code)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-fg/70 hover:text-fg font-mono text-[10px] tracking-widest uppercase"
+          >
+            Ouvrir
+          </a>
+          {r.status === 'active' && (
+            <button
+              type="button"
+              onClick={() => {
+                void handleRevoke(r.id, formatShareCode(r.code));
+              }}
+              className="text-muted hover:text-fg font-mono text-[10px] tracking-widest uppercase"
+            >
+              Révoquer
+            </button>
+          )}
+        </div>
       ),
     },
   ];
