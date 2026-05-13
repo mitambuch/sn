@@ -23,11 +23,14 @@ import { normalizeShareCode, SHARE_CODE_CANONICAL_PATTERN, SHARE_CODE_LENGTH } f
 
 type Status = 'idle' | 'checking' | 'invalid' | 'unknown';
 
+const DEMO_CODE = 'APERCU';
+
 export default function ExamplePage() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const presetCode = params.get('code') ?? '';
   const [status, setStatus] = useState<Status>('idle');
+  const [current, setCurrent] = useState<string>(presetCode);
 
   const handleComplete = async (raw: string) => {
     const code = normalizeShareCode(raw);
@@ -42,6 +45,14 @@ export default function ExamplePage() {
       return;
     }
     setStatus('unknown');
+  };
+
+  const canSubmit = current.length === SHARE_CODE_LENGTH && status !== 'checking';
+
+  // One-click "test with the demo code" — bypasses the OTP entirely for
+  // owner-driven walkthroughs. Pushes straight to /share/APERCU.
+  const handleDemoShortcut = () => {
+    void navigate(`/share/${DEMO_CODE}`);
   };
 
   const statusLabel: Record<Status, string> = {
@@ -114,7 +125,8 @@ export default function ExamplePage() {
                 onComplete={value => {
                   void handleComplete(value);
                 }}
-                onChange={() => {
+                onChange={value => {
+                  setCurrent(value);
                   if (status !== 'idle') setStatus('idle');
                 }}
                 disabled={status === 'checking'}
@@ -130,9 +142,34 @@ export default function ExamplePage() {
               >
                 {statusLabel[status]}
               </p>
+
+              {/* Manual "Entrer" submit — fires even if onComplete missed
+                  (legacy browsers, paste-then-Enter, demo walkthrough). */}
+              <button
+                type="button"
+                onClick={() => {
+                  void handleComplete(current);
+                }}
+                disabled={!canSubmit}
+                className="border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-fg/30 mt-2 inline-flex items-center gap-3 rounded-full border px-7 py-3 font-mono text-xs tracking-[0.4em] uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                Entrer
+                <span aria-hidden="true">↗</span>
+              </button>
             </div>
           </div>
         </section>
+      </div>
+
+      {/* ─── Demo hint — visible "test with APERCU" shortcut ──── */}
+      <div className="flex w-full justify-center pb-6">
+        <button
+          type="button"
+          onClick={handleDemoShortcut}
+          className="text-muted hover:text-fg font-mono text-[10px] tracking-[0.3em] uppercase transition-colors"
+        >
+          Démo : tester avec le code <span className="text-fg font-medium">{DEMO_CODE}</span> ↗
+        </button>
       </div>
 
       {/* ─── Bottom : visible primary "back to site" CTA ──── */}
