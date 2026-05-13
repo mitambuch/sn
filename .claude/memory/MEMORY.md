@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-05-13** — [Session — Salva autonomy : Studio share Action + real SharePage (13:38 → 14:10)](sessions/2026-05-13-1410.md)
 - **2026-05-13** — [Session — Landing v0.7 + Sanity admin + share codes (matinée+midi)](sessions/2026-05-13-1320.md)
 - **2026-05-13** — [Session addendum — Hero typewriter final + merge sur main (00:50 → 01:08)](sessions/2026-05-13-0106-landing-final-typewriter-merge.md)
-- **2026-05-13** — [Session — Landing public iteration marathon (22:44 → 00:50)](sessions/2026-05-13-0050-landing-iteration-marathon.md)
 
 ## Active decisions (top 5)
 
@@ -30,7 +30,7 @@
 
 ## Deep dive
 
-- Full catalogue (105 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (106 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
