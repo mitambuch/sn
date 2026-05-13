@@ -227,7 +227,6 @@ const buildMeta = (input: MetaInput): Record<FormMode, FormMeta> => {
   };
 };
 
-// eslint-disable-next-line max-lines-per-function -- page composition with 3 auth modes + monumental layout
 export default function Login() {
   const { t } = useTranslation();
   const { localePath } = useLocale();

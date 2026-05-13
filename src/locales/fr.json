@@ -1149,9 +1149,25 @@
     },
     "interlocutor": {
       "eyebrow": "Interlocuteur",
+      "eyebrowTeam": "Équipe",
+      "countLabel": "Trois fondateurs",
+      "headlineA": "Une voix.",
+      "headlineB": "Trois fondateurs derrière.",
       "header": "Votre point de contact unique",
+      "focalTag": "01 · Point de contact",
       "role": "Fondateur opérationnel",
       "bio": "Chaque échange commence par une conversation. Un seul interlocuteur, du premier contact à la réalisation.",
+      "salvaBio": "20 ans d'expérience dans l'industrie du luxe. Distribution, conseil et gestion de relations avec une clientèle HNWI et UHNW. Expertise du luxe, des partenariats premium et de la relation client. Votre interlocuteur direct, du premier mot à la réalisation.",
+      "circleTag": "Cercle restreint",
+      "circleCount": "02 personnes",
+      "harry": {
+        "tag": "Sport & lifestyle",
+        "bio": "Ancien sportif professionnel de haut niveau. Réseau international dans le sport, l'événementiel et le lifestyle haut de gamme. Impliqué dans plusieurs projets entrepreneuriaux axés sur la mise en relation et l'accompagnement."
+      },
+      "bokar": {
+        "tag": "Sport & relation HNW",
+        "bio": "Agent de joueurs de football de premier plan au niveau européen, basé à Paris. Connaissance des attentes d'une clientèle internationale exigeante et accès à des cercles fermés."
+      },
       "phone": "Téléphone direct",
       "email": "Email",
       "whatsapp": "WhatsApp sécurisé",
