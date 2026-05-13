@@ -178,6 +178,101 @@ export const GROQ_TEAM = `*[_type == "teamMember"] | order(order asc){
   "photoUrl": photo.asset->url
 }`;
 
+// ─── Domain detail queries by slug ────────────────────────────────
+const detailFields = `
+  "id": _id,
+  "slug": slug.current,
+  "title": title.fr,
+  "summary": summary.fr,
+  "description": pt::text(description.fr),
+  "images": images[]{ "src": asset->url, "alt": alt }
+`;
+
+export const GROQ_PROPERTY_DETAIL = (slug: string) =>
+  `*[_type == "property" && slug.current == "${slug}"][0]{
+    ${detailFields},
+    kind,
+    transactionType,
+    city,
+    region,
+    countryCode,
+    bedrooms,
+    bathrooms,
+    livingArea,
+    landArea,
+    amenities[]{ "label": fr },
+    price,
+    availability
+  }`;
+
+export const GROQ_TIMEPIECE_DETAIL = (slug: string) =>
+  `*[_type == "timepiece" && slug.current == "${slug}"][0]{
+    ${detailFields},
+    brand,
+    reference,
+    caseDiameter,
+    caseMaterial,
+    movement,
+    productionYear,
+    condition,
+    papers,
+    "provenanceNote": provenanceNote.fr,
+    price
+  }`;
+
+export const GROQ_ARTWORK_DETAIL = (slug: string) =>
+  `*[_type == "artwork" && slug.current == "${slug}"][0]{
+    ${detailFields},
+    artistName,
+    year,
+    medium,
+    "technique": technique.fr,
+    dimensions,
+    edition,
+    certificate,
+    catalogueRaisonne,
+    "provenanceNote": provenanceNote.fr,
+    price
+  }`;
+
+export const GROQ_JOURNEY_DETAIL = (slug: string) =>
+  `*[_type == "journey" && slug.current == "${slug}"][0]{
+    ${detailFields},
+    destinations,
+    duration,
+    durationDays,
+    partySize,
+    itinerary[]{ time, "label": label.fr },
+    "transport": transport[].fr,
+    "accommodation": accommodation[].fr,
+    price
+  }`;
+
+export const GROQ_CONCIERGE_DETAIL = (slug: string) =>
+  `*[_type == "conciergeService" && slug.current == "${slug}"][0]{
+    ${detailFields},
+    category,
+    "leadTime": leadTime.fr,
+    "coverageArea": coverageArea.fr,
+    "capabilities": capabilities[].fr,
+    price
+  }`;
+
+export const GROQ_ARTICLE_DETAIL = (slug: string) =>
+  `*[_type == "article" && slug.current == "${slug}"][0]{
+    "id": _id,
+    "slug": slug.current,
+    "title": title.fr,
+    category,
+    publishedAt,
+    readTimeMinutes,
+    "summary": summary.fr,
+    "body": pt::text(body.fr),
+    "heroImage": { "src": heroImage.asset->url, "alt": heroImage.alt },
+    "gallery": gallery[]{ "src": asset->url, "alt": alt },
+    "author": author->{ firstName, lastName, "photoUrl": photo.asset->url }
+  }`;
+
 // ─── Share fiche by type + id (for /share/:code render) ──────────
 export const GROQ_SHARED_FICHE = (type: string, id: string) =>
   `*[_type == "${type}" && _id == "${id}"][0]{

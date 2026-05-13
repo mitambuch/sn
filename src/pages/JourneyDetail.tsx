@@ -16,12 +16,15 @@ import { ROUTES } from '@constants/routes';
 import { SimilarItemsStrip } from '@features/catalogue/SimilarItemsStrip';
 import { AudioNote } from '@features/concierge/AudioNote';
 import { InquiryDrawer } from '@features/inquiry/InquiryDrawer';
+import { useSanityItem } from '@hooks/useSanityItem';
 import { cn } from '@utils/cn';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate, useParams } from 'react-router-dom';
 
+import { GROQ_JOURNEY_DETAIL } from '@/lib/sanityQueries';
 import { getJourney } from '@/mocks';
+import type { Journey } from '@/types/journey';
 
 export default function JourneyDetail() {
   const { t, i18n } = useTranslation();
@@ -29,7 +32,11 @@ export default function JourneyDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [inquiryOpen, setInquiryOpen] = useState(false);
 
-  const journey = slug ? getJourney(slug) : undefined;
+  const mockJourney = slug ? getJourney(slug) : null;
+  const { data: journey } = useSanityItem<Journey>({
+    query: slug ? GROQ_JOURNEY_DETAIL(slug) : '',
+    fallback: mockJourney ?? null,
+  });
   if (!journey) return <Navigate to={localePath(ROUTES.ACCOUNT_JOURNEYS)} replace />;
 
   const formatDate = (iso: string) =>

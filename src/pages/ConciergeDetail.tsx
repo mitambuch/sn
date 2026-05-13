@@ -13,12 +13,15 @@ import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { SimilarItemsStrip } from '@features/catalogue/SimilarItemsStrip';
 import { InquiryDrawer } from '@features/inquiry/InquiryDrawer';
+import { useSanityItem } from '@hooks/useSanityItem';
 import { cn } from '@utils/cn';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate, useParams } from 'react-router-dom';
 
+import { GROQ_CONCIERGE_DETAIL } from '@/lib/sanityQueries';
 import { getConciergeService } from '@/mocks';
+import type { ConciergeService } from '@/types/concierge';
 
 export default function ConciergeDetail() {
   const { t } = useTranslation();
@@ -26,7 +29,11 @@ export default function ConciergeDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [inquiryOpen, setInquiryOpen] = useState(false);
 
-  const service = slug ? getConciergeService(slug) : undefined;
+  const mockService = slug ? getConciergeService(slug) : null;
+  const { data: service } = useSanityItem<ConciergeService>({
+    query: slug ? GROQ_CONCIERGE_DETAIL(slug) : '',
+    fallback: mockService ?? null,
+  });
   if (!service) return <Navigate to={localePath(ROUTES.ACCOUNT_CONCIERGE)} replace />;
 
   return (
