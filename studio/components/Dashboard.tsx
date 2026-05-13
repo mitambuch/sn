@@ -1,28 +1,25 @@
 // ═══════════════════════════════════════════════════
-// Dashboard — Studio landing tool (first tool in the bar)
+// Dashboard — Studio landing tool, action-first layout
 //
-// WHAT: Auto-adapts to whichever document types are present in the
-//       dataset. Shows : a hero welcome block, site state with colored
-//       dots, content freshness tiles, page cards with completion
-//       badges, colored quick-action tiles, recent activity, footer.
-// WHEN: First tool → landing page when the Studio opens.
-// NOTE: Introspection-driven — when a client adds a new document type
-//       via a new schema file, it automatically shows in the sections.
-//       No code change required here.
+// WHAT: Salva opens Studio and immediately sees 4 big action tiles —
+//       Créer une offre · Créer une clé · Voir les demandes (with a
+//       live pending count badge) · Gérer les clients. Below that, a
+//       compact "État du site" strip + recent activity. No "Bienvenue
+//       👋" hero — owner direction : "on rentre dans le dur."
+//
+// WHEN: First Studio tool, opens on launch.
+// COUNTS: pulled from Supabase via the studio_dashboard_stats() RPC
+//         (migration 0007). Falls back to "—" when env vars missing.
 // ═══════════════════════════════════════════════════
 
 import { useEffect, useMemo, useState } from 'react';
 import { useClient } from 'sanity';
 import { useRouter } from 'sanity/router';
 
-import { PAGE_SINGLETONS } from '../structure/deskStructure';
-
 /* ─── Theme tokens ──────────────────────────────── */
 
 const C = {
-  bg: 'transparent',
   surface: 'rgba(255, 255, 255, 0.04)',
-  surfaceElevated: 'rgba(255, 255, 255, 0.06)',
   surfaceHover: 'rgba(255, 255, 255, 0.08)',
   border: 'rgba(255, 255, 255, 0.09)',
   borderStrong: 'rgba(255, 255, 255, 0.14)',
@@ -36,7 +33,6 @@ const C = {
   violet: '#a78bfa',
   emerald: '#34d399',
   amber: '#fbbf24',
-  rose: '#fb7185',
 };
 
 /* ─── Types ─────────────────────────────────────── */
@@ -44,16 +40,6 @@ const C = {
 interface LocaleString {
   fr?: string;
   en?: string;
-}
-
-interface SiteConfigSnapshot {
-  _updatedAt?: string;
-  siteName?: LocaleString;
-  tagline?: LocaleString;
-  seoTitle?: LocaleString;
-  primaryNav?: Array<unknown>;
-  contactEmail?: string;
-  copyright?: string;
 }
 
 interface TypeCount {
@@ -68,41 +54,24 @@ interface RecentDoc {
   title?: string | LocaleString;
 }
 
-interface PageSnapshot {
-  _id: string;
-  _updatedAt: string;
-  title?: string;
-  slug?: string;
-  hasHero: boolean;
-  hasSeo: boolean;
-  hasCta: boolean;
-  hasIntro: boolean;
-}
-
 interface Snapshot {
-  siteConfig: SiteConfigSnapshot | null;
   typeCounts: TypeCount[];
   recent: RecentDoc[];
-  pages: PageSnapshot[];
+}
+
+interface DashboardStats {
+  pending_inquiries: number;
+  active_share_codes: number;
+  total_clients: number;
 }
 
 const SNAPSHOT_QUERY = `{
-  "siteConfig": *[_type == "siteConfig"][0]{
-    _updatedAt, siteName, tagline, seoTitle, primaryNav, contactEmail, copyright
-  },
   "typeCounts": array::unique(*[!(_id in path("drafts.**"))]._type)[] {
     "type": @,
     "count": count(*[_type == ^ && !(_id in path("drafts.**"))])
   },
   "recent": *[!(_id in path("drafts.**"))] | order(_updatedAt desc)[0..4]{
     _id, _type, _updatedAt, title
-  },
-  "pages": *[_type == "page" && !(_id in path("drafts.**"))] | order(_id asc){
-    _id, _updatedAt, "title": title, "slug": slug.current,
-    "hasHero": defined(heroHeading.fr),
-    "hasSeo": defined(seoTitle.fr) && defined(seoDescription.fr),
-    "hasCta": defined(ctaLabel.fr) && defined(ctaHref),
-    "hasIntro": defined(introHeading.fr) || count(introParagraphs[defined(fr)]) > 0
   }
 }`;
 
@@ -128,12 +97,47 @@ function resolveDocTitle(doc: RecentDoc): string {
   return doc._id;
 }
 
-function brandName(): string {
-  // process.env vars are inlined at Studio build time by the Sanity CLI.
-  return (typeof process !== 'undefined' && process.env.SANITY_STUDIO_BRAND_NAME) || 'Studio';
+function siteUrl(): string {
+  return (
+    (typeof process !== 'undefined' && process.env.SANITY_STUDIO_PREVIEW_URL) ||
+    (typeof process !== 'undefined' && process.env.SANITY_STUDIO_SITE_URL) ||
+    'http://localhost:5173'
+  );
 }
 
-/* ─── Shared card styles ────────────────────────── */
+function supabaseUrl(): string {
+  return (typeof process !== 'undefined' && process.env.SANITY_STUDIO_SUPABASE_URL) || '';
+}
+
+function supabaseKey(): string {
+  return (typeof process !== 'undefined' && process.env.SANITY_STUDIO_SUPABASE_ANON_KEY) || '';
+}
+
+async function fetchStats(): Promise<DashboardStats | null> {
+  const url = supabaseUrl();
+  const key = supabaseKey();
+  if (!url || !key || key.includes('REMPLACE')) return null;
+  try {
+    const res = await fetch(`${url}/rest/v1/rpc/studio_dashboard_stats`, {
+      method: 'POST',
+      headers: {
+        apikey: key,
+        Authorization: `Bearer ${key}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: '{}',
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as DashboardStats[] | DashboardStats;
+    if (Array.isArray(data)) return data[0] ?? null;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+/* ─── Shared styles ──────────────────────────────── */
 
 const sectionLabelStyle: React.CSSProperties = {
   fontSize: 11,
@@ -152,23 +156,27 @@ const baseCard: React.CSSProperties = {
   transition: 'background 120ms ease, border-color 120ms ease, transform 120ms ease',
 };
 
-const baseButton: React.CSSProperties = {
-  ...baseCard,
-  textAlign: 'left',
-  color: C.fg,
-  cursor: 'pointer',
-  fontFamily: 'inherit',
-  fontSize: 'inherit',
-  width: '100%',
-};
-
 /* ─── Dashboard root ────────────────────────────── */
 
+const DOMAIN_TYPES_ORDERED = [
+  { type: 'event', label: 'Évènement', emoji: '📅' },
+  { type: 'property', label: 'Propriété', emoji: '🏛️' },
+  { type: 'timepiece', label: 'Garde-temps', emoji: '⌚' },
+  { type: 'artwork', label: 'Œuvre', emoji: '🖼️' },
+  { type: 'journey', label: 'Voyage', emoji: '🌍' },
+  { type: 'conciergeService', label: 'Service', emoji: '🛎️' },
+  { type: 'article', label: 'Actualité', emoji: '📰' },
+  { type: 'teamMember', label: 'Membre', emoji: '👤' },
+];
+
+// eslint-disable-next-line max-lines-per-function -- action-first dashboard with 4 tiles + state + activity, splitting hurts readability
 export function Dashboard() {
   const client = useClient({ apiVersion: '2024-06-01' });
   const router = useRouter();
   const [data, setData] = useState<Snapshot | null>(null);
+  const [stats, setStats] = useState<DashboardStats | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [createOpen, setCreateOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -186,68 +194,24 @@ export function Dashboard() {
     };
   }, [client]);
 
-  const openSiteConfig = () =>
-    router.navigateIntent('edit', { id: 'siteConfig-singleton', type: 'siteConfig' });
-  const openPage = (slug: string) =>
-    router.navigateIntent('edit', { id: `page-${slug}`, type: 'page' });
-  const openStructure = () => router.navigateUrl({ path: '/structure' });
-  const openMedia = () => router.navigateUrl({ path: '/media' });
+  useEffect(() => {
+    let cancelled = false;
+    void fetchStats().then(s => {
+      if (!cancelled) setStats(s);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
-  /* ─── State checks with colored dots ─── */
+  const openCreate = (type: string) => {
+    setCreateOpen(false);
+    router.navigateIntent('create', { type });
+  };
 
-  const stateItems = useMemo(() => {
+  const otherTypes = useMemo(() => {
     if (!data) return [];
-    const sc = data.siteConfig;
-    const items: Array<{
-      status: 'ok' | 'partial' | 'empty' | 'missing';
-      label: string;
-      detail: string;
-      onClick?: () => void;
-    }> = [];
-
-    // Site config
-    if (!sc) {
-      items.push({
-        status: 'missing',
-        label: 'Configuration globale',
-        detail: "Le document n'existe pas encore — clique pour le créer.",
-        onClick: openSiteConfig,
-      });
-    } else {
-      const filled = [sc.siteName?.fr, sc.primaryNav?.length, sc.contactEmail].filter(
-        Boolean,
-      ).length;
-      const total = 3;
-      items.push({
-        status: filled === total ? 'ok' : filled > 0 ? 'partial' : 'empty',
-        label: 'Configuration globale',
-        detail:
-          filled === total
-            ? `${sc.siteName?.fr ?? 'Site'} · menu · contact`
-            : `${filled}/${total} champs clés renseignés`,
-        onClick: openSiteConfig,
-      });
-    }
-
-    // Pages
-    const publishedCount = data.pages.length;
-    if (publishedCount === 0) {
-      items.push({
-        status: 'missing',
-        label: 'Pages principales',
-        detail: 'Aucune page publiée — lance /wire-content pour démarrer.',
-      });
-    } else {
-      const complete = data.pages.filter(p => p.hasHero && p.hasIntro).length;
-      items.push({
-        status: complete === publishedCount ? 'ok' : 'partial',
-        label: 'Pages principales',
-        detail: `${publishedCount} page(s) publiée(s), ${complete} avec hero + intro complets`,
-      });
-    }
-
-    // Other document types (anything that's not page or siteConfig)
-    const otherTypes = (data.typeCounts ?? []).filter(
+    return (data.typeCounts ?? []).filter(
       t =>
         t &&
         typeof t.type === 'string' &&
@@ -256,19 +220,7 @@ export function Dashboard() {
         t.type !== 'siteConfig' &&
         t.type !== 'media.tag',
     );
-    if (otherTypes.length > 0) {
-      const summary = otherTypes.map(t => `${t.count} ${t.type}`).join(' · ');
-      items.push({
-        status: 'ok',
-        label: 'Collections',
-        detail: summary,
-      });
-    }
-
-    return items;
   }, [data]);
-
-  /* ─── Render: loading / error ─── */
 
   if (error) {
     return (
@@ -282,16 +234,10 @@ export function Dashboard() {
     return <div style={{ padding: 32, color: C.muted, fontFamily: 'system-ui' }}>Chargement…</div>;
   }
 
-  const scTagline = data.siteConfig?.tagline?.fr;
-  const scName = data.siteConfig?.siteName?.fr ?? brandName();
-  const lastSiteConfigUpdate = data.siteConfig?._updatedAt;
-  const lastPageUpdate = data.pages.reduce<string | undefined>((acc, p) => {
-    if (!acc || (p._updatedAt && p._updatedAt > acc)) return p._updatedAt;
-    return acc;
-  }, undefined);
-  const lastAnyUpdate = data.recent[0]?._updatedAt;
-
-  /* ─── Main render ─── */
+  const pendingInquiries = stats?.pending_inquiries ?? null;
+  const activeShareCodes = stats?.active_share_codes ?? null;
+  const totalClients = stats?.total_clients ?? null;
+  const site = siteUrl();
 
   return (
     <div
@@ -303,67 +249,9 @@ export function Dashboard() {
         margin: '0 auto',
       }}
     >
-      {/* ─── Hero welcome ──────────────── */}
-      <header
-        style={{
-          marginBottom: 40,
-          padding: '28px 32px',
-          borderRadius: 16,
-          background: `linear-gradient(135deg, ${C.surfaceElevated} 0%, ${C.surface} 100%)`,
-          border: `1px solid ${C.borderStrong}`,
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            top: -40,
-            right: -40,
-            width: 220,
-            height: 220,
-            background: `radial-gradient(circle, ${C.accent}22 0%, transparent 70%)`,
-            borderRadius: '50%',
-            pointerEvents: 'none',
-          }}
-        />
-        <div
-          style={{
-            fontSize: 10,
-            fontWeight: 600,
-            color: C.dim,
-            textTransform: 'uppercase',
-            letterSpacing: '0.16em',
-            marginBottom: 10,
-          }}
-        >
-          {scName} — Studio
-        </div>
-        <h1 style={{ fontSize: 34, fontWeight: 600, margin: 0, letterSpacing: '-0.02em' }}>
-          Bienvenue <span aria-hidden="true">👋</span>
-        </h1>
-        {scTagline && (
-          <p style={{ color: C.fg, marginTop: 10, fontSize: 16, fontWeight: 400 }}>{scTagline}</p>
-        )}
-        <p style={{ color: C.muted, marginTop: scTagline ? 6 : 10, fontSize: 14 }}>
-          Voici l'état actuel du site et les actions rapides.
-        </p>
-      </header>
-
-      {/* ─── État du site ──────────────── */}
+      {/* ─── Actions principales ────────── */}
       <section style={{ marginBottom: 40 }}>
-        <h2 style={sectionLabelStyle}>État du site</h2>
-        <div style={{ display: 'grid', gap: 8 }}>
-          {stateItems.map((item, i) => (
-            <StateRow key={i} item={item} />
-          ))}
-        </div>
-      </section>
-
-      {/* ─── Fraîcheur du contenu ──────── */}
-      <section style={{ marginBottom: 40 }}>
-        <h2 style={sectionLabelStyle}>Fraîcheur du contenu</h2>
+        <h2 style={sectionLabelStyle}>Actions</h2>
         <div
           style={{
             display: 'grid',
@@ -371,109 +259,160 @@ export function Dashboard() {
             gap: 12,
           }}
         >
-          <FreshnessTile
-            emoji="📄"
-            label="Pages du site"
-            subtext={
-              lastPageUpdate
-                ? `Dernière modif ${relativeTime(lastPageUpdate)}`
-                : 'Aucune modification'
-            }
-            onClick={openStructure}
+          <ActionTile
+            accent={C.emerald}
+            emoji="✚"
+            label="Créer une offre"
+            hint="Évènement, propriété, garde-temps…"
+            onClick={() => setCreateOpen(o => !o)}
+            badge={createOpen ? 'Choisis un type' : undefined}
           />
-          <FreshnessTile
-            emoji="📝"
-            label="Dernière activité"
-            subtext={lastAnyUpdate ? relativeTime(lastAnyUpdate) : 'Pas encore de document édité'}
+          <ActionTile
+            accent={C.amber}
+            emoji="🔑"
+            label="Créer une clé"
+            hint="Code à 6 caractères pour partager une fiche"
+            onClick={() => window.open(`${site}/fr/admin/share-codes`, '_blank')}
+            badge={activeShareCodes !== null ? `${String(activeShareCodes)} actives` : undefined}
           />
-          <FreshnessTile
-            emoji="⚙️"
-            label="Configuration"
-            subtext={
-              lastSiteConfigUpdate
-                ? `Modifiée ${relativeTime(lastSiteConfigUpdate)}`
-                : 'Non configurée'
+          <ActionTile
+            accent={pendingInquiries && pendingInquiries > 0 ? C.danger : C.accent}
+            emoji="📨"
+            label="Voir les demandes"
+            hint="Inquiries clients en attente"
+            onClick={() => window.open(`${site}/fr/admin/inquiries`, '_blank')}
+            badge={
+              pendingInquiries !== null
+                ? pendingInquiries > 0
+                  ? `${String(pendingInquiries)} en cours`
+                  : 'Aucune'
+                : undefined
             }
-            onClick={openSiteConfig}
+            pulse={Boolean(pendingInquiries && pendingInquiries > 0)}
+          />
+          <ActionTile
+            accent={C.violet}
+            emoji="👥"
+            label="Gérer les clients"
+            hint="Profils, rôles, accès"
+            onClick={() => window.open(`${site}/fr/admin/users`, '_blank')}
+            badge={totalClients !== null ? `${String(totalClients)} inscrits` : undefined}
           />
         </div>
-      </section>
 
-      {/* ─── Pages avec badges de complétude ─── */}
-      {data.pages.length > 0 && (
-        <section style={{ marginBottom: 40 }}>
-          <h2 style={sectionLabelStyle}>Pages ({data.pages.length})</h2>
+        {/* Inline chooser for "Créer une offre" */}
+        {createOpen && (
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: 12,
+              marginTop: 12,
+              padding: 16,
+              background: C.surface,
+              border: `1px solid ${C.borderStrong}`,
+              borderRadius: 12,
             }}
           >
-            {data.pages.map(p => (
-              <PageCard key={p._id} page={p} onClick={() => p.slug && openPage(p.slug)} />
+            <div style={{ ...sectionLabelStyle, marginBottom: 10 }}>Type de fiche</div>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+                gap: 8,
+              }}
+            >
+              {DOMAIN_TYPES_ORDERED.map(t => (
+                <button
+                  key={t.type}
+                  type="button"
+                  onClick={() => {
+                    openCreate(t.type);
+                  }}
+                  style={{
+                    ...baseCard,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 10,
+                    cursor: 'pointer',
+                    color: C.fg,
+                    fontFamily: 'inherit',
+                    fontSize: 13,
+                    textAlign: 'left',
+                    padding: '10px 14px',
+                  }}
+                >
+                  <span aria-hidden="true" style={{ fontSize: 18 }}>
+                    {t.emoji}
+                  </span>
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* ─── État du site (compact) ─────── */}
+      {otherTypes.length > 0 && (
+        <section style={{ marginBottom: 40 }}>
+          <h2 style={sectionLabelStyle}>État du contenu</h2>
+          <div
+            style={{
+              ...baseCard,
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 16,
+              padding: '14px 20px',
+            }}
+          >
+            {otherTypes.map(t => (
+              <button
+                key={t.type}
+                type="button"
+                onClick={() => router.navigateUrl({ path: `/structure/collection-${t.type}` })}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'baseline',
+                  gap: 6,
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: C.fg,
+                  fontFamily: 'inherit',
+                  fontSize: 13,
+                  padding: 0,
+                }}
+              >
+                <span style={{ fontWeight: 600 }}>{t.count}</span>
+                <span style={{ color: C.muted }}>{t.type}</span>
+              </button>
             ))}
           </div>
         </section>
       )}
 
-      {/* ─── Actions rapides ────────────── */}
-      <section style={{ marginBottom: 40 }}>
-        <h2 style={sectionLabelStyle}>Actions rapides</h2>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: 12,
-          }}
-        >
-          <QuickAction
-            accent={C.emerald}
-            emoji="🏠"
-            label="Modifier l'accueil"
-            hint="Hero, intro, CTA"
-            onClick={() => openPage('home')}
-          />
-          <QuickAction
-            accent={C.amber}
-            emoji="⚙️"
-            label="Configuration globale"
-            hint="Menu, contact, SEO default"
-            onClick={openSiteConfig}
-          />
-          <QuickAction
-            accent={C.violet}
-            emoji="📄"
-            label="Toutes les pages"
-            hint={`${data.pages.length} page(s)`}
-            onClick={openStructure}
-          />
-          <QuickAction
-            accent={C.accent}
-            emoji="🖼️"
-            label="Médiathèque"
-            hint="Images, logos, galeries"
-            onClick={openMedia}
-          />
-        </div>
-      </section>
-
       {/* ─── Activité récente ───────────── */}
       <section style={{ marginBottom: 40 }}>
         <h2 style={sectionLabelStyle}>Activité récente</h2>
         {data.recent.length === 0 ? (
-          <div style={{ ...baseCard, color: C.muted }}>Aucun document n'a encore été modifié.</div>
+          <div style={{ ...baseCard, color: C.muted }}>
+            Aucun document n&apos;a encore été modifié.
+          </div>
         ) : (
           <div style={{ display: 'grid', gap: 6 }}>
             {data.recent.map(d => (
-              <div
+              <button
                 key={d._id}
+                type="button"
+                onClick={() => router.navigateIntent('edit', { id: d._id, type: d._type })}
                 style={{
                   ...baseCard,
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   padding: '12px 18px',
+                  cursor: 'pointer',
+                  color: C.fg,
+                  fontFamily: 'inherit',
+                  textAlign: 'left',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -481,7 +420,7 @@ export function Dashboard() {
                   <div style={{ fontWeight: 500, fontSize: 14 }}>{resolveDocTitle(d)}</div>
                 </div>
                 <div style={{ color: C.muted, fontSize: 12 }}>{relativeTime(d._updatedAt)}</div>
-              </div>
+              </button>
             ))}
           </div>
         )}
@@ -498,8 +437,8 @@ export function Dashboard() {
           lineHeight: 1.6,
         }}
       >
-        N'oublie pas de cliquer <strong style={{ color: C.fg }}>Publier</strong> pour que tes
-        modifications apparaissent sur le site en production. Besoin d'aide ? Va voir le{' '}
+        N&apos;oublie pas de cliquer <strong style={{ color: C.fg }}>Publier</strong> pour que tes
+        modifications apparaissent sur le site. Besoin d&apos;aide ?{' '}
         <strong style={{ color: C.fg }}>📖 Guide</strong> en haut à droite.
       </footer>
     </div>
@@ -510,171 +449,21 @@ export function Dashboard() {
    Sub-components
    ═══════════════════════════════════════════════════ */
 
-function StateRow({
-  item,
-}: {
-  item: {
-    status: 'ok' | 'partial' | 'empty' | 'missing';
-    label: string;
-    detail: string;
-    onClick?: () => void;
-  };
-}) {
-  const dotColor =
-    item.status === 'ok'
-      ? C.ok
-      : item.status === 'partial'
-        ? C.warn
-        : item.status === 'missing'
-          ? C.danger
-          : C.dim;
-
-  const Wrapper = item.onClick ? 'button' : 'div';
-
-  return (
-    <Wrapper
-      type={item.onClick ? 'button' : undefined}
-      onClick={item.onClick}
-      style={{
-        ...(item.onClick ? baseButton : baseCard),
-        display: 'flex',
-        alignItems: 'center',
-        gap: 14,
-        cursor: item.onClick ? 'pointer' : 'default',
-      }}
-    >
-      <span
-        aria-hidden="true"
-        style={{
-          width: 10,
-          height: 10,
-          borderRadius: '50%',
-          background: dotColor,
-          boxShadow: item.status === 'ok' ? `0 0 8px ${dotColor}66` : 'none',
-          flexShrink: 0,
-        }}
-      />
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 2 }}>{item.label}</div>
-        <div
-          style={{
-            color: C.muted,
-            fontSize: 13,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {item.detail}
-        </div>
-      </div>
-      {item.onClick && (
-        <span aria-hidden="true" style={{ color: C.dim, fontSize: 18 }}>
-          →
-        </span>
-      )}
-    </Wrapper>
-  );
-}
-
-function FreshnessTile({
-  emoji,
-  label,
-  subtext,
-  onClick,
-}: {
-  emoji: string;
-  label: string;
-  subtext: string;
-  onClick?: () => void;
-}) {
-  const Wrapper = onClick ? 'button' : 'div';
-  return (
-    <Wrapper
-      type={onClick ? 'button' : undefined}
-      onClick={onClick}
-      style={{
-        ...(onClick ? baseButton : baseCard),
-        display: 'flex',
-        alignItems: 'center',
-        gap: 14,
-        cursor: onClick ? 'pointer' : 'default',
-      }}
-    >
-      <div style={{ fontSize: 22, flexShrink: 0 }} aria-hidden="true">
-        {emoji}
-      </div>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontWeight: 600, fontSize: 14 }}>{label}</div>
-        <div style={{ color: C.muted, fontSize: 12, marginTop: 2 }}>{subtext}</div>
-      </div>
-    </Wrapper>
-  );
-}
-
-function PageCard({ page, onClick }: { page: PageSnapshot; onClick?: () => void }) {
-  const label = page.title ?? page.slug ?? page._id;
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      style={{
-        ...baseButton,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 8,
-        padding: '16px 18px',
-      }}
-    >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-        <div style={{ fontWeight: 600, fontSize: 15 }}>{label}</div>
-        <div style={{ color: C.dim, fontSize: 12 }}>/{page.slug ?? '—'}</div>
-      </div>
-      <div style={{ color: C.muted, fontSize: 12 }}>{relativeTime(page._updatedAt)}</div>
-      <div style={{ display: 'flex', gap: 6, marginTop: 4, flexWrap: 'wrap' }}>
-        <Badge ok={page.hasHero} label="HERO" />
-        <Badge ok={page.hasIntro} label="INTRO" />
-        <Badge ok={page.hasCta} label="CTA" />
-        <Badge ok={page.hasSeo} label="SEO" />
-      </div>
-    </button>
-  );
-}
-
-function Badge({ ok, label }: { ok: boolean; label: string }) {
-  const color = ok ? C.ok : C.dim;
-  return (
-    <span
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 4,
-        padding: '3px 8px',
-        borderRadius: 6,
-        fontSize: 10,
-        fontWeight: 600,
-        letterSpacing: '0.06em',
-        background: ok ? `${C.ok}1a` : 'transparent',
-        border: `1px solid ${ok ? `${C.ok}44` : C.border}`,
-        color,
-      }}
-    >
-      <span aria-hidden="true">{ok ? '✓' : '—'}</span> {label}
-    </span>
-  );
-}
-
-function QuickAction({
+function ActionTile({
   accent,
   emoji,
   label,
   hint,
+  badge,
+  pulse,
   onClick,
 }: {
   accent: string;
   emoji: string;
   label: string;
   hint: string;
+  badge?: string;
+  pulse?: boolean;
   onClick: () => void;
 }) {
   return (
@@ -682,32 +471,69 @@ function QuickAction({
       type="button"
       onClick={onClick}
       style={{
-        ...baseButton,
+        ...baseCard,
+        textAlign: 'left',
+        color: C.fg,
+        cursor: 'pointer',
+        fontFamily: 'inherit',
+        fontSize: 'inherit',
         display: 'flex',
         flexDirection: 'column',
-        gap: 6,
-        padding: '20px 20px 18px',
-        borderColor: `${accent}33`,
-        background: `linear-gradient(135deg, ${accent}12 0%, ${C.surface} 70%)`,
+        gap: 8,
+        padding: '20px 22px 18px',
+        borderColor: `${accent}55`,
+        background: `linear-gradient(135deg, ${accent}18 0%, ${C.surface} 70%)`,
+        position: 'relative',
+        outline: pulse ? `1px solid ${accent}` : undefined,
+        outlineOffset: pulse ? 2 : undefined,
+        animation: pulse ? 'sn-pulse 2.6s ease-in-out infinite' : undefined,
       }}
     >
-      <div
-        style={{
-          width: 36,
-          height: 36,
-          borderRadius: 10,
-          background: `${accent}22`,
-          display: 'grid',
-          placeItems: 'center',
-          fontSize: 18,
-          marginBottom: 4,
-        }}
-        aria-hidden="true"
-      >
-        {emoji}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 10,
+            background: `${accent}33`,
+            display: 'grid',
+            placeItems: 'center',
+            fontSize: 20,
+          }}
+          aria-hidden="true"
+        >
+          {emoji}
+        </div>
+        {badge && (
+          <span
+            style={{
+              padding: '4px 10px',
+              borderRadius: 999,
+              fontSize: 10,
+              fontWeight: 600,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              background: `${accent}22`,
+              border: `1px solid ${accent}55`,
+              color: accent,
+            }}
+          >
+            {badge}
+          </span>
+        )}
       </div>
-      <div style={{ fontWeight: 600, fontSize: 14 }}>{label}</div>
-      <div style={{ color: C.muted, fontSize: 12 }}>{hint}</div>
+      <div style={{ fontWeight: 600, fontSize: 15, marginTop: 4 }}>{label}</div>
+      <div style={{ color: C.muted, fontSize: 12, lineHeight: 1.4 }}>{hint}</div>
+
+      {/* Inline keyframes for the pulse (no global CSS modification) */}
+      {pulse && (
+        <style>{`
+          @keyframes sn-pulse {
+            0%, 100% { outline-color: ${accent}33; }
+            50%     { outline-color: ${accent}; }
+          }
+        `}</style>
+      )}
     </button>
   );
 }
