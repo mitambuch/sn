@@ -65,12 +65,17 @@ interface DashboardStats {
   total_clients: number;
 }
 
+// Filter expression reused across the snapshot — strips drafts, Sanity
+// system entries (system.schema, system.group, comments.*, releases.*,
+// media.tag) and Studio internal IDs that start with "_.".
+const EXCLUDE = `!(_id in path("drafts.**")) && !(_type match "system.*") && !(_id match "_*") && _type != "media.tag"`;
+
 const SNAPSHOT_QUERY = `{
-  "typeCounts": array::unique(*[!(_id in path("drafts.**"))]._type)[] {
+  "typeCounts": array::unique(*[${EXCLUDE}]._type)[] {
     "type": @,
-    "count": count(*[_type == ^ && !(_id in path("drafts.**"))])
+    "count": count(*[_type == ^ && ${EXCLUDE}])
   },
-  "recent": *[!(_id in path("drafts.**"))] | order(_updatedAt desc)[0..4]{
+  "recent": *[${EXCLUDE}] | order(_updatedAt desc)[0..4]{
     _id, _type, _updatedAt, title
   }
 }`;
@@ -216,6 +221,7 @@ export function Dashboard() {
         t &&
         typeof t.type === 'string' &&
         !t.type.startsWith('system.') &&
+        !t.type.startsWith('sanity.') &&
         t.type !== 'page' &&
         t.type !== 'siteConfig' &&
         t.type !== 'media.tag',
