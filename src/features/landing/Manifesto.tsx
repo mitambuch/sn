@@ -56,6 +56,63 @@ const PHRASE_LAYOUTS: Record<PhraseKey, number[]> = {
   p6: [6, 24],
 };
 
+interface FogFieldProps {
+  id: string;
+  className: string;
+  seed: number;
+  frequency: string;
+  alphaBias: number;
+}
+
+const FogField = ({ id, className, seed, frequency, alphaBias }: FogFieldProps) => {
+  const filterId = `manifesto-fog-${id}`;
+
+  return (
+    <svg
+      aria-hidden="true"
+      className={className}
+      preserveAspectRatio="none"
+      viewBox="0 0 1600 1000"
+    >
+      <defs>
+        <filter
+          id={filterId}
+          x="-25%"
+          y="-25%"
+          width="150%"
+          height="150%"
+          colorInterpolationFilters="sRGB"
+        >
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency={frequency}
+            numOctaves="3"
+            seed={seed}
+            result="noise"
+          />
+          <feGaussianBlur in="noise" stdDeviation="42" result="softNoise" />
+          <feColorMatrix
+            in="softNoise"
+            type="matrix"
+            values={`0 0 0 0 1
+                     0 0 0 0 1
+                     0 0 0 0 1
+                     .52 .52 .52 0 ${alphaBias}`}
+          />
+        </filter>
+      </defs>
+      <rect
+        x="-15%"
+        y="-15%"
+        width="130%"
+        height="130%"
+        fill="currentColor"
+        filter={`url(#${filterId})`}
+      />
+    </svg>
+  );
+};
+
 /** Fisher-Yates shuffle — small array, allocates a copy. */
 function shuffle<T>(arr: readonly T[]): T[] {
   const out = [...arr];
@@ -114,13 +171,45 @@ export const Manifesto = () => {
     >
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden px-5 pt-24 pb-8 md:px-12 md:pt-28 md:pb-10">
         {/* ─── Cinema fog (back layer) — drifts behind the words ─── */}
+        <div aria-hidden="true" className="manifesto-fog pointer-events-none absolute inset-0 z-0">
+          <FogField
+            id="back-a"
+            className="manifesto-fog-field manifesto-fog-field-a"
+            seed={13}
+            frequency="0.004 0.011"
+            alphaBias={-0.5}
+          />
+          <FogField
+            id="back-b"
+            className="manifesto-fog-field manifesto-fog-field-b"
+            seed={29}
+            frequency="0.0035 0.009"
+            alphaBias={-0.54}
+          />
+        </div>
+
         <div
           aria-hidden="true"
-          className="manifesto-fog pointer-events-none absolute inset-0 z-0"
-        />
+          className="manifesto-fog-top pointer-events-none absolute inset-0 z-20"
+        >
+          <FogField
+            id="top-a"
+            className="manifesto-fog-field manifesto-fog-field-top-a"
+            seed={47}
+            frequency="0.005 0.013"
+            alphaBias={-0.58}
+          />
+          <FogField
+            id="top-b"
+            className="manifesto-fog-field manifesto-fog-field-top-b"
+            seed={71}
+            frequency="0.003 0.008"
+            alphaBias={-0.62}
+          />
+        </div>
 
         {/* Top meta */}
-        <div className="text-on-ink/55 z-10 flex items-center justify-between font-mono text-[10px] tracking-widest uppercase">
+        <div className="text-on-ink/55 z-30 flex items-center justify-between font-mono text-[10px] tracking-widest uppercase">
           <span>↘ {t('landing.manifesto.eyebrow')}</span>
           <span>02 / 09</span>
         </div>
@@ -174,21 +263,13 @@ export const Manifesto = () => {
                     </span>
                   ))}
                 </div>
-
-                {/* ─── Cinema fog (front layer) — wisps drift ABOVE the words,
-                     mix-blend-mode lighten so the text partially dissolves
-                     where fog passes. Organic, animated, mobile-friendly. ─── */}
-                <div
-                  aria-hidden="true"
-                  className="manifesto-fog-top pointer-events-none absolute inset-0 z-20"
-                />
               </div>
             );
           })}
         </div>
 
         {/* Bottom : hint + progress (3 segments since 3 visible phrases) */}
-        <div className="text-on-ink/55 z-10 flex items-end justify-between font-mono text-[10px] tracking-widest uppercase">
+        <div className="text-on-ink/55 z-30 flex items-end justify-between font-mono text-[10px] tracking-widest uppercase">
           <span>{t('landing.manifesto.hint')}&nbsp;↓</span>
           <div className="flex items-center gap-1.5">
             {selectedKeys.map((key, i) => (
