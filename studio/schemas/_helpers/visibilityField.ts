@@ -46,7 +46,7 @@ export const visibilityField = () =>
     type: 'string',
     group: VISIBILITY_GROUP_NAME,
     description:
-      "Qui voit cette fiche ? Choisis selon l'intention. \"Privée\" est le défaut sûr — la fiche n'apparaît que dans l'espace privé des membres connectés.",
+      'Qui voit cette fiche ? Choisis selon l\'intention. "Privée" est le défaut sûr — la fiche n\'apparaît que dans l\'espace privé des membres connectés. Astuce : une fois la visibilité réglée, utilise le menu ⋮ en haut à droite → "Partager cette fiche…" pour générer un code (mode 🔑) ou récupérer le lien public (mode 🌐) en un clic.',
     options: {
       list: [
         {
