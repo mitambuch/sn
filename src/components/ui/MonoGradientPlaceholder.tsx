@@ -27,13 +27,16 @@ interface MonoGradientPlaceholderProps {
 const STOPS: Record<Tone, { a: string; b: string; c: string }> = {
   dark: {
     a: '#0a0a0a',
-    b: '#1f1f1f',
+    b: '#222222',
     c: '#080808',
   },
   light: {
-    a: '#f4f4f4',
-    b: '#cfcfcf',
-    c: '#ededed',
+    // Light surface placeholder: a noticeable grey shadow zone in the
+    // middle reads as an interior depth, not a flat tint. Owner wanted
+    // "une ombre grise dedans" pour les box blanches.
+    a: '#ededed',
+    b: '#8a8a8a',
+    c: '#dedede',
   },
 };
 
@@ -66,10 +69,10 @@ export const MonoGradientPlaceholder = ({
         </linearGradient>
         <filter
           id={filterId}
-          x="-10%"
-          y="-10%"
-          width="120%"
-          height="120%"
+          x="-20%"
+          y="-20%"
+          width="140%"
+          height="140%"
           colorInterpolationFilters="sRGB"
         >
           <feTurbulence type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="1" seed="3">
@@ -80,14 +83,19 @@ export const MonoGradientPlaceholder = ({
               repeatCount="indefinite"
             />
           </feTurbulence>
-          <feDisplacementMap in="SourceGraphic" scale="32" />
+          <feDisplacementMap in="SourceGraphic" scale="24" />
         </filter>
       </defs>
+      {/* Rect is oversized vs viewBox so the displacement filter never
+          pulls pixels from outside the source — kills the black band at
+          the bottom that showed up when the gradient stopped exactly at
+          the visible edge. SVG's overflow:hidden on the parent clips the
+          overhang cleanly. */}
       <rect
-        x="0"
-        y="0"
-        width="400"
-        height="240"
+        x="-40"
+        y="-30"
+        width="480"
+        height="300"
         fill={`url(#${gradId})`}
         filter={`url(#${filterId})`}
       />

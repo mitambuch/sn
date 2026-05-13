@@ -1,3 +1,4 @@
+/* eslint-disable max-lines -- Card is the Apple-closed surface atom with all slot statics co-located by design (Card.Media, .Body, .Eyebrow, .Title, .Meta, .Stats, .Stat, .Badge, .Countdown, .Footer, .Overlay, .Pill, .PriceBlock). Splitting them across files would fragment the shared API contract. */
 // ═══════════════════════════════════════════════════
 // Card — Apple-closed surface system
 //
@@ -30,6 +31,7 @@
 
 import { BrandLink } from '@components/ui/BrandLink';
 import { Image } from '@components/ui/Image';
+import { MonoGradientPlaceholder } from '@components/ui/MonoGradientPlaceholder';
 import { cn } from '@utils/cn';
 import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode } from 'react';
 import { useEffect, useState } from 'react';
@@ -132,10 +134,23 @@ interface CardMediaProps {
   fit?: 'cover' | 'contain' | undefined;
   wrapperClassName?: string | undefined;
   className?: string | undefined;
+  /** Tone for the auto-fallback placeholder when src is missing. Default 'light'. */
+  placeholderTone?: 'dark' | 'light' | undefined;
 }
 
+const PLACEHOLDER_RATIO_CLASS: Record<NonNullable<CardMediaProps['ratio']>, string> = {
+  '1/1': 'aspect-square',
+  '4/3': 'aspect-4/3',
+  '3/4': 'aspect-3/4',
+  '16/9': 'aspect-video',
+  '3/2': 'aspect-3/2',
+};
+
 /** Top media slot — image flush to card edges, clipped by parent radius.
- *  Group-hover scales the image inside, not the card itself. */
+ *  Group-hover scales the image inside, not the card itself.
+ *  When `src` is missing/undefined, renders an animated monochrome
+ *  gradient placeholder (MonoGradientPlaceholder) at the requested ratio
+ *  so the card never shows a broken-image silhouette. */
 const CardMedia = ({
   src,
   alt,
@@ -143,20 +158,42 @@ const CardMedia = ({
   fit = 'cover',
   wrapperClassName,
   className,
-}: CardMediaProps) => (
-  <div className={cn('relative overflow-hidden', wrapperClassName)}>
-    <Image
-      src={src ?? ''}
-      alt={alt}
-      ratio={ratio}
-      className={cn(
-        'duration-cinematic transition-transform motion-safe:group-hover:scale-[1.04]',
-        fit === 'contain' && 'object-contain',
-        className,
-      )}
-    />
-  </div>
-);
+  placeholderTone = 'light',
+}: CardMediaProps) => {
+  if (!src) {
+    return (
+      <div
+        role="img"
+        aria-label={alt}
+        className={cn(
+          'bg-surface relative overflow-hidden',
+          PLACEHOLDER_RATIO_CLASS[ratio],
+          wrapperClassName,
+        )}
+      >
+        <MonoGradientPlaceholder
+          tone={placeholderTone}
+          className={cn('absolute inset-0 h-full w-full', className)}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className={cn('relative overflow-hidden', wrapperClassName)}>
+      <Image
+        src={src}
+        alt={alt}
+        ratio={ratio}
+        className={cn(
+          'duration-cinematic transition-transform motion-safe:group-hover:scale-[1.04]',
+          fit === 'contain' && 'object-contain',
+          className,
+        )}
+      />
+    </div>
+  );
+};
 
 interface CardOverlayProps {
   children: ReactNode;

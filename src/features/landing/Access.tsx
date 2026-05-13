@@ -15,8 +15,8 @@
 // ═══════════════════════════════════════════════════
 
 import { Card } from '@components/ui/Card';
+import { MonoGradientPlaceholder } from '@components/ui/MonoGradientPlaceholder';
 import { AccessRequestModal } from '@features/access/AccessRequestModal';
-import { MonoGradientPlaceholder } from '@features/landing/MonoGradientPlaceholder';
 import { SectionTag } from '@features/landing/SectionTag';
 import { useReveal } from '@hooks/useReveal';
 import { cn } from '@utils/cn';
