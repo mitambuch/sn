@@ -86,6 +86,13 @@ export const Loader = ({ onDone }: LoaderProps = {}) => {
 
   useEffect(() => {
     if (phase !== 'exit') return;
+    // Scroll the page to the top so the user lands on the Hero when the
+    // loader lifts away — covers reload-mid-scroll + browser scroll
+    // restoration edge cases. `instant` so it doesn't fight with the
+    // exit transition (which is its own ease).
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
     const t = window.setTimeout(() => setPhase('done'), EXIT_MS);
     return () => window.clearTimeout(t);
   }, [phase]);
