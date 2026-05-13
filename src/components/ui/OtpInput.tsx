@@ -119,11 +119,19 @@ export const OtpInput = ({
         return;
       }
 
-      // Character entry
-      if (e.key.length === 1 && pattern.test(e.key)) {
-        e.preventDefault();
-        setCharAt(i, e.key.toUpperCase());
-        focusAt(i + 1);
+      // Character entry — strip diacritics first so French spellings like
+      // "aperçu" pass (ç → c, é → e, etc.). The user's keypress is
+      // tolerated even if their keyboard inserts a combining diacritic.
+      if (e.key.length === 1) {
+        const stripped = e.key
+          .normalize('NFD')
+          .replace(/\p{Diacritic}/gu, '')
+          .toUpperCase();
+        if (pattern.test(stripped)) {
+          e.preventDefault();
+          setCharAt(i, stripped);
+          focusAt(i + 1);
+        }
       }
     },
     [chars, disabled, focusAt, pattern, setCharAt],
@@ -132,7 +140,11 @@ export const OtpInput = ({
   const handlePaste = useCallback(
     (e: ClipboardEvent<HTMLInputElement>, i: number) => {
       if (disabled) return;
-      const pasted = e.clipboardData.getData('text').toUpperCase();
+      const pasted = e.clipboardData
+        .getData('text')
+        .normalize('NFD')
+        .replace(/\p{Diacritic}/gu, '')
+        .toUpperCase();
       // Strip dashes/whitespace + tolerate legacy SAW- prefix
       const cleaned = pasted.replace(/^SAW-/i, '').replace(/[\s-]/g, '');
       if (!cleaned) return;

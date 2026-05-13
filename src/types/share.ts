@@ -55,15 +55,24 @@ export const SHARE_CODE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 export const SHARE_CODE_LENGTH = 6;
 
 /**
- * Strip whitespace + dashes and uppercase. Tolerates the legacy "SAW-"
- * prefix so any old URL still resolves (we just drop it).
+ * Strip whitespace + dashes + French diacritics, tolerate the legacy
+ * "SAW-" prefix, then uppercase. Diacritic stripping turns `aperçu` or
+ * `APERÇU` into `APERCU` so users typing the natural French spelling
+ * still get matched against the canonical alphabet.
  *
- * normalizeShareCode('apercu')   → 'APERCU'
- * normalizeShareCode('AP-ERCU')  → 'APERCU'
- * normalizeShareCode('saw-apercu') → 'APERCU' (legacy tolerance)
+ * normalizeShareCode('apercu')    → 'APERCU'
+ * normalizeShareCode('aperçu')    → 'APERCU'
+ * normalizeShareCode('AP-ERCU')   → 'APERCU'
+ * normalizeShareCode('saw-aperçu')→ 'APERCU' (legacy + diacritic)
  */
 export const normalizeShareCode = (raw: string): string =>
-  raw.trim().toUpperCase().replace(/^SAW-/i, '').replace(/[\s-]/g, '');
+  raw
+    .trim()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toUpperCase()
+    .replace(/^SAW-/i, '')
+    .replace(/[\s-]/g, '');
 
 /** Format a canonical code for display. Same as canonical now (no prefix). */
 export const formatShareCode = (canonical: string): string => canonical;
