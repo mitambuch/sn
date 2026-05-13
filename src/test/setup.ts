@@ -46,6 +46,19 @@ Object.defineProperty(window, 'IntersectionObserver', {
   value: MockIntersectionObserver,
 });
 
+// WHY: jsdom doesn't implement ResizeObserver — Lenis (smooth scroll, mounted at App level)
+// calls `new ResizeObserver` inside its Dimensions class. Without this mock the full <App />
+// render throws and the ErrorBoundary swallows the tree, failing every App.test rendering.
+class MockResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+Object.defineProperty(window, 'ResizeObserver', {
+  writable: true,
+  value: MockResizeObserver,
+});
+
 // WHY: jsdom doesn't implement HTMLCanvasElement.getContext — chart/canvas components trigger warnings without this stub.
 const nullContext: typeof HTMLCanvasElement.prototype.getContext = () => null;
 HTMLCanvasElement.prototype.getContext = nullContext;

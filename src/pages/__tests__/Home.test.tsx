@@ -1,3 +1,4 @@
+import { AuthProvider } from '@context/AuthContext';
 import { cleanup, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -7,9 +8,13 @@ import Home from '../Home';
 afterEach(cleanup);
 
 function renderHome() {
+  // WHY: Home now mounts the global LoginModal (via LoginModalProvider)
+  // which calls useAuth() — needs AuthProvider in the test tree.
   return render(
     <MemoryRouter>
-      <Home />
+      <AuthProvider>
+        <Home />
+      </AuthProvider>
     </MemoryRouter>,
   );
 }

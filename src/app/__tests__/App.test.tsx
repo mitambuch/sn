@@ -10,16 +10,13 @@ describe('App', () => {
     expect(document.getElementById('root') ?? document.body).toBeTruthy();
   });
 
-  it('renders the header navigation', async () => {
-    render(<App />);
-    // Header should be in the DOM after providers mount
-    const nav = await screen.findByRole('navigation', { name: /main navigation/i });
-    expect(nav).toBeInTheDocument();
-  });
-
   it('renders the toast container for notifications', async () => {
     render(<App />);
     const toastContainer = await screen.findByLabelText(/notifications/i);
     expect(toastContainer).toBeInTheDocument();
   });
+
+  // NOTE: Header "main navigation" lives in PublicLayout (playground, lab).
+  // The default / route redirects to /:locale → Home, which is mounted
+  // outside PublicLayout. Header coverage lives in Header.test.tsx.
 });
