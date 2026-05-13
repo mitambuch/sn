@@ -11,16 +11,22 @@ import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { CatalogueProactiveBanner } from '@features/catalogue/CatalogueProactiveBanner';
 import { JourneyCard } from '@features/journeys/JourneyCard';
+import { useSanityCollection } from '@hooks/useSanityCollection';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { GROQ_JOURNEYS_LIST } from '@/lib/sanityQueries';
 import { listJourneys } from '@/mocks';
-import type { JourneyKind } from '@/types/journey';
+import type { Journey, JourneyKind } from '@/types/journey';
 
 export default function JourneysList() {
   const { t } = useTranslation();
   const { localePath } = useLocale();
-  const all = useMemo(() => listJourneys(), []);
+  const fallback = useMemo(() => listJourneys(), []);
+  const { data: all } = useSanityCollection<Journey>({
+    query: GROQ_JOURNEYS_LIST,
+    fallback,
+  });
 
   const [activeKinds, setActiveKinds] = useState<Set<JourneyKind>>(new Set());
   const toggleKind = (k: JourneyKind) => {

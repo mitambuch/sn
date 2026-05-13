@@ -17,11 +17,13 @@ import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { CatalogueProactiveBanner } from '@features/catalogue/CatalogueProactiveBanner';
 import { PropertyCard } from '@features/properties/PropertyCard';
+import { useSanityCollection } from '@hooks/useSanityCollection';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { GROQ_PROPERTIES_LIST } from '@/lib/sanityQueries';
 import { listProperties } from '@/mocks';
-import type { PropertyKind } from '@/types/property';
+import type { Property, PropertyKind } from '@/types/property';
 
 const KIND_LABEL_KEYS: Record<PropertyKind, string> = {
   chalet: 'properties.kind.chalet',
@@ -34,7 +36,11 @@ const KIND_LABEL_KEYS: Record<PropertyKind, string> = {
 export default function PropertiesList() {
   const { t } = useTranslation();
   const { localePath } = useLocale();
-  const all = useMemo(() => listProperties(), []);
+  const fallback = useMemo(() => listProperties(), []);
+  const { data: all } = useSanityCollection<Property>({
+    query: GROQ_PROPERTIES_LIST,
+    fallback,
+  });
 
   const [activeKinds, setActiveKinds] = useState<Set<PropertyKind>>(new Set());
 

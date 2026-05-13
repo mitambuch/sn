@@ -61,6 +61,7 @@ const AdminInvitations = lazyWithRetry(() => import('@pages/AdminInvitations'));
 const AdminInquiries = lazyWithRetry(() => import('@pages/AdminInquiries'));
 const AdminUsers = lazyWithRetry(() => import('@pages/AdminUsers'));
 const AdminCatalogue = lazyWithRetry(() => import('@pages/AdminCatalogue'));
+const AdminShareCodes = lazyWithRetry(() => import('@pages/AdminShareCodes'));
 const NewsList = lazyWithRetry(() => import('@pages/NewsList'));
 const NewsDetail = lazyWithRetry(() => import('@pages/NewsDetail'));
 const AccountSaved = lazyWithRetry(() => import('@pages/AccountSaved'));
@@ -161,6 +162,7 @@ export default function AppRoutes() {
             <Route index element={<AdminDashboard />} />
             <Route path="catalogue" element={<AdminCatalogue />} />
             <Route path="invitations" element={<AdminInvitations />} />
+            <Route path="share-codes" element={<AdminShareCodes />} />
             <Route path="inquiries" element={<AdminInquiries />} />
             <Route path="users" element={<AdminUsers />} />
           </Route>

@@ -11,16 +11,19 @@ import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { CatalogueProactiveBanner } from '@features/catalogue/CatalogueProactiveBanner';
 import { EventCard } from '@features/events/EventCard';
+import { useSanityCollection } from '@hooks/useSanityCollection';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { GROQ_EVENTS_LIST } from '@/lib/sanityQueries';
 import { listEvents } from '@/mocks';
-import type { EventCategory } from '@/types/event';
+import type { Event, EventCategory } from '@/types/event';
 
 export default function EventsList() {
   const { t, i18n } = useTranslation();
   const { localePath } = useLocale();
-  const all = useMemo(() => listEvents(), []);
+  const fallback = useMemo(() => listEvents(), []);
+  const { data: all } = useSanityCollection<Event>({ query: GROQ_EVENTS_LIST, fallback });
 
   const [activeCats, setActiveCats] = useState<Set<EventCategory>>(new Set());
 

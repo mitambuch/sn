@@ -12,16 +12,22 @@ import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { CatalogueProactiveBanner } from '@features/catalogue/CatalogueProactiveBanner';
 import { ConciergeServiceCard } from '@features/concierge/ConciergeServiceCard';
+import { useSanityCollection } from '@hooks/useSanityCollection';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { GROQ_CONCIERGE_LIST } from '@/lib/sanityQueries';
 import { listConciergeServices } from '@/mocks';
-import type { ConciergeCategory } from '@/types/concierge';
+import type { ConciergeCategory, ConciergeService } from '@/types/concierge';
 
 export default function ConciergeList() {
   const { t } = useTranslation();
   const { localePath } = useLocale();
-  const all = useMemo(() => listConciergeServices(), []);
+  const fallback = useMemo(() => listConciergeServices(), []);
+  const { data: all } = useSanityCollection<ConciergeService>({
+    query: GROQ_CONCIERGE_LIST,
+    fallback,
+  });
 
   const [activeCats, setActiveCats] = useState<Set<ConciergeCategory>>(new Set());
   const toggleCat = (c: ConciergeCategory) => {
