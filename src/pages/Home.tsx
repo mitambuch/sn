@@ -50,6 +50,10 @@ function HomeContent() {
   const { openLogin } = useLoginModal();
   const [indexOpen, setIndexOpen] = useState(false);
   const [compactLogo, setCompactLogo] = useState(false);
+  // Top-corner chrome stays hidden while the Loader is on screen, then
+  // fades in once it has fully lifted away. Owner direction : "on a juste
+  // le chargement, le logo apparaît après."
+  const [loaderDone, setLoaderDone] = useState(false);
 
   // Scroll-driven logo morph : SAW↗NEXT → S↗N once past 220px.
   useEffect(() => {
@@ -78,7 +82,11 @@ function HomeContent() {
       <SeoHead />
       {/* Cinematic entry — fires on every landing visit. Skip via the
           top-right "Skip" button or via Esc/Enter/Space once posed. */}
-      <Loader />
+      <Loader
+        onDone={() => {
+          setLoaderDone(true);
+        }}
+      />
       <TopProgress />
       <TopCornerChrome
         compactLogo={compactLogo}
@@ -86,6 +94,7 @@ function HomeContent() {
         openIndex={openIndex}
         title={t('landing.index.title')}
         indexLabel={t('landing.indexButton')}
+        visible={loaderDone}
       />
 
       <IndexOverlay
@@ -151,6 +160,10 @@ interface TopCornerChromeProps {
   openIndex: () => void;
   title: string;
   indexLabel: string;
+  /** When false, the entire chrome fades out + becomes inert. Used to
+   *  keep the brand mark off-screen until the Loader has fully lifted
+   *  away. */
+  visible: boolean;
 }
 
 /** Top-corner chrome — BrandMark (cross-fades SAW↗NEXT ↔ S↗N on scroll)
@@ -165,6 +178,7 @@ const TopCornerChrome = ({
   openIndex,
   title,
   indexLabel,
+  visible,
 }: TopCornerChromeProps) => {
   const text = 'text-white';
   const border = 'border-white';
@@ -173,7 +187,13 @@ const TopCornerChrome = ({
   return (
     <div
       className="pointer-events-none fixed inset-x-0 top-0 z-100 flex items-center justify-between px-5 py-4 md:px-12 md:py-5"
-      style={{ mixBlendMode: 'difference' }}
+      style={{
+        mixBlendMode: 'difference',
+        opacity: visible ? 1 : 0,
+        transition: 'opacity 600ms ease-out 200ms',
+        visibility: visible ? 'visible' : 'hidden',
+      }}
+      aria-hidden={!visible}
     >
       <a
         href="#s01"

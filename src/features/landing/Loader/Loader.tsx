@@ -34,13 +34,26 @@ const EXIT_MS = 1400;
 
 type LoaderPhase = 'animating' | 'settle' | 'settled' | 'exit' | 'done';
 
+interface LoaderProps {
+  /** Fired once when the loader fully disappears (phase = 'done').
+   *  Use it to reveal page chrome (BrandMark, INDEX button) that should
+   *  stay hidden while the cinematic intro is on screen. */
+  onDone?: () => void;
+}
+
 // Dramatic non-linear ease — fast start, slow middle, propre fin
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
-export const Loader = () => {
+export const Loader = ({ onDone }: LoaderProps = {}) => {
   const [phase, setPhase] = useState<LoaderPhase>('animating');
   const [drawProgress, setDrawProgress] = useState(0);
   const [fillProgress, setFillProgress] = useState(0);
+
+  // Fire onDone once when the loader fully exits. Effect runs on phase
+  // change ; gated by the 'done' check inside.
+  useEffect(() => {
+    if (phase === 'done' && onDone) onDone();
+  }, [phase, onDone]);
 
   // Single RAF drives both draw and fill, with fill starting at
   // FILL_START_RATIO of the draw timeline. Both finish into 'settle'.
