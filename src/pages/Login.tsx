@@ -1,19 +1,19 @@
 // ═══════════════════════════════════════════════════
 // Login — three sign-in modes (email+password / magic link / invitation code)
 //
-// WHAT: Renders three editorial choice cards on first load. Selecting a
-//       card swaps to the matching form. Calls AuthContext methods which
-//       route to Supabase when env is wired, or DEV stubs otherwise.
-//       Magic-link + invitation modes show a confirmation screen — the
-//       user completes signin by clicking the link in their inbox.
+// WHAT: Renders three editorial choice cards on first load (landing v2
+//       visual language : data-theme='dark' wrapper + monumental mono
+//       headline + uppercase tracking). Selecting a card swaps to the
+//       matching form. Calls AuthContext methods which route to Supabase
+//       when env is wired, or DEV stubs otherwise. Magic-link + invitation
+//       modes show a confirmation screen — the user completes signin by
+//       clicking the link in their inbox.
 // WHEN: /:locale/login route. AuthContext owns the live-vs-stub branch.
 // EDIT COPY: src/locales/{fr,en}.json under auth.* — never inline.
 // ═══════════════════════════════════════════════════
 
 import { useLocale } from '@app/LocaleProvider';
-import { Container } from '@components/layout/Container';
 import { Input } from '@components/ui/Input';
-import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { useAuth } from '@context/AuthContext';
 import { cn } from '@utils/cn';
@@ -25,10 +25,12 @@ type Mode = 'select' | 'email' | 'magic-link' | 'invitation' | 'magic-link-sent'
 type FormMode = 'email' | 'magic-link' | 'invitation';
 
 const ModeCard = ({
+  num,
   title,
   hint,
   onClick,
 }: {
+  num: string;
   title: string;
   hint: string;
   onClick: () => void;
@@ -37,18 +39,21 @@ const ModeCard = ({
     type="button"
     onClick={onClick}
     className={cn(
-      'border-border bg-surface/40 hover:border-fg/60 hover:bg-surface/80 group flex flex-col gap-3 rounded-lg border p-8 text-left',
+      'border-border bg-surface/40 hover:border-fg/60 hover:bg-surface/70 group flex h-full flex-col gap-6 rounded-lg border p-8 text-left md:p-10',
       'duration-base transition-[border-color,background-color]',
       'focus-visible:ring-accent focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
     )}
   >
-    <span className="text-fg text-base font-medium">{title}</span>
-    <span className="text-muted text-sm leading-relaxed">{hint}</span>
+    <span className="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">{num}</span>
+    <span className="text-fg font-mono text-lg leading-tight font-medium tracking-tight uppercase md:text-xl">
+      {title}
+    </span>
+    <span className="text-muted/90 mt-auto text-sm leading-relaxed">{hint}</span>
     <span
       aria-hidden="true"
-      className="text-muted group-hover:text-fg duration-base mt-2 text-xs tracking-widest uppercase transition-colors"
+      className="text-muted/60 group-hover:text-fg duration-base font-mono text-[10px] tracking-[0.3em] uppercase transition-colors"
     >
-      →
+      Choisir ↗
     </span>
   </button>
 );
@@ -70,22 +75,29 @@ const FormShell = ({
   backLabel: string;
   submitting: boolean;
 }) => (
-  <form className="flex max-w-md flex-col gap-4" onSubmit={onSubmit}>
+  <form className="flex max-w-md flex-col gap-5" onSubmit={onSubmit}>
     {children}
-    {error && <p className="text-muted text-xs leading-relaxed">{error}</p>}
+    {error && (
+      <p
+        role="alert"
+        className="text-danger border-danger/30 bg-danger/4 rounded-md border px-3 py-2 text-xs leading-relaxed"
+      >
+        {error}
+      </p>
+    )}
     <div className="mt-2 flex items-center gap-4">
       <button
         type="submit"
         disabled={submitting}
-        className="border-border bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent inline-flex items-center gap-3 rounded-full border px-6 py-3 text-sm tracking-widest uppercase focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+        className="border-border bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent inline-flex items-center gap-3 rounded-full border px-7 py-3.5 font-mono text-xs tracking-[0.3em] uppercase focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
       >
         {submitting ? '…' : label}
-        {!submitting && <span aria-hidden="true">→</span>}
+        {!submitting && <span aria-hidden="true">↗</span>}
       </button>
       <button
         type="button"
         onClick={onCancel}
-        className="text-muted hover:text-fg duration-base text-xs tracking-widest uppercase transition-colors"
+        className="text-muted hover:text-fg duration-base font-mono text-[11px] tracking-[0.2em] uppercase transition-colors"
       >
         ← {backLabel}
       </button>
@@ -215,6 +227,7 @@ const buildMeta = (input: MetaInput): Record<FormMode, FormMeta> => {
   };
 };
 
+// eslint-disable-next-line max-lines-per-function -- page composition with 3 auth modes + monumental layout
 export default function Login() {
   const { t } = useTranslation();
   const { localePath } = useLocale();
@@ -271,67 +284,105 @@ export default function Login() {
   const current = isFormMode ? meta[mode] : null;
 
   return (
-    <Container size="md">
-      <section className="flex min-h-[calc(100vh-14rem)] flex-col justify-center py-16">
-        <SectionHeader eyebrow={t('public.tagline')} title={t('auth.tagline')} size="md" as="h1" />
+    <section data-theme="dark" className="bg-bg text-fg relative min-h-screen overflow-hidden">
+      {/* ─── Top corner — back-to-home + eyebrow ─── */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-center justify-between px-5 py-5 md:px-12 md:py-8">
+        <Link
+          to={localePath(ROUTES.HOME)}
+          className="text-muted hover:text-fg pointer-events-auto font-mono text-[11px] tracking-[0.3em] uppercase transition-colors"
+        >
+          ← {t('auth.back')}
+        </Link>
+        <span className="text-muted font-mono text-[10px] tracking-[0.4em] uppercase">
+          {t('auth.tagEyebrow')}
+        </span>
+      </div>
 
-        <div className="mt-12">
+      <div className="mx-auto flex min-h-screen max-w-7xl flex-col justify-center gap-16 px-5 py-32 md:gap-24 md:px-12 md:py-40">
+        {/* ─── Monumental headline ─── */}
+        <header className="flex flex-col gap-6">
+          <h1 className="max-w-5xl font-mono text-[clamp(2rem,6vw,5.5rem)] leading-[0.92] font-medium tracking-tight uppercase">
+            {t('auth.titleA')}
+            <br />
+            <span className="text-muted">{t('auth.titleB')}</span>
+          </h1>
+          <p className="text-muted max-w-2xl text-base leading-relaxed md:text-lg">
+            {t('auth.lede')}
+          </p>
+        </header>
+
+        {/* ─── Body ─── */}
+        <div>
           {mode === 'select' && (
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-4 md:grid-cols-3 md:gap-6">
               <ModeCard
+                num="01"
                 title={t('auth.modeEmail')}
                 hint={t('auth.modeEmailHint')}
-                onClick={() => resetTo('email')}
+                onClick={() => {
+                  resetTo('email');
+                }}
               />
               <ModeCard
+                num="02"
                 title={t('auth.modeMagicLink')}
                 hint={t('auth.modeMagicLinkHint')}
-                onClick={() => resetTo('magic-link')}
+                onClick={() => {
+                  resetTo('magic-link');
+                }}
               />
               <ModeCard
+                num="03"
                 title={t('auth.modeInvitation')}
                 hint={t('auth.modeInvitationHint')}
-                onClick={() => resetTo('invitation')}
+                onClick={() => {
+                  resetTo('invitation');
+                }}
               />
             </div>
           )}
 
           {current && (
-            <FormShell
-              onSubmit={current.onSubmit}
-              error={error}
-              onCancel={() => resetTo('select')}
-              label={current.label}
-              backLabel={back}
-              submitting={submitting}
-            >
-              {current.fields}
-            </FormShell>
+            <div className="flex flex-col gap-6">
+              <span className="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
+                {current.label}
+              </span>
+              <FormShell
+                onSubmit={current.onSubmit}
+                error={error}
+                onCancel={() => {
+                  resetTo('select');
+                }}
+                label={current.label}
+                backLabel={back}
+                submitting={submitting}
+              >
+                {current.fields}
+              </FormShell>
+            </div>
           )}
 
           {mode === 'magic-link-sent' && (
-            <div className="border-border max-w-md rounded-lg border p-8">
-              <p className="text-fg text-sm leading-relaxed">{t('auth.magicLinkSent')}</p>
+            <div className="border-border bg-surface/40 flex max-w-lg flex-col gap-5 rounded-lg border p-8 md:p-10">
+              <span className="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
+                {t('auth.magicLinkSentTag')}
+              </span>
+              <p className="text-fg text-sm leading-relaxed md:text-base">
+                {t('auth.magicLinkSent')}
+              </p>
               <button
                 type="button"
-                onClick={() => resetTo('select')}
-                className="text-muted hover:text-fg duration-base mt-6 text-xs tracking-widest uppercase transition-colors"
+                onClick={() => {
+                  resetTo('select');
+                }}
+                className="text-muted hover:text-fg duration-base self-start font-mono text-[11px] tracking-[0.2em] uppercase transition-colors"
               >
                 ← {t('auth.back')}
               </button>
             </div>
           )}
         </div>
-
-        <div className="mt-16">
-          <Link
-            to={localePath(ROUTES.HOME)}
-            className="text-muted hover:text-fg duration-base text-xs tracking-widest uppercase transition-colors"
-          >
-            ← {t('auth.back')}
-          </Link>
-        </div>
-      </section>
-    </Container>
+      </div>
+    </section>
   );
 }
