@@ -85,7 +85,7 @@ export default function ExamplePage() {
       <div className="flex flex-1 items-center justify-center py-10">
         <section
           aria-labelledby="example-heading"
-          className="border-border bg-bg/80 shadow-card-rest w-full max-w-xl rounded-2xl border px-6 py-10 backdrop-blur-sm md:px-10 md:py-12"
+          className="border-border bg-bg/80 shadow-card-rest animate-important w-full max-w-xl rounded-2xl border px-6 py-10 backdrop-blur-sm motion-reduce:animate-none md:px-10 md:py-12"
         >
           <div className="flex flex-col items-center gap-8 text-center">
             <span className="text-muted font-mono text-[10px] tracking-[0.5em] uppercase">
