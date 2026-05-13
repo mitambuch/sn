@@ -164,7 +164,7 @@ export default function SharePage() {
           <Card padding="lg" className="flex flex-col gap-5">
             <p className="text-fg text-base leading-relaxed">
               {status === 'invalid-format' &&
-                'Le code attendu suit le format SAW-XXXX-XXXX. Vérifiez la saisie ou contactez Salvatore.'}
+                'Le code attendu fait 6 caractères, sans préfixe ni espace. Vérifiez la saisie ou contactez Salvatore.'}
               {status === 'not-found' &&
                 "Aucune fiche n'est associée à ce code. Le code est peut-être faux, ou la fiche a été retirée."}
               {status === 'expired' &&

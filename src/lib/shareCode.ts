@@ -37,8 +37,8 @@ type ConsumeRow = {
  */
 export const consumeShareCode = async (rawCode: string): Promise<ConsumedShareCode | null> => {
   if (!supabase) {
-    // DEV stub when Supabase isn't configured — accept the dev code.
-    if (normalizeShareCode(rawCode) === 'DEMO2026') {
+    // DEV stub when Supabase isn't configured — accept the canonical demo code.
+    if (normalizeShareCode(rawCode) === 'APERCU') {
       return {
         sanityDocType: 'event',
         sanityDocId: 'evt-01',
@@ -83,11 +83,11 @@ interface GenerateOpts {
 
 /**
  * Generate + insert a new share code for a Sanity doc. Admin-only
- * (RLS blocks non-admins). Returns the canonical 8-char code and the
- * display-formatted "SAW-XXXX-XXXX" string.
+ * (RLS blocks non-admins). Returns the canonical 6-char code (display
+ * = canonical, no prefix).
  *
  * On unique-constraint clash (extremely rare given the alphabet
- * size — 30^8 ≈ 6.5 × 10^11), retries once with a fresh code.
+ * size — 30^6 ≈ 729M), retries once with a fresh code.
  */
 export const generateAndInsertShareCode = async (
   docType: ShareableDocType,

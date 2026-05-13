@@ -1,99 +1,121 @@
 // ═══════════════════════════════════════════════════
-// ExamplePage — /exemple — esthetic gate into the demo share code
+// ExamplePage — /exemple — code-entry gate with 6 OTP boxes
 //
-// WHAT: A "trailer" landing that anyone can hit. Cold-open noir surface
-//       with the SAW NEXT mark, a one-line invitation and a single
-//       button "Entrer dans l'aperçu" that pushes the user through to
-//       /share/SAW-DEMO-2026 — which renders the seeded demo event
-//       (Gala ONU Genève) as a real fiche.
+// WHAT: Esthetic light-grey landing where the recipient types the 6-
+//       character access code Salva sent them. The 6 boxes auto-advance
+//       and accept paste. Successful validation pushes through to
+//       /share/<CODE> which resolves the linked fiche (Sanity).
+//       Pre-fills the canonical demo code (APERCU) when the URL has
+//       ?code=APERCU — used by the / exemple demo button and any
+//       direct deeplink Salva sends.
 //
-//       Purpose : Salva sends https://sn-studio-dusky.vercel.app/exemple
-//       to any prospect, no authentication, no commitment. The prospect
-//       gets a tactile taste of the experience before being invited.
-//
-// WHEN: Public route /exemple (outside locale tree, no PublicLayout
-//       chrome). Reachable directly, share-able as-is.
+// WHEN: Public route /exemple (outside locale tree, no layout chrome).
+//       Reachable directly, share-able as-is.
 // ═══════════════════════════════════════════════════
 
-import { MonoGradientPlaceholder } from '@components/ui/MonoGradientPlaceholder';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { OtpInput } from '@components/ui/OtpInput';
+import { useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
-const DEMO_DISPLAY_CODE = 'SAW-DEMO-2026';
+import { consumeShareCode } from '@/lib/shareCode';
+import { normalizeShareCode, SHARE_CODE_CANONICAL_PATTERN, SHARE_CODE_LENGTH } from '@/types/share';
+
+type Status = 'idle' | 'checking' | 'invalid' | 'unknown';
 
 export default function ExamplePage() {
-  // Tiny entry animation — content fades in after first paint so the
-  // noir surface reads as a deliberate cold-open, not a flash.
-  const [entered, setEntered] = useState(false);
-  useEffect(() => {
-    const id = window.setTimeout(() => {
-      setEntered(true);
-    }, 50);
-    return () => {
-      window.clearTimeout(id);
-    };
-  }, []);
+  const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const presetCode = params.get('code') ?? '';
+  const [status, setStatus] = useState<Status>('idle');
+
+  const handleComplete = async (raw: string) => {
+    const code = normalizeShareCode(raw);
+    if (!SHARE_CODE_CANONICAL_PATTERN.test(code)) {
+      setStatus('invalid');
+      return;
+    }
+    setStatus('checking');
+    // Pre-check the code so we can show inline feedback before navigating.
+    // SharePage will consume it again — that's fine, consume_share_code
+    // is the only path that bumps the view counter.
+    const result = await consumeShareCode(code);
+    if (result?.isValid) {
+      void navigate(`/share/${code}`);
+      return;
+    }
+    setStatus('unknown');
+  };
+
+  const statusLabel: Record<Status, string> = {
+    idle: 'Tapez ou collez le code à 6 caractères transmis par Salvatore.',
+    checking: 'Vérification du code…',
+    invalid: '6 caractères attendus, sans préfixe ni espace.',
+    unknown: "Ce code n'est pas reconnu. Vérifiez la saisie ou contactez Salvatore.",
+  };
 
   return (
     <main
-      data-theme="dark"
+      data-theme="light"
       className="bg-bg text-fg relative flex min-h-screen items-center justify-center overflow-hidden px-6 py-16 md:px-12"
     >
       {/* React 19 hoists these into <head> automatically */}
       <title>Aperçu privé — SAW NEXT</title>
       <meta
         name="description"
-        content="Un aperçu privé du cercle SAW NEXT — accès retenue, accompagnement sur-mesure."
+        content="Entrez le code à 6 caractères transmis par Salvatore pour ouvrir l'aperçu privé."
       />
       <meta name="robots" content="noindex, nofollow" />
 
-      {/* Ambient backdrop — monochrome organic motion, behind everything */}
-      <div className="pointer-events-none absolute inset-0 -z-10 opacity-25">
-        <MonoGradientPlaceholder tone="dark" className="h-full w-full" />
-      </div>
-
+      {/* Soft grey ambient backdrop — light surface, low-key luxury */}
       <div
-        className="relative z-10 flex max-w-2xl flex-col items-center gap-12 text-center"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10"
         style={{
-          opacity: entered ? 1 : 0,
-          transform: entered ? 'translateY(0)' : 'translateY(12px)',
-          transition: 'opacity 1200ms ease-out, transform 1200ms ease-out',
+          background:
+            'radial-gradient(circle at 50% 30%, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0) 60%), linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%)',
         }}
-      >
+      />
+
+      <div className="relative z-10 flex w-full max-w-xl flex-col items-center gap-10 text-center">
         <span className="text-muted font-mono text-[10px] tracking-[0.5em] uppercase">
           SAW NEXT — Aperçu privé
         </span>
 
-        <h1 className="font-mono text-[clamp(2rem,5vw,3.5rem)] leading-[1.1] font-medium tracking-tight uppercase">
-          Une fiche.
+        <h1 className="font-mono text-[clamp(1.75rem,4vw,2.75rem)] leading-[1.15] font-medium tracking-tight uppercase">
+          Un code,
           <br />
-          Un aperçu.
-          <br />
-          <span className="text-muted">Aucune trace.</span>
+          une fiche.
         </h1>
 
-        <p className="text-fg/80 max-w-md text-base leading-relaxed">
-          Sawnext est un cercle restreint. Cette page ouvre une porte unique sur une fiche réelle —
-          sans inscription, sans laisser d&apos;empreinte. Considérez-la comme un coup d&apos;œil
-          dans l&apos;atelier.
+        <p className="text-muted max-w-md text-sm leading-relaxed">
+          Entrez ci-dessous les 6 caractères transmis par Salvatore. Aucun compte, aucune trace — le
+          code donne accès à <em>une seule</em> fiche, pour vous.
         </p>
 
         <div className="flex flex-col items-center gap-4">
-          <Link
-            to={`/share/${DEMO_DISPLAY_CODE}`}
-            className="border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-fg/40 group inline-flex items-center gap-4 rounded-full border px-10 py-4 font-mono text-xs tracking-[0.4em] uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
+          <OtpInput
+            length={SHARE_CODE_LENGTH}
+            initialValue={presetCode}
+            pattern={/^[A-HJ-NP-Z2-9]$/i}
+            onComplete={value => {
+              void handleComplete(value);
+            }}
+            onChange={() => {
+              if (status !== 'idle') setStatus('idle');
+            }}
+            disabled={status === 'checking'}
+            variant={status === 'invalid' || status === 'unknown' ? 'danger' : 'default'}
+          />
+          <p
+            aria-live="polite"
+            className={
+              status === 'invalid' || status === 'unknown'
+                ? 'text-accent text-xs leading-relaxed'
+                : 'text-muted text-xs leading-relaxed'
+            }
           >
-            Entrer dans l&apos;aperçu
-            <span
-              aria-hidden="true"
-              className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5"
-            >
-              ↗
-            </span>
-          </Link>
-          <span className="text-muted font-mono text-[10px] tracking-[0.4em] uppercase">
-            Code · {DEMO_DISPLAY_CODE}
-          </span>
+            {statusLabel[status]}
+          </p>
         </div>
 
         <Link
