@@ -70,7 +70,18 @@ export default defineConfig({
         { id: 'en', title: 'English' },
       ],
       defaultLanguages: ['fr'],
-      documentTypes: ['page', 'siteConfig'],
+      documentTypes: [
+        'page',
+        'siteConfig',
+        'event',
+        'property',
+        'timepiece',
+        'artwork',
+        'journey',
+        'conciergeService',
+        'article',
+        'teamMember',
+      ],
       filterField: (enclosingType, member, selectedLanguageIds) =>
         !enclosingType.name.startsWith('locale') || selectedLanguageIds.includes(member.name),
     }),
@@ -93,7 +104,7 @@ export default defineConfig({
 
     // "View" button (top-right of the editor) — opens the rendered draft
     // of the current doc. Wire-up per type : siteConfig → home, page →
-    // /:locale/:slug, future types can be added below.
+    // /:locale/:slug, domain types → their listing or detail URL.
     productionUrl: async (prev, context) => {
       const { document } = context;
       if (document._type === 'siteConfig') {
@@ -104,6 +115,23 @@ export default defineConfig({
         if (!slug) return prev;
         const path = slug === 'home' ? '' : `/${slug}`;
         return `${PREVIEW_URL}/${DEFAULT_LOCALE}${path}?draft=1`;
+      }
+      // Domain documents : map _type to the corresponding listing folder,
+      // then append slug for the detail page.
+      const DOMAIN_PATHS: Record<string, string> = {
+        event: 'events',
+        property: 'properties',
+        timepiece: 'timepieces',
+        artwork: 'artworks',
+        journey: 'journeys',
+        conciergeService: 'concierge',
+        article: 'news',
+      };
+      const folder = DOMAIN_PATHS[document._type];
+      if (folder) {
+        const slug = (document.slug as { current?: string } | undefined)?.current;
+        const base = `${PREVIEW_URL}/${DEFAULT_LOCALE}/account/${folder}`;
+        return slug ? `${base}/${slug}?draft=1` : base;
       }
       return prev;
     },

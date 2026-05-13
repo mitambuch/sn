@@ -11,11 +11,13 @@ import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { ArtworkCard } from '@features/artworks/ArtworkCard';
 import { CatalogueProactiveBanner } from '@features/catalogue/CatalogueProactiveBanner';
+import { useSanityCollection } from '@hooks/useSanityCollection';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { GROQ_ARTWORKS_LIST } from '@/lib/sanityQueries';
 import { listArtworks } from '@/mocks';
-import type { ArtworkMedium } from '@/types/artwork';
+import type { Artwork, ArtworkMedium } from '@/types/artwork';
 
 const MEDIUM_LABEL_KEYS: Record<ArtworkMedium, string> = {
   'painting-oil': 'artworks.medium.painting-oil',
@@ -32,7 +34,11 @@ const MEDIUM_LABEL_KEYS: Record<ArtworkMedium, string> = {
 export default function ArtworksList() {
   const { t } = useTranslation();
   const { localePath } = useLocale();
-  const all = useMemo(() => listArtworks(), []);
+  const fallback = useMemo(() => listArtworks(), []);
+  const { data: all } = useSanityCollection<Artwork>({
+    query: GROQ_ARTWORKS_LIST,
+    fallback,
+  });
 
   const [activeMediums, setActiveMediums] = useState<Set<ArtworkMedium>>(new Set());
 

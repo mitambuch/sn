@@ -61,11 +61,13 @@ const AdminInvitations = lazyWithRetry(() => import('@pages/AdminInvitations'));
 const AdminInquiries = lazyWithRetry(() => import('@pages/AdminInquiries'));
 const AdminUsers = lazyWithRetry(() => import('@pages/AdminUsers'));
 const AdminCatalogue = lazyWithRetry(() => import('@pages/AdminCatalogue'));
+const AdminShareCodes = lazyWithRetry(() => import('@pages/AdminShareCodes'));
 const NewsList = lazyWithRetry(() => import('@pages/NewsList'));
 const NewsDetail = lazyWithRetry(() => import('@pages/NewsDetail'));
 const AccountSaved = lazyWithRetry(() => import('@pages/AccountSaved'));
 const LogoPreview = lazyWithRetry(() => import('@pages/LogoPreview'));
 const MotionShowcase = lazyWithRetry(() => import('@pages/MotionShowcase'));
+const SharePage = lazyWithRetry(() => import('@pages/SharePage'));
 
 /* ─── Loading fallback — themed, no white flash ───────────────── */
 function PageLoader() {
@@ -112,6 +114,9 @@ export default function AppRoutes() {
         {/* ─── /motion — Phase 1-5 motion showcase (no locale, no layout) ─── */}
         <Route path="/motion" element={<MotionShowcase />} />
 
+        {/* ─── /share/:code — single Sanity-doc share, public, no auth ─── */}
+        <Route path="/share/:code" element={<SharePage />} />
+
         {/* ─── Canonical locale-prefixed tree ─── */}
         <Route path="/:locale" element={<LocaleLayout />}>
           {/* ─── Landing — full-bleed (no PublicLayout chrome).
@@ -157,6 +162,7 @@ export default function AppRoutes() {
             <Route index element={<AdminDashboard />} />
             <Route path="catalogue" element={<AdminCatalogue />} />
             <Route path="invitations" element={<AdminInvitations />} />
+            <Route path="share-codes" element={<AdminShareCodes />} />
             <Route path="inquiries" element={<AdminInquiries />} />
             <Route path="users" element={<AdminUsers />} />
           </Route>

@@ -11,15 +11,22 @@ import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { CatalogueProactiveBanner } from '@features/catalogue/CatalogueProactiveBanner';
 import { TimepieceCard } from '@features/timepieces/TimepieceCard';
+import { useSanityCollection } from '@hooks/useSanityCollection';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { GROQ_TIMEPIECES_LIST } from '@/lib/sanityQueries';
 import { listTimepieces } from '@/mocks';
+import type { Timepiece } from '@/types/timepiece';
 
 export default function TimepiecesList() {
   const { t } = useTranslation();
   const { localePath } = useLocale();
-  const all = useMemo(() => listTimepieces(), []);
+  const fallback = useMemo(() => listTimepieces(), []);
+  const { data: all } = useSanityCollection<Timepiece>({
+    query: GROQ_TIMEPIECES_LIST,
+    fallback,
+  });
 
   const [activeBrands, setActiveBrands] = useState<Set<string>>(new Set());
 

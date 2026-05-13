@@ -1,21 +1,17 @@
 // ═══════════════════════════════════════════════════
 // deskStructure — custom sidebar menu of the Studio
 //
-// WHAT: Flat hierarchy — each page singleton is a direct top-level
-//       item, no intermediate "Pages du site" accordion to click
-//       through. Opening a page takes 1 click instead of 2.
-//   📊 Tableau de bord (landing tool)
+// WHAT: Two-zone hierarchy.
 //   ⚙️ Configuration globale (singleton)
 //   ─── divider ───
-//   🏠 Accueil
-//   ℹ️ À propos
-//   ✉️ Contact
+//   🏠 Accueil    ℹ️ À propos    ✉️ Contact     (page singletons)
 //   ─── divider ───
-//   (collections placeholder)
+//   📅 Évènements   🏛️ Propriétés   ⌚ Garde-temps
+//   🖼️ Œuvres       🌍 Voyages      🛎️ Conciergerie
+//   📰 Actualités   👤 Équipe                     (domain collections)
 //
 // Adding a page : append an entry to PAGE_SINGLETONS.
-// Adding a collection type (e.g. person, testimonial) : append a
-// listItem block after the second divider (see commented example).
+// Adding a collection : append to DOMAIN_COLLECTIONS.
 // ═══════════════════════════════════════════════════
 
 import type { StructureResolver } from 'sanity/structure';
@@ -42,6 +38,27 @@ export const PAGE_SINGLETONS: ReadonlyArray<{
   { id: 'contact', title: 'Contact', icon: '✉️' },
 ];
 
+/**
+ * Domain collections — Sanity document types with multiple instances.
+ *
+ * Each entry = one menu item that opens a list of docs of that type.
+ * `type` matches the schema name. `title` is the sidebar label.
+ */
+export const DOMAIN_COLLECTIONS: ReadonlyArray<{
+  type: string;
+  title: string;
+  icon: string;
+}> = [
+  { type: 'event', title: 'Évènements', icon: '📅' },
+  { type: 'property', title: 'Propriétés', icon: '🏛️' },
+  { type: 'timepiece', title: 'Garde-temps', icon: '⌚' },
+  { type: 'artwork', title: "Œuvres d'art", icon: '🖼️' },
+  { type: 'journey', title: 'Voyages', icon: '🌍' },
+  { type: 'conciergeService', title: 'Conciergerie', icon: '🛎️' },
+  { type: 'article', title: 'Actualités', icon: '📰' },
+  { type: 'teamMember', title: 'Équipe', icon: '👤' },
+];
+
 export const structure: StructureResolver = S =>
   S.list()
     .title('Contenu')
@@ -60,9 +77,6 @@ export const structure: StructureResolver = S =>
       S.divider(),
 
       // ── Page singletons ────────────────────────────────────
-      // Flat top-level items so the editor clicks Accueil / À propos /
-      // Contact directly, without going through a "Pages du site"
-      // wrapper pane first. One less click per page edit.
       ...PAGE_SINGLETONS.map(p =>
         S.listItem()
           .id(`page-${p.id}`)
@@ -72,12 +86,12 @@ export const structure: StructureResolver = S =>
       ),
       S.divider(),
 
-      // ── Collections placeholder ──────────────────
-      // Clients add repeatable entities here:
-      //
-      //   S.listItem()
-      //     .id('team')
-      //     .title('Équipe')
-      //     .icon(icon('👥'))
-      //     .child(S.documentTypeList('person').title('Équipe')),
+      // ── Domain collections ─────────────────────────────────
+      ...DOMAIN_COLLECTIONS.map(c =>
+        S.listItem()
+          .id(`collection-${c.type}`)
+          .title(c.title)
+          .icon(icon(c.icon))
+          .child(S.documentTypeList(c.type).title(c.title)),
+      ),
     ]);

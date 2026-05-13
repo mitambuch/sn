@@ -13,16 +13,22 @@ import { ROUTES } from '@constants/routes';
 import { CatalogueProactiveBanner } from '@features/catalogue/CatalogueProactiveBanner';
 import { ArticleCard } from '@features/news/ArticleCard';
 import { useFakeLoading } from '@hooks/useFakeLoading';
+import { useSanityCollection } from '@hooks/useSanityCollection';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { GROQ_ARTICLES_LIST } from '@/lib/sanityQueries';
 import { listArticles } from '@/mocks';
-import type { ArticleKind } from '@/types/article';
+import type { Article, ArticleKind } from '@/types/article';
 
 export default function NewsList() {
   const { t, i18n } = useTranslation();
   const { localePath } = useLocale();
-  const all = useMemo(() => listArticles(), []);
+  const fallback = useMemo(() => listArticles(), []);
+  const { data: all } = useSanityCollection<Article>({
+    query: GROQ_ARTICLES_LIST,
+    fallback,
+  });
   const loading = useFakeLoading(450);
 
   const [activeKinds, setActiveKinds] = useState<Set<ArticleKind>>(new Set());
