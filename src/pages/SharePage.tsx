@@ -24,6 +24,15 @@ import { GROQ_SHARED_FICHE } from '@/lib/sanityQueries';
 import { consumeShareCode } from '@/lib/shareCode';
 import { buildShareMessage } from '@/lib/sharing';
 import {
+  getArticle,
+  getArtwork,
+  getConciergeService,
+  getEvent,
+  getJourney,
+  getProperty,
+  getTimepiece,
+} from '@/mocks';
+import {
   type ConsumedShareCode,
   formatShareCode,
   normalizeShareCode,
@@ -90,17 +99,59 @@ export default function SharePage() {
     };
   }, [rawCode]);
 
-  // Fetch the Sanity doc once the code is resolved. Falls back gracefully
-  // when Sanity is unconfigured (then we show the labelled placeholder).
+  // Fetch the Sanity doc once the code is resolved. Falls back to a rich
+  // mock dataset (same data the rest of the app uses) when Sanity is
+  // empty or unconfigured — keeps the demo flow working even before the
+  // owner has run `pnpm sanity:seed:sawnext`.
   const ficheQuery = useMemo(() => {
     if (status !== 'valid') return '';
     if (!consumed?.sanityDocType || !consumed.sanityDocId) return '';
     return GROQ_SHARED_FICHE(consumed.sanityDocType, consumed.sanityDocId);
   }, [status, consumed]);
 
+  // Adapt a matching mock item to the SharedFiche shape so the existing
+  // render logic stays unchanged. Lookup is by id OR slug (getX helpers
+  // tolerate both, see src/mocks/index.ts).
+  const mockFallback = useMemo<SharedFiche | null>(() => {
+    if (!consumed?.sanityDocType || !consumed.sanityDocId) return null;
+    const { sanityDocType, sanityDocId } = consumed;
+    const lookup: Record<
+      ShareableDocType,
+      (slugOrId: string) =>
+        | {
+            id?: string;
+            slug?: string;
+            title?: string;
+            summary?: string;
+            description?: string;
+            images?: { src: string; alt?: string }[];
+          }
+        | undefined
+    > = {
+      event: getEvent,
+      property: getProperty,
+      timepiece: getTimepiece,
+      artwork: getArtwork,
+      journey: getJourney,
+      conciergeService: getConciergeService,
+      article: getArticle,
+    };
+    const item = lookup[sanityDocType]?.(sanityDocId);
+    if (!item) return null;
+    return {
+      _type: sanityDocType,
+      _id: item.id ?? sanityDocId,
+      ...(item.slug ? { slug: item.slug } : {}),
+      ...(item.title ? { title: item.title } : {}),
+      ...(item.summary ? { summary: item.summary } : {}),
+      ...(item.description ? { description: item.description } : {}),
+      ...(item.images ? { images: item.images } : {}),
+    };
+  }, [consumed]);
+
   const { data: fiche, loading: ficheLoading } = useSanityItem<SharedFiche>({
     query: ficheQuery,
-    fallback: null,
+    fallback: mockFallback,
   });
 
   const displayCode = rawCode ? formatShareCode(normalizeShareCode(rawCode)) : '—';
