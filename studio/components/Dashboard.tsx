@@ -1,39 +1,45 @@
 // ═══════════════════════════════════════════════════
-// Dashboard — Studio landing tool, action-first layout
+// Dashboard — Studio landing tool, SAW NEXT brand voice
 //
-// WHAT: Salva opens Studio and immediately sees 4 big action tiles —
-//       Créer une offre · Créer une clé · Voir les demandes (with a
-//       live pending count badge) · Gérer les clients. Below that, a
-//       compact "État du site" strip + recent activity. No "Bienvenue
-//       👋" hero — owner direction : "on rentre dans le dur."
+// WHAT: Action-first dashboard with the SAW↗NEXT typographic identity
+//       baked in — Geist Mono monospaced uppercase tracking-wide labels,
+//       strict monochrome palette (no chromatic accent — the brand rule),
+//       generous whitespace, hairline borders. Tiles are equivalent in
+//       weight ; only "Voir les demandes" pulses when count > 0.
+//
+//       Owner direction : "interface pue la race, donne du caractère
+//       comme étoiles-aux-atomes" → discipline, austerity, no candy.
 //
 // WHEN: First Studio tool, opens on launch.
-// COUNTS: pulled from Supabase via the studio_dashboard_stats() RPC
-//         (migration 0007). Falls back to "—" when env vars missing.
+// COUNTS: pulled from Supabase via studio_dashboard_stats() RPC.
 // ═══════════════════════════════════════════════════
 
 import { useEffect, useMemo, useState } from 'react';
 import { useClient } from 'sanity';
 import { useRouter } from 'sanity/router';
 
-/* ─── Theme tokens ──────────────────────────────── */
+/* ═══ Brand palette — strict monochrome, no chroma ═════════ */
 
 const C = {
-  surface: 'rgba(255, 255, 255, 0.04)',
-  surfaceHover: 'rgba(255, 255, 255, 0.08)',
-  border: 'rgba(255, 255, 255, 0.09)',
-  borderStrong: 'rgba(255, 255, 255, 0.14)',
-  fg: 'var(--card-fg-color, #F0FFFF)',
-  muted: 'rgba(240, 240, 240, 0.55)',
-  dim: 'rgba(240, 240, 240, 0.38)',
-  ok: '#4ade80',
-  warn: '#facc15',
-  danger: '#f87171',
-  accent: '#60a5fa',
-  violet: '#a78bfa',
-  emerald: '#34d399',
-  amber: '#fbbf24',
+  // Surface ladder
+  surface: 'rgba(255, 255, 255, 0.025)',
+  surfaceHover: 'rgba(255, 255, 255, 0.05)',
+  surfaceStrong: 'rgba(255, 255, 255, 0.07)',
+  // Hairlines
+  border: 'rgba(255, 255, 255, 0.08)',
+  borderStrong: 'rgba(255, 255, 255, 0.16)',
+  borderPulse: 'rgba(255, 255, 255, 0.34)',
+  // Text
+  fg: '#F0F0F0',
+  muted: 'rgba(240, 240, 240, 0.62)',
+  dim: 'rgba(240, 240, 240, 0.36)',
+  // Functional only (urgency) — the ONE deliberate exception to monochrome
+  urgent: '#d65a3a',
 };
+
+const FONT_DISPLAY =
+  '"Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace';
+const FONT_BODY = '"Geist Variable", "Inter", system-ui, -apple-system, sans-serif';
 
 /* ─── Types ─────────────────────────────────────── */
 
@@ -65,9 +71,6 @@ interface DashboardStats {
   total_clients: number;
 }
 
-// Filter expression reused across the snapshot — strips drafts, Sanity
-// system entries (system.schema, system.group, comments.*, releases.*,
-// media.tag) and Studio internal IDs that start with "_.".
 const EXCLUDE = `!(_id in path("drafts.**")) && !(_type match "system.*") && !(_id match "_*") && _type != "media.tag"`;
 
 const SNAPSHOT_QUERY = `{
@@ -83,17 +86,17 @@ const SNAPSHOT_QUERY = `{
 /* ─── Helpers ───────────────────────────────────── */
 
 function relativeTime(iso?: string): string {
-  if (!iso) return 'jamais';
+  if (!iso) return '—';
   const diff = Date.now() - new Date(iso).getTime();
   const mins = Math.floor(diff / 60000);
   if (mins < 1) return "à l'instant";
-  if (mins < 60) return `il y a ${mins} min`;
+  if (mins < 60) return `${mins} min`;
   const hours = Math.floor(mins / 60);
-  if (hours < 24) return `il y a ${hours} h`;
+  if (hours < 24) return `${hours} h`;
   const days = Math.floor(hours / 24);
-  if (days < 7) return `il y a ${days} j`;
-  if (days < 30) return `il y a ${Math.floor(days / 7)} sem.`;
-  return `il y a ${Math.floor(days / 30)} mois`;
+  if (days < 7) return `${days} j`;
+  if (days < 30) return `${Math.floor(days / 7)} sem`;
+  return `${Math.floor(days / 30)} mois`;
 }
 
 function resolveDocTitle(doc: RecentDoc): string {
@@ -102,25 +105,13 @@ function resolveDocTitle(doc: RecentDoc): string {
   return doc._id;
 }
 
-function siteUrl(): string {
-  return (
-    (typeof process !== 'undefined' && process.env.SANITY_STUDIO_PREVIEW_URL) ||
-    (typeof process !== 'undefined' && process.env.SANITY_STUDIO_SITE_URL) ||
-    'http://localhost:5173'
-  );
-}
-
-function supabaseUrl(): string {
-  return (typeof process !== 'undefined' && process.env.SANITY_STUDIO_SUPABASE_URL) || '';
-}
-
-function supabaseKey(): string {
-  return (typeof process !== 'undefined' && process.env.SANITY_STUDIO_SUPABASE_ANON_KEY) || '';
+function envValue(name: string, fallback = ''): string {
+  return (typeof process !== 'undefined' && process.env[name]) || fallback;
 }
 
 async function fetchStats(): Promise<DashboardStats | null> {
-  const url = supabaseUrl();
-  const key = supabaseKey();
+  const url = envValue('SANITY_STUDIO_SUPABASE_URL');
+  const key = envValue('SANITY_STUDIO_SUPABASE_ANON_KEY');
   if (!url || !key || key.includes('REMPLACE')) return null;
   try {
     const res = await fetch(`${url}/rest/v1/rpc/studio_dashboard_stats`, {
@@ -142,39 +133,38 @@ async function fetchStats(): Promise<DashboardStats | null> {
   }
 }
 
-/* ─── Shared styles ──────────────────────────────── */
+/* ─── Brand atoms ────────────────────────────────── */
 
-const sectionLabelStyle: React.CSSProperties = {
-  fontSize: 11,
-  fontWeight: 600,
+const labelStyle: React.CSSProperties = {
+  fontFamily: FONT_DISPLAY,
+  fontSize: 10,
+  fontWeight: 500,
   color: C.dim,
-  marginBottom: 12,
   textTransform: 'uppercase',
-  letterSpacing: '0.1em',
+  letterSpacing: '0.36em',
 };
 
-const baseCard: React.CSSProperties = {
+const tileSurface: React.CSSProperties = {
   background: C.surface,
   border: `1px solid ${C.border}`,
-  borderRadius: 12,
-  padding: '16px 18px',
-  transition: 'background 120ms ease, border-color 120ms ease, transform 120ms ease',
+  borderRadius: 14,
+  transition: 'background 240ms ease, border-color 240ms ease, transform 240ms ease',
 };
+
+const DOMAIN_TYPES_ORDERED = [
+  { type: 'event', label: 'Évènement' },
+  { type: 'property', label: 'Propriété' },
+  { type: 'timepiece', label: 'Garde-temps' },
+  { type: 'artwork', label: 'Œuvre' },
+  { type: 'journey', label: 'Voyage' },
+  { type: 'conciergeService', label: 'Service' },
+  { type: 'article', label: 'Actualité' },
+  { type: 'teamMember', label: 'Membre' },
+];
 
 /* ─── Dashboard root ────────────────────────────── */
 
-const DOMAIN_TYPES_ORDERED = [
-  { type: 'event', label: 'Évènement', emoji: '📅' },
-  { type: 'property', label: 'Propriété', emoji: '🏛️' },
-  { type: 'timepiece', label: 'Garde-temps', emoji: '⌚' },
-  { type: 'artwork', label: 'Œuvre', emoji: '🖼️' },
-  { type: 'journey', label: 'Voyage', emoji: '🌍' },
-  { type: 'conciergeService', label: 'Service', emoji: '🛎️' },
-  { type: 'article', label: 'Actualité', emoji: '📰' },
-  { type: 'teamMember', label: 'Membre', emoji: '👤' },
-];
-
-// eslint-disable-next-line max-lines-per-function -- action-first dashboard with 4 tiles + state + activity, splitting hurts readability
+// eslint-disable-next-line max-lines-per-function -- single-screen brand dashboard, splitting hurts the typographic discipline
 export function Dashboard() {
   const client = useClient({ apiVersion: '2024-06-01' });
   const router = useRouter();
@@ -230,98 +220,130 @@ export function Dashboard() {
 
   if (error) {
     return (
-      <div style={{ padding: 32, color: C.danger, fontFamily: 'system-ui' }}>
+      <div style={{ padding: 48, color: C.urgent, fontFamily: FONT_BODY }}>
         <strong>Erreur de chargement :</strong> {error}
       </div>
     );
   }
 
   if (!data) {
-    return <div style={{ padding: 32, color: C.muted, fontFamily: 'system-ui' }}>Chargement…</div>;
+    return (
+      <div style={{ padding: 48, color: C.muted, fontFamily: FONT_BODY, fontSize: 13 }}>
+        Chargement…
+      </div>
+    );
   }
 
   const pendingInquiries = stats?.pending_inquiries ?? null;
   const activeShareCodes = stats?.active_share_codes ?? null;
   const totalClients = stats?.total_clients ?? null;
-  const site = siteUrl();
+  const site = envValue(
+    'SANITY_STUDIO_PREVIEW_URL',
+    envValue('SANITY_STUDIO_SITE_URL', 'http://localhost:5173'),
+  );
 
   return (
     <div
       style={{
-        padding: '40px 48px 64px',
-        fontFamily: 'system-ui, -apple-system, sans-serif',
+        padding: '56px 56px 80px',
+        fontFamily: FONT_BODY,
         color: C.fg,
         maxWidth: 1280,
         margin: '0 auto',
       }}
     >
-      {/* ─── Actions principales ────────── */}
-      <section style={{ marginBottom: 40 }}>
-        <h2 style={sectionLabelStyle}>Actions</h2>
+      {/* ─── Brand strip ─── */}
+      <header
+        style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+          marginBottom: 56,
+          paddingBottom: 20,
+          borderBottom: `1px solid ${C.border}`,
+        }}
+      >
+        <div>
+          <div style={{ ...labelStyle, marginBottom: 8 }}>SAW↗NEXT — Studio</div>
+          <div
+            style={{
+              fontFamily: FONT_DISPLAY,
+              fontSize: 26,
+              fontWeight: 500,
+              letterSpacing: '-0.01em',
+              textTransform: 'uppercase',
+            }}
+          >
+            Atelier
+          </div>
+        </div>
+        <div style={{ ...labelStyle, fontSize: 9 }}>
+          {new Date().toLocaleDateString('fr-CH', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+          })}
+        </div>
+      </header>
+
+      {/* ─── Actions ─── */}
+      <section style={{ marginBottom: 56 }}>
+        <h2 style={{ ...labelStyle, marginBottom: 16 }}>Actions</h2>
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-            gap: 12,
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: 14,
           }}
         >
           <ActionTile
-            accent={C.emerald}
-            emoji="✚"
             label="Créer une offre"
-            hint="Évènement, propriété, garde-temps…"
+            hint="Évènement · propriété · garde-temps · …"
+            indicator={createOpen ? 'CHOISIS UN TYPE' : '⊕'}
             onClick={() => setCreateOpen(o => !o)}
-            badge={createOpen ? 'Choisis un type' : undefined}
           />
           <ActionTile
-            accent={C.amber}
-            emoji="🔑"
             label="Créer une clé"
             hint="Code à 6 caractères pour partager une fiche"
+            indicator={activeShareCodes !== null ? `${String(activeShareCodes)} actives` : '—'}
             onClick={() => window.open(`${site}/fr/admin/share-codes`, '_blank')}
-            badge={activeShareCodes !== null ? `${String(activeShareCodes)} actives` : undefined}
           />
           <ActionTile
-            accent={pendingInquiries && pendingInquiries > 0 ? C.danger : C.accent}
-            emoji="📨"
             label="Voir les demandes"
             hint="Inquiries clients en attente"
-            onClick={() => window.open(`${site}/fr/admin/inquiries`, '_blank')}
-            badge={
+            indicator={
               pendingInquiries !== null
                 ? pendingInquiries > 0
                   ? `${String(pendingInquiries)} en cours`
                   : 'Aucune'
-                : undefined
+                : '—'
             }
-            pulse={Boolean(pendingInquiries && pendingInquiries > 0)}
+            urgent={Boolean(pendingInquiries && pendingInquiries > 0)}
+            onClick={() => window.open(`${site}/fr/admin/inquiries`, '_blank')}
           />
           <ActionTile
-            accent={C.violet}
-            emoji="👥"
             label="Gérer les clients"
-            hint="Profils, rôles, accès"
+            hint="Profils, rôles, accès au cercle"
+            indicator={totalClients !== null ? `${String(totalClients)} inscrits` : '—'}
             onClick={() => window.open(`${site}/fr/admin/users`, '_blank')}
-            badge={totalClients !== null ? `${String(totalClients)} inscrits` : undefined}
           />
         </div>
 
-        {/* Inline chooser for "Créer une offre" */}
         {createOpen && (
           <div
             style={{
               marginTop: 12,
-              padding: 16,
+              padding: '18px 20px',
               background: C.surface,
               border: `1px solid ${C.borderStrong}`,
-              borderRadius: 12,
+              borderRadius: 14,
             }}
           >
-            <div style={{ ...sectionLabelStyle, marginBottom: 10 }}>Type de fiche</div>
+            <div style={{ ...labelStyle, marginBottom: 14 }}>Type de fiche</div>
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
                 gap: 8,
               }}
             >
@@ -333,21 +355,25 @@ export function Dashboard() {
                     openCreate(t.type);
                   }}
                   style={{
-                    ...baseCard,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 10,
-                    cursor: 'pointer',
+                    ...tileSurface,
+                    border: `1px solid ${C.border}`,
+                    background: C.surface,
                     color: C.fg,
-                    fontFamily: 'inherit',
-                    fontSize: 13,
+                    cursor: 'pointer',
+                    fontFamily: FONT_DISPLAY,
+                    fontSize: 11,
+                    letterSpacing: '0.22em',
+                    textTransform: 'uppercase',
                     textAlign: 'left',
-                    padding: '10px 14px',
+                    padding: '14px 16px',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = C.surfaceHover;
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = C.surface;
                   }}
                 >
-                  <span aria-hidden="true" style={{ fontSize: 18 }}>
-                    {t.emoji}
-                  </span>
                   {t.label}
                 </button>
               ))}
@@ -356,17 +382,17 @@ export function Dashboard() {
         )}
       </section>
 
-      {/* ─── État du site (compact) ─────── */}
+      {/* ─── Inventaire ─── */}
       {otherTypes.length > 0 && (
-        <section style={{ marginBottom: 40 }}>
-          <h2 style={sectionLabelStyle}>État du contenu</h2>
+        <section style={{ marginBottom: 56 }}>
+          <h2 style={{ ...labelStyle, marginBottom: 16 }}>Inventaire</h2>
           <div
             style={{
-              ...baseCard,
+              ...tileSurface,
               display: 'flex',
               flexWrap: 'wrap',
-              gap: 16,
-              padding: '14px 20px',
+              gap: 28,
+              padding: '20px 24px',
             }}
           >
             {otherTypes.map(t => (
@@ -377,99 +403,127 @@ export function Dashboard() {
                 style={{
                   display: 'inline-flex',
                   alignItems: 'baseline',
-                  gap: 6,
+                  gap: 10,
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
                   color: C.fg,
-                  fontFamily: 'inherit',
-                  fontSize: 13,
+                  fontFamily: FONT_DISPLAY,
                   padding: 0,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
                 }}
               >
-                <span style={{ fontWeight: 600 }}>{t.count}</span>
-                <span style={{ color: C.muted }}>{t.type}</span>
+                <span style={{ fontSize: 18, fontWeight: 500, letterSpacing: '0', color: C.fg }}>
+                  {t.count}
+                </span>
+                <span style={{ fontSize: 10, color: C.muted }}>{t.type}</span>
               </button>
             ))}
           </div>
         </section>
       )}
 
-      {/* ─── Activité récente ───────────── */}
-      <section style={{ marginBottom: 40 }}>
-        <h2 style={sectionLabelStyle}>Activité récente</h2>
+      {/* ─── Activité ─── */}
+      <section style={{ marginBottom: 56 }}>
+        <h2 style={{ ...labelStyle, marginBottom: 16 }}>Activité</h2>
         {data.recent.length === 0 ? (
-          <div style={{ ...baseCard, color: C.muted }}>
-            Aucun document n&apos;a encore été modifié.
+          <div
+            style={{
+              ...tileSurface,
+              padding: '20px 24px',
+              color: C.muted,
+              fontFamily: FONT_DISPLAY,
+              fontSize: 11,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+            }}
+          >
+            Aucun document modifié pour le moment.
           </div>
         ) : (
-          <div style={{ display: 'grid', gap: 6 }}>
+          <div style={{ display: 'grid', gap: 4 }}>
             {data.recent.map(d => (
               <button
                 key={d._id}
                 type="button"
                 onClick={() => router.navigateIntent('edit', { id: d._id, type: d._type })}
                 style={{
-                  ...baseCard,
+                  ...tileSurface,
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  padding: '12px 18px',
+                  padding: '14px 22px',
                   cursor: 'pointer',
                   color: C.fg,
-                  fontFamily: 'inherit',
+                  fontFamily: FONT_BODY,
                   textAlign: 'left',
                 }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = C.surfaceHover;
+                  e.currentTarget.style.borderColor = C.borderStrong;
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = C.surface;
+                  e.currentTarget.style.borderColor = C.border;
+                }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <TypeBadge type={d._type} />
-                  <div style={{ fontWeight: 500, fontSize: 14 }}>{resolveDocTitle(d)}</div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 14 }}>
+                  <span
+                    style={{
+                      ...labelStyle,
+                      fontSize: 9,
+                      minWidth: 96,
+                      letterSpacing: '0.24em',
+                    }}
+                  >
+                    {d._type}
+                  </span>
+                  <span style={{ fontSize: 14, fontWeight: 500 }}>{resolveDocTitle(d)}</span>
                 </div>
-                <div style={{ color: C.muted, fontSize: 12 }}>{relativeTime(d._updatedAt)}</div>
+                <span style={{ ...labelStyle, fontSize: 10 }}>{relativeTime(d._updatedAt)}</span>
               </button>
             ))}
           </div>
         )}
       </section>
 
-      {/* ─── Footer ─────────────────────── */}
+      {/* ─── Footer ─── */}
       <footer
         style={{
-          marginTop: 32,
-          paddingTop: 20,
+          marginTop: 56,
+          paddingTop: 24,
           borderTop: `1px solid ${C.border}`,
           color: C.muted,
-          fontSize: 12,
-          lineHeight: 1.6,
+          fontFamily: FONT_DISPLAY,
+          fontSize: 10,
+          letterSpacing: '0.24em',
+          textTransform: 'uppercase',
+          lineHeight: 1.8,
         }}
       >
-        N&apos;oublie pas de cliquer <strong style={{ color: C.fg }}>Publier</strong> pour que tes
-        modifications apparaissent sur le site. Besoin d&apos;aide ?{' '}
-        <strong style={{ color: C.fg }}>📖 Guide</strong> en haut à droite.
+        Cliquer <span style={{ color: C.fg }}>Publier</span> pour rendre la modification visible sur
+        le site · Guide en haut à droite
       </footer>
     </div>
   );
 }
 
 /* ═══════════════════════════════════════════════════
-   Sub-components
+   ActionTile — equivalent typographic tiles, no chroma
    ═══════════════════════════════════════════════════ */
 
 function ActionTile({
-  accent,
-  emoji,
   label,
   hint,
-  badge,
-  pulse,
+  indicator,
+  urgent,
   onClick,
 }: {
-  accent: string;
-  emoji: string;
   label: string;
   hint: string;
-  badge?: string;
-  pulse?: boolean;
+  indicator?: string;
+  urgent?: boolean;
   onClick: () => void;
 }) {
   return (
@@ -477,89 +531,89 @@ function ActionTile({
       type="button"
       onClick={onClick}
       style={{
-        ...baseCard,
+        ...tileSurface,
         textAlign: 'left',
         color: C.fg,
         cursor: 'pointer',
-        fontFamily: 'inherit',
-        fontSize: 'inherit',
+        fontFamily: FONT_BODY,
         display: 'flex',
         flexDirection: 'column',
-        gap: 8,
-        padding: '20px 22px 18px',
-        borderColor: `${accent}55`,
-        background: `linear-gradient(135deg, ${accent}18 0%, ${C.surface} 70%)`,
-        position: 'relative',
-        outline: pulse ? `1px solid ${accent}` : undefined,
-        outlineOffset: pulse ? 2 : undefined,
-        animation: pulse ? 'sn-pulse 2.6s ease-in-out infinite' : undefined,
+        gap: 14,
+        padding: '24px 24px 22px',
+        borderColor: urgent ? C.urgent : C.border,
+        background: urgent ? `rgba(214, 90, 58, 0.06)` : C.surface,
+        animation: urgent ? 'sn-tile-pulse 2.6s ease-in-out infinite' : undefined,
+      }}
+      onMouseEnter={e => {
+        if (!urgent) {
+          e.currentTarget.style.background = C.surfaceHover;
+          e.currentTarget.style.borderColor = C.borderStrong;
+          e.currentTarget.style.transform = 'translateY(-1px)';
+        }
+      }}
+      onMouseLeave={e => {
+        if (!urgent) {
+          e.currentTarget.style.background = C.surface;
+          e.currentTarget.style.borderColor = C.border;
+          e.currentTarget.style.transform = 'translateY(0)';
+        }
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: 10,
-            background: `${accent}33`,
-            display: 'grid',
-            placeItems: 'center',
-            fontSize: 20,
-          }}
-          aria-hidden="true"
-        >
-          {emoji}
-        </div>
-        {badge && (
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+        <span style={{ ...labelStyle, fontSize: 9 }}>{label}</span>
+        {indicator && (
           <span
             style={{
-              padding: '4px 10px',
-              borderRadius: 999,
-              fontSize: 10,
-              fontWeight: 600,
-              letterSpacing: '0.06em',
+              fontFamily: FONT_DISPLAY,
+              fontSize: 9,
+              fontWeight: 500,
+              letterSpacing: '0.18em',
               textTransform: 'uppercase',
-              background: `${accent}22`,
-              border: `1px solid ${accent}55`,
-              color: accent,
+              color: urgent ? C.urgent : C.muted,
+              padding: '3px 9px',
+              border: `1px solid ${urgent ? C.urgent : C.border}`,
+              borderRadius: 999,
             }}
           >
-            {badge}
+            {indicator}
           </span>
         )}
       </div>
-      <div style={{ fontWeight: 600, fontSize: 15, marginTop: 4 }}>{label}</div>
-      <div style={{ color: C.muted, fontSize: 12, lineHeight: 1.4 }}>{hint}</div>
 
-      {/* Inline keyframes for the pulse (no global CSS modification) */}
-      {pulse && (
+      <div
+        style={{
+          fontFamily: FONT_DISPLAY,
+          fontSize: 19,
+          fontWeight: 500,
+          letterSpacing: '-0.01em',
+          textTransform: 'uppercase',
+          color: C.fg,
+          lineHeight: 1.15,
+        }}
+      >
+        {label.replace(/^(Créer|Voir|Gérer)/, '$1 ')}
+      </div>
+
+      <div
+        style={{
+          fontFamily: FONT_BODY,
+          fontSize: 12,
+          color: C.muted,
+          lineHeight: 1.5,
+        }}
+      >
+        {hint}
+      </div>
+
+      {/* Inline keyframes for the urgent pulse */}
+      {urgent && (
         <style>{`
-          @keyframes sn-pulse {
-            0%, 100% { outline-color: ${accent}33; }
-            50%     { outline-color: ${accent}; }
+          @keyframes sn-tile-pulse {
+            0%, 100% { border-color: ${C.urgent}; box-shadow: 0 0 0 0 rgba(214, 90, 58, 0); }
+            50%     { border-color: ${C.urgent}; box-shadow: 0 0 0 4px rgba(214, 90, 58, 0.08); }
           }
         `}</style>
       )}
     </button>
-  );
-}
-
-function TypeBadge({ type }: { type: string }) {
-  return (
-    <span
-      style={{
-        padding: '2px 8px',
-        borderRadius: 6,
-        fontSize: 10,
-        fontWeight: 600,
-        background: C.surface,
-        border: `1px solid ${C.border}`,
-        color: C.muted,
-        letterSpacing: '0.04em',
-        textTransform: 'uppercase',
-      }}
-    >
-      {type}
-    </span>
   );
 }
