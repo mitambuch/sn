@@ -68,6 +68,7 @@ const AccountSaved = lazyWithRetry(() => import('@pages/AccountSaved'));
 const LogoPreview = lazyWithRetry(() => import('@pages/LogoPreview'));
 const MotionShowcase = lazyWithRetry(() => import('@pages/MotionShowcase'));
 const SharePage = lazyWithRetry(() => import('@pages/SharePage'));
+const ExamplePage = lazyWithRetry(() => import('@pages/ExamplePage'));
 
 /* ─── Loading fallback — themed, no white flash ───────────────── */
 function PageLoader() {
@@ -116,6 +117,10 @@ export default function AppRoutes() {
 
         {/* ─── /share/:code — single Sanity-doc share, public, no auth ─── */}
         <Route path="/share/:code" element={<SharePage />} />
+
+        {/* ─── /exemple — public esthetic gate that pre-fills the demo
+              share code and pushes through to /share/SAW-DEMO-2026 ─── */}
+        <Route path="/exemple" element={<ExamplePage />} />
 
         {/* ─── Canonical locale-prefixed tree ─── */}
         <Route path="/:locale" element={<LocaleLayout />}>

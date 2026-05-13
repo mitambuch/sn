@@ -1,0 +1,338 @@
+{
+  "_meta": {
+    "brand": "Sawnext — conciergerie privée suisse HNW",
+    "purpose": "Pousse ces fiches dans le dataset Sanity de Sawnext pour que Salva ouvre le Studio sur du contenu réaliste plutôt que des collections vides. Brick-friendly : chaque doc remplit le strict minimum, les sections vides se masquent côté front.",
+    "generatedFor": "sawnext v0.9+"
+  },
+  "documents": [
+    {
+      "_id": "page-home",
+      "_type": "page",
+      "title": "Accueil",
+      "slug": { "_type": "slug", "current": "home" },
+      "eyebrow": {
+        "fr": "Conciergerie privée suisse",
+        "en": "Swiss private concierge"
+      },
+      "heroHeading": {
+        "fr": "L'accès retenue.",
+        "en": "Restrained access."
+      },
+      "heroText": {
+        "fr": "Sawnext est un cercle restreint. Nous accompagnons une clientèle privée suisse vers des biens, des évènements et des rendez-vous fermés au reste du marché. Chaque demande est traitée comme une rencontre, jamais comme une transaction.",
+        "en": "Sawnext is a restricted circle. We guide a Swiss private clientele toward goods, events and meetings closed to the rest of the market. Every request is treated as an encounter, never as a transaction."
+      }
+    },
+    {
+      "_id": "page-about",
+      "_type": "page",
+      "title": "À propos",
+      "slug": { "_type": "slug", "current": "about" },
+      "eyebrow": {
+        "fr": "Notre méthode",
+        "en": "Our method"
+      },
+      "heroHeading": {
+        "fr": "Une voix, trois fondateurs, un seul standard.",
+        "en": "One voice, three founders, a single standard."
+      },
+      "heroText": {
+        "fr": "Salvatore Tamburini, Harry Novillo et Bokar Guissé fondent Sawnext autour d'un constat simple : le luxe contemporain s'épuise dans le bruit. Notre proposition est inverse — un cercle silencieux où la confidentialité est un livrable.",
+        "en": "Salvatore Tamburini, Harry Novillo and Bokar Guissé founded Sawnext around a simple observation : contemporary luxury wears itself out in the noise. Our proposition is the inverse — a silent circle where confidentiality is a deliverable."
+      }
+    },
+    {
+      "_id": "page-contact",
+      "_type": "page",
+      "title": "Contact",
+      "slug": { "_type": "slug", "current": "contact" },
+      "eyebrow": {
+        "fr": "Prendre contact",
+        "en": "Get in touch"
+      },
+      "heroHeading": {
+        "fr": "Une fenêtre vers le cercle.",
+        "en": "A window into the circle."
+      },
+      "heroText": {
+        "fr": "Les demandes d'accès sont étudiées au cas par cas. Décrivez le besoin, le contexte et la fenêtre temporelle — Salvatore revient sous 24 heures.",
+        "en": "Access requests are reviewed case by case. Describe the need, the context and the time window — Salvatore comes back within 24 hours."
+      }
+    },
+    {
+      "_id": "evt-01",
+      "_type": "event",
+      "visibility": "shareCode",
+      "title": {
+        "fr": "Gala de bienfaisance, ONU Genève",
+        "en": "Charity Gala, UN Geneva"
+      },
+      "slug": { "_type": "slug", "current": "gala-onu-geneve" },
+      "category": "gala",
+      "summary": {
+        "fr": "Soirée de bienfaisance fermée au Palais des Nations. Quatre places allouées au cercle Sawnext, dîner protocolaire, prises de parole d'ambassadeurs.",
+        "en": "Closed charity evening at the Palais des Nations. Four seats allocated to the Sawnext circle, protocol dinner, ambassador speeches."
+      },
+      "startsAt": "2026-06-14T19:30:00.000Z",
+      "endsAt": "2026-06-15T00:30:00.000Z",
+      "venue": "Palais des Nations",
+      "city": "Genève",
+      "countryCode": "CH",
+      "capacity": 220,
+      "allocatedSeats": 4,
+      "dressCode": "black-tie",
+      "programme": [
+        {
+          "_key": "step-01",
+          "_type": "programmeStep",
+          "time": "19:30",
+          "label": { "fr": "Cocktail d'ouverture", "en": "Opening cocktail" }
+        },
+        {
+          "_key": "step-02",
+          "_type": "programmeStep",
+          "time": "20:30",
+          "label": { "fr": "Dîner protocolaire", "en": "Protocol dinner" }
+        },
+        {
+          "_key": "step-03",
+          "_type": "programmeStep",
+          "time": "22:00",
+          "label": { "fr": "Prises de parole", "en": "Keynote speeches" }
+        }
+      ]
+    },
+    {
+      "_id": "evt-02",
+      "_type": "event",
+      "visibility": "public",
+      "title": {
+        "fr": "Art Basel — Preview Vernissage VIP",
+        "en": "Art Basel — VIP Preview"
+      },
+      "slug": { "_type": "slug", "current": "art-basel-preview" },
+      "category": "opening",
+      "summary": {
+        "fr": "Première journée de la foire avant ouverture au public. Trois cartes VIP réservées, accès aux salons collectionneurs.",
+        "en": "First day of the fair before public opening. Three VIP cards reserved, access to collector lounges."
+      },
+      "startsAt": "2026-09-15T11:00:00.000Z",
+      "venue": "Messe Basel",
+      "city": "Bâle",
+      "countryCode": "CH",
+      "capacity": 1200,
+      "allocatedSeats": 3,
+      "dressCode": "smart-casual"
+    },
+    {
+      "_id": "prop-01",
+      "_type": "property",
+      "visibility": "shareCode",
+      "title": {
+        "fr": "Chalet contemporain, Verbier",
+        "en": "Contemporary chalet, Verbier"
+      },
+      "slug": { "_type": "slug", "current": "chalet-verbier" },
+      "kind": "chalet",
+      "transactionType": "rental-seasonal",
+      "summary": {
+        "fr": "Chalet d'auteur 480 m², six suites, piscine intérieure et spa. Vue plein sud sur la combe. Saison ski 2026/27.",
+        "en": "Signature chalet 480 sqm, six suites, indoor pool and spa. Full south view over the combe. 2026/27 ski season."
+      },
+      "city": "Verbier",
+      "region": "Valais",
+      "countryCode": "CH",
+      "bedrooms": 6,
+      "bathrooms": 7,
+      "livingArea": 480,
+      "landArea": 1200
+    },
+    {
+      "_id": "prop-02",
+      "_type": "property",
+      "visibility": "private",
+      "title": {
+        "fr": "Villa balnéaire, Cap-Ferrat",
+        "en": "Seaside villa, Cap-Ferrat"
+      },
+      "slug": { "_type": "slug", "current": "villa-cap-ferrat" },
+      "kind": "villa",
+      "transactionType": "sale",
+      "summary": {
+        "fr": "Villa des années 30 restaurée par un architecte parisien. Accès direct à la crique, 1.2 ha de jardin méditerranéen.",
+        "en": "1930s villa restored by a Parisian architect. Direct access to the cove, 1.2 ha of Mediterranean garden."
+      },
+      "city": "Saint-Jean-Cap-Ferrat",
+      "region": "Alpes-Maritimes",
+      "countryCode": "FR",
+      "bedrooms": 8,
+      "bathrooms": 9,
+      "livingArea": 720,
+      "landArea": 12000
+    },
+    {
+      "_id": "tp-01",
+      "_type": "timepiece",
+      "visibility": "shareCode",
+      "title": {
+        "fr": "Patek Philippe Nautilus 5711/1A — Tiffany Blue",
+        "en": "Patek Philippe Nautilus 5711/1A — Tiffany Blue"
+      },
+      "slug": { "_type": "slug", "current": "patek-5711-tiffany" },
+      "brand": "Patek Philippe",
+      "reference": "5711/1A-018",
+      "caseDiameter": 40,
+      "caseMaterial": "Acier inoxydable",
+      "movement": "Automatique calibre 26-330 S C",
+      "productionYear": 2021,
+      "condition": "like-new",
+      "papers": "full-set",
+      "summary": {
+        "fr": "L'édition limitée Tiffany & Co. produite à 170 exemplaires. Full set 2021, livré avec certificat d'authenticité co-signé.",
+        "en": "The limited Tiffany & Co. edition produced in 170 units. Full set 2021, delivered with a co-signed certificate of authenticity."
+      }
+    },
+    {
+      "_id": "tp-02",
+      "_type": "timepiece",
+      "visibility": "public",
+      "title": {
+        "fr": "Audemars Piguet Royal Oak 15202ST — Jumbo",
+        "en": "Audemars Piguet Royal Oak 15202ST — Jumbo"
+      },
+      "slug": { "_type": "slug", "current": "ap-royal-oak-15202st" },
+      "brand": "Audemars Piguet",
+      "reference": "15202ST.OO.1240ST.01",
+      "caseDiameter": 39,
+      "caseMaterial": "Acier inoxydable",
+      "movement": "Automatique calibre 2121",
+      "productionYear": 2020,
+      "condition": "excellent",
+      "papers": "box-papers",
+      "summary": {
+        "fr": "Jumbo extra-fine, cadran bleu Petite Tapisserie. État excellent, révision Audemars Piguet de 2024.",
+        "en": "Extra-thin Jumbo, blue Petite Tapisserie dial. Excellent condition, Audemars Piguet service done in 2024."
+      }
+    },
+    {
+      "_id": "art-01",
+      "_type": "artwork",
+      "visibility": "shareCode",
+      "title": {
+        "fr": "Pierre Soulages — Peinture 162x130, 21 février 1979",
+        "en": "Pierre Soulages — Peinture 162x130, 21 February 1979"
+      },
+      "slug": { "_type": "slug", "current": "soulages-1979" },
+      "artistName": "Pierre Soulages",
+      "year": 1979,
+      "medium": "Huile sur toile",
+      "summary": {
+        "fr": "Œuvre du tournant outrenoir, provenance galerie parisienne, exposée au Centre Pompidou en 1989.",
+        "en": "Work from the outrenoir turn, Parisian gallery provenance, exhibited at Centre Pompidou in 1989."
+      }
+    },
+    {
+      "_id": "journey-01",
+      "_type": "journey",
+      "visibility": "shareCode",
+      "title": {
+        "fr": "Patagonie privée — 12 jours, navigation et terres",
+        "en": "Private Patagonia — 12 days, sea and land"
+      },
+      "slug": { "_type": "slug", "current": "patagonie-12-jours" },
+      "summary": {
+        "fr": "Voyage sur-mesure entre Punta Arenas et Ushuaia. Navigation en yacht, transferts hélico, hébergement en estancia privée. 4 à 8 voyageurs.",
+        "en": "Tailor-made journey between Punta Arenas and Ushuaia. Yacht navigation, helicopter transfers, private estancia stays. 4 to 8 travellers."
+      },
+      "destinations": ["Punta Arenas", "Cap Horn", "Glacier Pia", "Ushuaia"],
+      "durationDays": 12,
+      "partySize": 6
+    },
+    {
+      "_id": "concierge-01",
+      "_type": "conciergeService",
+      "visibility": "public",
+      "title": {
+        "fr": "Jet privé & protocole",
+        "en": "Private jet & protocol"
+      },
+      "slug": { "_type": "slug", "current": "jet-prive-protocole" },
+      "category": "transport",
+      "summary": {
+        "fr": "Réservation de jet privé en moins de 4 heures, coordination protocolaire arrivée/départ, escortes diplomatiques sur demande.",
+        "en": "Private jet booking in under 4 hours, arrival/departure protocol coordination, diplomatic escorts on request."
+      }
+    },
+    {
+      "_id": "article-01",
+      "_type": "article",
+      "visibility": "public",
+      "title": {
+        "fr": "Le retour du dîner privé comme rendez-vous d'affaires",
+        "en": "The return of the private dinner as a business meeting"
+      },
+      "slug": { "_type": "slug", "current": "diner-prive-affaires" },
+      "category": "tribune",
+      "publishedAt": "2026-04-22T08:00:00.000Z",
+      "readTimeMinutes": 6,
+      "summary": {
+        "fr": "Pourquoi nos clients HNW délaissent la table de restaurant au profit du domicile ou d'une demeure louée à l'heure.",
+        "en": "Why our HNW clients are leaving restaurant tables for private homes or short-term-rented mansions."
+      }
+    },
+    {
+      "_id": "team-salvatore",
+      "_type": "teamMember",
+      "firstName": "Salvatore",
+      "lastName": "Tamburini",
+      "slug": { "_type": "slug", "current": "salvatore-tamburini" },
+      "role": "founder-operational",
+      "tag": {
+        "fr": "Point de contact principal",
+        "en": "Primary point of contact"
+      },
+      "isFocal": true,
+      "phone": "+41 79 000 00 00",
+      "email": "salvatore@sawnext.ch",
+      "whatsapp": "+41 79 000 00 00",
+      "bio": {
+        "fr": "Salvatore opère le quotidien de Sawnext. Quinze ans dans la gestion patrimoniale puis l'hôtellerie ultra-haut de gamme. Italien de naissance, suisse d'adoption, francophone par formation. C'est lui que vous appelez.",
+        "en": "Salvatore runs the day-to-day at Sawnext. Fifteen years in wealth management then ultra-high-end hospitality. Italian by birth, Swiss by adoption, francophone by training. He's the one you call."
+      }
+    },
+    {
+      "_id": "team-harry",
+      "_type": "teamMember",
+      "firstName": "Harry",
+      "lastName": "Novillo",
+      "slug": { "_type": "slug", "current": "harry-novillo" },
+      "role": "cofounder",
+      "tag": {
+        "fr": "Sport & lifestyle",
+        "en": "Sport & lifestyle"
+      },
+      "isFocal": false,
+      "bio": {
+        "fr": "Harry apporte le réseau sport haut de gamme. Ancien international, il garde un carnet d'adresses dans la F1, le football, le tennis et la voile. Pour les évènements et les rencontres rares.",
+        "en": "Harry brings the high-end sports network. A former international athlete, he keeps a directory across F1, football, tennis and sailing. For events and rare encounters."
+      }
+    },
+    {
+      "_id": "team-bokar",
+      "_type": "teamMember",
+      "firstName": "Bokar",
+      "lastName": "Guissé",
+      "slug": { "_type": "slug", "current": "bokar-guisse" },
+      "role": "cofounder",
+      "tag": {
+        "fr": "Sport & relation HNW",
+        "en": "Sport & HNW relations"
+      },
+      "isFocal": false,
+      "bio": {
+        "fr": "Bokar relie le cercle aux institutions sportives africaines et internationales. Carrière entre le tennis professionnel et le développement de partenariats. Il ouvre les portes que personne ne voit.",
+        "en": "Bokar connects the circle to African and international sports institutions. A career bridging professional tennis and partnership development. He opens the doors no one sees."
+      }
+    }
+  ]
+}
