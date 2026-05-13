@@ -108,6 +108,8 @@ export const Loader = () => {
     .toString()
     .padStart(3, '0');
 
+  const skipVisible = phase === 'animating' || phase === 'settle';
+
   return (
     <div
       role="status"
@@ -119,6 +121,25 @@ export const Loader = () => {
         pointerEvents: exiting ? 'none' : 'auto',
       }}
     >
+      {/* ─── Skip button — provisoire, top-right discret ─── */}
+      <button
+        type="button"
+        onClick={() => {
+          setPhase('exit');
+        }}
+        aria-hidden={!skipVisible}
+        tabIndex={skipVisible ? 0 : -1}
+        className="text-muted hover:text-fg focus-visible:ring-fg/30 absolute top-5 right-5 inline-flex items-center gap-2 rounded-sm px-3 py-2 font-mono text-[10px] tracking-[0.3em] uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none md:top-7 md:right-7"
+        style={{
+          opacity: skipVisible ? 1 : 0,
+          pointerEvents: skipVisible ? 'auto' : 'none',
+          transition: 'opacity 320ms ease-out',
+        }}
+      >
+        Skip
+        <span aria-hidden="true">↗</span>
+      </button>
+
       <div
         className="relative w-full max-w-[min(72vw,820px)] px-6"
         style={{
