@@ -154,8 +154,12 @@ export const Loader = () => {
             aria-live="polite"
           >
             <span>{counterValue}</span>
-            <span aria-hidden="true">/</span>
-            <span>100</span>
+            {combinedProgress < 1 && (
+              <>
+                <span aria-hidden="true">/</span>
+                <span>100</span>
+              </>
+            )}
           </div>
           <div className="flex items-center gap-3 font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
             <span
