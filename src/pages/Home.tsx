@@ -63,7 +63,7 @@ export default function Home() {
     setIndexOpen(false);
   }, []);
 
-  const { sections, heroMarquee, finalMarquee, tickerItems } = useLandingData();
+  const { sections, heroMarquee, finalMarquee } = useLandingData();
 
   return (
     <>
@@ -118,7 +118,6 @@ export default function Home() {
         <LandingFooter />
 
         <TerminalBar
-          tickerItems={tickerItems}
           statusLabel={t('landing.terminal.status')}
           tzLabel={t('landing.terminal.tz')}
           primaryCtaLabel={t('landing.cta.requestAccess')}
