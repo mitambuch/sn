@@ -15,12 +15,15 @@ import { Timeline } from '@components/ui/Timeline';
 import { ROUTES } from '@constants/routes';
 import { SimilarItemsStrip } from '@features/catalogue/SimilarItemsStrip';
 import { InquiryDrawer } from '@features/inquiry/InquiryDrawer';
+import { useSanityItem } from '@hooks/useSanityItem';
 import { cn } from '@utils/cn';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate, useParams } from 'react-router-dom';
 
+import { GROQ_EVENT_DETAIL } from '@/lib/sanityQueries';
 import { getEvent } from '@/mocks';
+import type { Event } from '@/types/event';
 
 export default function EventDetail() {
   const { t, i18n } = useTranslation();
@@ -28,7 +31,11 @@ export default function EventDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [inquiryOpen, setInquiryOpen] = useState(false);
 
-  const event = slug ? getEvent(slug) : undefined;
+  const mockEvent = slug ? getEvent(slug) : null;
+  const { data: event } = useSanityItem<Event>({
+    query: slug ? GROQ_EVENT_DETAIL(slug) : '',
+    fallback: mockEvent ?? null,
+  });
   if (!event) return <Navigate to={localePath(ROUTES.ACCOUNT_EVENTS)} replace />;
 
   const startsAt = new Date(event.startsAt);

@@ -20,12 +20,15 @@ import { ROUTES } from '@constants/routes';
 import { SimilarItemsStrip } from '@features/catalogue/SimilarItemsStrip';
 import { AudioNote } from '@features/concierge/AudioNote';
 import { InquiryDrawer } from '@features/inquiry/InquiryDrawer';
+import { useSanityItem } from '@hooks/useSanityItem';
 import { cn } from '@utils/cn';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate, useParams } from 'react-router-dom';
 
+import { GROQ_PROPERTY_DETAIL } from '@/lib/sanityQueries';
 import { getProperty } from '@/mocks';
+import type { Property } from '@/types/property';
 
 const KIND_LABEL_KEYS = {
   chalet: 'properties.kind.chalet',
@@ -40,7 +43,11 @@ export default function PropertyDetail() {
   const { localePath } = useLocale();
   const { slug } = useParams<{ slug: string }>();
 
-  const property = slug ? getProperty(slug) : undefined;
+  const mockProperty = slug ? getProperty(slug) : null;
+  const { data: property } = useSanityItem<Property>({
+    query: slug ? GROQ_PROPERTY_DETAIL(slug) : '',
+    fallback: mockProperty ?? null,
+  });
   const [inquiryOpen, setInquiryOpen] = useState(false);
 
   if (!property) {

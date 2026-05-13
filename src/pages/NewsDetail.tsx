@@ -8,11 +8,14 @@ import { Container } from '@components/layout/Container';
 import { Image } from '@components/ui/Image';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
+import { useSanityItem } from '@hooks/useSanityItem';
 import { cn } from '@utils/cn';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate, useParams } from 'react-router-dom';
 
+import { GROQ_ARTICLE_DETAIL } from '@/lib/sanityQueries';
 import { getArticle } from '@/mocks';
+import type { Article } from '@/types/article';
 
 const RELATED_ROUTE_BY_MODULE = {
   property: ROUTES.ACCOUNT_PROPERTIES,
@@ -28,7 +31,11 @@ export default function NewsDetail() {
   const { localePath } = useLocale();
   const { slug } = useParams<{ slug: string }>();
 
-  const article = slug ? getArticle(slug) : undefined;
+  const mockArticle = slug ? getArticle(slug) : null;
+  const { data: article } = useSanityItem<Article>({
+    query: slug ? GROQ_ARTICLE_DETAIL(slug) : '',
+    fallback: mockArticle ?? null,
+  });
   if (!article) return <Navigate to={localePath(ROUTES.ACCOUNT_NEWS)} replace />;
 
   const dateLabel = new Date(article.publishedAt).toLocaleDateString(i18n.language, {

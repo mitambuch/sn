@@ -17,12 +17,15 @@ import { ROUTES } from '@constants/routes';
 import { SimilarItemsStrip } from '@features/catalogue/SimilarItemsStrip';
 import { AudioNote } from '@features/concierge/AudioNote';
 import { InquiryDrawer } from '@features/inquiry/InquiryDrawer';
+import { useSanityItem } from '@hooks/useSanityItem';
 import { cn } from '@utils/cn';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate, useParams } from 'react-router-dom';
 
+import { GROQ_ARTWORK_DETAIL } from '@/lib/sanityQueries';
 import { getArtwork } from '@/mocks';
+import type { Artwork } from '@/types/artwork';
 
 export default function ArtworkDetail() {
   const { t } = useTranslation();
@@ -30,7 +33,11 @@ export default function ArtworkDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [inquiryOpen, setInquiryOpen] = useState(false);
 
-  const artwork = slug ? getArtwork(slug) : undefined;
+  const mockArtwork = slug ? getArtwork(slug) : null;
+  const { data: artwork } = useSanityItem<Artwork>({
+    query: slug ? GROQ_ARTWORK_DETAIL(slug) : '',
+    fallback: mockArtwork ?? null,
+  });
   if (!artwork) return <Navigate to={localePath(ROUTES.ACCOUNT_ARTWORKS)} replace />;
 
   const dim = `${String(artwork.dimensions.heightCm)} × ${String(artwork.dimensions.widthCm)}${

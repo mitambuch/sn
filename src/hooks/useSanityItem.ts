@@ -38,6 +38,9 @@ export function useSanityItem<TResult, TFallback = TResult>(
     // No-op when Sanity isn't configured. Initial state already reflects
     // !hasSanity (loading=false, usingFallback=true) so no setState here.
     if (!sanityClient) return;
+    // No-op when query is empty (e.g. slug undefined, caller already
+    // redirects). Avoids firing a useless fetch.
+    if (!query) return;
 
     let cancelled = false;
 

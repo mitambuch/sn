@@ -22,12 +22,15 @@ import { Timeline } from '@components/ui/Timeline';
 import { ROUTES } from '@constants/routes';
 import { SimilarItemsStrip } from '@features/catalogue/SimilarItemsStrip';
 import { InquiryDrawer } from '@features/inquiry/InquiryDrawer';
+import { useSanityItem } from '@hooks/useSanityItem';
 import { cn } from '@utils/cn';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate, useParams } from 'react-router-dom';
 
+import { GROQ_TIMEPIECE_DETAIL } from '@/lib/sanityQueries';
 import { getTimepiece } from '@/mocks';
+import type { Timepiece } from '@/types/timepiece';
 
 export default function TimepieceDetail() {
   const { t } = useTranslation();
@@ -35,7 +38,11 @@ export default function TimepieceDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [inquiryOpen, setInquiryOpen] = useState(false);
 
-  const tp = slug ? getTimepiece(slug) : undefined;
+  const mockTp = slug ? getTimepiece(slug) : null;
+  const { data: tp } = useSanityItem<Timepiece>({
+    query: slug ? GROQ_TIMEPIECE_DETAIL(slug) : '',
+    fallback: mockTp ?? null,
+  });
   if (!tp) return <Navigate to={localePath(ROUTES.ACCOUNT_TIMEPIECES)} replace />;
 
   const meta = [
