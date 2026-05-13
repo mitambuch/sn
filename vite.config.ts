@@ -31,15 +31,30 @@ export default defineConfig(({ mode }) => {
   const isProd = mode === 'production';
   const isAnalyze = process.env.ANALYZE === 'true';
 
-  // WHY: production builds on initialized client projects MUST have VITE_APP_URL.
-  // Without it, sitemap.xml + canonical tags + OG unfurls point at localhost —
-  // silently tanking SEO and social previews on deployed client sites.
-  // The base template itself is allowed to build without VITE_APP_URL — it has
-  // _baseProject: true in package.json (removed during `pnpm setup` for clients).
-  if (isProd && !isBaseProject && !env.VITE_APP_URL) {
+  // WHY: production builds on initialized client projects MUST have a public
+  // host URL. Without it, sitemap.xml + canonical tags + OG unfurls point at
+  // localhost — silently tanking SEO and social previews on deployed client
+  // sites.
+  //
+  // Resolution order (first match wins) :
+  //   1. VITE_APP_URL — explicit, what the operator sets when a custom domain
+  //      is wired up (e.g. https://sawnext.ch). Always preferred.
+  //   2. VERCEL_URL — Vercel auto-injects the deployment host on every build
+  //      (e.g. sn-studio-xxx.vercel.app, no protocol). Lets a fresh project
+  //      build on Vercel without any manual env var — the canonical URLs
+  //      will point at the preview/prod URL until a custom domain replaces
+  //      VITE_APP_URL.
+  //   3. throw — only on initialized client projects (the base template is
+  //      allowed to build without : it has _baseProject: true in package.json
+  //      removed during `pnpm setup` for clients).
+  const appUrl =
+    env.VITE_APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined);
+
+  if (isProd && !isBaseProject && !appUrl) {
     throw new Error(
       '✗ VITE_APP_URL is required for production builds on initialized projects.\n' +
         '  Set it in .env.local or your deploy environment (e.g. VITE_APP_URL=https://yoursite.com).\n' +
+        '  Vercel deploys auto-detect VERCEL_URL as a fallback — neither was found.\n' +
         '  Reason: canonical URLs, OG tags, and sitemap.xml must not fall back to localhost.',
     );
   }
@@ -62,7 +77,7 @@ export default defineConfig(({ mode }) => {
           const PATHS = ['', '/playground', '/lab'] as const;
           const dynamicRoutes = LOCALES.flatMap(l => PATHS.map(p => `/${l}${p}`));
           return Sitemap({
-            hostname: env.VITE_APP_URL || 'http://localhost:5173',
+            hostname: appUrl || 'http://localhost:5173',
             dynamicRoutes,
             exclude: ['/', '/playground', '/lab', '/404'],
             generateRobotsTxt: true,
