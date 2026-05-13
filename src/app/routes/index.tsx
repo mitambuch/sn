@@ -66,6 +66,7 @@ const NewsDetail = lazyWithRetry(() => import('@pages/NewsDetail'));
 const AccountSaved = lazyWithRetry(() => import('@pages/AccountSaved'));
 const LogoPreview = lazyWithRetry(() => import('@pages/LogoPreview'));
 const MotionShowcase = lazyWithRetry(() => import('@pages/MotionShowcase'));
+const SharePage = lazyWithRetry(() => import('@pages/SharePage'));
 
 /* ─── Loading fallback — themed, no white flash ───────────────── */
 function PageLoader() {
@@ -111,6 +112,9 @@ export default function AppRoutes() {
 
         {/* ─── /motion — Phase 1-5 motion showcase (no locale, no layout) ─── */}
         <Route path="/motion" element={<MotionShowcase />} />
+
+        {/* ─── /share/:code — single Sanity-doc share, public, no auth ─── */}
+        <Route path="/share/:code" element={<SharePage />} />
 
         {/* ─── Canonical locale-prefixed tree ─── */}
         <Route path="/:locale" element={<LocaleLayout />}>
