@@ -12,8 +12,10 @@
 
 import { Card } from '@components/ui/Card';
 import { Image } from '@components/ui/Image';
+import { MetaList } from '@components/ui/MetaList';
 import { MonoGradientPlaceholder } from '@components/ui/MonoGradientPlaceholder';
 import { ShareActionRow } from '@components/ui/ShareActionRow';
+import { Timeline } from '@components/ui/Timeline';
 import { siteConfig } from '@config/site';
 import { AccessRequestModal } from '@features/access/AccessRequestModal';
 import { useSanityItem } from '@hooks/useSanityItem';
@@ -32,6 +34,12 @@ import {
   getProperty,
   getTimepiece,
 } from '@/mocks';
+import type { Article } from '@/types/article';
+import type { Artwork } from '@/types/artwork';
+import type { ConciergeService } from '@/types/concierge';
+import type { Event } from '@/types/event';
+import type { Journey } from '@/types/journey';
+import type { Property } from '@/types/property';
 import {
   type ConsumedShareCode,
   formatShareCode,
@@ -39,6 +47,7 @@ import {
   SHARE_CODE_DISPLAY_PATTERN,
   type ShareableDocType,
 } from '@/types/share';
+import type { Timepiece } from '@/types/timepiece';
 
 type Status = 'loading' | 'valid' | 'invalid-format' | 'not-found' | 'expired' | 'revoked';
 
@@ -154,6 +163,144 @@ export default function SharePage() {
     fallback: mockFallback,
   });
 
+  // Full raw mock — preserves type-specific fields stripped from
+  // SharedFiche (date, capacity, bedrooms, brand, programme, …). Used
+  // to build the categorised MetaList + Timeline below.
+  type RichMock =
+    | ({ _type: 'event' } & Event)
+    | ({ _type: 'property' } & Property)
+    | ({ _type: 'timepiece' } & Timepiece)
+    | ({ _type: 'artwork' } & Artwork)
+    | ({ _type: 'journey' } & Journey)
+    | ({ _type: 'conciergeService' } & ConciergeService)
+    | ({ _type: 'article' } & Article);
+
+  const richMock = useMemo<RichMock | null>(() => {
+    if (!consumed?.sanityDocType || !consumed.sanityDocId) return null;
+    const { sanityDocType, sanityDocId } = consumed;
+    switch (sanityDocType) {
+      case 'event': {
+        const m = getEvent(sanityDocId);
+        return m ? { _type: 'event', ...m } : null;
+      }
+      case 'property': {
+        const m = getProperty(sanityDocId);
+        return m ? { _type: 'property', ...m } : null;
+      }
+      case 'timepiece': {
+        const m = getTimepiece(sanityDocId);
+        return m ? { _type: 'timepiece', ...m } : null;
+      }
+      case 'artwork': {
+        const m = getArtwork(sanityDocId);
+        return m ? { _type: 'artwork', ...m } : null;
+      }
+      case 'journey': {
+        const m = getJourney(sanityDocId);
+        return m ? { _type: 'journey', ...m } : null;
+      }
+      case 'conciergeService': {
+        const m = getConciergeService(sanityDocId);
+        return m ? { _type: 'conciergeService', ...m } : null;
+      }
+      case 'article': {
+        const m = getArticle(sanityDocId);
+        return m ? { _type: 'article', ...m } : null;
+      }
+      default:
+        return null;
+    }
+  }, [consumed]);
+
+  // Type-aware specsheet — feeds the MetaList. Each entry is a label/
+  // value pair displayed in a clean 2-column table on desktop.
+  const metaItems = useMemo<{ label: string; value: string }[]>(() => {
+    if (!richMock) return [];
+    const fmtDate = (iso: string) =>
+      new Date(iso).toLocaleDateString('fr-CH', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      });
+    const fmtTime = (iso: string) =>
+      new Date(iso).toLocaleTimeString('fr-CH', { hour: '2-digit', minute: '2-digit' });
+
+    switch (richMock._type) {
+      case 'event':
+        return [
+          { label: 'Date', value: fmtDate(richMock.startsAt) },
+          { label: 'Horaire', value: fmtTime(richMock.startsAt) },
+          { label: 'Lieu', value: richMock.venue ?? '—' },
+          { label: 'Ville', value: `${richMock.city} · ${richMock.countryCode}` },
+          { label: 'Capacité', value: String(richMock.capacity) },
+          { label: 'Places SAW NEXT', value: String(richMock.allocatedSeats) },
+          { label: 'Dress code', value: richMock.dressCode.replace(/-/g, ' ') },
+        ];
+      case 'property':
+        return [
+          { label: 'Type', value: richMock.kind.replace(/-/g, ' ') },
+          { label: 'Mode', value: richMock.availability.replace(/-/g, ' ') },
+          { label: 'Surface', value: `${String(richMock.surfaceSqm)} m²` },
+          { label: 'Chambres', value: String(richMock.bedrooms) },
+          { label: 'SDB', value: String(richMock.bathrooms) },
+          ...(richMock.plotSqm
+            ? [{ label: 'Terrain', value: `${String(richMock.plotSqm)} m²` }]
+            : []),
+          { label: 'Région', value: `${richMock.region} · ${richMock.countryCode}` },
+        ];
+      case 'timepiece':
+        return [
+          { label: 'Marque', value: richMock.brand },
+          { label: 'Modèle', value: richMock.model },
+          { label: 'Référence', value: richMock.reference },
+          { label: 'Année', value: String(richMock.year) },
+          ...(richMock.caseDiameterMm
+            ? [{ label: 'Boîtier', value: `${String(richMock.caseDiameterMm)} mm` }]
+            : []),
+          { label: 'Matériau', value: richMock.material },
+          { label: 'État', value: richMock.condition },
+          { label: 'Full set', value: richMock.fullSet ? 'Oui' : 'Non' },
+        ];
+      case 'artwork': {
+        const dims = richMock.dimensions;
+        const dimStr = dims
+          ? `${String(dims.heightCm)} × ${String(dims.widthCm)}${dims.depthCm ? ` × ${String(dims.depthCm)}` : ''} cm`
+          : '';
+        return [
+          { label: 'Artiste', value: richMock.artistName },
+          { label: 'Année', value: String(richMock.year) },
+          { label: 'Technique', value: richMock.medium },
+          ...(dimStr ? [{ label: 'Dimensions', value: dimStr }] : []),
+        ];
+      }
+      case 'journey':
+        return [
+          { label: 'Type', value: richMock.kind.replace(/-/g, ' ') },
+          { label: 'Destinations', value: richMock.destinations },
+          { label: 'Durée', value: `${String(richMock.durationDays)} jours` },
+          { label: 'Départ', value: richMock.origin },
+        ];
+      case 'conciergeService':
+        return [
+          { label: 'Catégorie', value: richMock.category.replace(/-/g, ' ') },
+          ...(richMock.leadTime ? [{ label: 'Délai', value: richMock.leadTime }] : []),
+        ];
+      case 'article':
+        return [
+          { label: 'Type', value: richMock.kind.replace(/-/g, ' ') },
+          { label: 'Publié le', value: fmtDate(richMock.publishedAt) },
+          ...(richMock.readMinutes
+            ? [{ label: 'Lecture', value: `${String(richMock.readMinutes)} min` }]
+            : []),
+        ];
+      default:
+        return [];
+    }
+  }, [richMock]);
+
+  const programme = richMock?._type === 'event' ? richMock.programme : null;
+
   const displayCode = rawCode ? formatShareCode(normalizeShareCode(rawCode)) : '—';
   const heroSrc = fiche?.heroImage?.src ?? fiche?.images?.[0]?.src ?? undefined;
   const heroAlt =
@@ -249,70 +396,87 @@ export default function SharePage() {
         )}
 
         {status === 'valid' && consumed && (
-          <>
-            {/* Hero image */}
+          // Single bordered "box" — owner direction "je veux pas que ça flotte,
+          // catégorise bien tout." Hero on top, then categorised body inside
+          // the same card so the whole fiche reads as one premium artefact.
+          <Card padding="none" className="overflow-hidden">
+            {/* Hero image — flush to card edges, 16/9 */}
             {heroSrc ? (
-              <div className="rounded-card border-border bg-surface relative overflow-hidden border">
+              <div className="bg-surface relative overflow-hidden">
                 <Image src={heroSrc} alt={heroAlt} ratio="16/9" eager />
               </div>
             ) : ficheLoading ? (
-              <div className="rounded-card border-border bg-surface relative aspect-video overflow-hidden border">
+              <div className="bg-surface relative aspect-video overflow-hidden">
                 <MonoGradientPlaceholder tone="dark" className="absolute inset-0 h-full w-full" />
               </div>
             ) : null}
 
-            {/* Body */}
-            {fiche ? (
-              <article className="flex flex-col gap-6">
-                {fiche.summary && (
-                  <p className="text-fg text-lg leading-relaxed text-pretty">{fiche.summary}</p>
-                )}
-                {fiche.description && (
-                  <p className="text-muted leading-relaxed whitespace-pre-line">
-                    {fiche.description}
+            <div className="flex flex-col gap-8 px-6 py-8 md:px-10 md:py-10">
+              {/* ─── Title block ─── */}
+              <header className="border-fg/10 flex flex-col gap-3 border-b pb-6">
+                <span className="text-muted font-mono text-[10px] tracking-[0.4em] uppercase">
+                  {consumed.sanityDocType === 'event' && 'Évènement'}
+                  {consumed.sanityDocType === 'property' && 'Propriété'}
+                  {consumed.sanityDocType === 'timepiece' && 'Garde-temps'}
+                  {consumed.sanityDocType === 'artwork' && 'Œuvre'}
+                  {consumed.sanityDocType === 'journey' && 'Voyage'}
+                  {consumed.sanityDocType === 'conciergeService' && 'Service'}
+                  {consumed.sanityDocType === 'article' && 'Actualité'}
+                </span>
+                <h2 className="font-mono text-2xl leading-tight font-medium tracking-tight uppercase md:text-3xl">
+                  {fiche?.title ?? 'Fiche partagée'}
+                </h2>
+                {fiche?.summary && (
+                  <p className="text-fg/85 max-w-2xl pt-2 text-base leading-relaxed text-pretty">
+                    {fiche.summary}
                   </p>
                 )}
+              </header>
 
-                <div className="border-fg/15 mt-2 flex flex-col gap-4 border-t pt-6">
-                  <span className="text-muted text-[10px] tracking-[0.3em] uppercase">
-                    Partager cette fiche
-                  </span>
-                  <ShareActionRow url={shareUrl} message={shareMessage} variant="compact" />
-                </div>
-
-                <div className="flex flex-wrap gap-3 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setModalOpen(true);
-                    }}
-                    className="border-fg bg-fg text-bg hover:bg-fg/90 inline-flex items-center gap-2 rounded-full border px-6 py-3 font-mono text-xs tracking-[0.3em] uppercase transition-colors"
-                  >
-                    Demander cette fiche
-                    <span aria-hidden="true">↗</span>
-                  </button>
-                </div>
-
-                <p className="text-muted text-[11px] tracking-wider">
-                  Vue {String(consumed.viewCount)}
-                  {typeof consumed.maxViews === 'number' ? ` / ${String(consumed.maxViews)}` : ''}
-                  {consumed.expiresAt && (
-                    <> · expire le {new Date(consumed.expiresAt).toLocaleDateString('fr-CH')}</>
+              {/* ─── Specs grid : description + MetaList ─── */}
+              {(fiche?.description || metaItems.length > 0) && (
+                <section className="grid gap-8 md:grid-cols-[1.4fr_1fr] md:gap-12">
+                  {fiche?.description && (
+                    <div className="flex flex-col gap-3">
+                      <span className="text-muted text-[10px] tracking-[0.3em] uppercase">
+                        Description
+                      </span>
+                      <p className="text-muted leading-relaxed whitespace-pre-line">
+                        {fiche.description}
+                      </p>
+                    </div>
                   )}
-                </p>
-              </article>
-            ) : (
-              // Fallback placeholder when Sanity returns nothing
-              <Card padding="lg" className="flex flex-col gap-5">
-                <p className="text-muted text-xs tracking-widest uppercase">
-                  Référence interne :{' '}
-                  <code className="font-mono">{consumed.sanityDocId ?? '—'}</code>
-                </p>
-                <p className="text-fg leading-relaxed">
-                  Le contenu détaillé de cette fiche est en cours de préparation par Salvatore. En
-                  attendant, contactez-le directement pour les informations complètes.
-                </p>
+                  {metaItems.length > 0 && (
+                    <aside className="flex flex-col gap-3">
+                      <span className="text-muted text-[10px] tracking-[0.3em] uppercase">
+                        Informations
+                      </span>
+                      <MetaList items={metaItems} />
+                    </aside>
+                  )}
+                </section>
+              )}
+
+              {/* ─── Programme (events only) ─── */}
+              {programme && programme.length > 0 && (
+                <section className="border-fg/10 flex flex-col gap-4 border-t pt-6">
+                  <span className="text-muted text-[10px] tracking-[0.3em] uppercase">
+                    Programme
+                  </span>
+                  <Timeline items={programme.map(p => ({ title: p.label, date: p.time }))} />
+                </section>
+              )}
+
+              {/* ─── Share row ─── */}
+              <section className="border-fg/10 flex flex-col gap-4 border-t pt-6">
+                <span className="text-muted text-[10px] tracking-[0.3em] uppercase">
+                  Partager cette fiche
+                </span>
                 <ShareActionRow url={shareUrl} message={shareMessage} variant="compact" />
+              </section>
+
+              {/* ─── CTA + view counter ─── */}
+              <section className="border-fg/10 flex flex-col gap-4 border-t pt-6 md:flex-row md:items-center md:justify-between">
                 <button
                   type="button"
                   onClick={() => {
@@ -323,9 +487,16 @@ export default function SharePage() {
                   Demander cette fiche
                   <span aria-hidden="true">↗</span>
                 </button>
-              </Card>
-            )}
-          </>
+                <p className="text-muted text-[11px] tracking-wider">
+                  Vue {String(consumed.viewCount)}
+                  {typeof consumed.maxViews === 'number' ? ` / ${String(consumed.maxViews)}` : ''}
+                  {consumed.expiresAt && (
+                    <> · expire le {new Date(consumed.expiresAt).toLocaleDateString('fr-CH')}</>
+                  )}
+                </p>
+              </section>
+            </div>
+          </Card>
         )}
       </div>
 

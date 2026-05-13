@@ -101,34 +101,38 @@ export const TerminalBar = ({
         </div>
       </div>
 
-      {/* ─── Right : 3 CTAs (Appeler · Demander un accès · Espace privé) ─── */}
-      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-        {/* Call — outline ghost, icon-first */}
+      {/* ─── Right : 3 CTAs (Appeler · Demander · Espace) ───
+           On mobile : compressed labels, no-wrap, smaller padding so the
+           3 buttons fit on a single line at 320px. On sm+ : full labels. */}
+      <div className="flex w-full flex-nowrap items-center justify-end gap-1.5 sm:w-auto sm:gap-3">
+        {/* Call — outline ghost, icon-first (label hidden on mobile) */}
         <a
           href={`tel:${PHONE_TEL}`}
-          className="border-bg/40 text-bg hover:border-bg hover:bg-bg/10 focus-visible:ring-bg/40 inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs tracking-widest uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
+          className="border-bg/40 text-bg hover:border-bg hover:bg-bg/10 focus-visible:ring-bg/40 inline-flex items-center gap-1.5 rounded-full border px-3 py-2 font-mono text-[10px] tracking-widest uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none sm:gap-2 sm:px-4 sm:text-xs"
         >
           <Phone size={12} strokeWidth={2} aria-hidden="true" />
           <span className="hidden sm:inline">{callCtaLabel}</span>
         </a>
 
-        {/* Primary — Demander un accès — white solid */}
+        {/* Primary — Demander — white solid (short label on mobile) */}
         <a
           href={primaryCtaHref}
           onClick={handleAnchor(primaryCtaHref)}
-          className="bg-bg text-fg hover:bg-bg/90 focus-visible:ring-bg/40 inline-flex items-center gap-2 rounded-full px-5 py-2 font-mono text-xs tracking-widest uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
+          className="bg-bg text-fg hover:bg-bg/90 focus-visible:ring-bg/40 inline-flex items-center gap-1 rounded-full px-3 py-2 font-mono text-[10px] tracking-widest whitespace-nowrap uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none sm:gap-2 sm:px-5 sm:text-xs"
         >
-          {primaryCtaLabel}
+          <span className="sm:hidden">Demander</span>
+          <span className="hidden sm:inline">{primaryCtaLabel}</span>
           <span aria-hidden="true">↗</span>
         </a>
 
-        {/* Secondary — Espace privé — white border, white text, opens modal */}
+        {/* Secondary — Espace — white border (short label on mobile) */}
         <button
           type="button"
           onClick={onSecondaryCta}
-          className="border-bg/50 text-bg hover:border-bg hover:bg-bg/10 focus-visible:ring-bg/40 inline-flex items-center gap-2 rounded-full border px-5 py-2 font-mono text-xs tracking-widest uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
+          className="border-bg/50 text-bg hover:border-bg hover:bg-bg/10 focus-visible:ring-bg/40 inline-flex items-center gap-1 rounded-full border px-3 py-2 font-mono text-[10px] tracking-widest whitespace-nowrap uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none sm:gap-2 sm:px-5 sm:text-xs"
         >
-          {secondaryCtaLabel}
+          <span className="sm:hidden">Espace</span>
+          <span className="hidden sm:inline">{secondaryCtaLabel}</span>
           <span aria-hidden="true">↗</span>
         </button>
       </div>
