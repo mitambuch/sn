@@ -209,14 +209,17 @@ interface FilledWordmarkProps {
 const FilledWordmark = ({ className, liquidProgress }: FilledWordmarkProps) => {
   const useLiquidMask = typeof liquidProgress === 'number';
   const p = Math.max(0, Math.min(1, liquidProgress ?? 1));
-  // At p=0 the rect height is 0 (nothing revealed). At p=1 the rect covers
-  // the entire viewBox plus a buffer top+bottom so the displacement-map
-  // ondulation can dip beyond the meniscus without revealing a hard edge.
-  const VB_BOTTOM = 92.04;
+  // Mask geometry is FIXED — the rect always has full size. The reveal is
+  // driven by a `transform="translate(0 dy)"` that shifts the rect down
+  // out of view at p=0 and to its natural position at p=1. Geometry-stable
+  // means the filter region never changes between frames, so feTurbulence
+  // + feDisplacementMap don't have to recompute on every RAF — only the
+  // GPU-accelerated transform moves. Eliminates the saccaded jitter that
+  // came from re-running the filter at 60Hz with shifting bbox.
   const VB_H = 95.04;
   const BUFFER = 8;
-  const rectHeight = (VB_H + BUFFER * 2) * p;
-  const rectY = VB_BOTTOM - (VB_H + BUFFER) * p;
+  const RECT_H = VB_H + BUFFER * 2;
+  const rectShift = RECT_H * (1 - p);
 
   return (
     <svg
@@ -238,11 +241,11 @@ const FilledWordmark = ({ className, liquidProgress }: FilledWordmarkProps) => {
             height="160%"
             colorInterpolationFilters="sRGB"
           >
-            <feTurbulence type="fractalNoise" baseFrequency="0.012 0.038" numOctaves="2" seed="3">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012 0.038" numOctaves="1" seed="3">
               <animate
                 attributeName="baseFrequency"
                 values="0.012 0.038;0.009 0.046;0.015 0.034;0.012 0.038"
-                dur="5.5s"
+                dur="6s"
                 repeatCount="indefinite"
               />
             </feTurbulence>
@@ -251,12 +254,12 @@ const FilledWordmark = ({ className, liquidProgress }: FilledWordmarkProps) => {
           <mask id="loader-liquid-mask" maskUnits="userSpaceOnUse">
             <rect
               x="-3"
-              y={rectY}
+              y={-3 - BUFFER}
               width="572.15"
-              height={rectHeight}
+              height={RECT_H}
               fill="white"
               filter="url(#loader-liquid-wave)"
-              style={{ transition: 'y 80ms linear, height 80ms linear' }}
+              transform={`translate(0 ${rectShift.toFixed(2)})`}
             />
           </mask>
         </defs>
