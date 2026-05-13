@@ -35,24 +35,34 @@ type ConsumeRow = {
  * - Returns { isValid: false, ... } if found but expired / revoked / at cap.
  * - Returns { isValid: true, sanityDocType, sanityDocId } if valid.
  */
+/** Demo result reused by both the DEV stub and the unconditional APERCU
+ *  short-circuit. Anyone typing APERCU in /exemple gets the seeded
+ *  Gala ONU event, regardless of whether Supabase is wired or whether
+ *  the migration row exists yet — critical for live demos. */
+const DEMO_RESULT: ConsumedShareCode = {
+  sanityDocType: 'event',
+  sanityDocId: 'evt-01',
+  status: 'active',
+  viewCount: 1,
+  maxViews: null,
+  expiresAt: null,
+  isValid: true,
+};
+
 export const consumeShareCode = async (rawCode: string): Promise<ConsumedShareCode | null> => {
-  if (!supabase) {
-    // DEV stub when Supabase isn't configured — accept the canonical demo code.
-    if (normalizeShareCode(rawCode) === 'APERCU') {
-      return {
-        sanityDocType: 'event',
-        sanityDocId: 'evt-01',
-        status: 'active',
-        viewCount: 1,
-        maxViews: null,
-        expiresAt: null,
-        isValid: true,
-      };
-    }
-    return null;
+  const canonical = normalizeShareCode(rawCode);
+
+  // Unconditional short-circuit for the demo code. Works without Supabase
+  // (template / local dev) AND with Supabase before migration 0006 lands.
+  // Once the DB row exists, this branch still returns first — harmless,
+  // it just skips the view-counter bump for the demo code (intentional :
+  // demo views shouldn't count against any quota).
+  if (canonical === 'APERCU') {
+    return DEMO_RESULT;
   }
 
-  const canonical = normalizeShareCode(rawCode);
+  if (!supabase) return null;
+
   const { data, error } = await supabase.rpc('consume_share_code', { p_code: canonical });
 
   if (error) {
