@@ -19,7 +19,9 @@ import { WordmarkStroke } from './WordmarkStroke';
 
 const DRAW_MS = 4000;
 const HOLD_MS = 350;
-const FILL_MS = 1800;
+// Liquid rise — needs time to be read as a liquid, not as a fade. The
+// turbulence-driven meniscus needs ~3-4s to register on the eye.
+const FILL_MS = 4000;
 // Premium breath after fill: wordmark is posed, indicator reads "PRÊT",
 // but the CTA does not appear yet. Let the eye digest the mark.
 const SETTLE_MS = 1500;
@@ -241,21 +243,21 @@ const FilledWordmark = ({ className, liquidProgress }: FilledWordmarkProps) => {
         <defs>
           <filter
             id="loader-liquid-wave"
-            x="-5%"
-            y="-20%"
-            width="110%"
-            height="140%"
+            x="-8%"
+            y="-30%"
+            width="116%"
+            height="160%"
             colorInterpolationFilters="sRGB"
           >
-            <feTurbulence type="fractalNoise" baseFrequency="0.018 0.05" numOctaves="2" seed="3">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012 0.038" numOctaves="2" seed="3">
               <animate
                 attributeName="baseFrequency"
-                values="0.018 0.05;0.014 0.06;0.022 0.045;0.018 0.05"
-                dur="7s"
+                values="0.012 0.038;0.009 0.046;0.015 0.034;0.012 0.038"
+                dur="5.5s"
                 repeatCount="indefinite"
               />
             </feTurbulence>
-            <feDisplacementMap in="SourceGraphic" scale="3.2" />
+            <feDisplacementMap in="SourceGraphic" scale="7" />
           </filter>
           <mask id="loader-liquid-mask" maskUnits="userSpaceOnUse">
             <rect
