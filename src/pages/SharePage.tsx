@@ -10,10 +10,10 @@
 // WHEN: /share/:code (outside locale tree, no PublicLayout chrome).
 // ═══════════════════════════════════════════════════
 
+import { BrandMark } from '@components/brand/BrandMark';
 import { Card } from '@components/ui/Card';
 import { Image } from '@components/ui/Image';
 import { MetaList } from '@components/ui/MetaList';
-import { MonoGradientPlaceholder } from '@components/ui/MonoGradientPlaceholder';
 import { ShareActionRow } from '@components/ui/ShareActionRow';
 import { Timeline } from '@components/ui/Timeline';
 import { siteConfig } from '@config/site';
@@ -316,7 +316,8 @@ export default function SharePage() {
 
   return (
     <main
-      data-theme="dark"
+      data-theme="light"
+      data-landing-dark="false"
       className="bg-bg text-fg relative min-h-screen overflow-hidden px-5 py-16 md:px-12 md:py-24"
     >
       {/* Minimal OG metadata — React 19 hoists these into <head> */}
@@ -332,35 +333,34 @@ export default function SharePage() {
       <meta property="og:type" content="website" />
 
       <div className="mx-auto flex max-w-3xl flex-col gap-10">
-        {/* Header strip */}
-        <header className="border-fg/15 flex flex-col gap-3 border-b pb-6">
-          <span className="text-muted font-mono text-[10px] tracking-[0.4em] uppercase">
-            Partage privé · SAW NEXT
-          </span>
-          <h1 className="font-mono text-2xl leading-tight font-medium tracking-tight uppercase md:text-3xl">
-            {status === 'loading' && 'Vérification du code…'}
-            {status === 'invalid-format' && 'Format de code invalide.'}
-            {status === 'not-found' && "Ce code n'existe pas."}
-            {status === 'expired' && "Ce code n'est plus valide."}
-            {status === 'revoked' && 'Ce code a été révoqué.'}
-            {status === 'valid' && (fiche?.title ?? 'Une fiche partagée pour vous.')}
-          </h1>
-          <p className="text-muted font-mono text-[11px] tracking-[0.18em] uppercase">
-            Code : {displayCode}
-          </p>
-        </header>
-
-        {/* Body */}
+        {/* ─── Loading state ─── */}
         {status === 'loading' && (
-          <div className="text-muted py-12 text-center text-sm">Chargement…</div>
+          <div className="text-muted py-12 text-center font-mono text-xs tracking-widest uppercase">
+            Vérification du code…
+          </div>
         )}
 
+        {/* ─── Error / invalid / expired / revoked — single self-contained Card ─── */}
         {(status === 'invalid-format' ||
           status === 'not-found' ||
           status === 'expired' ||
           status === 'revoked') && (
-          <Card padding="lg" className="flex flex-col gap-5">
-            <p className="text-fg text-base leading-relaxed">
+          <Card padding="lg" className="flex flex-col gap-6">
+            <div className="border-fg/10 flex items-center justify-between gap-4 border-b pb-5">
+              <Link to="/" aria-label="SAW NEXT" className="inline-flex">
+                <BrandMark variant="short" className="text-fg text-base md:text-lg" />
+              </Link>
+              <span className="text-muted font-mono text-[10px] tracking-[0.4em] uppercase">
+                Partage privé · Code {displayCode}
+              </span>
+            </div>
+            <h1 className="font-mono text-2xl leading-tight font-medium tracking-tight uppercase md:text-3xl">
+              {status === 'invalid-format' && 'Format de code invalide.'}
+              {status === 'not-found' && "Ce code n'existe pas."}
+              {status === 'expired' && "Ce code n'est plus valide."}
+              {status === 'revoked' && 'Ce code a été révoqué.'}
+            </h1>
+            <p className="text-muted leading-relaxed">
               {status === 'invalid-format' &&
                 'Le code attendu fait 6 caractères, sans préfixe ni espace. Vérifiez la saisie ou contactez Salvatore.'}
               {status === 'not-found' &&
@@ -369,9 +369,6 @@ export default function SharePage() {
                 "Ce code a atteint sa date d'expiration ou son nombre de vues maximum. Salvatore peut en générer un nouveau."}
               {status === 'revoked' &&
                 "Salvatore a révoqué ce code. Aucun accès n'est possible avec ce lien."}
-            </p>
-            <p className="text-muted text-sm leading-relaxed">
-              Pour obtenir un accès, demandez à Salvatore ou utilisez le formulaire d&apos;accès.
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
               <button
@@ -400,15 +397,23 @@ export default function SharePage() {
           // catégorise bien tout." Hero on top, then categorised body inside
           // the same card so the whole fiche reads as one premium artefact.
           <Card padding="none" className="overflow-hidden">
+            {/* ─── Top bar : SN logo + privé label + code ─── */}
+            <div className="border-fg/10 flex items-center justify-between gap-4 border-b px-6 py-4 md:px-10">
+              <Link to="/" aria-label="SAW NEXT" className="inline-flex">
+                <BrandMark variant="short" className="text-fg text-base md:text-lg" />
+              </Link>
+              <span className="text-muted font-mono text-[10px] tracking-[0.4em] uppercase">
+                Partage privé · Code {displayCode}
+              </span>
+            </div>
+
             {/* Hero image — flush to card edges, 16/9 */}
             {heroSrc ? (
               <div className="bg-surface relative overflow-hidden">
                 <Image src={heroSrc} alt={heroAlt} ratio="16/9" eager />
               </div>
             ) : ficheLoading ? (
-              <div className="bg-surface relative aspect-video overflow-hidden">
-                <MonoGradientPlaceholder tone="dark" className="absolute inset-0 h-full w-full" />
-              </div>
+              <div className="bg-surface relative aspect-video overflow-hidden" />
             ) : null}
 
             <div className="flex flex-col gap-8 px-6 py-8 md:px-10 md:py-10">
@@ -507,11 +512,6 @@ export default function SharePage() {
         }}
         initialMode="request"
       />
-
-      {/* Placeholder ambient — monochrome organic, behind everything */}
-      <div className="pointer-events-none absolute inset-0 -z-10 opacity-30">
-        <MonoGradientPlaceholder tone="dark" className="h-full w-full" />
-      </div>
     </main>
   );
 }
