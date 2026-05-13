@@ -173,10 +173,13 @@ html {
      here to dial grain intensity globally. */
   /* Grain dialed for cinema 35mm feel — owner direction 2026-05-12 :
      "beau grain de film 35mm, voir le grain vivre". Higher opacity + denser
-     texture + film-frame animation (steps cinematic). */
+     texture + film-frame animation (steps cinematic). Blend = overlay so
+     the grain lightens dark sections AND darkens light sections from the
+     same body::before pass (owner direction 2026-05-13 : "faut que sur le
+     noir on voit le grain si jamais"). */
   --grain-opacity: 0.45;
   --grain-size: 240px;
-  --grain-blend: multiply;
+  --grain-blend: overlay;
 
   --z-below: -1;
   --z-base: 0;

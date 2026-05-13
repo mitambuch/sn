@@ -18,7 +18,6 @@
 //       after} in i18n.
 // ═══════════════════════════════════════════════════
 
-import { Button } from '@components/ui/Button';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -190,28 +189,26 @@ export const Hero = () => {
           </div>
 
           <div className="hidden flex-col gap-2 md:flex">
-            <Button
-              variant="primary"
-              size="md"
+            <button
+              type="button"
               onClick={() => {
                 document.getElementById('s08')?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="font-mono text-xs tracking-widest uppercase"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 font-mono text-xs tracking-widest text-black uppercase transition-colors hover:bg-white/90 focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none"
             >
               {t('landing.cta.requestAccess')}
               <span aria-hidden="true">↗</span>
-            </Button>
-            <Button
-              variant="secondary"
-              size="md"
+            </button>
+            <button
+              type="button"
               onClick={() => {
                 document.getElementById('s09')?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="font-mono text-xs tracking-widest text-white uppercase"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/50 px-6 py-3 font-mono text-xs tracking-widest text-white uppercase transition-colors hover:border-white hover:bg-white/5 focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none"
             >
               {t('landing.cta.contactDirect')}
               <span aria-hidden="true">↗</span>
-            </Button>
+            </button>
           </div>
         </div>
       </div>

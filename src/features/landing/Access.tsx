@@ -67,7 +67,7 @@ export const Access = () => {
   };
 
   return (
-    <section id="s08" data-landing-dark="true" className="bg-ink text-white">
+    <section id="s08" data-landing-dark="true" data-theme="dark" className="bg-ink text-white">
       <div
         ref={ref}
         className="mx-auto flex max-w-7xl flex-col gap-16 px-5 py-24 md:gap-20 md:px-12 md:py-32"
@@ -93,7 +93,7 @@ export const Access = () => {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
             {/* Real event teasers — Cloudinary imagery */}
             {EVENTS.map(evt => (
-              <Card key={evt.keyBase} padding="none" className="bg-white/3">
+              <Card key={evt.keyBase} padding="none" className="border-white/15">
                 <Card.Media src={unsplash(evt.imgSlug)} alt={evt.imgAlt} ratio="4/3" />
                 <Card.Badge top={evt.day} bottom={evt.month} />
                 <Card.Body>
@@ -112,7 +112,7 @@ export const Access = () => {
 
             {/* Off-market placeholders — MonoGradientPlaceholder as media */}
             {LOCKED_KEYS.slice(0, 2).map(key => (
-              <Card key={key} padding="none" className="bg-white/3">
+              <Card key={key} padding="none" className="border-white/15">
                 <div className="bg-ink relative aspect-4/3 w-full overflow-hidden">
                   <MonoGradientPlaceholder tone="dark" className="absolute inset-0 h-full w-full" />
                 </div>
@@ -137,7 +137,7 @@ export const Access = () => {
           </span>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {LOCKED_KEYS.slice(2).map(key => (
-              <Card key={key} padding="none" className="bg-white/3">
+              <Card key={key} padding="none" className="border-white/15">
                 <div className="grid grid-cols-[140px_1fr]">
                   <div className="bg-ink relative overflow-hidden">
                     <MonoGradientPlaceholder
