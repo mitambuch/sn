@@ -1228,7 +1228,8 @@
     "cta": {
       "requestAccess": "Request access",
       "privateArea": "Private area",
-      "contactDirect": "Direct contact"
+      "contactDirect": "Direct contact",
+      "callDirect": "Call"
     }
   }
 }

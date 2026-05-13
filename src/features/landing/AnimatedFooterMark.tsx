@@ -25,7 +25,7 @@ const DRAW_MS = 14000;
 // (overlap). The wordmark traces while it begins to fill from the bottom.
 const FILL_START_RATIO = 0.6;
 const FILL_MS = 10000;
-const HOLD_MS = 3000;
+const HOLD_MS = 10000;
 const DRAIN_MS = 4000;
 const REST_MS = 1000;
 

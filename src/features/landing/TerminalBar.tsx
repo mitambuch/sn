@@ -1,20 +1,23 @@
 // ═══════════════════════════════════════════════════
-// TerminalBar — landing bottom band (v2 : status + clock + Hero-style CTAs)
+// TerminalBar — landing bottom band (v3 : status + clock + 3 CTAs)
 //
 // WHAT: Last band of the page. Holds the small SAW NEXT mark, the live
-//       Europe/Zurich clock (refreshing every 1s), the "cooptation
-//       ouverte" status dot, and the two Hero-style CTAs (Button variant
-//       primary / secondary, mono uppercase, ↗ arrow). The center ticker
-//       and the per-section tagline cycling were dropped in v2 — they
-//       added noise without adding info.
+//       Europe/Zurich clock on a single line, the "cooptation ouverte"
+//       status dot, and three CTAs in the dark-inverted Hero style :
+//         - "Appeler" (tel:) raccourci, white-border ghost
+//         - "Demander un accès" white-solid (primary on a dark bar)
+//         - "Espace privé" white-border (secondary on a dark bar)
 // WHEN: Mounted once by the landing root inside `<main>`. Sits naturally
 //       at the end of the document.
 // CHANGE TIMEZONE: 'Europe/Zurich' in formatCHTime — leave as CH/CET.
+// CHANGE PHONE: PHONE constant below (mirrored from Interlocutor).
 // ═══════════════════════════════════════════════════
 
 import { BrandMark } from '@components/brand/BrandMark';
-import { Button } from '@components/ui/Button';
-import { useEffect, useState } from 'react';
+import { Phone } from 'lucide-react';
+import { type MouseEvent as ReactMouseEvent, useEffect, useState } from 'react';
+
+const PHONE_TEL = '+41787498170';
 
 interface TerminalBarProps {
   /** Status label (e.g. "Cooptation ouverte"). */
@@ -29,6 +32,8 @@ interface TerminalBarProps {
   secondaryCtaLabel: string;
   /** Secondary CTA href. */
   secondaryCtaHref: string;
+  /** Call CTA label (e.g. "Appeler"). */
+  callCtaLabel: string;
 }
 
 function formatCHTime(date: Date): string {
@@ -41,7 +46,7 @@ function formatCHTime(date: Date): string {
   }).format(date);
 }
 
-/** Footer band — small mark + live time + status + Hero-style CTAs. */
+/** Footer band — small mark + single-line clock + status + 3 CTAs. */
 export const TerminalBar = ({
   statusLabel,
   tzLabel,
@@ -49,6 +54,7 @@ export const TerminalBar = ({
   primaryCtaHref,
   secondaryCtaLabel,
   secondaryCtaHref,
+  callCtaLabel,
 }: TerminalBarProps) => {
   const [time, setTime] = useState<string>(() => formatCHTime(new Date()));
 
@@ -61,22 +67,21 @@ export const TerminalBar = ({
     };
   }, []);
 
-  const goToHref = (href: string) => () => {
+  const handleAnchor = (href: string) => (e: ReactMouseEvent<HTMLAnchorElement>) => {
     if (href.startsWith('#')) {
+      e.preventDefault();
       document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      window.location.href = href;
     }
   };
 
   return (
     <div
       role="contentinfo"
-      className="bg-ink text-on-ink relative flex flex-col gap-3 px-5 py-5 font-mono text-[11px] tracking-wider md:flex-row md:items-center md:justify-between md:gap-6 md:px-8 md:py-6"
+      className="bg-ink text-on-ink flex flex-col gap-5 px-5 py-5 font-mono text-[11px] tracking-wider md:flex-row md:items-center md:justify-between md:gap-8 md:px-10 md:py-6"
     >
-      {/* ─── Left : status dot + brand mark + local time ─── */}
-      <div className="flex items-center gap-5 md:gap-7">
-        <div className="text-bg/85 flex items-center gap-2 text-[10px] tracking-[0.18em] uppercase">
+      {/* ─── Left : status dot + brand + single-line clock ─── */}
+      <div className="flex flex-wrap items-center gap-x-7 gap-y-3 md:flex-nowrap">
+        <div className="text-bg/90 flex items-center gap-2 text-[10px] tracking-[0.18em] uppercase">
           <span
             aria-hidden="true"
             className="bg-success h-1.5 w-1.5 rounded-full"
@@ -87,32 +92,45 @@ export const TerminalBar = ({
 
         <BrandMark className="text-bg hidden text-xs sm:inline-flex" />
 
-        <div className="text-bg/70 hidden flex-col gap-px text-[9px] leading-tight tracking-widest uppercase sm:flex">
-          <span className="text-bg text-[11px] font-medium tracking-[0.04em]">{time}</span>
-          <span>{tzLabel}</span>
+        <div className="text-bg/85 hidden items-baseline gap-2 text-[11px] tracking-widest uppercase sm:flex">
+          <span className="text-bg font-medium tabular-nums">{time}</span>
+          <span aria-hidden="true" className="text-bg/40">
+            ·
+          </span>
+          <span className="text-bg/65 text-[10px]">{tzLabel}</span>
         </div>
       </div>
 
-      {/* ─── Right : Hero-style CTAs ─── */}
-      <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
-        <Button
-          variant="primary"
-          size="md"
-          onClick={goToHref(primaryCtaHref)}
-          className="font-mono text-xs tracking-widest uppercase"
+      {/* ─── Right : 3 CTAs (Appeler · Demander un accès · Espace privé) ─── */}
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+        {/* Call — outline ghost, icon-first */}
+        <a
+          href={`tel:${PHONE_TEL}`}
+          className="border-bg/40 text-bg hover:border-bg hover:bg-bg/10 focus-visible:ring-bg/40 inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs tracking-widest uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
+        >
+          <Phone size={12} strokeWidth={2} aria-hidden="true" />
+          <span className="hidden sm:inline">{callCtaLabel}</span>
+        </a>
+
+        {/* Primary — Demander un accès — white solid */}
+        <a
+          href={primaryCtaHref}
+          onClick={handleAnchor(primaryCtaHref)}
+          className="bg-bg text-fg hover:bg-bg/90 focus-visible:ring-bg/40 inline-flex items-center gap-2 rounded-full px-5 py-2 font-mono text-xs tracking-widest uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
         >
           {primaryCtaLabel}
           <span aria-hidden="true">↗</span>
-        </Button>
-        <Button
-          variant="secondary"
-          size="md"
-          onClick={goToHref(secondaryCtaHref)}
-          className="font-mono text-xs tracking-widest uppercase"
+        </a>
+
+        {/* Secondary — Espace privé — white border, white text */}
+        <a
+          href={secondaryCtaHref}
+          onClick={handleAnchor(secondaryCtaHref)}
+          className="border-bg/50 text-bg hover:border-bg hover:bg-bg/10 focus-visible:ring-bg/40 inline-flex items-center gap-2 rounded-full border px-5 py-2 font-mono text-xs tracking-widest uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
         >
           {secondaryCtaLabel}
           <span aria-hidden="true">↗</span>
-        </Button>
+        </a>
       </div>
     </div>
   );

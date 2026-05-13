@@ -1237,7 +1237,8 @@
     "cta": {
       "requestAccess": "Demander un accès",
       "privateArea": "Espace privé",
-      "contactDirect": "Contact direct"
+      "contactDirect": "Contact direct",
+      "callDirect": "Appeler"
     }
   }
 }

@@ -39,13 +39,13 @@ export const LandingFooter = () => {
         </FooterCol>
 
         <FooterCol label={t('landing.footer.colSeatLabel')}>
-          <span className="text-fg block py-0.5 text-[10px] tracking-normal normal-case">
+          <span className="text-fg block py-0.5 text-[11px] tracking-normal normal-case">
             {t('landing.footer.seatCity')}
           </span>
-          <span className="text-muted block py-0.5 text-[10px] tracking-normal normal-case">
+          <span className="text-muted block py-0.5 text-[11px] tracking-normal normal-case">
             {t('landing.footer.seatCanton')}
           </span>
-          <span className="text-muted block py-0.5 text-[10px]">
+          <span className="text-muted block py-0.5 text-[11px] tracking-normal normal-case">
             {t('landing.footer.seatType')}
           </span>
         </FooterCol>

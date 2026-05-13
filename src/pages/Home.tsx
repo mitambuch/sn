@@ -124,6 +124,7 @@ export default function Home() {
           primaryCtaHref="#s08"
           secondaryCtaLabel={t('landing.cta.privateArea')}
           secondaryCtaHref={localePath(ROUTES.LOGIN)}
+          callCtaLabel={t('landing.cta.callDirect')}
         />
       </main>
     </>
