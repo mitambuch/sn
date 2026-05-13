@@ -30,10 +30,12 @@ export default function LoaderShowcase() {
             Loader SAW NEXT — extrait du PC parallèle
           </h1>
           <p className="text-muted max-w-2xl text-base leading-relaxed text-pretty">
-            Animation en deux temps : le wordmark se dessine au trait (stroke-dashoffset 1 → 0 sur
-            4s, ease cubique), puis le contour se remplit en aplat (fill-opacity 0 → 1 sur 1.8s).
-            Une fois posé, un CTA &laquo;&nbsp;Entrer&nbsp;&raquo; apparaît. Au clic, l&apos;overlay
-            s&apos;envole (scale 1.05, blur 10px, opacity 0 sur 1.4s) et révèle la page underneath.
+            Animation en trois temps premium. Le wordmark se dessine au trait (stroke-dashoffset 1 →
+            0 sur 4s, ease cubique), puis le contour se remplit en aplat (fill-opacity 0 → 1 sur
+            1.8s). Respiration de 1.5s — l&apos;indicateur &laquo;&nbsp;PRÊT&nbsp;&raquo; affiché
+            sans CTA, le mark posé doit avoir le temps d&apos;être lu. Enfin, le bouton
+            &laquo;&nbsp;Entrer&nbsp;&raquo; monte doucement. Au clic, l&apos;overlay s&apos;envole
+            (scale 1.05, blur 10px, opacity 0 sur 1.4s) et révèle la page underneath.
           </p>
         </header>
 

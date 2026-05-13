@@ -9,7 +9,7 @@
 // WHEN: Mounted by LandingLayout above the rest of the tree. The
 //       Home content is already mounted underneath; the loader's
 //       lift-away reveals it.
-// CHANGE TIMING: DRAW_MS / HOLD_MS / FILL_MS / EXIT_MS constants.
+// CHANGE TIMING: DRAW_MS / HOLD_MS / FILL_MS / SETTLE_MS / EXIT_MS constants.
 // ═══════════════════════════════════════════════════
 
 import { ArrowUpRight } from 'lucide-react';
@@ -20,9 +20,12 @@ import { WordmarkStroke } from './WordmarkStroke';
 const DRAW_MS = 4000;
 const HOLD_MS = 350;
 const FILL_MS = 1800;
+// Premium breath after fill: wordmark is posed, indicator reads "PRÊT",
+// but the CTA does not appear yet. Let the eye digest the mark.
+const SETTLE_MS = 1500;
 const EXIT_MS = 1400;
 
-type LoaderPhase = 'draw' | 'hold' | 'fill' | 'settled' | 'exit' | 'done';
+type LoaderPhase = 'draw' | 'hold' | 'fill' | 'settle' | 'settled' | 'exit' | 'done';
 
 // Dramatic non-linear ease — fast start, slow middle, propre fin
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -62,10 +65,16 @@ export const Loader = () => {
       const t = Math.min(elapsed / FILL_MS, 1);
       setFillProgress(t);
       if (t < 1) raf = window.requestAnimationFrame(tick);
-      else setPhase('settled');
+      else setPhase('settle');
     };
     raf = window.requestAnimationFrame(tick);
     return () => window.cancelAnimationFrame(raf);
+  }, [phase]);
+
+  useEffect(() => {
+    if (phase !== 'settle') return;
+    const t = window.setTimeout(() => setPhase('settled'), SETTLE_MS);
+    return () => window.clearTimeout(t);
   }, [phase]);
 
   useEffect(() => {
@@ -93,7 +102,9 @@ export const Loader = () => {
   const ctaVisible = phase === 'settled' || phase === 'exit';
   const indicatorVisible = !ctaVisible;
   const stateLabel =
-    phase === 'fill' || phase === 'settled' || phase === 'exit' ? 'PRÊT' : 'CHARGEMENT';
+    phase === 'fill' || phase === 'settle' || phase === 'settled' || phase === 'exit'
+      ? 'PRÊT'
+      : 'CHARGEMENT';
 
   return (
     <div
