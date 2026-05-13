@@ -9,7 +9,8 @@
 // WHEN: Mounted by LandingLayout above the rest of the tree. The
 //       Home content is already mounted underneath; the loader's
 //       lift-away reveals it.
-// CHANGE TIMING: DRAW_MS / HOLD_MS / FILL_MS / SETTLE_MS / EXIT_MS constants.
+// CHANGE TIMING: DRAW_MS, FILL_START_RATIO (overlap), FILL_MS,
+//                SETTLE_MS, EXIT_MS constants.
 // ═══════════════════════════════════════════════════
 
 import { ArrowUpRight } from 'lucide-react';
@@ -18,7 +19,11 @@ import { useEffect, useState } from 'react';
 import { WordmarkStroke } from './WordmarkStroke';
 
 const DRAW_MS = 4000;
-const HOLD_MS = 350;
+// Fraction of DRAW_MS at which the liquid fill starts rising. Below 1.0,
+// the stroke-draw and the liquid-fill overlap — the wordmark is still being
+// traced while its bottom already starts to fill. Owner direction: "à 60%
+// il faut que ça commence à remplir."
+const FILL_START_RATIO = 0.6;
 // Liquid rise — needs time to be read as a liquid, not as a fade. The
 // turbulence-driven meniscus needs ~3-4s to register on the eye.
 const FILL_MS = 4000;
@@ -27,48 +32,35 @@ const FILL_MS = 4000;
 const SETTLE_MS = 1500;
 const EXIT_MS = 1400;
 
-type LoaderPhase = 'draw' | 'hold' | 'fill' | 'settle' | 'settled' | 'exit' | 'done';
+type LoaderPhase = 'animating' | 'settle' | 'settled' | 'exit' | 'done';
 
 // Dramatic non-linear ease — fast start, slow middle, propre fin
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
 export const Loader = () => {
-  const [phase, setPhase] = useState<LoaderPhase>('draw');
+  const [phase, setPhase] = useState<LoaderPhase>('animating');
   const [drawProgress, setDrawProgress] = useState(0);
   const [fillProgress, setFillProgress] = useState(0);
 
+  // Single RAF drives both draw and fill, with fill starting at
+  // FILL_START_RATIO of the draw timeline. Both finish into 'settle'.
   useEffect(() => {
-    if (phase !== 'draw') return;
+    if (phase !== 'animating') return;
     const start = performance.now();
+    const fillDelay = DRAW_MS * FILL_START_RATIO;
+    const totalDuration = Math.max(DRAW_MS, fillDelay + FILL_MS);
     let raf = 0;
+
     const tick = () => {
       const elapsed = performance.now() - start;
-      const t = Math.min(elapsed / DRAW_MS, 1);
-      setDrawProgress(ease(t));
-      if (t < 1) raf = window.requestAnimationFrame(tick);
-      else setPhase('hold');
-    };
-    raf = window.requestAnimationFrame(tick);
-    return () => window.cancelAnimationFrame(raf);
-  }, [phase]);
-
-  useEffect(() => {
-    if (phase !== 'hold') return;
-    const t = window.setTimeout(() => setPhase('fill'), HOLD_MS);
-    return () => window.clearTimeout(t);
-  }, [phase]);
-
-  useEffect(() => {
-    if (phase !== 'fill') return;
-    const start = performance.now();
-    let raf = 0;
-    const tick = () => {
-      const elapsed = performance.now() - start;
-      const t = Math.min(elapsed / FILL_MS, 1);
-      setFillProgress(t);
-      if (t < 1) raf = window.requestAnimationFrame(tick);
+      const drawT = Math.min(elapsed / DRAW_MS, 1);
+      setDrawProgress(ease(drawT));
+      const fillElapsed = Math.max(0, elapsed - fillDelay);
+      setFillProgress(Math.min(fillElapsed / FILL_MS, 1));
+      if (elapsed < totalDuration) raf = window.requestAnimationFrame(tick);
       else setPhase('settle');
     };
+
     raf = window.requestAnimationFrame(tick);
     return () => window.cancelAnimationFrame(raf);
   }, [phase]);
@@ -104,13 +96,10 @@ export const Loader = () => {
   const ctaVisible = phase === 'settled' || phase === 'exit';
   const indicatorVisible = !ctaVisible;
 
-  // Trois actes : CHARGEMENT (draw) → RÉVÉLATION (fill) → PRÊT (settle/settled).
+  // Trois actes : CHARGEMENT (draw seul) → RÉVÉLATION (le fill a démarré,
+  // les deux animations courent ensemble) → PRÊT (settle/settled/exit).
   const stateLabel =
-    phase === 'fill'
-      ? 'RÉVÉLATION'
-      : phase === 'settle' || phase === 'settled' || phase === 'exit'
-        ? 'PRÊT'
-        : 'CHARGEMENT';
+    phase === 'animating' ? (fillProgress > 0 ? 'RÉVÉLATION' : 'CHARGEMENT') : 'PRÊT';
 
   // Compteur global : draw pèse 60% de la course, fill 40%. Pendant settle,
   // le compteur reste à 100 — le mark est posé, rien à charger en plus.
