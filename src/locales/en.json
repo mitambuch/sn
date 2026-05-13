@@ -89,6 +89,8 @@
     "tagEyebrow": "Private area",
     "titleA": "Private area.",
     "titleB": "Three doors, one key.",
+    "titleModal": "Sign in.",
+    "ledeModal": "Pick your access mode.",
     "lede": "You already have access. Pick the mode that suits you: your email + password pair, a single-use access link sent by email, or the invitation code Salvatore gave you.",
     "modeEmail": "Email and password",
     "modeMagicLink": "Magic link",

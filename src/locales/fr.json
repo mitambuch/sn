@@ -107,6 +107,8 @@
     "tagEyebrow": "Espace privé",
     "titleA": "Espace privé.",
     "titleB": "Trois portes, une seule clé.",
+    "titleModal": "Connexion.",
+    "ledeModal": "Choisissez votre mode d’accès.",
     "lede": "Vous avez déjà un accès. Choisissez le mode qui vous convient : votre couple email + mot de passe, un lien d’accès unique envoyé par email, ou le code d’invitation que Salvatore vous a transmis.",
     "modeEmail": "Email et mot de passe",
     "modeMagicLink": "Lien magique",

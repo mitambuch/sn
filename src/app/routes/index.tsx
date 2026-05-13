@@ -118,12 +118,14 @@ export default function AppRoutes() {
                 TerminalBar (fixed bottom) + INDEX overlay are the chrome. ─── */}
           <Route index element={<Home />} />
 
+          {/* ─── Auth surface — popup-like, no public chrome ─── */}
+          <Route path="login" element={<Login />} />
+          <Route path="onboarding" element={<Onboarding />} />
+
           {/* ─── Public surface (Header + Footer) ─── */}
           <Route element={<PublicLayout />}>
             <Route path="playground" element={<Playground />} />
             <Route path="lab" element={<Lab />} />
-            <Route path="login" element={<Login />} />
-            <Route path="onboarding" element={<Onboarding />} />
           </Route>
 
           {/* ─── Member surface (RequireAuth via AppLayout) ─── */}
