@@ -30,8 +30,8 @@ interface TerminalBarProps {
   primaryCtaHref: string;
   /** Secondary CTA label (e.g. "Espace privé"). */
   secondaryCtaLabel: string;
-  /** Secondary CTA href. */
-  secondaryCtaHref: string;
+  /** Secondary CTA — invoked on click (e.g. opens the global LoginModal). */
+  onSecondaryCta: () => void;
   /** Call CTA label (e.g. "Appeler"). */
   callCtaLabel: string;
 }
@@ -53,7 +53,7 @@ export const TerminalBar = ({
   primaryCtaLabel,
   primaryCtaHref,
   secondaryCtaLabel,
-  secondaryCtaHref,
+  onSecondaryCta,
   callCtaLabel,
 }: TerminalBarProps) => {
   const [time, setTime] = useState<string>(() => formatCHTime(new Date()));
@@ -122,15 +122,15 @@ export const TerminalBar = ({
           <span aria-hidden="true">↗</span>
         </a>
 
-        {/* Secondary — Espace privé — white border, white text */}
-        <a
-          href={secondaryCtaHref}
-          onClick={handleAnchor(secondaryCtaHref)}
+        {/* Secondary — Espace privé — white border, white text, opens modal */}
+        <button
+          type="button"
+          onClick={onSecondaryCta}
           className="border-bg/50 text-bg hover:border-bg hover:bg-bg/10 focus-visible:ring-bg/40 inline-flex items-center gap-2 rounded-full border px-5 py-2 font-mono text-xs tracking-widest uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
         >
           {secondaryCtaLabel}
           <span aria-hidden="true">↗</span>
-        </a>
+        </button>
       </div>
     </div>
   );

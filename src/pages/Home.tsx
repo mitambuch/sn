@@ -13,10 +13,10 @@
 // EDIT COPY: src/locales/{fr,en}.json under landing.* — never inline.
 // ═══════════════════════════════════════════════════
 
-import { useLocale } from '@app/LocaleProvider';
 import { BrandMark } from '@components/brand/BrandMark';
 import { SeoHead } from '@components/features/SeoHead';
-import { ROUTES } from '@constants/routes';
+import { LoginModalProvider } from '@context/LoginModalContext';
+import { useLoginModal } from '@context/useLoginModal';
 import {
   Access,
   Domains,
@@ -35,11 +35,18 @@ import {
 import { cn } from '@utils/cn';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 
 export default function Home() {
+  return (
+    <LoginModalProvider>
+      <HomeContent />
+    </LoginModalProvider>
+  );
+}
+
+function HomeContent() {
   const { t } = useTranslation();
-  const { localePath } = useLocale();
+  const { openLogin } = useLoginModal();
   const [indexOpen, setIndexOpen] = useState(false);
   const [compactLogo, setCompactLogo] = useState(false);
 
@@ -90,14 +97,17 @@ export default function Home() {
         primaryCtaHref="#s08"
         secondaryCtaLabel={t('landing.cta.privateArea')}
         secondaryCtaNode={
-          <Link
-            to={localePath(ROUTES.LOGIN)}
-            onClick={closeIndex}
+          <button
+            type="button"
+            onClick={() => {
+              closeIndex();
+              openLogin();
+            }}
             className="border-bg text-bg hover:bg-bg hover:text-fg inline-flex items-center justify-between gap-3 rounded-full border px-6 py-4 font-mono text-xs tracking-widest uppercase transition-colors md:py-5 md:text-sm"
           >
             <span>{t('landing.cta.privateArea')}</span>
             <span aria-hidden="true">↗</span>
-          </Link>
+          </button>
         }
       />
 
@@ -123,7 +133,7 @@ export default function Home() {
           primaryCtaLabel={t('landing.cta.requestAccess')}
           primaryCtaHref="#s08"
           secondaryCtaLabel={t('landing.cta.privateArea')}
-          secondaryCtaHref={localePath(ROUTES.LOGIN)}
+          onSecondaryCta={openLogin}
           callCtaLabel={t('landing.cta.callDirect')}
         />
       </main>
