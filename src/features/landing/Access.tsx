@@ -1,19 +1,22 @@
 // ═══════════════════════════════════════════════════
-// Access — landing S08 (cooptation gate, v2 — pièce maîtresse)
+// Access — landing S08 (catalogue teaser + cooptation gate)
 //
-// WHAT: Refonte v2 — la section "Demander un accès" devient la finalité
-//       de la landing. Trois temps : (1) headline éditoriale + lede
-//       vendeur, (2) deux events tease (concrets, visuels — Gala ONU,
-//       Art Basel) qui montrent ce qui se passe derrière, (3) une grille
-//       de cards floutées ("et le reste, derrière la porte") qui force
-//       le geste de demande, (4) deux CTA — Demander / J'ai un code —
-//       qui ouvrent l'<AccessRequestModal> en mode pré-sélectionné.
+// WHAT: v3 — owner direction "cette section doit plus être une sorte de
+//       teasing des offres qu'on peut avoir si on est inscrit". Reuses
+//       the backend <Card> primitive (same look as /account/catalogue)
+//       to render a 4-up preview : 2 real event teasers (Cloudinary
+//       imagery) + 2 off-market placeholders rendered with
+//       <MonoGradientPlaceholder> as media. CTAs at the bottom open
+//       the global AccessRequestModal (form / code) — "demander un
+//       accès" is no longer the section identity, it's the closing
+//       move after the teaser.
 // WHEN: Anchored at #s08, après Domaines et avant Interlocutor.
 // CHANGE COPY: src/locales/{fr,en}.json under landing.access.*
-// CHANGE EVENTS: edit landing.access.evt01 / evt02 keys.
 // ═══════════════════════════════════════════════════
 
+import { Card } from '@components/ui/Card';
 import { AccessRequestModal } from '@features/access/AccessRequestModal';
+import { MonoGradientPlaceholder } from '@features/landing/MonoGradientPlaceholder';
 import { SectionTag } from '@features/landing/SectionTag';
 import { useReveal } from '@hooks/useReveal';
 import { cn } from '@utils/cn';
@@ -28,16 +31,30 @@ interface EventTeaser {
   imgSlug: string;
   imgAlt: string;
   keyBase: 'evt01' | 'evt02';
+  day: string;
+  month: string;
 }
 
 const EVENTS: EventTeaser[] = [
-  { imgSlug: 'geneva-united-nations-gala', imgAlt: 'Palais des Nations en gala', keyBase: 'evt01' },
-  { imgSlug: 'art-basel-fair', imgAlt: 'Art Basel galerie principale', keyBase: 'evt02' },
+  {
+    imgSlug: 'geneva-united-nations-gala',
+    imgAlt: 'Palais des Nations en gala',
+    keyBase: 'evt01',
+    day: '14',
+    month: 'juin',
+  },
+  {
+    imgSlug: 'art-basel-fair',
+    imgAlt: 'Art Basel galerie principale',
+    keyBase: 'evt02',
+    day: '16',
+    month: 'juin',
+  },
 ];
 
 const LOCKED_KEYS = ['locked1', 'locked2', 'locked3', 'locked4'] as const;
 
-/** Landing S08 — cooptation access gate (v2). */
+/** Landing S08 — catalogue teaser + cooptation gate. */
 export const Access = () => {
   const { t } = useTranslation();
   const ref = useReveal<HTMLDivElement>();
@@ -53,12 +70,12 @@ export const Access = () => {
     <section id="s08" data-landing-dark="true" className="bg-ink text-white">
       <div
         ref={ref}
-        className="mx-auto flex max-w-7xl flex-col gap-16 px-5 py-24 md:gap-24 md:px-12 md:py-40"
+        className="mx-auto flex max-w-7xl flex-col gap-16 px-5 py-24 md:gap-20 md:px-12 md:py-32"
       >
-        {/* ─── Header — eyebrow + monumental headline + lede ─── */}
+        {/* ─── Header ─── */}
         <header className="flex flex-col gap-6">
           <SectionTag num="08.A" label={t('landing.access.eyebrow')} />
-          <h2 className="max-w-5xl font-mono text-[clamp(2rem,6vw,5.5rem)] leading-[0.92] font-medium tracking-tight uppercase">
+          <h2 className="max-w-5xl font-mono text-[clamp(2rem,5.5vw,5rem)] leading-[0.95] font-medium tracking-tight uppercase">
             {t('landing.access.heroTitleA')}
             <br />
             <span className="text-white/60">{t('landing.access.heroTitleB')}</span>
@@ -68,93 +85,84 @@ export const Access = () => {
           </p>
         </header>
 
-        {/* ─── 2 events tease — concrete, visual, named ─── */}
+        {/* ─── Catalogue teaser — backend Card style, 4-up ─── */}
         <div className="flex flex-col gap-6">
           <span className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
             {t('landing.access.eventsEyebrow')}
           </span>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+            {/* Real event teasers — Cloudinary imagery */}
             {EVENTS.map(evt => (
-              <article
-                key={evt.keyBase}
-                className="group relative flex flex-col overflow-hidden rounded-lg border border-white/15 bg-white/[0.03]"
-              >
-                <div className="bg-ink relative aspect-[5/3] w-full overflow-hidden">
-                  <img
-                    src={unsplash(evt.imgSlug)}
-                    alt={evt.imgAlt}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                  />
-                  <div
-                    aria-hidden="true"
-                    className="from-ink/85 via-ink/30 absolute inset-0 bg-gradient-to-t to-transparent"
-                  />
-                </div>
-                <div className="flex flex-col gap-3 p-6 md:p-8">
-                  <span className="font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase">
+              <Card key={evt.keyBase} padding="none" className="bg-white/3">
+                <Card.Media src={unsplash(evt.imgSlug)} alt={evt.imgAlt} ratio="4/3" />
+                <Card.Badge top={evt.day} bottom={evt.month} />
+                <Card.Body>
+                  <Card.Eyebrow className="text-white/60">
                     {t(`landing.access.${evt.keyBase}.tag`)}
-                  </span>
-                  <h3 className="font-mono text-xl leading-tight font-medium tracking-tight md:text-2xl">
+                  </Card.Eyebrow>
+                  <Card.Title className="text-white">
                     {t(`landing.access.${evt.keyBase}.title`)}
-                  </h3>
-                  <p className="text-xs leading-relaxed text-white/55">
+                  </Card.Title>
+                  <Card.Meta className="text-xs leading-relaxed text-white/55">
                     {t(`landing.access.${evt.keyBase}.venue`)}
-                  </p>
-                  <p className="text-sm leading-relaxed text-white/80">
-                    {t(`landing.access.${evt.keyBase}.teaser`)}
-                  </p>
+                  </Card.Meta>
+                </Card.Body>
+              </Card>
+            ))}
+
+            {/* Off-market placeholders — MonoGradientPlaceholder as media */}
+            {LOCKED_KEYS.slice(0, 2).map(key => (
+              <Card key={key} padding="none" className="bg-white/3">
+                <div className="bg-ink relative aspect-4/3 w-full overflow-hidden">
+                  <MonoGradientPlaceholder tone="dark" className="absolute inset-0 h-full w-full" />
                 </div>
-              </article>
+                <Card.Body>
+                  <Card.Eyebrow className="text-white/60">
+                    {t(`landing.access.${key}.tag`)}
+                  </Card.Eyebrow>
+                  <Card.Title className="text-white">{t(`landing.access.${key}.title`)}</Card.Title>
+                  <Card.Meta className="text-xs leading-relaxed text-white/55">
+                    {t(`landing.access.${key}.stat`)}
+                  </Card.Meta>
+                </Card.Body>
+              </Card>
             ))}
           </div>
         </div>
 
-        {/* ─── Locked grid — "et le reste, derrière la porte" ─── */}
+        {/* ─── Off-market secondary row (2 more locked teasers, compact) ─── */}
         <div className="flex flex-col gap-6">
           <span className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
-            ↘ {t('landing.access.lockedEyebrow')}
+            {t('landing.access.lockedEyebrow')}
           </span>
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-            {LOCKED_KEYS.map((key, i) => (
-              <button
-                key={key}
-                type="button"
-                onClick={() => {
-                  openModal('request');
-                }}
-                className={cn(
-                  'group relative aspect-square overflow-hidden rounded-lg border border-white/15 bg-white/[0.04] p-4 text-left',
-                  'duration-base transition-colors hover:border-white/40 focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none',
-                )}
-                aria-label={t('landing.access.lockedHint')}
-              >
-                {/* Blurred background — fake "locked content" silhouette */}
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 opacity-50"
-                  style={{
-                    backgroundImage: `linear-gradient(${String((i * 47) % 180)}deg, rgba(255,255,255,0.18), rgba(255,255,255,0.02) 60%, rgba(255,255,255,0.12))`,
-                    filter: 'blur(18px) saturate(0.6)',
-                  }}
-                />
-                <div className="relative flex h-full flex-col justify-between">
-                  <span className="font-mono text-[9px] tracking-[0.3em] text-white/40 uppercase">
-                    0{i + 1}
-                  </span>
-                  <span className="text-sm leading-snug font-medium text-white/85 blur-[2px] filter transition-[filter] duration-300 select-none group-hover:blur-[1px]">
-                    {t(`landing.access.${key}`)}
-                  </span>
-                  <span className="font-mono text-[9px] tracking-[0.3em] text-white/50 uppercase transition-colors group-hover:text-white">
-                    ↗ {t('landing.access.lockedHint')}
-                  </span>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {LOCKED_KEYS.slice(2).map(key => (
+              <Card key={key} padding="none" className="bg-white/3">
+                <div className="grid grid-cols-[140px_1fr]">
+                  <div className="bg-ink relative overflow-hidden">
+                    <MonoGradientPlaceholder
+                      tone="dark"
+                      className="absolute inset-0 h-full w-full"
+                    />
+                  </div>
+                  <Card.Body density="spacious" className="gap-2">
+                    <Card.Eyebrow className="text-white/60">
+                      {t(`landing.access.${key}.tag`)}
+                    </Card.Eyebrow>
+                    <Card.Title className="text-white" size="base">
+                      {t(`landing.access.${key}.title`)}
+                    </Card.Title>
+                    <Card.Meta className="text-xs leading-relaxed text-white/55">
+                      {t(`landing.access.${key}.stat`)}
+                    </Card.Meta>
+                  </Card.Body>
                 </div>
-              </button>
+              </Card>
             ))}
           </div>
         </div>
 
-        {/* ─── Dual CTA — Request / Code ─── */}
+        {/* ─── Bottom CTA strip — cooptation gate ─── */}
         <div className="flex flex-col gap-6 border-t border-white/15 pt-12 md:flex-row md:items-end md:justify-between">
           <p className="max-w-md text-sm leading-relaxed text-white/70 md:text-base">
             {t('landing.access.modal.lede')}
@@ -180,7 +188,7 @@ export const Access = () => {
               }}
               className={cn(
                 'inline-flex items-center justify-center gap-3 rounded-full border border-white/40 px-7 py-4 font-mono text-xs tracking-[0.3em] text-white uppercase',
-                'duration-base transition-colors hover:border-white hover:bg-white/[0.05] focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none',
+                'duration-base transition-colors hover:border-white hover:bg-white/5 focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none',
               )}
             >
               {t('landing.access.ctaCode')}
@@ -190,7 +198,6 @@ export const Access = () => {
         </div>
       </div>
 
-      {/* ─── Modal popup centré — dual-mode ─── */}
       <AccessRequestModal
         isOpen={modalOpen}
         onClose={() => {

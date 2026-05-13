@@ -1081,11 +1081,11 @@
     },
     "access": {
       "tagPrimary": "First door",
-      "eyebrow": "08 · Access",
-      "heroTitleA": "Requesting access",
-      "heroTitleB": "is the destination.",
-      "heroLede": "Everything you've seen only matters once you cross this line. The door doesn't open for everyone — but when it does, it opens fully. Here are two examples of what waits on the other side.",
-      "eventsEyebrow": "↘ For example — two closed gatherings",
+      "eyebrow": "08 · Catalogue preview",
+      "heroTitleA": "The catalogue,",
+      "heroTitleB": "at a glance.",
+      "heroLede": "A few current exclusivities, exactly as they appear inside your private space. What you see here is only a fragment — details, availability and the rest unlock after cooptation.",
+      "eventsEyebrow": "↘ A few closed gatherings on the agenda",
       "evt01": {
         "tag": "Gala · 14 June",
         "title": "Charity Gala, UN Geneva",
@@ -1098,12 +1098,28 @@
         "venue": "Messe Basel — Hall 2 · 180 guests · 2 seats",
         "teaser": "First Choice at 9am, Hauser & Wirth private breakfast, guided tour with Marc Spiegler."
       },
-      "lockedEyebrow": "And the rest, behind the door",
-      "lockedHint": "Request access to discover",
-      "locked1": "A confidential property in the Engadine",
-      "locked2": "Three timepieces off the public market",
-      "locked3": "A major work by a living artist",
-      "locked4": "Four curated journeys across three continents",
+      "lockedEyebrow": "↘ Off-market — access by cooptation",
+      "lockedHint": "On request",
+      "locked1": {
+        "tag": "Property · Engadine",
+        "title": "Historic chalet, Sankt Moritz",
+        "stat": "12 bedrooms · 8,200 m²"
+      },
+      "locked2": {
+        "tag": "Timepieces · Edition",
+        "title": "Three pieces off the public market",
+        "stat": "Direct sale · no public provenance"
+      },
+      "locked3": {
+        "tag": "Art · Living artist",
+        "title": "Major work, European atelier",
+        "stat": "Direct acquisition · catalogue raisonné pending"
+      },
+      "locked4": {
+        "tag": "Travel · 3 continents",
+        "title": "Four curated itineraries",
+        "stat": "Private jets · yacht leg · estate vineyard close"
+      },
       "ctaRequest": "Request access",
       "ctaCode": "I have an invitation code",
       "modal": {

@@ -1090,11 +1090,11 @@
     },
     "access": {
       "tagPrimary": "Première porte",
-      "eyebrow": "08 · Accès",
-      "heroTitleA": "Demander un accès,",
-      "heroTitleB": "c'est la finalité.",
-      "heroLede": "Tout ce que vous avez vu n'a de sens qu'à cette condition. La porte ne s'ouvre pas pour tout le monde, mais quand elle s'ouvre, elle s'ouvre vraiment — voici deux exemples de ce qui vous attend derrière.",
-      "eventsEyebrow": "↘ À titre d'exemple — deux rendez-vous fermés",
+      "eyebrow": "08 · Aperçu du catalogue",
+      "heroTitleA": "Le catalogue,",
+      "heroTitleB": "en aperçu.",
+      "heroLede": "Quelques exclusivités du moment, telles qu'elles apparaissent dans votre espace privé. Ce que vous voyez ici n'est qu'un fragment — les détails, la disponibilité et le reste ne sont accessibles qu'après cooptation.",
+      "eventsEyebrow": "↘ Quelques rendez-vous fermés en cours",
       "evt01": {
         "tag": "Gala · 14 juin",
         "title": "Gala de bienfaisance, ONU Genève",
@@ -1107,12 +1107,28 @@
         "venue": "Messe Basel — Hall 2 · 180 invités · 2 places",
         "teaser": "First Choice à 9h, petit-déjeuner Hauser & Wirth, visite guidée par Marc Spiegler."
       },
-      "lockedEyebrow": "Et le reste, derrière la porte",
-      "lockedHint": "Demandez l'accès pour découvrir",
-      "locked1": "Une propriété confidentielle dans l'Engadine",
-      "locked2": "Trois garde-temps hors marché public",
-      "locked3": "Une œuvre majeure d'un artiste vivant",
-      "locked4": "Quatre voyages curatés sur trois continents",
+      "lockedEyebrow": "↘ Off-market — accès sur cooptation",
+      "lockedHint": "Sur demande",
+      "locked1": {
+        "tag": "Propriété · Engadine",
+        "title": "Chalet historique, Sankt Moritz",
+        "stat": "12 chambres · 8 200 m²"
+      },
+      "locked2": {
+        "tag": "Garde-temps · Édition",
+        "title": "Trois pièces hors marché public",
+        "stat": "Vente directe · pas de provenance publique"
+      },
+      "locked3": {
+        "tag": "Art · Artiste vivant",
+        "title": "Œuvre majeure, atelier européen",
+        "stat": "Acquisition directe · catalogue raisonné en cours"
+      },
+      "locked4": {
+        "tag": "Voyage · 3 continents",
+        "title": "Quatre itinéraires curatés",
+        "stat": "Jets privés · escale en yacht · clôture vignerons"
+      },
       "ctaRequest": "Demander un accès",
       "ctaCode": "J'ai un code d'invitation",
       "modal": {
