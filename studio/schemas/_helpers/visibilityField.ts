@@ -10,7 +10,7 @@
 //       ② 'public'     — accessible via the canonical public URL
 //                        /[locale]/[domain]/[slug] without auth.
 //                        Indexed by Google.
-//       ③ 'shareCode'  — Salva generates a SAW-XXXXXXXX code in the
+//       ③ 'shareCode'  — Salva generates a 6 caractères code in the
 //                        Supabase share_codes table that points to
 //                        this doc. Recipient lands on /share/[code]
 //                        without auth — sees ONLY this single doc.
@@ -58,7 +58,7 @@ export const visibilityField = () =>
           value: 'public',
         },
         {
-          title: '🔑 Partage par code — un code SAW-XXXXXXXX donne accès à cette fiche seule',
+          title: '🔑 Partage par code — un code 6 caractères donne accès à cette fiche seule',
           value: 'shareCode',
         },
       ],
