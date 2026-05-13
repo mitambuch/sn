@@ -150,13 +150,12 @@ export const Loader = () => {
           }}
         >
           <div
-            className="flex items-baseline gap-3 font-mono font-semibold tabular-nums"
+            className="flex items-baseline gap-3 font-mono text-[26px] leading-none font-semibold tracking-[0.08em] tabular-nums sm:text-[32px]"
             aria-live="polite"
           >
-            <span className="text-[28px] leading-none tracking-[0.08em] sm:text-[34px]">
-              {counterValue}
-            </span>
-            <span className="text-fg/50 text-[14px] leading-none tracking-[0.18em]">/ 100</span>
+            <span>{counterValue}</span>
+            <span aria-hidden="true">/</span>
+            <span>100</span>
           </div>
           <div className="flex items-center gap-3 font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
             <span
