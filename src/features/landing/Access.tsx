@@ -75,7 +75,7 @@ export const Access = () => {
         {/* ─── Header ─── */}
         <header className="flex flex-col gap-6">
           <SectionTag num="08.A" label={t('landing.access.eyebrow')} />
-          <h2 className="max-w-5xl font-mono text-[clamp(2rem,5.5vw,5rem)] leading-[0.95] font-medium tracking-tight uppercase">
+          <h2 className="max-w-5xl font-mono text-[clamp(1.75rem,4vw,4rem)] leading-[0.95] font-medium tracking-tight uppercase">
             {t('landing.access.heroTitleA')}
             <br />
             <span className="text-white/60">{t('landing.access.heroTitleB')}</span>
