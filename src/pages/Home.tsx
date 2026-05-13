@@ -32,6 +32,7 @@ import {
   TopProgress,
   useLandingData,
 } from '@features/landing';
+import { Loader } from '@features/landing/Loader/Loader';
 import { cn } from '@utils/cn';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -75,6 +76,9 @@ function HomeContent() {
   return (
     <>
       <SeoHead />
+      {/* Cinematic entry — fires on every landing visit. Skip via the
+          top-right "Skip" button or via Esc/Enter/Space once posed. */}
+      <Loader />
       <TopProgress />
       <TopCornerChrome
         compactLogo={compactLogo}
