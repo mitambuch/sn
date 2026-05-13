@@ -104,16 +104,23 @@
     "signIn": "Se connecter",
     "signOut": "Se déconnecter",
     "tagline": "Accès vetté, sur invitation",
+    "tagEyebrow": "Espace privé",
+    "titleA": "Espace privé.",
+    "titleB": "Trois portes, une seule clé.",
+    "titleModal": "Connexion.",
+    "ledeModal": "Choisissez votre mode d’accès.",
+    "lede": "Vous avez déjà un accès. Choisissez le mode qui vous convient : votre couple email + mot de passe, un lien d’accès unique envoyé par email, ou le code d’invitation que Salvatore vous a transmis.",
     "modeEmail": "Email et mot de passe",
     "modeMagicLink": "Lien magique",
     "modeInvitation": "Code d’invitation",
-    "modeEmailHint": "Pour les membres déjà enregistrés",
-    "modeMagicLinkHint": "Recevez un lien d’accès à usage unique",
-    "modeInvitationHint": "Activez votre code d’invitation",
+    "modeEmailHint": "Pour les membres déjà enregistrés. Connexion directe vers votre espace.",
+    "modeMagicLinkHint": "Recevez un lien d’accès à usage unique. Aucun mot de passe à mémoriser.",
+    "modeInvitationHint": "Activez votre code d’invitation pour la première connexion.",
     "email": "Adresse e-mail",
     "password": "Mot de passe",
     "code": "Code d’invitation",
-    "magicLinkSent": "Lien d’accès envoyé. Vérifiez votre boîte e-mail.",
+    "magicLinkSent": "Lien d’accès envoyé. Vérifiez votre boîte e-mail dans les minutes qui viennent.",
+    "magicLinkSentTag": "Lien envoyé",
     "back": "Retour à l’accueil"
   },
   "account": {
@@ -1083,43 +1090,102 @@
     },
     "access": {
       "tagPrimary": "Première porte",
-      "h2line1": "Demander",
-      "h2line2": "un accès.",
-      "description": "L’accès se fait par cooptation. Une qualification courte, un échange direct, puis transmission d’un code personnel si la collaboration est validée.",
-      "step1Label": "Formulaire",
-      "step1Info": "Qualification courte. Anonyme possible.",
-      "step2Label": "Échange",
-      "step2Info": "Conversation directe. Pas de relais.",
-      "step3Label": "Accès",
-      "step3Info": "Code transmis si validation.",
-      "behindEyebrow": "Ce qui se passe derrière",
-      "behind1Num": "01 · Saison",
-      "behind1Title": "Événements signature",
-      "behind1Desc": "Accès aux rendez-vous fermés : Formule 1, festivals, concerts privés, dîners curatés.",
-      "behind1Hint": "Aperçu en espace privé ↗",
-      "behind2Num": "02 · Cercle",
-      "behind2Title": "Off-market",
-      "behind2Desc": "Propriétés d’exception, montres rares, œuvres et opportunités confidentielles — hors marché public.",
-      "behind2Hint": "Sur cooptation uniquement ↗",
-      "behind3Num": "03 · Méthode",
-      "behind3Title": "Une seule ligne",
-      "behind3Desc": "Un interlocuteur, du premier mot à la réalisation. Pas d’agence, pas de plateforme, pas de relais.",
-      "behind3Hint": "Salvatore, directement ↗",
-      "openForm": "Ouvrir le formulaire",
-      "openFormSoon": "Disponible prochainement — contact direct via Salvatore",
-      "drawerTitle": "Demander un accès.",
-      "drawerLede": "Quelques mots pour qu’on se comprenne avant l’échange. Anonyme possible.",
-      "drawerPlaceholder": "Qui vous a parlé de nous, ce que vous cherchez, et quand vous aimeriez en parler.",
-      "tagSecondary": "Client existant",
-      "privateAreaTitle": "Espace privé.",
-      "privateAreaDesc": "Pour les clients disposant d’un code d’accès personnel.",
-      "connect": "Se connecter"
+      "eyebrow": "08 · Aperçu du catalogue",
+      "heroTitleA": "Le catalogue,",
+      "heroTitleB": "en aperçu.",
+      "heroLede": "Quelques exclusivités du moment, telles qu'elles apparaissent dans votre espace privé. Ce que vous voyez ici n'est qu'un fragment — les détails, la disponibilité et le reste ne sont accessibles qu'après cooptation.",
+      "eventsEyebrow": "↘ Quelques rendez-vous fermés en cours",
+      "evt01": {
+        "tag": "Gala · 14 juin",
+        "title": "Gala de bienfaisance, ONU Genève",
+        "venue": "Palais des Nations · 220 places · 4 réservées",
+        "teaser": "Cocktail Salle des Pas-Perdus, dîner sept services, Quatuor de l'OSR en clôture."
+      },
+      "evt02": {
+        "tag": "Art Basel · 16 juin",
+        "title": "Collectors Preview — Art Basel",
+        "venue": "Messe Basel — Hall 2 · 180 invités · 2 places",
+        "teaser": "First Choice à 9h, petit-déjeuner Hauser & Wirth, visite guidée par Marc Spiegler."
+      },
+      "lockedEyebrow": "↘ Off-market — accès sur cooptation",
+      "lockedHint": "Sur demande",
+      "locked1": {
+        "tag": "Propriété · Engadine",
+        "title": "Chalet historique, Sankt Moritz",
+        "stat": "12 chambres · 8 200 m²"
+      },
+      "locked2": {
+        "tag": "Garde-temps · Édition",
+        "title": "Trois pièces hors marché public",
+        "stat": "Vente directe · pas de provenance publique"
+      },
+      "locked3": {
+        "tag": "Art · Artiste vivant",
+        "title": "Œuvre majeure, atelier européen",
+        "stat": "Acquisition directe · catalogue raisonné en cours"
+      },
+      "locked4": {
+        "tag": "Voyage · 3 continents",
+        "title": "Quatre itinéraires curatés",
+        "stat": "Jets privés · escale en yacht · clôture vignerons"
+      },
+      "ctaRequest": "Demander un accès",
+      "ctaCode": "J'ai un code d'invitation",
+      "modal": {
+        "eyebrow": "08 · Accès cooptation",
+        "title": "Présentez-vous.",
+        "lede": "Quelques informations pour qu'on se comprenne avant la conversation. Salvatore vous rappelle sous 24 heures.",
+        "modeToggleLabel": "Choisir un mode d'accès",
+        "mode": {
+          "request": "Demander un accès",
+          "code": "J'ai un code"
+        },
+        "fields": {
+          "firstName": "Prénom",
+          "lastName": "Nom",
+          "email": "Email",
+          "phone": "Téléphone direct",
+          "company": "Entreprise (optionnel)",
+          "activity": "Activité / secteur (optionnel)",
+          "message": "Message (optionnel)",
+          "messagePlaceholder": "Qui vous a parlé de nous, ce que vous cherchez, et quand vous aimeriez en parler."
+        },
+        "legal": "Vos informations restent strictement entre vous et Salvatore. Aucune base partagée, aucune newsletter, aucun relais commercial.",
+        "submitting": "Envoi…",
+        "submitRequest": "Envoyer la demande",
+        "submitCode": "Valider mon code",
+        "requestSuccess": "Demande envoyée. Salvatore vous rappelle sous 24 heures.",
+        "noCodeYet": "Je n'ai pas de code — formulaire",
+        "code": {
+          "label": "Code d'invitation",
+          "helper": "Format SAW-XXXX-XXXX, transmis par Salvatore en direct.",
+          "legal": "Le code est personnel et à usage unique. Il ne demande aucune information préalable."
+        },
+        "codeAccepted": "Code reconnu. Redirection vers l'onboarding…",
+        "codeInvalidFormat": "Format attendu : SAW-XXXX-XXXX."
+      }
     },
     "interlocutor": {
       "eyebrow": "Interlocuteur",
+      "eyebrowTeam": "Équipe",
+      "countLabel": "Trois fondateurs",
+      "headlineA": "Une voix.",
+      "headlineB": "Trois fondateurs derrière.",
       "header": "Votre point de contact unique",
+      "focalTag": "01 · Point de contact",
       "role": "Fondateur opérationnel",
       "bio": "Chaque échange commence par une conversation. Un seul interlocuteur, du premier contact à la réalisation.",
+      "salvaBio": "20 ans d'expérience dans l'industrie du luxe. Distribution, conseil et gestion de relations avec une clientèle HNWI et UHNW. Expertise du luxe, des partenariats premium et de la relation client. Votre interlocuteur direct, du premier mot à la réalisation.",
+      "circleTag": "Cercle restreint",
+      "circleCount": "02 personnes",
+      "harry": {
+        "tag": "Sport & lifestyle",
+        "bio": "Ancien sportif professionnel de haut niveau. Réseau international dans le sport, l'événementiel et le lifestyle haut de gamme. Impliqué dans plusieurs projets entrepreneuriaux axés sur la mise en relation et l'accompagnement."
+      },
+      "bokar": {
+        "tag": "Sport & relation HNW",
+        "bio": "Agent de joueurs de football de premier plan au niveau européen, basé à Paris. Connaissance des attentes d'une clientèle internationale exigeante et accès à des cercles fermés."
+      },
       "phone": "Téléphone direct",
       "email": "Email",
       "whatsapp": "WhatsApp sécurisé",
@@ -1189,7 +1255,8 @@
     "cta": {
       "requestAccess": "Demander un accès",
       "privateArea": "Espace privé",
-      "contactDirect": "Contact direct"
+      "contactDirect": "Contact direct",
+      "callDirect": "Appeler"
     }
   }
 }

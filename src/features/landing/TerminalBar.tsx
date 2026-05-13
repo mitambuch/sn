@@ -1,26 +1,25 @@
 // ═══════════════════════════════════════════════════
-// TerminalBar — terminal-style page footer
+// TerminalBar — landing bottom band (v3 : status + clock + 3 CTAs)
 //
-// WHAT: Black footer band at the bottom of the landing. Holds the
-//       SAW↗NEXT wordmark, live Europe/Zurich time (refreshing every 1s),
-//       a "cooptation ouverte" status dot, an infinite ticker, and the
-//       two conversion CTAs. Position : plain flow (relative), placed
-//       as the LAST child of `main`. Sits at the end of the page, never
-//       floats over content.
-// WHEN: Mounted once by the landing root inside `<main>`. Hides cleanly
-//       on mobile by collapsing the ticker and status (CTAs always
-//       remain visible — conversion path is sacred).
-// CHANGE HEIGHT: h-14 (56px desktop) / h-13 (52px mobile via responsive).
-// CHANGE TIMEZONE: 'Europe/Zurich' in updateTime() — leave as CH/CET.
+// WHAT: Last band of the page. Holds the small SAW NEXT mark, the live
+//       Europe/Zurich clock on a single line, the "cooptation ouverte"
+//       status dot, and three CTAs in the dark-inverted Hero style :
+//         - "Appeler" (tel:) raccourci, white-border ghost
+//         - "Demander un accès" white-solid (primary on a dark bar)
+//         - "Espace privé" white-border (secondary on a dark bar)
+// WHEN: Mounted once by the landing root inside `<main>`. Sits naturally
+//       at the end of the document.
+// CHANGE TIMEZONE: 'Europe/Zurich' in formatCHTime — leave as CH/CET.
+// CHANGE PHONE: PHONE constant below (mirrored from Interlocutor).
 // ═══════════════════════════════════════════════════
 
 import { BrandMark } from '@components/brand/BrandMark';
-import { cn } from '@utils/cn';
-import { useEffect, useMemo, useState } from 'react';
+import { Phone } from 'lucide-react';
+import { type MouseEvent as ReactMouseEvent, useEffect, useState } from 'react';
+
+const PHONE_TEL = '+41787498170';
 
 interface TerminalBarProps {
-  /** Ticker items rotating in the center band. Duplicated 2× for the loop. */
-  tickerItems: readonly string[];
   /** Status label (e.g. "Cooptation ouverte"). */
   statusLabel: string;
   /** Timezone display label (e.g. "CH / CET"). */
@@ -31,8 +30,10 @@ interface TerminalBarProps {
   primaryCtaHref: string;
   /** Secondary CTA label (e.g. "Espace privé"). */
   secondaryCtaLabel: string;
-  /** Secondary CTA href. */
-  secondaryCtaHref: string;
+  /** Secondary CTA — invoked on click (e.g. opens the global LoginModal). */
+  onSecondaryCta: () => void;
+  /** Call CTA label (e.g. "Appeler"). */
+  callCtaLabel: string;
 }
 
 function formatCHTime(date: Date): string {
@@ -45,15 +46,15 @@ function formatCHTime(date: Date): string {
   }).format(date);
 }
 
-/** Fixed terminal bar — wordmark + live time + status + ticker + CTAs. */
+/** Footer band — small mark + single-line clock + status + 3 CTAs. */
 export const TerminalBar = ({
-  tickerItems,
   statusLabel,
   tzLabel,
   primaryCtaLabel,
   primaryCtaHref,
   secondaryCtaLabel,
-  secondaryCtaHref,
+  onSecondaryCta,
+  callCtaLabel,
 }: TerminalBarProps) => {
   const [time, setTime] = useState<string>(() => formatCHTime(new Date()));
 
@@ -66,23 +67,21 @@ export const TerminalBar = ({
     };
   }, []);
 
-  const stream = useMemo(() => [...tickerItems, ...tickerItems], [tickerItems]);
+  const handleAnchor = (href: string) => (e: ReactMouseEvent<HTMLAnchorElement>) => {
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <div
       role="contentinfo"
-      className="bg-ink text-on-ink relative grid h-13 grid-cols-[auto_1fr_auto] items-center font-mono text-[11px] tracking-wider md:h-14"
+      className="bg-ink text-on-ink flex flex-col gap-5 px-5 py-5 font-mono text-[11px] tracking-wider md:flex-row md:items-center md:justify-between md:gap-8 md:px-10 md:py-6"
     >
-      {/* ─── Left : brand + time + status ─── */}
-      <div className="border-bg/15 flex h-full items-center gap-3 px-4 md:gap-6 md:border-r md:pr-12 md:pl-6">
-        <BrandMark className="text-bg text-xs" />
-
-        <div className="text-bg/60 hidden flex-col gap-px text-[9px] leading-tight tracking-[0.08em] uppercase md:flex">
-          <span className="text-bg text-[11px] font-medium tracking-[0.02em]">{time}</span>
-          <span>{tzLabel}</span>
-        </div>
-
-        <div className="text-bg/70 hidden items-center gap-1.5 text-[10px] tracking-[0.1em] uppercase md:flex">
+      {/* ─── Left : status dot + brand + single-line clock ─── */}
+      <div className="flex flex-wrap items-center gap-x-7 gap-y-3 md:flex-nowrap">
+        <div className="text-bg/90 flex items-center gap-2 text-[10px] tracking-[0.18em] uppercase">
           <span
             aria-hidden="true"
             className="bg-success h-1.5 w-1.5 rounded-full"
@@ -90,48 +89,48 @@ export const TerminalBar = ({
           />
           {statusLabel}
         </div>
-      </div>
 
-      {/* ─── Center : ticker (desktop only) ─── */}
-      <div className="hidden h-full overflow-hidden md:flex md:items-center">
-        <div
-          className="text-bg/85 flex text-[10px] tracking-[0.15em] whitespace-nowrap uppercase"
-          style={{ animation: 'marquee 50s linear infinite' }}
-        >
-          {stream.map((item, i) => (
-            <span key={`${item}-${String(i)}`} className="inline-flex items-center gap-3 px-6">
-              {item}
-              <span aria-hidden="true" className="text-bg/30">
-                ✦
-              </span>
-            </span>
-          ))}
+        <BrandMark className="text-bg hidden text-xs sm:inline-flex" />
+
+        <div className="text-bg/85 hidden items-baseline gap-2 text-[11px] tracking-widest uppercase sm:flex">
+          <span className="text-bg font-medium tabular-nums">{time}</span>
+          <span aria-hidden="true" className="text-bg/40">
+            ·
+          </span>
+          <span className="text-bg/65 text-[10px]">{tzLabel}</span>
         </div>
       </div>
 
-      {/* ─── Right : CTAs (always visible) ─── */}
-      <div className="border-bg/15 flex h-full md:border-l">
+      {/* ─── Right : 3 CTAs (Appeler · Demander un accès · Espace privé) ─── */}
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+        {/* Call — outline ghost, icon-first */}
         <a
-          href={secondaryCtaHref}
-          className="border-bg/15 hover:bg-bg/10 text-bg flex items-center gap-2 px-3.5 text-[10px] tracking-[0.12em] uppercase transition-colors first:border-l-0 md:border-l md:px-6"
+          href={`tel:${PHONE_TEL}`}
+          className="border-bg/40 text-bg hover:border-bg hover:bg-bg/10 focus-visible:ring-bg/40 inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs tracking-widest uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
         >
-          <span className="hidden sm:inline">{secondaryCtaLabel}</span>
-          <span className="sm:hidden" aria-label={secondaryCtaLabel}>
-            ↗
-          </span>
+          <Phone size={12} strokeWidth={2} aria-hidden="true" />
+          <span className="hidden sm:inline">{callCtaLabel}</span>
         </a>
+
+        {/* Primary — Demander un accès — white solid */}
         <a
           href={primaryCtaHref}
-          className={cn(
-            'bg-bg text-fg flex items-center gap-2 px-3.5 text-[10px] tracking-[0.12em] uppercase transition-colors md:px-6',
-            'hover:bg-bg/85',
-          )}
+          onClick={handleAnchor(primaryCtaHref)}
+          className="bg-bg text-fg hover:bg-bg/90 focus-visible:ring-bg/40 inline-flex items-center gap-2 rounded-full px-5 py-2 font-mono text-xs tracking-widest uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
         >
-          <span className="hidden sm:inline">{primaryCtaLabel}</span>
-          <span className="font-bold sm:hidden" aria-label={primaryCtaLabel}>
-            ↗
-          </span>
+          {primaryCtaLabel}
+          <span aria-hidden="true">↗</span>
         </a>
+
+        {/* Secondary — Espace privé — white border, white text, opens modal */}
+        <button
+          type="button"
+          onClick={onSecondaryCta}
+          className="border-bg/50 text-bg hover:border-bg hover:bg-bg/10 focus-visible:ring-bg/40 inline-flex items-center gap-2 rounded-full border px-5 py-2 font-mono text-xs tracking-widest uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
+        >
+          {secondaryCtaLabel}
+          <span aria-hidden="true">↗</span>
+        </button>
       </div>
     </div>
   );

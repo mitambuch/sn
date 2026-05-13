@@ -86,16 +86,23 @@
     "signIn": "Sign in",
     "signOut": "Sign out",
     "tagline": "Vetted access, by invitation",
+    "tagEyebrow": "Private area",
+    "titleA": "Private area.",
+    "titleB": "Three doors, one key.",
+    "titleModal": "Sign in.",
+    "ledeModal": "Pick your access mode.",
+    "lede": "You already have access. Pick the mode that suits you: your email + password pair, a single-use access link sent by email, or the invitation code Salvatore gave you.",
     "modeEmail": "Email and password",
     "modeMagicLink": "Magic link",
     "modeInvitation": "Invitation code",
-    "modeEmailHint": "For already-registered members",
-    "modeMagicLinkHint": "Receive a single-use access link",
-    "modeInvitationHint": "Activate your invitation code",
+    "modeEmailHint": "For already-registered members. Direct sign-in to your space.",
+    "modeMagicLinkHint": "Receive a single-use access link. No password to remember.",
+    "modeInvitationHint": "Activate your invitation code for the first sign-in.",
     "email": "Email address",
     "password": "Password",
     "code": "Invitation code",
-    "magicLinkSent": "Access link sent. Please check your inbox.",
+    "magicLinkSent": "Access link sent. Please check your inbox in the coming minutes.",
+    "magicLinkSentTag": "Link sent",
     "back": "Back to home"
   },
   "account": {
@@ -1074,43 +1081,102 @@
     },
     "access": {
       "tagPrimary": "First door",
-      "h2line1": "Request",
-      "h2line2": "access.",
-      "description": "Access is by cooptation. A short qualification, a direct exchange, then transmission of a personal code if the collaboration is validated.",
-      "step1Label": "Form",
-      "step1Info": "Short qualification. Anonymous possible.",
-      "step2Label": "Exchange",
-      "step2Info": "Direct conversation. No intermediary.",
-      "step3Label": "Access",
-      "step3Info": "Code issued upon validation.",
-      "behindEyebrow": "What happens behind the door",
-      "behind1Num": "01 · Season",
-      "behind1Title": "Signature events",
-      "behind1Desc": "Access to closed gatherings: Formula 1, festivals, private concerts, curated dinners.",
-      "behind1Hint": "Preview inside the private area ↗",
-      "behind2Num": "02 · Circle",
-      "behind2Title": "Off-market",
-      "behind2Desc": "Exceptional properties, rare timepieces, artworks and confidential opportunities — outside the public market.",
-      "behind2Hint": "Cooptation only ↗",
-      "behind3Num": "03 · Method",
-      "behind3Title": "One line, no relay",
-      "behind3Desc": "A single interlocutor, from first word to delivery. No agency, no platform, no intermediary.",
-      "behind3Hint": "Salvatore, directly ↗",
-      "openForm": "Open the form",
-      "openFormSoon": "Available soon — direct contact via Salvatore",
-      "drawerTitle": "Request access.",
-      "drawerLede": "A few words so we’re aligned before the conversation. Anonymous possible.",
-      "drawerPlaceholder": "Who introduced us, what you’re looking for, and when you’d like to talk.",
-      "tagSecondary": "Existing client",
-      "privateAreaTitle": "Private area.",
-      "privateAreaDesc": "For clients with a personal access code.",
-      "connect": "Sign in"
+      "eyebrow": "08 · Catalogue preview",
+      "heroTitleA": "The catalogue,",
+      "heroTitleB": "at a glance.",
+      "heroLede": "A few current exclusivities, exactly as they appear inside your private space. What you see here is only a fragment — details, availability and the rest unlock after cooptation.",
+      "eventsEyebrow": "↘ A few closed gatherings on the agenda",
+      "evt01": {
+        "tag": "Gala · 14 June",
+        "title": "Charity Gala, UN Geneva",
+        "venue": "Palais des Nations · 220 seats · 4 reserved",
+        "teaser": "Salle des Pas-Perdus cocktail, seven-course dinner, OSR string quartet closing performance."
+      },
+      "evt02": {
+        "tag": "Art Basel · 16 June",
+        "title": "Collectors Preview — Art Basel",
+        "venue": "Messe Basel — Hall 2 · 180 guests · 2 seats",
+        "teaser": "First Choice at 9am, Hauser & Wirth private breakfast, guided tour with Marc Spiegler."
+      },
+      "lockedEyebrow": "↘ Off-market — access by cooptation",
+      "lockedHint": "On request",
+      "locked1": {
+        "tag": "Property · Engadine",
+        "title": "Historic chalet, Sankt Moritz",
+        "stat": "12 bedrooms · 8,200 m²"
+      },
+      "locked2": {
+        "tag": "Timepieces · Edition",
+        "title": "Three pieces off the public market",
+        "stat": "Direct sale · no public provenance"
+      },
+      "locked3": {
+        "tag": "Art · Living artist",
+        "title": "Major work, European atelier",
+        "stat": "Direct acquisition · catalogue raisonné pending"
+      },
+      "locked4": {
+        "tag": "Travel · 3 continents",
+        "title": "Four curated itineraries",
+        "stat": "Private jets · yacht leg · estate vineyard close"
+      },
+      "ctaRequest": "Request access",
+      "ctaCode": "I have an invitation code",
+      "modal": {
+        "eyebrow": "08 · Cooptation access",
+        "title": "Introduce yourself.",
+        "lede": "A few details so we're aligned before the conversation. Salvatore calls you back within 24 hours.",
+        "modeToggleLabel": "Pick an access mode",
+        "mode": {
+          "request": "Request access",
+          "code": "I have a code"
+        },
+        "fields": {
+          "firstName": "First name",
+          "lastName": "Last name",
+          "email": "Email",
+          "phone": "Direct phone",
+          "company": "Company (optional)",
+          "activity": "Activity / sector (optional)",
+          "message": "Message (optional)",
+          "messagePlaceholder": "Who introduced us, what you're looking for, and when you'd like to talk."
+        },
+        "legal": "Your information stays strictly between you and Salvatore. No shared database, no newsletter, no commercial relay.",
+        "submitting": "Sending…",
+        "submitRequest": "Send request",
+        "submitCode": "Validate my code",
+        "requestSuccess": "Request sent. Salvatore calls you back within 24 hours.",
+        "noCodeYet": "I don't have a code — fill the form",
+        "code": {
+          "label": "Invitation code",
+          "helper": "Format SAW-XXXX-XXXX, issued directly by Salvatore.",
+          "legal": "The code is personal and single-use. It requires no prior information."
+        },
+        "codeAccepted": "Code recognised. Redirecting to onboarding…",
+        "codeInvalidFormat": "Expected format: SAW-XXXX-XXXX."
+      }
     },
     "interlocutor": {
       "eyebrow": "Contact",
+      "eyebrowTeam": "Team",
+      "countLabel": "Three founders",
+      "headlineA": "One voice.",
+      "headlineB": "Three founders behind it.",
       "header": "Your single point of contact",
+      "focalTag": "01 · Point of contact",
       "role": "Operating founder",
       "bio": "Every exchange begins with a conversation. One interlocutor, from first contact to delivery.",
+      "salvaBio": "20 years of experience in the luxury industry. Distribution, advisory and relationship management for HNWI and UHNW clientele. Expertise in luxury, premium partnerships and client relations. Your direct interlocutor, from first word to delivery.",
+      "circleTag": "Inner circle",
+      "circleCount": "02 members",
+      "harry": {
+        "tag": "Sport & lifestyle",
+        "bio": "Former top-level professional athlete. International network across sport, events and high-end lifestyle. Involved in several entrepreneurial ventures focused on connection and advisory."
+      },
+      "bokar": {
+        "tag": "Sport & HNW relations",
+        "bio": "Football agent representing leading European players, based in Paris. Familiar with the expectations of demanding international clientele and access to closed circles."
+      },
       "phone": "Direct line",
       "email": "Email",
       "whatsapp": "Secure WhatsApp",
@@ -1180,7 +1246,8 @@
     "cta": {
       "requestAccess": "Request access",
       "privateArea": "Private area",
-      "contactDirect": "Direct contact"
+      "contactDirect": "Direct contact",
+      "callDirect": "Call"
     }
   }
 }

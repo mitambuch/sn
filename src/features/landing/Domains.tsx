@@ -1,10 +1,13 @@
 // ═══════════════════════════════════════════════════
 // Domains — landing S05 (services / 10 verticales)
 //
-// WHAT: Two-column section — left holds the numbered list of the 10
-//       service verticales ; right holds a sticky preview panel that
-//       updates on hover/click of a list item. Mobile collapses to a
-//       single column with preview below the list.
+// WHAT: Two-column section on desktop — left holds the numbered list
+//       of the 10 service verticales ; right holds a sticky preview
+//       panel that updates on hover/click of a list item.
+//       MOBILE (< 768px) : the sticky preview panel is hidden ; clicking
+//       a service opens a centered <Modal> popup with the same detail
+//       payload (eyebrow + title + desc + 4 features). Tap-friendly,
+//       no orphan card below the list.
 // WHEN: After Presentation. Anchored at #s05. This is the "services"
 //       section in casual conversation — 10 verticales = the offer.
 // CHANGE COPY: edit landing.domains.NN.* keys in fr.json / en.json.
@@ -12,7 +15,9 @@
 // ═══════════════════════════════════════════════════
 
 import { Card } from '@components/ui/Card';
+import { Modal } from '@components/ui/Modal';
 import { SectionTag } from '@features/landing/SectionTag';
+import { useMediaQuery } from '@hooks/useMediaQuery';
 import { useReveal } from '@hooks/useReveal';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,11 +25,13 @@ import { useTranslation } from 'react-i18next';
 const DOMAIN_KEYS = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'] as const;
 type DomainKey = (typeof DOMAIN_KEYS)[number];
 
-/** Landing S05 — 10 service verticales with hover-driven preview. */
+/** Landing S05 — 10 service verticales with hover-driven preview + mobile modal. */
 export const Domains = () => {
   const { t } = useTranslation();
   const ref = useReveal<HTMLDivElement>();
   const [active, setActive] = useState<DomainKey>('01');
+  const [detailOpen, setDetailOpen] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 767px)');
 
   return (
     <section id="s05" className="border-border border-b px-5 py-24 md:px-12 md:py-32">
@@ -64,6 +71,7 @@ export const Domains = () => {
                     }}
                     onClick={() => {
                       setActive(key);
+                      if (isMobile) setDetailOpen(true);
                     }}
                     className="border-border grid w-full grid-cols-[44px_1fr_auto] items-center gap-4 border-b py-4 text-left transition-[padding,color] duration-300 ease-out hover:pl-3 focus-visible:pl-3 focus-visible:outline-none"
                     aria-pressed={isActive}
@@ -94,8 +102,9 @@ export const Domains = () => {
             })}
           </ul>
 
-          {/* Preview — Apple-closed Card */}
-          <div className="md:sticky md:top-20">
+          {/* Preview — Apple-closed Card. Desktop only. Mobile opens
+              the same payload inside a <Modal> on tap (see below). */}
+          <div className="hidden md:sticky md:top-20 md:block">
             <Card padding="lg" className="min-h-[460px]">
               <span className="text-muted mb-3 font-mono text-[10px] tracking-widest uppercase">
                 {t('landing.domains.previewTag')} / {active}
@@ -123,6 +132,38 @@ export const Domains = () => {
           </div>
         </div>
       </div>
+
+      {/* ─── Mobile detail modal — opens on tap of a list item ─── */}
+      <Modal
+        isOpen={detailOpen}
+        onClose={() => {
+          setDetailOpen(false);
+        }}
+        className="max-w-md"
+      >
+        <div className="flex flex-col gap-5">
+          <span className="text-muted font-mono text-[10px] tracking-[0.4em] uppercase">
+            {t('landing.domains.previewTag')} / {active}
+          </span>
+          <h3 className="text-fg font-mono text-2xl leading-tight font-medium tracking-tight uppercase">
+            {t(`landing.domains.${active}.title`)}
+          </h3>
+          <p className="text-fg text-sm leading-relaxed">{t(`landing.domains.${active}.desc`)}</p>
+          <ul className="border-border border-t font-mono text-[11px] tracking-wider uppercase">
+            {([1, 2, 3, 4] as const).map(i => (
+              <li
+                key={i}
+                className="border-border flex justify-between border-b py-2.5 last:border-b-0"
+              >
+                <span>{t(`landing.domains.${active}.feat${String(i)}`)}</span>
+                <span aria-hidden="true" className="text-muted">
+                  ↗
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Modal>
     </section>
   );
 };
