@@ -1,25 +1,26 @@
 // ═══════════════════════════════════════════════════
 // Interlocutor — landing S09 (focal contact + restricted circle)
 //
-// WHAT: Two-column section — left holds the focal interlocutor card
-//       (default: Salvatore — photo placeholder + name + bio + 4 direct
-//       channels). Right holds the two supporting circle members in
-//       compact stacked cards.
+// WHAT: Two-column section with autoplay rotation through the three
+//       founders. Salvatore always loads first, then advances every
+//       8s to Harry, then Bokar, then loops. Hovering the focal card
+//       freezes the timer ; leaving resumes. A 3-segment progress
+//       bar at the bottom of the section shows the active member and
+//       the time remaining on the current segment.
 //
-//       Owner direction : "c'est une question d'égo — faut que les
-//       autres si on veut les mettre en avant aient la même taille
-//       que Salva." → clicking on a circle member promotes them into
-//       the focal slot ; clicking again brings Salvatore back. Channels
-//       always stay on the original Salvatore record because he is the
-//       operational single point of contact — non-Salva focals show
-//       a "Contact via Salvatore" deeplink instead.
+//       Owner directions :
+//       1. Always start with Salva (ego-canonical).
+//       2. 8s per slide, auto-advance.
+//       3. Hover on focal card → lock timer.
+//       4. Bottom progress bar visualises the rotation.
+//       5. Click on any segment or circle card → jump to that member.
 //
-// WHEN: Anchored at #s09.
-// CHANGE DATA: edit MEMBERS array below.
+// WHEN: Anchored at #s09 of the landing.
 // ═══════════════════════════════════════════════════
 
 import { useReveal } from '@hooks/useReveal';
-import { useState } from 'react';
+import { cn } from '@utils/cn';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const FOCAL_CHANNELS = {
@@ -42,11 +43,69 @@ const MEMBERS: ReadonlyArray<Member> = [
   { key: 'bokar', firstName: 'Bokar', lastName: 'Guissé' },
 ] as const;
 
-/** Landing S09 — promotable focal interlocutor + supporting circle. */
+const SEQUENCE: ReadonlyArray<Member['key']> = ['salva', 'harry', 'bokar'];
+const SLIDE_DURATION_MS = 8000;
+
+/** Landing S09 — autoplay focal interlocutor + supporting circle. */
 export const Interlocutor = () => {
   const { t } = useTranslation();
   const ref = useReveal<HTMLDivElement>();
   const [focalKey, setFocalKey] = useState<Member['key']>('salva');
+  const [progress, setProgress] = useState(0); // 0..1 of current slide
+
+  // Refs drive the autoplay loop without forcing the effect to re-run
+  // on every frame. focalKey lives in state for re-render ; the
+  // accumulator + paused flag live in refs so the rAF loop reads
+  // fresh values without re-subscribing.
+  const accumRef = useRef(0);
+  const pausedRef = useRef(false);
+  const focalRef = useRef<Member['key']>('salva');
+
+  // Sync focalRef with the focalKey state via effect (React 19 forbids
+  // ref writes during render).
+  useEffect(() => {
+    focalRef.current = focalKey;
+  }, [focalKey]);
+
+  useEffect(() => {
+    // Respect reduced-motion : skip the autoplay entirely.
+    if (
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      return undefined;
+    }
+    let raf = 0;
+    let prev = performance.now();
+    const tick = (now: number) => {
+      const delta = now - prev;
+      prev = now;
+      if (!pausedRef.current) {
+        accumRef.current += delta;
+        const ratio = Math.min(accumRef.current / SLIDE_DURATION_MS, 1);
+        setProgress(ratio);
+        if (accumRef.current >= SLIDE_DURATION_MS) {
+          accumRef.current = 0;
+          const idx = SEQUENCE.indexOf(focalRef.current);
+          const next = SEQUENCE[(idx + 1) % SEQUENCE.length]!;
+          setFocalKey(next);
+        }
+      }
+      raf = window.requestAnimationFrame(tick);
+    };
+    raf = window.requestAnimationFrame(tick);
+    return () => {
+      window.cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  // Manual promotion (click on a circle card or a progress segment) —
+  // jumps the rotation onto that member and resets the timer.
+  const promote = (key: Member['key']) => {
+    setFocalKey(key);
+    accumRef.current = 0;
+    setProgress(0);
+  };
 
   const focal = MEMBERS.find(m => m.key === focalKey) ?? MEMBERS[0]!;
   const circle = MEMBERS.filter(m => m.key !== focalKey);
@@ -63,30 +122,45 @@ export const Interlocutor = () => {
     <section id="s09" ref={ref} className="border-border border-b">
       {/* ─── Header strip — eyebrow + monumental title ─── */}
       <div className="border-border border-b px-8 py-8 md:px-12 md:py-10">
-        <div className="flex items-center justify-between font-mono text-[10px] tracking-[0.1em] uppercase">
+        <div className="flex items-center justify-between font-mono text-[10px] tracking-widest uppercase">
           <span>↘ 09 / {t('landing.interlocutor.eyebrowTeam')}</span>
           <span className="text-muted">{t('landing.interlocutor.countLabel')}</span>
         </div>
-        <h2 className="mt-6 font-mono text-[clamp(1.75rem,4.2vw,3.5rem)] leading-[0.95] font-medium tracking-[-0.02em] uppercase">
+        <h2 className="mt-6 font-mono text-[clamp(1.75rem,4.2vw,3.5rem)] leading-[0.95] font-medium tracking-tight uppercase">
           {t('landing.interlocutor.headlineA')}
           <br />
           <span className="text-muted">{t('landing.interlocutor.headlineB')}</span>
         </h2>
       </div>
 
-      {/* ─── Main split : focal (full size) + circle (compact stack) ─── */}
-      <div className="grid grid-cols-1 md:grid-cols-[1.25fr_1fr]">
-        {/* ─── Focal card ─── */}
+      {/* ─── Main split : focal (full size) + circle (compact stack) ───
+           md:min-h-[680px] locks the row height so swapping focal (Salva
+           = 4 channels, Harry/Bokar = single 'Contact opérationnel' pill)
+           doesn't make the box jump. */}
+      <div className="grid grid-cols-1 md:min-h-170 md:grid-cols-[1.25fr_1fr]">
+        {/* ─── Focal card — hover-pauses the timer ─── */}
         <article
           className="bg-surface border-border duration-base flex flex-col gap-8 border-b p-8 transition-all md:border-r md:border-b-0 md:p-12"
           aria-live="polite"
+          onMouseEnter={() => {
+            pausedRef.current = true;
+          }}
+          onMouseLeave={() => {
+            pausedRef.current = false;
+          }}
+          onFocus={() => {
+            pausedRef.current = true;
+          }}
+          onBlur={() => {
+            pausedRef.current = false;
+          }}
         >
           <div className="flex items-start justify-between gap-6">
             <div className="flex flex-col gap-2">
               <span className="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
                 {focalTag}
               </span>
-              <h3 className="font-mono text-[clamp(1.5rem,3.5vw,3rem)] leading-[0.92] font-medium tracking-[-0.025em] uppercase">
+              <h3 className="font-mono text-[clamp(1.5rem,3.5vw,3rem)] leading-[0.92] font-medium tracking-tight uppercase">
                 {focal.firstName}
                 <br />
                 {focal.lastName}.
@@ -108,9 +182,12 @@ export const Interlocutor = () => {
           <p className="text-fg max-w-prose text-sm leading-relaxed md:text-base">{focalBio}</p>
 
           {/* Channels — only when Salvatore is focal. Otherwise a single
-              "via Salvatore" link, since he is the operational contact. */}
+              "via Salvatore" link, since he is the operational contact.
+              `mt-auto` anchors both variants to the bottom of the focal
+              article so the contact block sits at the same vertical
+              position regardless of who is shown. */}
           {isSalvaFocal ? (
-            <ul className="border-border mt-2 border-t">
+            <ul className="border-border mt-auto border-t">
               {[
                 {
                   href: `tel:${FOCAL_CHANNELS.phoneTel}`,
@@ -145,13 +222,13 @@ export const Interlocutor = () => {
               ))}
             </ul>
           ) : (
-            <div className="border-border mt-2 flex items-center justify-between gap-4 border-t pt-4">
+            <div className="border-border mt-auto flex items-center justify-between gap-4 border-t pt-4">
               <span className="text-muted font-mono text-[11px] tracking-[0.18em] uppercase">
                 Contact opérationnel · Salvatore
               </span>
               <button
                 type="button"
-                onClick={() => setFocalKey('salva')}
+                onClick={() => promote('salva')}
                 className="border-fg text-fg hover:bg-fg hover:text-bg duration-base inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-[10px] tracking-[0.25em] uppercase transition-colors"
               >
                 Voir Salvatore
@@ -168,7 +245,6 @@ export const Interlocutor = () => {
             <span className="text-muted">{t('landing.interlocutor.circleCount')}</span>
           </div>
           {circle.map((member, i) => {
-            // Bio key : Salva has a different bio field name (salvaBio).
             const bioKey =
               member.key === 'salva'
                 ? 'landing.interlocutor.salvaBio'
@@ -181,7 +257,7 @@ export const Interlocutor = () => {
               <article key={member.key} className={i === 0 ? 'border-border border-b' : ''}>
                 <button
                   type="button"
-                  onClick={() => setFocalKey(member.key)}
+                  onClick={() => promote(member.key)}
                   aria-label={`Mettre en avant ${member.firstName} ${member.lastName}`}
                   className="hover:bg-bg/40 focus-visible:ring-fg/30 group w-full text-left transition-colors focus-visible:ring-2 focus-visible:outline-none"
                 >
@@ -191,7 +267,7 @@ export const Interlocutor = () => {
                         <span className="text-muted font-mono text-[9px] tracking-[0.3em] uppercase">
                           {t(tagKey)}
                         </span>
-                        <h3 className="font-mono text-[clamp(1.25rem,2.6vw,2rem)] leading-[0.95] font-medium tracking-[-0.02em] uppercase">
+                        <h3 className="font-mono text-[clamp(1.25rem,2.6vw,2rem)] leading-[0.95] font-medium tracking-tight uppercase">
                           {member.firstName}
                           <br />
                           {member.lastName}.
@@ -216,6 +292,58 @@ export const Interlocutor = () => {
             );
           })}
         </aside>
+      </div>
+
+      {/* ─── Bottom progress bar : 3 segments, active fills 0 → 100% ─── */}
+      <div
+        role="tablist"
+        aria-label="Membres de l'équipe"
+        className="border-border bg-bg/60 grid grid-cols-3 gap-px border-t backdrop-blur-sm"
+      >
+        {MEMBERS.map(member => {
+          const isActive = focalKey === member.key;
+          return (
+            <button
+              key={member.key}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              onClick={() => promote(member.key)}
+              className={cn(
+                'duration-base group flex flex-col gap-2 px-4 py-3 text-left transition-colors md:px-6 md:py-4',
+                'hover:bg-fg/5 focus-visible:ring-fg/30 focus-visible:ring-2 focus-visible:outline-none',
+              )}
+            >
+              <div className="flex items-baseline justify-between gap-2">
+                <span
+                  className={cn(
+                    'font-mono text-[10px] tracking-[0.3em] uppercase transition-colors',
+                    isActive ? 'text-fg' : 'text-muted',
+                  )}
+                >
+                  {member.firstName}
+                </span>
+                <span
+                  className={cn(
+                    'font-mono text-[9px] tracking-wider uppercase transition-colors',
+                    isActive ? 'text-fg/70' : 'text-muted/50',
+                  )}
+                >
+                  0{SEQUENCE.indexOf(member.key) + 1}
+                </span>
+              </div>
+              <div className="bg-fg/10 relative h-px overflow-hidden">
+                <div
+                  aria-hidden="true"
+                  className="bg-fg absolute inset-y-0 left-0"
+                  style={{
+                    width: isActive ? `${(progress * 100).toFixed(1)}%` : '0%',
+                  }}
+                />
+              </div>
+            </button>
+          );
+        })}
       </div>
     </section>
   );
