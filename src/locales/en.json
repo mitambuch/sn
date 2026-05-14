@@ -213,6 +213,9 @@
       "preferences": "Preferences",
       "more": "More"
     },
+    "fab": {
+      "request": "New request"
+    },
     "catalogue": {
       "title": "The catalogue",
       "lede": "Every opportunity curated by your concierge, at a glance."
