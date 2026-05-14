@@ -136,6 +136,9 @@
     "recentlyAdded": "Récemment ajouté",
     "recommendations": "À découvrir",
     "noInquiries": "Aucune demande en cours.",
+    "shortcut": {
+      "travel": "Voyage"
+    },
     "profileTitle": "Votre profil",
     "preferencesTitle": "Vos préférences",
     "inquiriesTitle": "Historique des demandes",
