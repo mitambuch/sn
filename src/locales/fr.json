@@ -1163,6 +1163,14 @@
           "messagePlaceholder": "Qui vous a parlé de nous, ce que vous cherchez, et quand vous aimeriez en parler."
         },
         "legal": "Vos informations restent strictement entre vous et Salvatore. Aucune base partagée, aucune newsletter, aucun relais commercial.",
+        "steps": {
+          "identity": "Identité",
+          "profile": "Profil",
+          "message": "Message",
+          "counter": "Étape {{current}} / {{total}}",
+          "next": "Continuer",
+          "back": "Retour"
+        },
         "submitting": "Envoi…",
         "submitRequest": "Envoyer la demande",
         "submitCode": "Valider mon code",
@@ -1267,7 +1275,6 @@
     "cta": {
       "requestAccess": "Demander un accès",
       "privateArea": "Espace privé",
-      "contactDirect": "Contact direct",
       "callDirect": "Appeler"
     }
   }

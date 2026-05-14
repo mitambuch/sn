@@ -19,6 +19,8 @@
 // ═══════════════════════════════════════════════════
 
 import { useLandingContext } from '@context/LandingContentContext';
+import { useAccessRequestModal } from '@context/useAccessRequestModal';
+import { useLoginModal } from '@context/useLoginModal';
 import { resolveFieldOrFallback } from '@lib/i18nField';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -53,6 +55,8 @@ export const Hero = () => {
   const { t, i18n } = useTranslation();
   const { data: landing } = useLandingContext();
   const locale = (i18n.language as 'fr' | 'en') ?? 'fr';
+  const { openAccessRequest } = useAccessRequestModal();
+  const { openLogin, isOpen: loginOpen } = useLoginModal();
   const [phraseIdx, setPhraseIdx] = useState(0);
   const [text, setText] = useState('');
   const [phase, setPhase] = useState<TypewriterPhase>('typing');
@@ -68,8 +72,11 @@ export const Hero = () => {
 
   // Typewriter loop : type → hold → erase → next phrase → repeat.
   // All setState routed via setTimeout (React 19 set-state-in-effect rule).
+  // Paused when the login modal is open — JS setState every 90ms was the
+  // primary culprit for laggy input documented in incident 2026-05-14 12:09.
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    if (loginOpen) return;
     let timer: number;
 
     if (phase === 'typing') {
@@ -100,7 +107,27 @@ export const Hero = () => {
     return () => {
       window.clearTimeout(timer);
     };
-  }, [text, phase, full]);
+  }, [text, phase, full, loginOpen]);
+
+  // Pause the cycling video tag when login modal is open — autoplay rendering
+  // keeps eating GPU/CPU even with `body.modal-active` animations paused.
+  // In jsdom (tests) the play() shim returns undefined, so chain off the
+  // promise defensively.
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    if (loginOpen) {
+      el.pause();
+    } else {
+      const result: unknown = el.play();
+      if (result instanceof Promise) {
+        result.catch(() => {
+          // ignore autoplay rejection
+        });
+      }
+    }
+  }, [loginOpen]);
 
   // Swap to a random video on each phrase change.
   const isInitialMount = useRef(true);
@@ -120,6 +147,7 @@ export const Hero = () => {
     >
       {/* ─── Video bg (full height, no mask) ─── */}
       <video
+        ref={videoRef}
         autoPlay
         loop
         muted
@@ -247,7 +275,7 @@ export const Hero = () => {
             <button
               type="button"
               onClick={() => {
-                document.getElementById('s08')?.scrollIntoView({ behavior: 'smooth' });
+                openAccessRequest('request');
               }}
               className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 font-mono text-xs tracking-widest text-black uppercase transition-colors hover:bg-white/90 focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none"
             >
@@ -260,12 +288,14 @@ export const Hero = () => {
             </button>
             <button
               type="button"
-              onClick={() => {
-                document.getElementById('s09')?.scrollIntoView({ behavior: 'smooth' });
-              }}
+              onClick={openLogin}
               className="inline-flex items-center justify-center gap-2 rounded-full border border-white/50 px-6 py-3 font-mono text-xs tracking-widest text-white uppercase transition-colors hover:border-white hover:bg-white/5 focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none"
             >
-              {t('landing.cta.contactDirect')}
+              {resolveFieldOrFallback(
+                landing?.ctaPrivateArea,
+                locale,
+                t('landing.cta.privateArea'),
+              )}
               <span aria-hidden="true">↗</span>
             </button>
           </div>

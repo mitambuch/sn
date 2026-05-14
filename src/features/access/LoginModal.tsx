@@ -18,6 +18,7 @@ import { Modal } from '@components/ui/Modal';
 import { ROUTES } from '@constants/routes';
 import { useAuth } from '@context/AuthContext';
 import { cn } from '@utils/cn';
+import { KeyRound, type LucideIcon, Mail, Ticket } from 'lucide-react';
 import { type FormEvent, type ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -31,10 +32,12 @@ interface LoginModalProps {
 }
 
 const ModeRow = ({
+  icon: Icon,
   title,
   hint,
   onClick,
 }: {
+  icon: LucideIcon;
   title: string;
   hint: string;
   onClick: () => void;
@@ -43,15 +46,24 @@ const ModeRow = ({
     type="button"
     onClick={onClick}
     className={cn(
-      'border-border bg-surface/30 hover:border-fg/60 hover:bg-surface/60 group flex items-center justify-between gap-4 rounded-lg border px-4 py-3.5 text-left',
+      'border-border bg-surface/30 hover:border-fg/60 hover:bg-surface/60 group grid w-full grid-cols-[44px_1fr_auto] items-center gap-4 rounded-xl border px-4 py-4 text-left',
       'duration-base transition-[border-color,background-color]',
       'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
     )}
   >
-    <div className="flex flex-col gap-1">
+    <span
+      aria-hidden="true"
+      className={cn(
+        'border-border bg-bg/60 text-fg group-hover:border-fg/40 flex h-11 w-11 items-center justify-center rounded-lg border',
+        'duration-base transition-colors',
+      )}
+    >
+      <Icon size={18} strokeWidth={1.6} />
+    </span>
+    <span className="flex flex-col gap-1">
       <span className="text-fg text-sm leading-tight font-medium">{title}</span>
       <span className="text-muted text-xs leading-snug">{hint}</span>
-    </div>
+    </span>
     <span
       aria-hidden="true"
       className="text-muted/60 group-hover:text-fg font-mono text-base transition-colors"
@@ -206,21 +218,22 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
   const current = isFormMode ? meta[mode] : null;
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} className="max-w-md">
-      <div className="flex flex-col gap-6 p-1">
-        <header className="flex flex-col gap-2">
+    <Modal isOpen={isOpen} onClose={handleClose} className="max-w-lg">
+      <div className="flex flex-col gap-7 p-1">
+        <header className="flex flex-col gap-3">
           <span className="text-muted font-mono text-[10px] tracking-[0.4em] uppercase">
             {t('auth.tagEyebrow')}
           </span>
-          <h2 className="font-mono text-xl leading-tight font-semibold tracking-tight uppercase md:text-2xl">
+          <h2 className="font-mono text-2xl leading-tight font-semibold tracking-tight uppercase md:text-3xl">
             {t('auth.titleModal')}
           </h2>
           <p className="text-muted text-sm leading-relaxed">{t('auth.ledeModal')}</p>
         </header>
 
         {mode === 'select' && (
-          <div className="flex flex-col gap-2.5">
+          <div className="flex flex-col gap-3">
             <ModeRow
+              icon={KeyRound}
               title={t('auth.modeEmail')}
               hint={t('auth.modeEmailHint')}
               onClick={() => {
@@ -228,6 +241,7 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
               }}
             />
             <ModeRow
+              icon={Mail}
               title={t('auth.modeMagicLink')}
               hint={t('auth.modeMagicLinkHint')}
               onClick={() => {
@@ -235,6 +249,7 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
               }}
             />
             <ModeRow
+              icon={Ticket}
               title={t('auth.modeInvitation')}
               hint={t('auth.modeInvitationHint')}
               onClick={() => {
