@@ -32,6 +32,7 @@
     "sanity:seed:demo:dry": "node studio/scripts/seed-demo.js --dry-run",
     "sanity:seed:sawnext": "node studio/scripts/seed-sawnext.js",
     "sanity:seed:sawnext:dry": "node studio/scripts/seed-sawnext.js --dry-run",
+    "sanity:seed:sawnext:wipe": "node studio/scripts/seed-sawnext.js --wipe",
     "validate:i18n": "node scripts/validate-i18n.js",
     "validate:sanity-schema": "node scripts/validate-sanity-schema.js",
     "validate:sanity-content": "node scripts/validate-sanity-content.js",
