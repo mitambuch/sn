@@ -4,8 +4,11 @@
 // WHAT: Full-screen overlay on first paint. Light surface, the SAW
 //       NEXT wordmark draws itself in (stroke-dashoffset 1→0 with
 //       a dramatic ease) then the contour fills in (fill-opacity
-//       0→1). Once filled, settles into a "Entrer" CTA. User clicks
-//       to dismiss — the wordmark scales up, blurs and lifts away.
+//       0→1). A thin black bar below the wordmark fills 0→100%
+//       to signal progress (no percentage counter, no state label —
+//       just the line itself). Once full, the bar fades and a
+//       rounded-full "Entrer" CTA appears in the site button style.
+//       User clicks to dismiss — wordmark scales up, blurs, lifts away.
 // WHEN: Mounted by LandingLayout above the rest of the tree. The
 //       Home content is already mounted underneath; the loader's
 //       lift-away reveals it.
@@ -116,17 +119,9 @@ export const Loader = ({ onDone }: LoaderProps = {}) => {
   const ctaVisible = phase === 'settled' || phase === 'exit';
   const indicatorVisible = !ctaVisible;
 
-  // Trois actes : CHARGEMENT (draw seul) → RÉVÉLATION (le fill a démarré,
-  // les deux animations courent ensemble) → PRÊT (settle/settled/exit).
-  const stateLabel =
-    phase === 'animating' ? (fillProgress > 0 ? 'RÉVÉLATION' : 'CHARGEMENT') : 'PRÊT';
-
-  // Compteur global : draw pèse 60% de la course, fill 40%. Pendant settle,
-  // le compteur reste à 100 — le mark est posé, rien à charger en plus.
+  // Combined progress drives the thin loading bar : draw is 60% of the
+  // course, fill the remaining 40%. During settle, the bar reads 100.
   const combinedProgress = Math.min(1, drawProgress * 0.6 + fillProgress * 0.4);
-  const counterValue = Math.floor(combinedProgress * 100)
-    .toString()
-    .padStart(3, '0');
 
   const skipVisible = phase === 'animating' || phase === 'settle';
 
@@ -175,45 +170,34 @@ export const Loader = ({ onDone }: LoaderProps = {}) => {
       </div>
 
       <div
-        className="absolute bottom-12 flex flex-col items-center gap-4 md:bottom-20"
+        className="absolute bottom-12 flex flex-col items-center gap-6 md:bottom-20"
         style={{
           opacity: exiting ? 0 : 1,
           transition: `opacity ${Math.round(EXIT_MS * 0.6)}ms ease-out`,
         }}
       >
+        {/* ─── Thin black loading bar — 200px wide, 1px tall ─── */}
         <div
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(combinedProgress * 100)}
           aria-hidden={!indicatorVisible}
-          className="text-fg flex flex-col items-center gap-3"
+          className="bg-fg/15 relative h-px w-50 overflow-hidden"
           style={{
             opacity: indicatorVisible ? 1 : 0,
             transition: 'opacity 320ms ease-out',
             visibility: indicatorVisible ? 'visible' : 'hidden',
           }}
         >
-          <div
-            className="flex items-baseline gap-3 font-mono text-[26px] leading-none font-semibold tracking-[0.08em] tabular-nums sm:text-[32px]"
-            aria-live="polite"
-          >
-            <span>{counterValue}</span>
-            {combinedProgress < 1 && (
-              <>
-                <span aria-hidden="true">/</span>
-                <span>100</span>
-              </>
-            )}
-          </div>
-          <div className="flex items-center gap-3 font-mono text-[10px] font-semibold tracking-[0.4em] uppercase">
-            <span
-              aria-hidden="true"
-              className="bg-fg/30 block h-px"
-              style={{
-                width: `${(48 + 56 * combinedProgress).toFixed(2)}px`,
-                transition: 'width 120ms linear',
-              }}
-            />
-            <span>{stateLabel}</span>
-            <span aria-hidden="true" className="bg-fg/30 block h-px w-12" />
-          </div>
+          <span
+            aria-hidden="true"
+            className="bg-fg absolute inset-y-0 left-0"
+            style={{
+              width: `${(combinedProgress * 100).toFixed(2)}%`,
+              transition: 'width 120ms linear',
+            }}
+          />
         </div>
 
         <button
@@ -221,7 +205,7 @@ export const Loader = ({ onDone }: LoaderProps = {}) => {
           onClick={() => setPhase('exit')}
           aria-hidden={!ctaVisible}
           tabIndex={ctaVisible ? 0 : -1}
-          className="border-fg text-fg hover:bg-fg hover:text-bg focus-visible:ring-fg/30 group inline-flex items-center gap-3 rounded-sm border px-7 py-3.5 font-mono text-[11px] font-semibold tracking-[0.4em] uppercase transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none"
+          className="border-fg text-fg hover:bg-fg hover:text-bg focus-visible:ring-fg/30 group inline-flex items-center justify-center gap-3 rounded-full border px-8 py-4 font-mono text-xs tracking-[0.3em] uppercase transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none md:px-10 md:py-5 md:text-sm"
           style={{
             opacity: ctaVisible ? 1 : 0,
             transform: ctaVisible ? 'translateY(0)' : 'translateY(8px)',
@@ -232,7 +216,7 @@ export const Loader = ({ onDone }: LoaderProps = {}) => {
         >
           <span>Entrer</span>
           <ArrowUpRight
-            size={15}
+            size={16}
             strokeWidth={1.8}
             aria-hidden="true"
             className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"

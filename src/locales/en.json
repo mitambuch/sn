@@ -1155,6 +1155,14 @@
           "messagePlaceholder": "Who introduced us, what you're looking for, and when you'd like to talk."
         },
         "legal": "Your information stays strictly between you and Salvatore. No shared database, no newsletter, no commercial relay.",
+        "steps": {
+          "identity": "Identity",
+          "profile": "Profile",
+          "message": "Message",
+          "counter": "Step {{current}} / {{total}}",
+          "next": "Continue",
+          "back": "Back"
+        },
         "submitting": "Sending…",
         "submitRequest": "Send request",
         "submitCode": "Validate my code",
@@ -1259,7 +1267,6 @@
     "cta": {
       "requestAccess": "Request access",
       "privateArea": "Private area",
-      "contactDirect": "Direct contact",
       "callDirect": "Call"
     }
   }

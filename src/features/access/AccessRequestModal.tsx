@@ -2,16 +2,24 @@
 // AccessRequestModal — dual-mode access gate (form / invitation code)
 //
 // WHAT: Centered modal popup with two switchable modes :
-//       (A) "Demander un accès" — structured request form (firstName,
-//           lastName, email, phone, company, activity, message). Submits
-//           a free-form inquiry routed to Salva via the existing pipeline.
+//       (A) "Demander un accès" — 3-step wizard for the request flow.
+//           Step 1 (Identité) : firstName + lastName + email
+//           Step 2 (Profil) : phone + company + activity
+//           Step 3 (Message) : message textarea + legal + submit
+//           A 3-segment progress bar at top shows where the user stands.
+//           Going step-by-step keeps the modal short enough to fit a
+//           320×667 phone without overflow — direct fix to the "trop
+//           haut sur smartphone" report 2026-05-14 17:02.
 //       (B) "J'ai un code" — single input for an SAW-XXXX-XXXX invitation
 //           code given off-channel by Salva (e.g. to a VIP who declines to
 //           share details). Format-validated client-side, then navigates
 //           to /onboarding (which performs the live Supabase check).
-// WHEN: Triggered from the landing Access section (S08) CTA(s).
-// CHANGE FIELDS: edit FORM_FIELDS array below + matching landing.access.modal
-//                keys in src/locales/{fr,en}.json.
+// WHEN: Triggered from the landing Access section (S08) + Hero +
+//       IndexOverlay + TerminalBar CTAs via the global
+//       AccessRequestModalProvider.
+// CHANGE FIELDS: edit the per-step renderer in REQUEST_STEPS / the
+//       Step component below + matching landing.access.modal keys in
+//       src/locales/{fr,en}.json.
 // ═══════════════════════════════════════════════════
 
 import { useLocale } from '@app/LocaleProvider';
@@ -56,6 +64,22 @@ const EMPTY_FORM: RequestFormState = {
   message: '',
 };
 
+const REQUEST_STEP_COUNT = 3;
+type RequestStep = 0 | 1 | 2;
+
+// Required fields per step — used to gate the "Continuer" button so the
+// user can't skip past mandatory inputs. Optional fields (company,
+// activity, message) aren't listed.
+const REQUIRED_PER_STEP: Record<RequestStep, ReadonlyArray<keyof RequestFormState>> = {
+  0: ['firstName', 'lastName', 'email'],
+  1: ['phone'],
+  2: [],
+};
+
+function isStepComplete(step: RequestStep, form: RequestFormState): boolean {
+  return REQUIRED_PER_STEP[step].every(key => form[key].trim() !== '');
+}
+
 export const AccessRequestModal = ({
   isOpen,
   onClose,
@@ -67,18 +91,43 @@ export const AccessRequestModal = ({
   const { toast } = useToast();
 
   const [mode, setMode] = useState<Mode>(initialMode);
+  const [step, setStep] = useState<RequestStep>(0);
   const [form, setForm] = useState<RequestFormState>(EMPTY_FORM);
   const [code, setCode] = useState('');
   const [codeError, setCodeError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
+  // Reset wizard step + error state on close so the next open always
+  // starts fresh. The modal stays mounted under the global provider, so
+  // without this the user would re-enter on the step they bailed on.
+  const handleClose = () => {
+    setStep(0);
+    setCodeError(null);
+    onClose();
+  };
+
   const setField = (key: keyof RequestFormState) => (value: string) => {
     setForm(prev => ({ ...prev, [key]: value }));
+  };
+
+  const goNext = () => {
+    if (!isStepComplete(step, form)) return;
+    setStep(prev => (prev < REQUEST_STEP_COUNT - 1 ? ((prev + 1) as RequestStep) : prev));
+  };
+
+  const goBack = () => {
+    setStep(prev => (prev > 0 ? ((prev - 1) as RequestStep) : prev));
   };
 
   const handleRequestSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (submitting) return;
+    // The submit lives on step 3 ; this guard is defensive in case the
+    // form is somehow submitted from another step (Enter key on a field).
+    if (step !== REQUEST_STEP_COUNT - 1) {
+      goNext();
+      return;
+    }
     setSubmitting(true);
     // WHY: stub routed to existing Resend pipeline once the Netlify function
     // accepts the structured payload. For MVP we surface success + clear.
@@ -86,7 +135,7 @@ export const AccessRequestModal = ({
       toast({ variant: 'success', message: t('landing.access.modal.requestSuccess') });
       setForm(EMPTY_FORM);
       setSubmitting(false);
-      onClose();
+      handleClose();
     }, 600);
   };
 
@@ -106,13 +155,13 @@ export const AccessRequestModal = ({
     setTimeout(() => {
       toast({ variant: 'success', message: t('landing.access.modal.codeAccepted') });
       setSubmitting(false);
-      onClose();
+      handleClose();
       void navigate(localePath(ROUTES.ONBOARDING), { state: { invitationCode: canonical } });
     }, 400);
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} className="max-w-2xl">
+    <Modal isOpen={isOpen} onClose={handleClose} className="max-w-2xl">
       <div className="flex flex-col gap-8 p-2">
         {/* ─── Header — eyebrow + headline ─── */}
         <header className="flex flex-col gap-3">
@@ -142,6 +191,7 @@ export const AccessRequestModal = ({
               onClick={() => {
                 setMode(m);
                 setCodeError(null);
+                if (m === 'request') setStep(0);
               }}
               className={cn(
                 'rounded-full px-5 py-2 font-mono text-[11px] tracking-[0.2em] uppercase transition-colors duration-200',
@@ -155,108 +205,191 @@ export const AccessRequestModal = ({
 
         {/* ─── Form body ─── */}
         {mode === 'request' ? (
-          <form className="flex flex-col gap-5" onSubmit={handleRequestSubmit} noValidate>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <Input
-                label={t('landing.access.modal.fields.firstName')}
-                value={form.firstName}
-                onChange={e => {
-                  setField('firstName')(e.target.value);
-                }}
-                required
-                autoComplete="given-name"
-              />
-              <Input
-                label={t('landing.access.modal.fields.lastName')}
-                value={form.lastName}
-                onChange={e => {
-                  setField('lastName')(e.target.value);
-                }}
-                required
-                autoComplete="family-name"
-              />
-              <Input
-                label={t('landing.access.modal.fields.email')}
-                value={form.email}
-                onChange={e => {
-                  setField('email')(e.target.value);
-                }}
-                required
-                type="email"
-                autoComplete="email"
-              />
-              <Input
-                label={t('landing.access.modal.fields.phone')}
-                value={form.phone}
-                onChange={e => {
-                  setField('phone')(e.target.value);
-                }}
-                required
-                type="tel"
-                autoComplete="tel"
-              />
-              <Input
-                label={t('landing.access.modal.fields.company')}
-                value={form.company}
-                onChange={e => {
-                  setField('company')(e.target.value);
-                }}
-                autoComplete="organization"
-              />
-              <Input
-                label={t('landing.access.modal.fields.activity')}
-                value={form.activity}
-                onChange={e => {
-                  setField('activity')(e.target.value);
-                }}
-              />
+          <form className="flex flex-col gap-6" onSubmit={handleRequestSubmit} noValidate>
+            {/* ─── Step progress (3 segments) + counter ─── */}
+            <div className="flex flex-col gap-2">
+              <div
+                className="flex items-center gap-1.5"
+                role="progressbar"
+                aria-valuemin={1}
+                aria-valuemax={REQUEST_STEP_COUNT}
+                aria-valuenow={step + 1}
+                aria-label={t('landing.access.modal.steps.counter', {
+                  current: step + 1,
+                  total: REQUEST_STEP_COUNT,
+                })}
+              >
+                {Array.from({ length: REQUEST_STEP_COUNT }).map((_, i) => (
+                  <span
+                    key={i}
+                    aria-hidden="true"
+                    className={cn(
+                      'h-0.5 flex-1 rounded-full transition-colors duration-300',
+                      i <= step ? 'bg-fg' : 'bg-fg/15',
+                    )}
+                  />
+                ))}
+              </div>
+              <div className="flex items-baseline justify-between gap-3 font-mono text-[10px] tracking-[0.25em] uppercase">
+                <span className="text-fg">
+                  {t(
+                    `landing.access.modal.steps.${
+                      step === 0 ? 'identity' : step === 1 ? 'profile' : 'message'
+                    }`,
+                  )}
+                </span>
+                <span className="text-muted">
+                  {t('landing.access.modal.steps.counter', {
+                    current: step + 1,
+                    total: REQUEST_STEP_COUNT,
+                  })}
+                </span>
+              </div>
             </div>
 
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="access-message" className="text-fg text-sm font-medium">
-                {t('landing.access.modal.fields.message')}
-              </label>
-              <textarea
-                id="access-message"
-                rows={3}
-                value={form.message}
-                onChange={e => {
-                  setForm(prev => ({ ...prev, message: e.target.value }));
-                }}
-                placeholder={t('landing.access.modal.fields.messagePlaceholder')}
-                className={cn(
-                  'bg-surface/80 text-fg rounded-lg border px-3 py-2 backdrop-blur-sm',
-                  'border-border hover:border-accent/30 focus:border-accent focus:ring-accent',
-                  'placeholder:text-muted/60 focus:ring-1 focus:outline-none',
-                  'duration-base transition-[border-color,box-shadow]',
-                )}
-              />
-            </div>
+            {/* ─── Step 0 — Identité ─── */}
+            {step === 0 && (
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <Input
+                  label={t('landing.access.modal.fields.firstName')}
+                  value={form.firstName}
+                  onChange={e => {
+                    setField('firstName')(e.target.value);
+                  }}
+                  required
+                  autoComplete="given-name"
+                />
+                <Input
+                  label={t('landing.access.modal.fields.lastName')}
+                  value={form.lastName}
+                  onChange={e => {
+                    setField('lastName')(e.target.value);
+                  }}
+                  required
+                  autoComplete="family-name"
+                />
+                <div className="md:col-span-2">
+                  <Input
+                    label={t('landing.access.modal.fields.email')}
+                    value={form.email}
+                    onChange={e => {
+                      setField('email')(e.target.value);
+                    }}
+                    required
+                    type="email"
+                    autoComplete="email"
+                  />
+                </div>
+              </div>
+            )}
 
-            <p className="text-muted border-border border-t pt-4 text-xs leading-relaxed">
-              {t('landing.access.modal.legal')}
-            </p>
+            {/* ─── Step 1 — Profil ─── */}
+            {step === 1 && (
+              <div className="grid grid-cols-1 gap-4">
+                <Input
+                  label={t('landing.access.modal.fields.phone')}
+                  value={form.phone}
+                  onChange={e => {
+                    setField('phone')(e.target.value);
+                  }}
+                  required
+                  type="tel"
+                  autoComplete="tel"
+                />
+                <Input
+                  label={t('landing.access.modal.fields.company')}
+                  value={form.company}
+                  onChange={e => {
+                    setField('company')(e.target.value);
+                  }}
+                  autoComplete="organization"
+                />
+                <Input
+                  label={t('landing.access.modal.fields.activity')}
+                  value={form.activity}
+                  onChange={e => {
+                    setField('activity')(e.target.value);
+                  }}
+                />
+              </div>
+            )}
 
-            <div className="flex flex-wrap items-center gap-3">
-              <Button
-                type="submit"
-                variant="primary"
-                size="lg"
-                disabled={submitting}
-                className="font-mono text-xs tracking-[0.3em] uppercase"
-              >
-                {submitting
-                  ? t('landing.access.modal.submitting')
-                  : t('landing.access.modal.submitRequest')}
-                <span aria-hidden="true">↗</span>
-              </Button>
-              <button
-                type="button"
-                onClick={onClose}
-                className="text-muted hover:text-fg font-mono text-[11px] tracking-[0.2em] uppercase transition-colors"
-              >
-                {t('common.close')}
-              </button>
+            {/* ─── Step 2 — Message + submit ─── */}
+            {step === 2 && (
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="access-message" className="text-fg text-sm font-medium">
+                    {t('landing.access.modal.fields.message')}
+                  </label>
+                  <textarea
+                    id="access-message"
+                    rows={4}
+                    value={form.message}
+                    onChange={e => {
+                      setForm(prev => ({ ...prev, message: e.target.value }));
+                    }}
+                    placeholder={t('landing.access.modal.fields.messagePlaceholder')}
+                    className={cn(
+                      'bg-surface/80 text-fg rounded-lg border px-3 py-2 backdrop-blur-sm',
+                      'border-border hover:border-accent/30 focus:border-accent focus:ring-accent',
+                      'placeholder:text-muted/60 focus:ring-1 focus:outline-none',
+                      'duration-base transition-[border-color,box-shadow]',
+                    )}
+                  />
+                </div>
+
+                <p className="text-muted border-border border-t pt-4 text-xs leading-relaxed">
+                  {t('landing.access.modal.legal')}
+                </p>
+              </div>
+            )}
+
+            {/* ─── Navigation : Back / (Next | Submit) ─── */}
+            <div className="border-border flex flex-wrap items-center justify-between gap-3 border-t pt-5">
+              {step > 0 ? (
+                <button
+                  type="button"
+                  onClick={goBack}
+                  className="text-muted hover:text-fg font-mono text-[11px] tracking-[0.25em] uppercase transition-colors"
+                >
+                  ← {t('landing.access.modal.steps.back')}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleClose}
+                  className="text-muted hover:text-fg font-mono text-[11px] tracking-[0.25em] uppercase transition-colors"
+                >
+                  {t('common.close')}
+                </button>
+              )}
+
+              {step < REQUEST_STEP_COUNT - 1 ? (
+                <Button
+                  type="button"
+                  variant="primary"
+                  size="lg"
+                  onClick={goNext}
+                  disabled={!isStepComplete(step, form)}
+                  className="font-mono text-xs tracking-[0.3em] uppercase"
+                >
+                  {t('landing.access.modal.steps.next')}
+                  <span aria-hidden="true">↗</span>
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  disabled={submitting}
+                  className="font-mono text-xs tracking-[0.3em] uppercase"
+                >
+                  {submitting
+                    ? t('landing.access.modal.submitting')
+                    : t('landing.access.modal.submitRequest')}
+                  <span aria-hidden="true">↗</span>
+                </Button>
+              )}
             </div>
           </form>
         ) : (

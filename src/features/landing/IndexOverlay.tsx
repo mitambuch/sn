@@ -43,8 +43,10 @@ interface IndexOverlayProps {
   title: string;
   /** Primary CTA label (e.g. "Demander un accès"). */
   primaryCtaLabel: string;
-  /** Primary CTA href / anchor. */
-  primaryCtaHref: string;
+  /** Primary CTA — button or anchor node. The overlay closes itself on
+   *  click via the wrapping `onClickCapture` so the node only owns the
+   *  visual + action concern. */
+  primaryCtaNode: ReactNode;
   /** Secondary CTA label (e.g. "Espace privé"). */
   secondaryCtaLabel: string;
   /** Secondary CTA — react-router Link target (rendered as <a>). */
@@ -62,7 +64,7 @@ export const IndexOverlay = ({
   closeLabel,
   title,
   primaryCtaLabel,
-  primaryCtaHref,
+  primaryCtaNode,
   secondaryCtaLabel,
   secondaryCtaNode,
 }: IndexOverlayProps) => {
@@ -127,24 +129,9 @@ export const IndexOverlay = ({
 
       {/* ─── CTAs : 2 boutons d'accès toujours visibles ─── */}
       <div className="border-bg/20 grid grid-cols-1 gap-3 border-t pt-6 md:grid-cols-2 md:gap-4">
-        <a
-          href={primaryCtaHref}
-          onClick={onClose}
-          className="bg-bg text-fg hover:bg-bg/85 inline-flex items-center justify-between gap-3 rounded-full px-6 py-4 font-mono text-xs tracking-widest uppercase transition-colors md:py-5 md:text-sm"
-        >
-          <span>{primaryCtaLabel}</span>
-          <span aria-hidden="true">↗</span>
-        </a>
-        {/* Wrapper styles applied to the rendered Link via secondaryCtaNode itself.
-            We render it as-is — parent owns the React Router routing concern. */}
-        <span
-          className="contents"
-          onClickCapture={() => {
-            onClose();
-          }}
-        >
-          {secondaryCtaNode}
-        </span>
+        <span className="contents">{primaryCtaNode}</span>
+        <span className="sr-only">{primaryCtaLabel}</span>
+        <span className="contents">{secondaryCtaNode}</span>
         <span className="sr-only">{secondaryCtaLabel}</span>
       </div>
 

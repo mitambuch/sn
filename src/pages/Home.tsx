@@ -15,7 +15,9 @@
 
 import { BrandMark } from '@components/brand/BrandMark';
 import { SeoHead } from '@components/features/SeoHead';
+import { AccessRequestModalProvider } from '@context/AccessRequestModalContext';
 import { LoginModalProvider } from '@context/LoginModalContext';
+import { useAccessRequestModal } from '@context/useAccessRequestModal';
 import { useLoginModal } from '@context/useLoginModal';
 import {
   Access,
@@ -40,14 +42,17 @@ import { useTranslation } from 'react-i18next';
 export default function Home() {
   return (
     <LoginModalProvider>
-      <HomeContent />
+      <AccessRequestModalProvider>
+        <HomeContent />
+      </AccessRequestModalProvider>
     </LoginModalProvider>
   );
 }
 
 function HomeContent() {
   const { t } = useTranslation();
-  const { openLogin, isOpen: isLoginOpen } = useLoginModal();
+  const { openLogin } = useLoginModal();
+  const { openAccessRequest } = useAccessRequestModal();
   const [indexOpen, setIndexOpen] = useState(false);
   const [compactLogo, setCompactLogo] = useState(false);
   // Top-corner chrome stays hidden while the Loader is on screen, then
@@ -107,7 +112,19 @@ function HomeContent() {
         closeLabel={t('common.close')}
         title={t('landing.index.title')}
         primaryCtaLabel={t('landing.cta.requestAccess')}
-        primaryCtaHref="#s08"
+        primaryCtaNode={
+          <button
+            type="button"
+            onClick={() => {
+              closeIndex();
+              openAccessRequest('request');
+            }}
+            className="border-bg bg-bg text-fg hover:bg-bg/90 inline-flex items-center justify-between gap-3 rounded-full border px-6 py-4 font-mono text-xs tracking-widest uppercase transition-colors md:py-5 md:text-sm"
+          >
+            <span>{t('landing.cta.requestAccess')}</span>
+            <span aria-hidden="true">↗</span>
+          </button>
+        }
         secondaryCtaLabel={t('landing.cta.privateArea')}
         secondaryCtaNode={
           <button
@@ -126,39 +143,39 @@ function HomeContent() {
 
       {/* ─── Main — TerminalBar sits at the natural end. overflow-x clip
            kills any horizontal scroll from negative-margin or grain overlays.
-           UNMOUNTED while the LoginModal is open : the CSS animation-pause
-           rule isn't enough because the JS loops (typewriter setState every
-           90ms, video autoplay, Manifesto scroll listeners, IntersectionObservers,
-           Lenis smooth scroll, autoplay vidéos rendering) keep saturating the
-           main thread → laggy input. Unmounting releases the CPU entirely.
-           Trade-off : re-mount on close resets typewriter to phrase 0 + picks
-           a new random video. Acceptable for a login surface. ─── */}
-      {!isLoginOpen && (
-        <main className="overflow-x-clip">
-          <Hero />
-          <Marquee items={heroMarquee} tone="dark" />
-          <Manifesto />
-          <Presentation />
-          <Marquee items={finalMarquee} tone="light" />
-          <Principles />
-          <Domains />
-          <Marquee items={finalMarquee} tone="light" />
-          <Access />
-          <Interlocutor />
-          <Marquee items={finalMarquee} tone="dark" />
-          <LandingFooter />
+           Owner direction 2026-05-14 : the LoginModal must overlay the
+           landing instead of replacing it ("on doit voir derrière"). The
+           Modal backdrop (bg-black/60 + backdrop-blur-sm) does the dim,
+           and the body.modal-active rule pauses CSS animations. The two
+           heaviest JS loops (Hero typewriter setState 90ms + video tag
+           autoplay rendering) are paused locally inside Hero when the
+           login modal is open — see Hero.tsx for the gates. ─── */}
+      <main className="overflow-x-clip">
+        <Hero />
+        <Marquee items={heroMarquee} tone="dark" />
+        <Manifesto />
+        <Presentation />
+        <Marquee items={finalMarquee} tone="light" />
+        <Principles />
+        <Domains />
+        <Marquee items={finalMarquee} tone="light" />
+        <Access />
+        <Interlocutor />
+        <Marquee items={finalMarquee} tone="dark" />
+        <LandingFooter />
 
-          <TerminalBar
-            statusLabel={t('landing.terminal.status')}
-            tzLabel={t('landing.terminal.tz')}
-            primaryCtaLabel={t('landing.cta.requestAccess')}
-            primaryCtaHref="#s08"
-            secondaryCtaLabel={t('landing.cta.privateArea')}
-            onSecondaryCta={openLogin}
-            callCtaLabel={t('landing.cta.callDirect')}
-          />
-        </main>
-      )}
+        <TerminalBar
+          statusLabel={t('landing.terminal.status')}
+          tzLabel={t('landing.terminal.tz')}
+          primaryCtaLabel={t('landing.cta.requestAccess')}
+          onPrimaryCta={() => {
+            openAccessRequest('request');
+          }}
+          secondaryCtaLabel={t('landing.cta.privateArea')}
+          onSecondaryCta={openLogin}
+          callCtaLabel={t('landing.cta.callDirect')}
+        />
+      </main>
     </>
   );
 }

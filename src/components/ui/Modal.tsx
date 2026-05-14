@@ -96,7 +96,7 @@ export const Modal = ({ isOpen, onClose, title, children, className }: ModalProp
   if (!isOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-200 flex items-center justify-center">
+    <div className="fixed inset-0 z-200 flex items-center justify-center p-4 sm:p-6">
       {/* Backdrop */}
       <div
         className="duration-base absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
@@ -104,7 +104,11 @@ export const Modal = ({ isOpen, onClose, title, children, className }: ModalProp
         aria-hidden="true"
       />
 
-      {/* Dialog — tabIndex for focus fallback when no focusable children */}
+      {/* Dialog — tabIndex for focus fallback when no focusable children.
+          max-h + overflow-y-auto so tall content (long forms, wizards) scrolls
+          inside the modal instead of pushing off-screen on mobile. The outer
+          flex container above gives a 16px margin from the viewport edge
+          (24px on sm+), so the panel never glues to the screen border. */}
       <div
         ref={dialogRef}
         role="dialog"
@@ -112,7 +116,7 @@ export const Modal = ({ isOpen, onClose, title, children, className }: ModalProp
         aria-labelledby={title ? titleId : undefined}
         tabIndex={-1}
         className={cn(
-          'border-border bg-bg/95 relative z-10 w-full max-w-lg rounded-lg border p-6 backdrop-blur-md',
+          'border-border bg-bg/95 relative z-10 max-h-full w-full max-w-lg overflow-y-auto rounded-lg border p-6 backdrop-blur-md',
           'duration-base shadow-lg transition-[transform,opacity]',
           className,
         )}

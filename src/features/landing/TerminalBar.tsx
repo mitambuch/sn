@@ -15,7 +15,7 @@
 
 import { BrandMark } from '@components/brand/BrandMark';
 import { Phone } from 'lucide-react';
-import { type MouseEvent as ReactMouseEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const PHONE_TEL = '+41787498170';
 
@@ -26,8 +26,8 @@ interface TerminalBarProps {
   tzLabel: string;
   /** Primary CTA label (e.g. "Demander un accès"). */
   primaryCtaLabel: string;
-  /** Primary CTA href / anchor. */
-  primaryCtaHref: string;
+  /** Primary CTA — invoked on click (opens the access request modal). */
+  onPrimaryCta: () => void;
   /** Secondary CTA label (e.g. "Espace privé"). */
   secondaryCtaLabel: string;
   /** Secondary CTA — invoked on click (e.g. opens the global LoginModal). */
@@ -51,7 +51,7 @@ export const TerminalBar = ({
   statusLabel,
   tzLabel,
   primaryCtaLabel,
-  primaryCtaHref,
+  onPrimaryCta,
   secondaryCtaLabel,
   onSecondaryCta,
   callCtaLabel,
@@ -67,27 +67,23 @@ export const TerminalBar = ({
     };
   }, []);
 
-  const handleAnchor = (href: string) => (e: ReactMouseEvent<HTMLAnchorElement>) => {
-    if (href.startsWith('#')) {
-      e.preventDefault();
-      document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
     <div
       role="contentinfo"
-      className="bg-ink text-on-ink flex flex-col gap-5 px-5 py-5 font-mono text-[11px] tracking-wider md:flex-row md:items-center md:justify-between md:gap-8 md:px-10 md:py-6"
+      className="bg-ink text-on-ink flex items-center justify-between gap-3 px-5 py-4 font-mono text-[11px] tracking-wider md:gap-8 md:px-10 md:py-6"
     >
-      {/* ─── Left : status dot + brand + single-line clock ─── */}
-      <div className="flex flex-wrap items-center gap-x-7 gap-y-3 md:flex-nowrap">
-        <div className="text-bg/90 flex items-center gap-2 text-[10px] tracking-[0.18em] uppercase">
+      {/* ─── Left : status dot + brand + single-line clock ───
+           On mobile, the status label wraps onto 2 lines (max-w cap) so
+           the 3 CTAs on the right can stay on the same row. The dot stays
+           vertically centred next to the 2-line block. */}
+      <div className="flex min-w-0 items-center gap-x-5 md:flex-nowrap md:gap-x-7">
+        <div className="text-bg/90 flex items-center gap-2 text-[9px] leading-[1.15] tracking-[0.18em] uppercase sm:text-[10px]">
           <span
             aria-hidden="true"
-            className="bg-success h-1.5 w-1.5 rounded-full"
+            className="bg-success h-1.5 w-1.5 shrink-0 rounded-full"
             style={{ animation: 'terminal-pulse 1.4s ease-in-out infinite' }}
           />
-          {statusLabel}
+          <span className="max-w-22 sm:max-w-none">{statusLabel}</span>
         </div>
 
         <BrandMark className="text-bg hidden text-xs sm:inline-flex" />
@@ -104,7 +100,7 @@ export const TerminalBar = ({
       {/* ─── Right : 3 CTAs (Appeler · Demander · Espace) ───
            On mobile : compressed labels, no-wrap, smaller padding so the
            3 buttons fit on a single line at 320px. On sm+ : full labels. */}
-      <div className="flex w-full flex-nowrap items-center justify-end gap-1.5 sm:w-auto sm:gap-3">
+      <div className="flex shrink-0 flex-nowrap items-center justify-end gap-1.5 sm:gap-3">
         {/* Call — outline ghost, icon-first (label hidden on mobile) */}
         <a
           href={`tel:${PHONE_TEL}`}
@@ -115,15 +111,15 @@ export const TerminalBar = ({
         </a>
 
         {/* Primary — Demander — white solid (short label on mobile) */}
-        <a
-          href={primaryCtaHref}
-          onClick={handleAnchor(primaryCtaHref)}
+        <button
+          type="button"
+          onClick={onPrimaryCta}
           className="bg-bg text-fg hover:bg-bg/90 focus-visible:ring-bg/40 inline-flex items-center gap-1 rounded-full px-3 py-2 font-mono text-[10px] tracking-widest whitespace-nowrap uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none sm:gap-2 sm:px-5 sm:text-xs"
         >
           <span className="sm:hidden">Demander</span>
           <span className="hidden sm:inline">{primaryCtaLabel}</span>
           <span aria-hidden="true">↗</span>
-        </a>
+        </button>
 
         {/* Secondary — Espace — white border (short label on mobile) */}
         <button

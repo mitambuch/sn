@@ -16,16 +16,13 @@
 
 import { Card } from '@components/ui/Card';
 import { MonoGradientPlaceholder } from '@components/ui/MonoGradientPlaceholder';
-import { AccessRequestModal } from '@features/access/AccessRequestModal';
+import { useAccessRequestModal } from '@context/useAccessRequestModal';
 import { SectionTag } from '@features/landing/SectionTag';
 import { useReveal } from '@hooks/useReveal';
 import { cn } from '@utils/cn';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { unsplash } from '@/mocks/unsplash';
-
-type ModalMode = 'request' | 'code';
 
 interface EventTeaser {
   imgSlug: string;
@@ -58,13 +55,7 @@ const LOCKED_KEYS = ['locked1', 'locked2', 'locked3', 'locked4'] as const;
 export const Access = () => {
   const { t } = useTranslation();
   const ref = useReveal<HTMLDivElement>();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState<ModalMode>('request');
-
-  const openModal = (mode: ModalMode) => {
-    setModalMode(mode);
-    setModalOpen(true);
-  };
+  const { openAccessRequest } = useAccessRequestModal();
 
   return (
     <section id="s08" data-landing-dark="true" data-theme="dark" className="bg-ink text-white">
@@ -171,7 +162,7 @@ export const Access = () => {
             <button
               type="button"
               onClick={() => {
-                openModal('request');
+                openAccessRequest('request');
               }}
               className={cn(
                 'text-ink inline-flex items-center justify-center gap-3 rounded-full bg-white px-7 py-4 font-mono text-xs tracking-[0.3em] uppercase',
@@ -184,7 +175,7 @@ export const Access = () => {
             <button
               type="button"
               onClick={() => {
-                openModal('code');
+                openAccessRequest('code');
               }}
               className={cn(
                 'inline-flex items-center justify-center gap-3 rounded-full border border-white/40 px-7 py-4 font-mono text-xs tracking-[0.3em] text-white uppercase',
@@ -197,14 +188,6 @@ export const Access = () => {
           </div>
         </div>
       </div>
-
-      <AccessRequestModal
-        isOpen={modalOpen}
-        onClose={() => {
-          setModalOpen(false);
-        }}
-        initialMode={modalMode}
-      />
     </section>
   );
 };
