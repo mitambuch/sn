@@ -56,38 +56,42 @@ export const Modal = ({ isOpen, onClose, title, children, className }: ModalProp
     [onClose],
   );
 
+  // Body lock + keydown listener — re-runs harmlessly when handleKeyDown
+  // identity changes (e.g. parent renders pass a new `onClose` reference).
   useEffect(() => {
     if (!isOpen) return;
-
-    const previouslyFocused =
-      document.activeElement instanceof HTMLElement ? document.activeElement : null;
-
-    // WHY: freeze the underlying page while the modal is open. This adds
-    // `body.modal-active` which the global animation rule (animations.css)
-    // uses to set `animation-play-state: paused` on every descendant. Without
-    // this, heavy landing animations (manifesto fog, grain, typewriter,
-    // marquee, caret) keep running and starve input handling → laggy typing
-    // inside the modal. Incident reported 2026-05-14 12:09 by owner.
     document.body.style.overflow = 'hidden';
     document.body.classList.add('modal-active');
     document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = '';
+      document.body.classList.remove('modal-active');
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, handleKeyDown]);
 
-    // WHY: focus first focusable element, or the dialog itself as fallback
+  // Focus management — runs ONLY on the open/close transition. Splitting
+  // this from the body-lock effect above prevents the focus dance from
+  // re-firing on every parent re-render. Incident 2026-05-14 13:02 : owner
+  // typed one character → onClose ref changed → previous unified useEffect
+  // cleanup focused the previously-focused element (body) and re-setup
+  // focused the first focusable (the X close button), stealing focus from
+  // the input the user was typing in. One character at a time.
+  useEffect(() => {
+    if (!isOpen) return;
+    const previouslyFocused =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const timer = setTimeout(() => {
       if (dialogRef.current) {
         const firstFocusable = dialogRef.current.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
         (firstFocusable ?? dialogRef.current).focus();
       }
     }, 0);
-
     return () => {
-      document.body.style.overflow = '';
-      document.body.classList.remove('modal-active');
-      document.removeEventListener('keydown', handleKeyDown);
       clearTimeout(timer);
       previouslyFocused?.focus();
     };
-  }, [isOpen, handleKeyDown]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
