@@ -1,16 +1,31 @@
 // ═══════════════════════════════════════════════════
 // ConciergeRequestWizard — adaptive guided request modal
 //
-// WHAT: Centered modal that walks the member through a smart 3-step
-//       flow. Step 2 (Details) is ADAPTIVE per category — Travel and
-//       Timepiece expose structured fields (dates, brand, year range,
-//       budget…), other categories fall back to free-form. ALL fields
-//       are optional — the member never gets stuck, and can always
-//       "Request a callback from Salvatore" as a fast lane from the
-//       review step.
+// WHAT: Centered modal that walks the member through a 4-step flow :
+//       category → fields (adaptive per category) → extras (free-form +
+//       photos) → review. Step "fields" is ADAPTIVE — travel /
+//       timepiece / real-estate / art / experience each surface their
+//       own structured fields. "Other" skips the fields step entirely.
+//       ALL fields are optional and the review step exposes a fast
+//       "request a callback" lane for clients who don't want to fill
+//       anything.
+//
+//       UI rework 2026-05-14 14:50 (owner direction "plus esthétique
+//       plus construit") :
+//       - Visual segmented progress bar replaces "n/total" text
+//       - Header carries a category breadcrumb chip on step 2+
+//       - Modal width max-w-2xl → max-w-3xl, border-fg/15 tighter
+//       - Category picker : 2x3 (mobile/tablet) / 3x2 (desktop) cards
+//         flex-col with raised icon, selected = filled fg bg-fg
+//       - Form atoms : inputs h-12 with focus ring, labels in font-mono
+//         tracking-[0.18em] (less screaming than tracking-widest)
+//       - Review summary : surface card with mono uppercase labels
+//       - Footer + CTAs : h-12 generous, mono caps tracking-[0.18em]
 // WHEN: Triggered from AccountDashboard "Une demande personnalisée"
 //       CTA or 4 quick-shortcut buttons (skip step 1 via
-//       initialCategory prop).
+//       initialCategory prop). Also mounted at the AppLayout level via
+//       AccountRequestModalProvider so the bottom-nav FAB opens the
+//       same instance.
 // EDIT FIELDS: edit the per-category sections in the Details step
 //       renderer below. Add a category : extend WizardCategory type +
 //       CATEGORY_ICON map + add a `case` in the details switch.
@@ -80,13 +95,19 @@ interface ConciergeRequestWizardProps {
 
 type FormState = Record<string, string>;
 
-/* ─── Small inline form atoms — kept local to keep the wizard self-
-       contained without dragging new UI atoms tonight ──────────── */
+/* ─── Form atoms — local to the wizard. Tuned for an app-grade feel :
+       h-12 inputs (48px touch targets), label in mono caps but smaller
+       tracking so it reads as a section sub-header, focus state with a
+       proper accent ring (not just a border tint). ───────────────── */
 
-const fieldShell = 'flex flex-col gap-1.5';
-const labelShell = 'text-muted text-xs tracking-widest uppercase';
-const inputShell =
-  'border-border bg-bg text-fg placeholder:text-muted/60 rounded-md border px-3 py-2.5 text-sm focus-visible:border-fg/40 focus-visible:outline-none';
+const fieldShell = 'flex flex-col gap-2';
+const labelShell = 'text-muted font-mono text-[10px] font-medium tracking-[0.18em] uppercase';
+const inputShell = cn(
+  'border-fg/15 bg-bg text-fg placeholder:text-muted/50',
+  'h-12 rounded-md border px-3.5 text-sm leading-none',
+  'transition-[border-color,box-shadow] duration-200',
+  'focus-visible:border-fg/40 focus-visible:ring-fg/10 focus-visible:ring-2 focus-visible:outline-none',
+);
 
 const FieldText = ({
   id,
@@ -261,36 +282,80 @@ export const ConciergeRequestWizard = ({
         className="bg-bg/80 absolute inset-0 backdrop-blur-sm"
       />
 
-      <div className="border-border bg-bg rounded-card shadow-card-rest relative flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden border">
-        {/* ─── Header ─── */}
-        <header className="border-border flex items-center justify-between border-b px-6 py-4 sm:px-8 sm:py-5">
-          <div className="flex items-center gap-3">
-            <span className="text-muted font-mono text-[10px] tracking-widest uppercase">
-              {String(stepNumber)}/{String(stepTotal)}
-            </span>
-            <span className="text-fg text-sm font-medium">{t(stepLabelKey)}</span>
+      <div className="border-fg/15 bg-bg rounded-card shadow-card-rest relative flex max-h-[92vh] w-full max-w-3xl flex-col overflow-hidden border">
+        {/* ─── Header — eyebrow row + visual progress bar. Each segment
+              animates fill on step change so the member feels forward
+              motion. The category breadcrumb (when set) reminds them of
+              the current scope. ─────────────────────────────────────── */}
+        <header className="border-fg/10 border-b">
+          <div className="flex items-center justify-between gap-3 px-6 py-4 sm:px-8 sm:py-5">
+            <div className="flex min-w-0 items-center gap-3">
+              <span className="text-muted font-mono text-[10px] tracking-[0.2em] uppercase">
+                {String(stepNumber).padStart(2, '0')} / {String(stepTotal).padStart(2, '0')}
+              </span>
+              <span aria-hidden="true" className="bg-fg/15 h-3 w-px" />
+              <span className="text-fg truncate text-sm font-medium tracking-tight">
+                {t(stepLabelKey)}
+              </span>
+              {category && step !== 'category' && (
+                <>
+                  <span aria-hidden="true" className="bg-fg/15 hidden h-3 w-px sm:inline-block" />
+                  <span className="text-muted hidden truncate text-xs tracking-tight sm:inline">
+                    {t(`wizard.category.${category}.title`)}
+                  </span>
+                </>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label={t('wizard.actions.close')}
+              className="text-muted hover:text-fg focus-visible:ring-accent duration-base shrink-0 rounded-sm transition-colors focus-visible:ring-2 focus-visible:outline-none"
+            >
+              <X size={18} strokeWidth={1.5} aria-hidden="true" />
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label={t('wizard.actions.close')}
-            className="text-muted hover:text-fg duration-base transition-colors"
+          {/* Segmented progress bar — one segment per step, filled up to
+              and including the current step. */}
+          <div
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={stepTotal}
+            aria-valuenow={stepNumber}
+            className="bg-fg/5 flex h-1 w-full gap-0.5 px-6 sm:px-8"
           >
-            <X size={18} strokeWidth={1.5} aria-hidden="true" />
-          </button>
+            {chain.map((s, i) => (
+              <span
+                key={s}
+                aria-hidden="true"
+                className={cn(
+                  'h-full flex-1 transition-colors duration-500 ease-out',
+                  i <= stepIdx ? 'bg-fg' : 'bg-fg/10',
+                )}
+              />
+            ))}
+          </div>
         </header>
 
         {/* ─── Body ─── */}
         <div className="flex-1 overflow-y-auto px-6 py-6 sm:px-8 sm:py-8">
           {step === 'category' && (
-            <div className="space-y-6">
-              <header className="space-y-2">
+            <div className="space-y-7">
+              <header className="space-y-3">
+                <span className="text-muted font-mono text-[10px] tracking-[0.2em] uppercase">
+                  {t('wizard.step.category')}
+                </span>
                 <h2 className="text-fg font-mono text-2xl font-bold tracking-tight uppercase sm:text-3xl">
                   {t('wizard.title')}
                 </h2>
-                <p className="text-muted text-sm leading-relaxed">{t('wizard.category.lede')}</p>
+                <p className="text-muted max-w-prose text-sm leading-relaxed">
+                  {t('wizard.category.lede')}
+                </p>
               </header>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {/* 2 cols mobile/tablet, 3 cols desktop. Cards stack icon
+                  on top of title+hint with breathing inside : reads
+                  more like a native picker than a list row. */}
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
                 {CATEGORIES.map(c => {
                   const Icon = CATEGORY_ICON[c];
                   const selected = category === c;
@@ -303,21 +368,31 @@ export const ConciergeRequestWizard = ({
                         setStep(c === 'other' ? 'extras' : 'fields');
                       }}
                       className={cn(
-                        'border-border bg-surface group rounded-card flex items-center gap-4 border px-4 py-4 text-left',
-                        'shadow-card-rest hover:border-fg/30 hover:shadow-card-hover',
-                        'transition-[border-color,box-shadow] duration-300',
+                        'group bg-surface/60 hover:bg-surface flex flex-col items-start gap-3 rounded-xl border p-4 text-left sm:p-5',
+                        'transition-[border-color,background-color,box-shadow] duration-300',
                         'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
-                        selected && 'border-fg/40',
+                        selected
+                          ? 'border-fg/50 shadow-card-rest bg-surface'
+                          : 'border-fg/10 hover:border-fg/30',
                       )}
                     >
-                      <span className="border-border bg-bg text-fg flex h-10 w-10 shrink-0 items-center justify-center rounded-full border">
+                      <span
+                        className={cn(
+                          'flex h-11 w-11 shrink-0 items-center justify-center rounded-full border transition-colors duration-300',
+                          selected
+                            ? 'border-fg bg-fg text-bg'
+                            : 'border-fg/15 bg-bg text-fg group-hover:border-fg/40',
+                        )}
+                      >
                         <Icon size={18} strokeWidth={1.5} aria-hidden="true" />
                       </span>
-                      <div className="flex flex-col gap-0.5">
-                        <span className="text-fg text-sm font-medium">
+                      <div className="flex flex-col gap-1">
+                        <span className="text-fg text-sm leading-tight font-medium sm:text-base">
                           {t(`wizard.category.${c}.title`)}
                         </span>
-                        <span className="text-muted text-xs">{t(`wizard.category.${c}.hint`)}</span>
+                        <span className="text-muted text-xs leading-snug">
+                          {t(`wizard.category.${c}.hint`)}
+                        </span>
                       </div>
                     </button>
                   );
@@ -327,15 +402,21 @@ export const ConciergeRequestWizard = ({
           )}
 
           {step === 'fields' && category && category !== 'other' && (
-            <div className="space-y-6">
-              <header className="space-y-2">
-                <span className="text-muted text-xs tracking-widest uppercase">
-                  {t(`wizard.category.${category}.title`)}
-                </span>
+            <div className="space-y-7">
+              <header className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <span className="border-fg/15 bg-surface/60 text-fg inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-[10px] tracking-[0.15em] uppercase">
+                    {(() => {
+                      const CatIcon = CATEGORY_ICON[category];
+                      return <CatIcon size={12} strokeWidth={1.5} aria-hidden="true" />;
+                    })()}
+                    {t(`wizard.category.${category}.title`)}
+                  </span>
+                </div>
                 <h2 className="text-fg font-mono text-2xl font-bold tracking-tight uppercase sm:text-3xl">
                   {t('wizard.step.fields')}
                 </h2>
-                <p className="text-muted text-sm leading-relaxed">
+                <p className="text-muted max-w-prose text-sm leading-relaxed">
                   {t('wizard.details.allOptional')}
                 </p>
               </header>
@@ -627,15 +708,21 @@ export const ConciergeRequestWizard = ({
           )}
 
           {step === 'extras' && category && (
-            <div className="space-y-6">
-              <header className="space-y-2">
-                <span className="text-muted text-xs tracking-widest uppercase">
-                  {t(`wizard.category.${category}.title`)}
-                </span>
+            <div className="space-y-7">
+              <header className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <span className="border-fg/15 bg-surface/60 text-fg inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-[10px] tracking-[0.15em] uppercase">
+                    {(() => {
+                      const CatIcon = CATEGORY_ICON[category];
+                      return <CatIcon size={12} strokeWidth={1.5} aria-hidden="true" />;
+                    })()}
+                    {t(`wizard.category.${category}.title`)}
+                  </span>
+                </div>
                 <h2 className="text-fg font-mono text-2xl font-bold tracking-tight uppercase sm:text-3xl">
                   {t('wizard.step.extras')}
                 </h2>
-                <p className="text-muted text-sm leading-relaxed">
+                <p className="text-muted max-w-prose text-sm leading-relaxed">
                   {category === 'other' ? t('wizard.other.lede') : t('wizard.extras.lede')}
                 </p>
               </header>
@@ -659,26 +746,33 @@ export const ConciergeRequestWizard = ({
           )}
 
           {step === 'review' && category && (
-            <div className="space-y-6">
-              <header className="space-y-2">
+            <div className="space-y-7">
+              <header className="space-y-3">
+                <span className="text-muted font-mono text-[10px] tracking-[0.2em] uppercase">
+                  {t('wizard.step.review')}
+                </span>
                 <h2 className="text-fg font-mono text-2xl font-bold tracking-tight uppercase sm:text-3xl">
                   {t('wizard.review.title')}
                 </h2>
-                <p className="text-muted text-sm leading-relaxed">{t('wizard.review.lede')}</p>
+                <p className="text-muted max-w-prose text-sm leading-relaxed">
+                  {t('wizard.review.lede')}
+                </p>
               </header>
 
-              <dl className="border-border divide-border bg-surface shadow-card-rest rounded-card divide-y border">
-                <div className="flex flex-col gap-1 px-6 py-4">
-                  <dt className="text-muted text-xs tracking-widest uppercase">
+              <dl className="border-fg/15 divide-fg/10 bg-surface/60 divide-y rounded-xl border">
+                <div className="flex flex-col gap-1.5 px-5 py-4 sm:px-6 sm:py-5">
+                  <dt className="text-muted font-mono text-[10px] tracking-[0.18em] uppercase">
                     {t('wizard.review.categoryLabel')}
                   </dt>
-                  <dd className="text-fg text-sm">{t(`wizard.category.${category}.title`)}</dd>
+                  <dd className="text-fg text-sm font-medium">
+                    {t(`wizard.category.${category}.title`)}
+                  </dd>
                 </div>
                 {Object.entries(fields)
                   .filter(([, v]) => v.trim().length > 0)
                   .map(([key, value]) => (
-                    <div key={key} className="flex flex-col gap-1 px-6 py-4">
-                      <dt className="text-muted text-xs tracking-widest uppercase">
+                    <div key={key} className="flex flex-col gap-1.5 px-5 py-4 sm:px-6 sm:py-5">
+                      <dt className="text-muted font-mono text-[10px] tracking-[0.18em] uppercase">
                         {/* i18n lookup : map prefix → category i18n key. */}
                         {(() => {
                           const lookups: { prefix: string; ns: string }[] = [
@@ -703,8 +797,8 @@ export const ConciergeRequestWizard = ({
                     </div>
                   ))}
                 {description.trim().length > 0 && (
-                  <div className="flex flex-col gap-1 px-6 py-4">
-                    <dt className="text-muted text-xs tracking-widest uppercase">
+                  <div className="flex flex-col gap-1.5 px-5 py-4 sm:px-6 sm:py-5">
+                    <dt className="text-muted font-mono text-[10px] tracking-[0.18em] uppercase">
                       {t('wizard.review.descriptionLabel')}
                     </dt>
                     <dd className="text-fg text-sm leading-relaxed whitespace-pre-wrap">
@@ -714,39 +808,44 @@ export const ConciergeRequestWizard = ({
                 )}
               </dl>
 
-              {/* Alternative fast lane : ask Salva to call back, no form needed */}
+              {/* Alternative fast lane : ask Salva to call back, no form
+                  needed. Same h-12 / mono caps treatment as the main
+                  footer ghost button so the two ghost CTAs feel
+                  coherent. */}
               <button
                 type="button"
                 onClick={() => handleSubmit('callback')}
                 disabled={submitting}
                 className={cn(
-                  'border-border text-muted hover:text-fg hover:border-fg/40',
-                  'inline-flex w-full items-center justify-center gap-2 rounded-full border px-5 py-3 text-xs tracking-widest uppercase',
-                  'duration-base transition-[color,border-color]',
-                  'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
+                  'border-fg/20 text-fg hover:border-fg/50 hover:bg-surface/40 focus-visible:ring-accent',
+                  'inline-flex h-12 w-full items-center justify-center gap-2.5 rounded-md border bg-transparent font-mono text-[11px] tracking-[0.18em] whitespace-nowrap uppercase',
+                  'duration-base transition-[color,border-color,background-color]',
+                  'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
                   'disabled:cursor-not-allowed disabled:opacity-50',
                 )}
               >
-                <PhoneCall size={12} strokeWidth={1.5} aria-hidden="true" />
+                <PhoneCall size={14} strokeWidth={1.5} aria-hidden="true" />
                 {t('callback.cta')}
               </button>
             </div>
           )}
         </div>
 
-        {/* ─── Footer ─── */}
-        <footer className="border-border flex items-center justify-between gap-3 border-t px-6 py-4 sm:px-8">
+        {/* ─── Footer — h-12 generous touch targets, mono caps chrome
+              consistent with the rest of the dashboard. Back is a
+              minimal text-link ; primary action fills with bg-fg. ── */}
+        <footer className="border-fg/10 bg-bg/95 sticky bottom-0 flex items-center justify-between gap-3 border-t px-6 py-4 sm:px-8 sm:py-5">
           {canGoBack ? (
             <button
               type="button"
               onClick={goBack}
               className={cn(
-                'text-muted hover:text-fg inline-flex items-center gap-2 text-xs tracking-widest whitespace-nowrap uppercase',
+                'text-muted hover:text-fg inline-flex h-12 items-center gap-2 px-1 font-mono text-[11px] tracking-[0.18em] whitespace-nowrap uppercase',
                 'duration-base transition-colors',
-                'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
+                'focus-visible:ring-accent rounded-sm focus-visible:ring-2 focus-visible:outline-none',
               )}
             >
-              <ChevronLeft size={14} strokeWidth={1.5} aria-hidden="true" />
+              <ChevronLeft size={16} strokeWidth={1.5} aria-hidden="true" />
               {t('wizard.actions.back')}
             </button>
           ) : (
@@ -760,7 +859,7 @@ export const ConciergeRequestWizard = ({
               disabled={submitting}
               className={cn(
                 'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
-                'inline-flex items-center gap-3 rounded-full border px-6 py-3 text-xs tracking-widest whitespace-nowrap uppercase',
+                'inline-flex h-12 items-center gap-3 rounded-md border px-6 font-mono text-[11px] tracking-[0.18em] whitespace-nowrap uppercase sm:px-8',
                 'duration-base transition-[border-color,background-color,opacity]',
                 'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
                 'disabled:cursor-not-allowed disabled:opacity-50',
@@ -775,7 +874,7 @@ export const ConciergeRequestWizard = ({
               onClick={goNext}
               className={cn(
                 'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
-                'inline-flex items-center gap-3 rounded-full border px-6 py-3 text-xs tracking-widest whitespace-nowrap uppercase',
+                'inline-flex h-12 items-center gap-3 rounded-md border px-6 font-mono text-[11px] tracking-[0.18em] whitespace-nowrap uppercase sm:px-8',
                 'duration-base transition-[border-color,background-color]',
                 'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
               )}
