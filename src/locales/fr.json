@@ -409,6 +409,9 @@
       "copied": "Code copié dans le presse-papier",
       "generate": "Générer un code",
       "generated": "Nouveau code généré",
+      "revoke": "Révoquer",
+      "revoked": "Code révoqué",
+      "mockBanner": "Mode démo — Supabase non configuré. Les actions sont locales uniquement.",
       "statusValues": {
         "unused": "Non utilisé",
         "redeemed": "Utilisé",

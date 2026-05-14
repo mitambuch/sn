@@ -388,6 +388,9 @@
       "copied": "Code copied to clipboard",
       "generate": "Generate code",
       "generated": "New code generated",
+      "revoke": "Revoke",
+      "revoked": "Code revoked",
+      "mockBanner": "Demo mode — Supabase not configured. Actions are local only.",
       "statusValues": {
         "unused": "Unused",
         "redeemed": "Redeemed",
