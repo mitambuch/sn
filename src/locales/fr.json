@@ -234,6 +234,9 @@
       "preferences": "Préférences",
       "more": "Plus"
     },
+    "fab": {
+      "request": "Nouvelle demande"
+    },
     "catalogue": {
       "title": "Le catalogue",
       "lede": "Toutes les opportunités curatées par votre conciergerie, en un coup d'œil."

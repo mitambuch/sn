@@ -1,22 +1,30 @@
 // ═══════════════════════════════════════════════════
-// AppBottomNav — fixed mobile bottom navigation
+// AppBottomNav — fixed mobile bottom navigation with center FAB
 //
 // WHAT: Native-app-style bottom tab bar for the authenticated client
-//       surface (/account). 4 primary tabs + 1 "+" tab that opens the
-//       full sidebar drawer (which holds modules + profile + logout).
-//       Hidden on md+ (desktop uses the floor-to-ceiling sidebar).
-//       Honors iOS safe-area-inset-bottom (notch / home indicator).
+//       surface (/account). 4 tabs (Accueil · Tout · Demandes · Plus)
+//       + a CENTER-DOCKED FAB that sits raised above the bar and
+//       opens the ConciergeRequestWizard — the canonical entry point
+//       for any inquiry-creation form (real-estate, timepiece, art,
+//       travel, etc.). "Plus" opens the sidebar drawer which holds
+//       the remaining modules (Nouveautés, Événements, Propriétés,
+//       Garde-temps, Œuvres, Voyages, Conciergerie, Ma collection,
+//       Profil, Préférences, Déconnexion). "Ma collection" lives in
+//       the drawer (was on the bottom nav but its 12-char label
+//       wrapped on 2 lines — owner direction 2026-05-14 14:03).
+//       Hidden on md+ (desktop uses floor-to-ceiling sidebar).
 // WHEN: Mounted by AppLayout above the <main> on mobile only.
-// CHANGE TABS: edit BOTTOM_TABS below — keep max 5 for thumb reach.
-// CHANGE STYLES: tokens follow the landing — bg-ink, hairlines, mono
-//       caps. Active tab inverts (bg-bg text-ink).
+// CHANGE FAB ACTION: edit the openRequest call (currently opens the
+//       global ConciergeRequestWizard via useAccountRequest).
+// CHANGE TABS: edit BOTTOM_TABS below — keep 4 around the FAB.
 // ═══════════════════════════════════════════════════
 
 import { useLocale } from '@app/LocaleProvider';
 import { ROUTES } from '@constants/routes';
+import { useAccountRequest } from '@context/useAccountRequest';
 import { cn } from '@utils/cn';
 import type { LucideIcon } from 'lucide-react';
-import { Grid3x3, Heart, Inbox, LayoutDashboard, Plus } from 'lucide-react';
+import { Grid3x3, Inbox, LayoutDashboard, MoreHorizontal, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -27,28 +35,53 @@ interface BottomTab {
   exact?: boolean;
 }
 
-const BOTTOM_TABS: readonly BottomTab[] = [
+// 4 tabs : 2 left of the FAB + 2 right. Stays symmetric.
+const TABS_LEFT: readonly BottomTab[] = [
   { to: ROUTES.ACCOUNT, labelKey: 'account.nav.dashboard', icon: LayoutDashboard, exact: true },
   { to: ROUTES.ACCOUNT_CATALOGUE, labelKey: 'account.nav.catalogue', icon: Grid3x3 },
+];
+const TABS_RIGHT: readonly BottomTab[] = [
   { to: ROUTES.ACCOUNT_INQUIRIES, labelKey: 'account.nav.inquiries', icon: Inbox, exact: true },
-  { to: ROUTES.ACCOUNT_SAVED, labelKey: 'account.nav.saved', icon: Heart, exact: true },
 ];
 
 interface AppBottomNavProps {
-  /** Click handler for the "+" tab. Opens the sidebar drawer with the
-   *  full module list (events, properties, timepieces, etc.) + profile +
-   *  preferences + logout. */
+  /** Click handler for the "Plus" tab — opens the sidebar drawer with
+   *  the full module list + profile + preferences + logout. */
   onMoreClick: () => void;
-  /** Whether the "+" sheet (drawer) is currently open — drives the
-   *  active highlight on the "+" tab so users get a clear state cue. */
+  /** Whether the drawer is currently open — drives the active highlight
+   *  on the "Plus" tab so users get a clear state cue. */
   moreOpen: boolean;
 }
 
-/** Mobile bottom navigation — 4 main tabs + "+" sheet. */
-export const AppBottomNav = ({ onMoreClick, moreOpen }: AppBottomNavProps) => {
+const TabLink = ({ tab, pathname }: { tab: BottomTab; pathname: string }) => {
   const { t } = useTranslation();
   const { localePath } = useLocale();
+  const href = localePath(tab.to);
+  const isActive = tab.exact
+    ? pathname === href
+    : pathname === href || pathname.startsWith(`${href}/`);
+  const Icon = tab.icon;
+  return (
+    <Link
+      to={href}
+      aria-current={isActive ? 'page' : undefined}
+      className={cn(
+        'flex flex-col items-center justify-center gap-1 px-1 text-[10px] tracking-widest uppercase',
+        'transition-colors duration-200',
+        isActive ? 'text-on-ink' : 'text-on-ink/55',
+      )}
+    >
+      <Icon size={18} strokeWidth={1.5} aria-hidden="true" />
+      <span className="font-mono">{t(tab.labelKey)}</span>
+    </Link>
+  );
+};
+
+/** Mobile bottom navigation — 4 tabs + center FAB + drawer trigger. */
+export const AppBottomNav = ({ onMoreClick, moreOpen }: AppBottomNavProps) => {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
+  const { openRequest } = useAccountRequest();
 
   return (
     <nav
@@ -60,29 +93,37 @@ export const AppBottomNav = ({ onMoreClick, moreOpen }: AppBottomNavProps) => {
         'md:hidden',
       )}
     >
+      {/* Center FAB — bg-bg + text-ink for max contrast, raised above the
+          bar by ~28px so it reads as a primary action separate from the
+          flat tabs. Opens the ConciergeRequestWizard (any-form entry). */}
+      <button
+        type="button"
+        onClick={() => {
+          openRequest();
+        }}
+        aria-label={t('account.fab.request')}
+        className={cn(
+          'bg-bg text-ink border-ink/10 absolute -top-6 left-1/2 -translate-x-1/2',
+          'inline-flex h-14 w-14 items-center justify-center rounded-full border-2 shadow-lg',
+          'transition-transform duration-150 ease-out active:scale-95',
+          'focus-visible:ring-on-ink focus-visible:ring-offset-ink focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+        )}
+      >
+        <Plus size={26} strokeWidth={1.75} aria-hidden="true" />
+      </button>
+
+      {/* 5-col grid : 2 tabs left | FAB spacer | 1 tab right | Plus tab */}
       <div className="mx-auto grid h-14 max-w-md grid-cols-5">
-        {BOTTOM_TABS.map(tab => {
-          const href = localePath(tab.to);
-          const isActive = tab.exact
-            ? pathname === href
-            : pathname === href || pathname.startsWith(`${href}/`);
-          const Icon = tab.icon;
-          return (
-            <Link
-              key={tab.to}
-              to={href}
-              aria-current={isActive ? 'page' : undefined}
-              className={cn(
-                'flex flex-col items-center justify-center gap-1 px-1 text-[10px] tracking-widest uppercase',
-                'transition-colors duration-200',
-                isActive ? 'text-on-ink' : 'text-on-ink/55',
-              )}
-            >
-              <Icon size={18} strokeWidth={1.5} aria-hidden="true" />
-              <span className="font-mono">{t(tab.labelKey)}</span>
-            </Link>
-          );
-        })}
+        {TABS_LEFT.map(tab => (
+          <TabLink key={tab.to} tab={tab} pathname={pathname} />
+        ))}
+
+        {/* Spacer cell for the FAB — keeps the grid balanced */}
+        <span aria-hidden="true" />
+
+        {TABS_RIGHT.map(tab => (
+          <TabLink key={tab.to} tab={tab} pathname={pathname} />
+        ))}
 
         <button
           type="button"
@@ -96,7 +137,7 @@ export const AppBottomNav = ({ onMoreClick, moreOpen }: AppBottomNavProps) => {
             moreOpen ? 'text-on-ink' : 'text-on-ink/55',
           )}
         >
-          <Plus size={18} strokeWidth={1.5} aria-hidden="true" />
+          <MoreHorizontal size={18} strokeWidth={1.5} aria-hidden="true" />
           <span className="font-mono">{t('account.nav.more')}</span>
         </button>
       </div>

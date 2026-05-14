@@ -17,15 +17,12 @@ import { MagneticHover } from '@components/ui/MagneticHover';
 import { Skeleton } from '@components/ui/Skeleton';
 import { StatusPill } from '@components/ui/StatusPill';
 import { ROUTES } from '@constants/routes';
-import {
-  ConciergeRequestWizard,
-  type WizardCategory,
-} from '@features/concierge-request/ConciergeRequestWizard';
+import { useAccountRequest } from '@context/useAccountRequest';
+import { type WizardCategory } from '@features/concierge-request/ConciergeRequestWizard';
 import { useFakeLoading } from '@hooks/useFakeLoading';
 import { cn } from '@utils/cn';
 import type { LucideIcon } from 'lucide-react';
 import { Briefcase, Compass, Frame, Mail, Phone, Watch } from 'lucide-react';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -99,12 +96,12 @@ const GreetingSection = () => {
 /* ─── Section: Personalised request CTA + shortcuts ──── */
 const PersonalisedRequestSection = () => {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
-  const [initialCategory, setInitialCategory] = useState<WizardCategory | undefined>(undefined);
+  // Wizard is mounted globally at AppLayout level via AccountRequestModalProvider
+  // so the same instance is shared with the bottom-nav FAB. No local state.
+  const { openRequest } = useAccountRequest();
 
   const openWith = (category?: WizardCategory) => {
-    setInitialCategory(category);
-    setOpen(true);
+    openRequest(category);
   };
 
   return (
@@ -156,12 +153,6 @@ const PersonalisedRequestSection = () => {
           ))}
         </div>
       </section>
-
-      <ConciergeRequestWizard
-        open={open}
-        onClose={() => setOpen(false)}
-        {...(initialCategory && { initialCategory })}
-      />
     </>
   );
 };

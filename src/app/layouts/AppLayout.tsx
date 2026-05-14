@@ -16,6 +16,7 @@ import { AppBottomNav } from '@app/layouts/AppBottomNav';
 import { useLocale } from '@app/LocaleProvider';
 import { Header } from '@components/layout/Header';
 import { ROUTES } from '@constants/routes';
+import { AccountRequestModalProvider } from '@context/AccountRequestModalContext';
 import { useAuth } from '@context/AuthContext';
 import { ConciergeDock } from '@features/concierge/ConciergeDock';
 import { CommandPalette } from '@features/search/CommandPalette';
@@ -75,7 +76,9 @@ const ACCOUNT_NAV_USER: NavItem[] = [
 export const AppLayout = () => {
   return (
     <RequireAuth>
-      <AppShell />
+      <AccountRequestModalProvider>
+        <AppShell />
+      </AccountRequestModalProvider>
     </RequireAuth>
   );
 };
