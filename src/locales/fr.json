@@ -418,6 +418,9 @@
       "revoke": "Révoquer",
       "revoked": "Code révoqué",
       "mockBanner": "Mode démo — Supabase non configuré. Les actions sont locales uniquement.",
+      "filterAll": "Tous",
+      "emptyAll": "Aucun code généré pour le moment. Lancez le premier ci-dessous.",
+      "emptyFiltered": "Aucun code dans ce statut.",
       "statusValues": {
         "unused": "Non utilisé",
         "redeemed": "Utilisé",

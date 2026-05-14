@@ -397,6 +397,9 @@
       "revoke": "Revoke",
       "revoked": "Code revoked",
       "mockBanner": "Demo mode — Supabase not configured. Actions are local only.",
+      "filterAll": "All",
+      "emptyAll": "No code generated yet. Mint the first one below.",
+      "emptyFiltered": "No code in this status.",
       "statusValues": {
         "unused": "Unused",
         "redeemed": "Redeemed",
