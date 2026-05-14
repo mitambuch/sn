@@ -15,12 +15,29 @@
 //       - Visual segmented progress bar replaces "n/total" text
 //       - Header carries a category breadcrumb chip on step 2+
 //       - Modal width max-w-2xl → max-w-3xl, border-fg/15 tighter
-//       - Category picker : 2x3 (mobile/tablet) / 3x2 (desktop) cards
+//       - Category picker : 2 cols mobile / 3 cols tablet+ cards
 //         flex-col with raised icon, selected = filled fg bg-fg
 //       - Form atoms : inputs h-12 with focus ring, labels in font-mono
 //         tracking-[0.18em] (less screaming than tracking-widest)
 //       - Review summary : surface card with mono uppercase labels
 //       - Footer + CTAs : h-12 generous, mono caps tracking-[0.18em]
+//
+//       Premium-controls rework 2026-05-14 15:34 (owner direction "fait
+//       un truc où on doit pas mettre à la main les chiffres, je veux
+//       un truc de formulaire PREMIUM et tellement fluide") :
+//       - RangeSlider atom (dual-thumb bucketed slider) replaces every
+//         min/max numeric input pair — surface, year, every budget
+//       - Stepper atom (+/− buttons) replaces every standalone number
+//         input — passengers, bedrooms, guests, art dimensions
+//       - CHF formatter shared across the 5 budget sliders (50K, 1M, 5M…)
+//       - Review step compacted : range pairs collapse to a single
+//         "min — max" row, 2-col grid, no scroll on a typical phone
+//       - Callback CTA demoted to a quiet "or [link]" under the dl
+//         (was a full-width ghost button)
+//       - Mobile chrome trimmed : header py-3 (was py-4), body px-5
+//         (was px-6), category cards p-3 + h-9 icon (was p-4 + h-11),
+//         hint hidden below sm — 6 categories fit above the fold on
+//         a 375 × 667 phone.
 // WHEN: Triggered from AccountDashboard "Une demande personnalisée"
 //       CTA or 4 quick-shortcut buttons (skip step 1 via
 //       initialCategory prop). Also mounted at the AppLayout level via
@@ -32,6 +49,8 @@
 // ═══════════════════════════════════════════════════
 
 import { ImageUpload } from '@components/ui/ImageUpload';
+import { RangeSlider } from '@components/ui/RangeSlider';
+import { Stepper } from '@components/ui/Stepper';
 import { Textarea } from '@components/ui/Textarea';
 import { useToast } from '@hooks/useToast';
 import { cn } from '@utils/cn';
@@ -94,6 +113,52 @@ interface ConciergeRequestWizardProps {
 }
 
 type FormState = Record<string, string>;
+
+/* ─── Step config — bucketed slider scales + CHF formatter. Owner
+       direction 2026-05-14 15:34 : "fait un truc où on doit pas mettre
+       à la main les chiffres". Every numeric range is a bucketed
+       RangeSlider with discrete steps ; the CHF formatter is shared
+       across the 5 budget sliders so visual consistency is built-in. */
+
+const SURFACE_STEPS = [0, 50, 100, 150, 200, 300, 500, 750, 1000, 1500, 2500] as const;
+const YEAR_STEPS = Array.from({ length: 76 }, (_, i) => 1950 + i); // 1950..2025
+
+const BUDGET_REAL_ESTATE = [
+  0, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000, 100_000_000,
+] as const;
+const BUDGET_TIMEPIECE = [
+  0, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000,
+] as const;
+const BUDGET_ART = [
+  0, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000,
+] as const;
+const BUDGET_TRAVEL = [
+  0, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000,
+] as const;
+const BUDGET_EXPERIENCE = [
+  0, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000,
+] as const;
+
+const formatCHF = (n: number): string => {
+  if (n === 0) return '0';
+  if (n >= 1_000_000) {
+    const m = n / 1_000_000;
+    return `${m.toLocaleString('fr-CH', { maximumFractionDigits: 1 })} M CHF`;
+  }
+  if (n >= 1_000) {
+    return `${(n / 1_000).toLocaleString('fr-CH', { maximumFractionDigits: 0 })}K CHF`;
+  }
+  return `${n.toLocaleString('fr-CH')} CHF`;
+};
+const formatM2 = (n: number): string => (n === 0 ? '0' : `${n.toLocaleString('fr-CH')} m²`);
+const formatYear = (n: number): string => String(n);
+
+/** Read a numeric value from the string-keyed FormState, fall back to default. */
+const num = (v: string | undefined, fallback: number): number => {
+  if (!v) return fallback;
+  const parsed = parseInt(v, 10);
+  return Number.isFinite(parsed) ? parsed : fallback;
+};
 
 /* ─── Form atoms — local to the wizard. Tuned for an app-grade feel :
        h-12 inputs (48px touch targets), label in mono caps but smaller
@@ -282,13 +347,13 @@ export const ConciergeRequestWizard = ({
         className="bg-bg/80 absolute inset-0 backdrop-blur-sm"
       />
 
-      <div className="border-fg/15 bg-bg rounded-card shadow-card-rest relative flex max-h-[92vh] w-full max-w-3xl flex-col overflow-hidden border">
+      <div className="border-fg/15 bg-bg shadow-card-rest sm:rounded-card relative flex max-h-[92vh] w-full max-w-3xl flex-col overflow-hidden rounded-lg border">
         {/* ─── Header — eyebrow row + visual progress bar. Each segment
               animates fill on step change so the member feels forward
               motion. The category breadcrumb (when set) reminds them of
               the current scope. ─────────────────────────────────────── */}
         <header className="border-fg/10 border-b">
-          <div className="flex items-center justify-between gap-3 px-6 py-4 sm:px-8 sm:py-5">
+          <div className="flex items-center justify-between gap-3 px-5 py-3 sm:px-8 sm:py-5">
             <div className="flex min-w-0 items-center gap-3">
               <span className="text-muted font-mono text-[10px] tracking-[0.2em] uppercase">
                 {String(stepNumber).padStart(2, '0')} / {String(stepTotal).padStart(2, '0')}
@@ -322,7 +387,7 @@ export const ConciergeRequestWizard = ({
             aria-valuemin={0}
             aria-valuemax={stepTotal}
             aria-valuenow={stepNumber}
-            className="bg-fg/5 flex h-1 w-full gap-0.5 px-6 sm:px-8"
+            className="bg-fg/5 flex h-1 w-full gap-0.5 px-5 sm:px-8"
           >
             {chain.map((s, i) => (
               <span
@@ -337,25 +402,26 @@ export const ConciergeRequestWizard = ({
           </div>
         </header>
 
-        {/* ─── Body ─── */}
-        <div className="flex-1 overflow-y-auto px-6 py-6 sm:px-8 sm:py-8">
+        {/* ─── Body — tighter mobile padding for the no-scroll mantra. ── */}
+        <div className="flex-1 overflow-y-auto px-5 py-5 sm:px-8 sm:py-8">
           {step === 'category' && (
-            <div className="space-y-7">
-              <header className="space-y-3">
+            <div className="space-y-5 sm:space-y-7">
+              <header className="space-y-2 sm:space-y-3">
                 <span className="text-muted font-mono text-[10px] tracking-[0.2em] uppercase">
                   {t('wizard.step.category')}
                 </span>
-                <h2 className="text-fg font-mono text-2xl font-bold tracking-tight uppercase sm:text-3xl">
+                <h2 className="text-fg font-mono text-xl font-bold tracking-tight uppercase sm:text-2xl md:text-3xl">
                   {t('wizard.title')}
                 </h2>
                 <p className="text-muted max-w-prose text-sm leading-relaxed">
                   {t('wizard.category.lede')}
                 </p>
               </header>
-              {/* 2 cols mobile/tablet, 3 cols desktop. Cards stack icon
-                  on top of title+hint with breathing inside : reads
-                  more like a native picker than a list row. */}
-              <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
+              {/* 2 cols mobile, 3 cols tablet+. Compact mobile padding so
+                  the 6 cards fit visible without a long scroll. Hint
+                  text hidden below sm to keep cards short (the icon +
+                  title is enough at that size). */}
+              <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-4">
                 {CATEGORIES.map(c => {
                   const Icon = CATEGORY_ICON[c];
                   const selected = category === c;
@@ -368,7 +434,7 @@ export const ConciergeRequestWizard = ({
                         setStep(c === 'other' ? 'extras' : 'fields');
                       }}
                       className={cn(
-                        'group bg-surface/60 hover:bg-surface flex flex-col items-start gap-3 rounded-xl border p-4 text-left sm:p-5',
+                        'group bg-surface/60 hover:bg-surface flex flex-col items-start gap-2 rounded-xl border p-3 text-left sm:gap-3 sm:p-5',
                         'transition-[border-color,background-color,box-shadow] duration-300',
                         'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
                         selected
@@ -378,19 +444,19 @@ export const ConciergeRequestWizard = ({
                     >
                       <span
                         className={cn(
-                          'flex h-11 w-11 shrink-0 items-center justify-center rounded-full border transition-colors duration-300',
+                          'flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-colors duration-300 sm:h-11 sm:w-11',
                           selected
                             ? 'border-fg bg-fg text-bg'
                             : 'border-fg/15 bg-bg text-fg group-hover:border-fg/40',
                         )}
                       >
-                        <Icon size={18} strokeWidth={1.5} aria-hidden="true" />
+                        <Icon size={16} strokeWidth={1.5} aria-hidden="true" />
                       </span>
-                      <div className="flex flex-col gap-1">
-                        <span className="text-fg text-sm leading-tight font-medium sm:text-base">
+                      <div className="flex flex-col gap-0.5 sm:gap-1">
+                        <span className="text-fg text-[13px] leading-tight font-medium sm:text-base">
                           {t(`wizard.category.${c}.title`)}
                         </span>
-                        <span className="text-muted text-xs leading-snug">
+                        <span className="text-muted hidden text-xs leading-snug sm:inline">
                           {t(`wizard.category.${c}.hint`)}
                         </span>
                       </div>
@@ -402,8 +468,8 @@ export const ConciergeRequestWizard = ({
           )}
 
           {step === 'fields' && category && category !== 'other' && (
-            <div className="space-y-7">
-              <header className="space-y-3">
+            <div className="space-y-5 sm:space-y-7">
+              <header className="space-y-2 sm:space-y-3">
                 <div className="flex items-center gap-2">
                   <span className="border-fg/15 bg-surface/60 text-fg inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-[10px] tracking-[0.15em] uppercase">
                     {(() => {
@@ -413,7 +479,7 @@ export const ConciergeRequestWizard = ({
                     {t(`wizard.category.${category}.title`)}
                   </span>
                 </div>
-                <h2 className="text-fg font-mono text-2xl font-bold tracking-tight uppercase sm:text-3xl">
+                <h2 className="text-fg font-mono text-xl font-bold tracking-tight uppercase sm:text-2xl md:text-3xl">
                   {t('wizard.step.fields')}
                 </h2>
                 <p className="text-muted max-w-prose text-sm leading-relaxed">
@@ -422,7 +488,7 @@ export const ConciergeRequestWizard = ({
               </header>
 
               {category === 'travel' && (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   <FieldText
                     id="travel-departure"
                     label={t('wizard.fields.travel.departure')}
@@ -451,26 +517,36 @@ export const ConciergeRequestWizard = ({
                     value={fields.travelDateEnd ?? ''}
                     onChange={v => setField('travelDateEnd', v)}
                   />
-                  <FieldText
+                  <Stepper
                     id="travel-passengers"
-                    type="number"
                     label={t('wizard.fields.travel.passengers')}
-                    placeholder={t('wizard.fields.travel.passengersPlaceholder')}
-                    value={fields.travelPassengers ?? ''}
-                    onChange={v => setField('travelPassengers', v)}
+                    value={num(fields.travelPassengers, 0)}
+                    min={0}
+                    max={50}
+                    onChange={n => setField('travelPassengers', n === 0 ? '' : String(n))}
                   />
-                  <FieldText
-                    id="travel-budget"
-                    label={t('wizard.fields.travel.budget')}
-                    placeholder={t('wizard.fields.travel.budgetPlaceholder')}
-                    value={fields.travelBudget ?? ''}
-                    onChange={v => setField('travelBudget', v)}
-                  />
+                  <div className="sm:col-span-2">
+                    <RangeSlider
+                      id="travel-budget"
+                      label={t('wizard.fields.travel.budget')}
+                      steps={BUDGET_TRAVEL}
+                      value={[
+                        num(fields.travelBudgetMin, BUDGET_TRAVEL[0]),
+                        num(fields.travelBudgetMax, BUDGET_TRAVEL[BUDGET_TRAVEL.length - 1]!),
+                      ]}
+                      onChange={([min, max]) => {
+                        setField('travelBudgetMin', String(min));
+                        setField('travelBudgetMax', String(max));
+                      }}
+                      format={formatCHF}
+                      maxSuffix="+"
+                    />
+                  </div>
                 </div>
               )}
 
               {category === 'timepiece' && (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   <FieldText
                     id="tp-brand"
                     label={t('wizard.fields.timepiece.brand')}
@@ -484,20 +560,6 @@ export const ConciergeRequestWizard = ({
                     placeholder={t('wizard.fields.timepiece.modelPlaceholder')}
                     value={fields.timepieceModel ?? ''}
                     onChange={v => setField('timepieceModel', v)}
-                  />
-                  <FieldText
-                    id="tp-year-min"
-                    type="number"
-                    label={t('wizard.fields.timepiece.yearMin')}
-                    value={fields.timepieceYearMin ?? ''}
-                    onChange={v => setField('timepieceYearMin', v)}
-                  />
-                  <FieldText
-                    id="tp-year-max"
-                    type="number"
-                    label={t('wizard.fields.timepiece.yearMax')}
-                    value={fields.timepieceYearMax ?? ''}
-                    onChange={v => setField('timepieceYearMax', v)}
                   />
                   <FieldSelect
                     id="tp-condition"
@@ -514,18 +576,47 @@ export const ConciergeRequestWizard = ({
                       { value: 'any', label: t('wizard.fields.timepiece.conditionAny') },
                     ]}
                   />
-                  <FieldText
-                    id="tp-budget"
-                    label={t('wizard.fields.timepiece.budget')}
-                    placeholder={t('wizard.fields.timepiece.budgetPlaceholder')}
-                    value={fields.timepieceBudget ?? ''}
-                    onChange={v => setField('timepieceBudget', v)}
-                  />
+                  <div className="sm:col-span-2">
+                    <RangeSlider
+                      id="tp-year"
+                      label={t('wizard.fields.timepiece.year')}
+                      steps={YEAR_STEPS}
+                      value={[
+                        num(fields.timepieceYearMin, YEAR_STEPS[0]!),
+                        num(fields.timepieceYearMax, YEAR_STEPS[YEAR_STEPS.length - 1]!),
+                      ]}
+                      onChange={([min, max]) => {
+                        setField('timepieceYearMin', String(min));
+                        setField('timepieceYearMax', String(max));
+                      }}
+                      format={formatYear}
+                    />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <RangeSlider
+                      id="tp-budget"
+                      label={t('wizard.fields.timepiece.budget')}
+                      steps={BUDGET_TIMEPIECE}
+                      value={[
+                        num(fields.timepieceBudgetMin, BUDGET_TIMEPIECE[0]),
+                        num(
+                          fields.timepieceBudgetMax,
+                          BUDGET_TIMEPIECE[BUDGET_TIMEPIECE.length - 1]!,
+                        ),
+                      ]}
+                      onChange={([min, max]) => {
+                        setField('timepieceBudgetMin', String(min));
+                        setField('timepieceBudgetMax', String(max));
+                      }}
+                      format={formatCHF}
+                      maxSuffix="+"
+                    />
+                  </div>
                 </div>
               )}
 
               {category === 'real-estate' && (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   <FieldSelect
                     id="re-type"
                     label={t('wizard.fields.real-estate.type')}
@@ -546,26 +637,13 @@ export const ConciergeRequestWizard = ({
                     value={fields.realEstateRegion ?? ''}
                     onChange={v => setField('realEstateRegion', v)}
                   />
-                  <FieldText
-                    id="re-surface-min"
-                    type="number"
-                    label={t('wizard.fields.real-estate.surfaceMin')}
-                    value={fields.realEstateSurfaceMin ?? ''}
-                    onChange={v => setField('realEstateSurfaceMin', v)}
-                  />
-                  <FieldText
-                    id="re-surface-max"
-                    type="number"
-                    label={t('wizard.fields.real-estate.surfaceMax')}
-                    value={fields.realEstateSurfaceMax ?? ''}
-                    onChange={v => setField('realEstateSurfaceMax', v)}
-                  />
-                  <FieldText
+                  <Stepper
                     id="re-bedrooms"
-                    type="number"
                     label={t('wizard.fields.real-estate.bedrooms')}
-                    value={fields.realEstateBedrooms ?? ''}
-                    onChange={v => setField('realEstateBedrooms', v)}
+                    value={num(fields.realEstateBedrooms, 0)}
+                    min={0}
+                    max={20}
+                    onChange={n => setField('realEstateBedrooms', n === 0 ? '' : String(n))}
                   />
                   <FieldSelect
                     id="re-availability"
@@ -578,18 +656,48 @@ export const ConciergeRequestWizard = ({
                       { value: 'both', label: t('wizard.fields.real-estate.availabilityBoth') },
                     ]}
                   />
-                  <FieldText
-                    id="re-budget"
-                    label={t('wizard.fields.real-estate.budget')}
-                    placeholder={t('wizard.fields.real-estate.budgetPlaceholder')}
-                    value={fields.realEstateBudget ?? ''}
-                    onChange={v => setField('realEstateBudget', v)}
-                  />
+                  <div className="sm:col-span-2">
+                    <RangeSlider
+                      id="re-surface"
+                      label={t('wizard.fields.real-estate.surface')}
+                      steps={SURFACE_STEPS}
+                      value={[
+                        num(fields.realEstateSurfaceMin, SURFACE_STEPS[0]),
+                        num(fields.realEstateSurfaceMax, SURFACE_STEPS[SURFACE_STEPS.length - 1]!),
+                      ]}
+                      onChange={([min, max]) => {
+                        setField('realEstateSurfaceMin', String(min));
+                        setField('realEstateSurfaceMax', String(max));
+                      }}
+                      format={formatM2}
+                      maxSuffix="+"
+                    />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <RangeSlider
+                      id="re-budget"
+                      label={t('wizard.fields.real-estate.budget')}
+                      steps={BUDGET_REAL_ESTATE}
+                      value={[
+                        num(fields.realEstateBudgetMin, BUDGET_REAL_ESTATE[0]),
+                        num(
+                          fields.realEstateBudgetMax,
+                          BUDGET_REAL_ESTATE[BUDGET_REAL_ESTATE.length - 1]!,
+                        ),
+                      ]}
+                      onChange={([min, max]) => {
+                        setField('realEstateBudgetMin', String(min));
+                        setField('realEstateBudgetMax', String(max));
+                      }}
+                      format={formatCHF}
+                      maxSuffix="+"
+                    />
+                  </div>
                 </div>
               )}
 
               {category === 'art' && (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   <FieldText
                     id="art-artist"
                     label={t('wizard.fields.art.artist')}
@@ -622,32 +730,48 @@ export const ConciergeRequestWizard = ({
                       { value: 'mixed', label: t('wizard.fields.art.mediumMixed') },
                     ]}
                   />
-                  <FieldText
-                    id="art-height-max"
-                    type="number"
+                  <Stepper
+                    id="art-height"
                     label={t('wizard.fields.art.heightMax')}
-                    value={fields.artHeightMax ?? ''}
-                    onChange={v => setField('artHeightMax', v)}
+                    value={num(fields.artHeightMax, 0)}
+                    min={0}
+                    max={500}
+                    step={10}
+                    unit={t('wizard.fields.art.dimensionsUnit')}
+                    onChange={n => setField('artHeightMax', n === 0 ? '' : String(n))}
                   />
-                  <FieldText
-                    id="art-width-max"
-                    type="number"
+                  <Stepper
+                    id="art-width"
                     label={t('wizard.fields.art.widthMax')}
-                    value={fields.artWidthMax ?? ''}
-                    onChange={v => setField('artWidthMax', v)}
+                    value={num(fields.artWidthMax, 0)}
+                    min={0}
+                    max={500}
+                    step={10}
+                    unit={t('wizard.fields.art.dimensionsUnit')}
+                    onChange={n => setField('artWidthMax', n === 0 ? '' : String(n))}
                   />
-                  <FieldText
-                    id="art-budget"
-                    label={t('wizard.fields.art.budget')}
-                    placeholder={t('wizard.fields.art.budgetPlaceholder')}
-                    value={fields.artBudget ?? ''}
-                    onChange={v => setField('artBudget', v)}
-                  />
+                  <div className="sm:col-span-2">
+                    <RangeSlider
+                      id="art-budget"
+                      label={t('wizard.fields.art.budget')}
+                      steps={BUDGET_ART}
+                      value={[
+                        num(fields.artBudgetMin, BUDGET_ART[0]),
+                        num(fields.artBudgetMax, BUDGET_ART[BUDGET_ART.length - 1]!),
+                      ]}
+                      onChange={([min, max]) => {
+                        setField('artBudgetMin', String(min));
+                        setField('artBudgetMax', String(max));
+                      }}
+                      format={formatCHF}
+                      maxSuffix="+"
+                    />
+                  </div>
                 </div>
               )}
 
               {category === 'experience' && (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   <FieldSelect
                     id="exp-type"
                     label={t('wizard.fields.experience.type')}
@@ -676,13 +800,13 @@ export const ConciergeRequestWizard = ({
                     value={fields.experienceLocation ?? ''}
                     onChange={v => setField('experienceLocation', v)}
                   />
-                  <FieldText
+                  <Stepper
                     id="exp-guests"
-                    type="number"
                     label={t('wizard.fields.experience.guests')}
-                    placeholder={t('wizard.fields.experience.guestsPlaceholder')}
-                    value={fields.experienceGuests ?? ''}
-                    onChange={v => setField('experienceGuests', v)}
+                    value={num(fields.experienceGuests, 0)}
+                    min={0}
+                    max={200}
+                    onChange={n => setField('experienceGuests', n === 0 ? '' : String(n))}
                   />
                   <FieldSelect
                     id="exp-dress"
@@ -695,21 +819,34 @@ export const ConciergeRequestWizard = ({
                       { value: 'blackTie', label: t('wizard.fields.experience.dressBlackTie') },
                     ]}
                   />
-                  <FieldText
-                    id="exp-budget"
-                    label={t('wizard.fields.experience.budget')}
-                    placeholder={t('wizard.fields.experience.budgetPlaceholder')}
-                    value={fields.experienceBudget ?? ''}
-                    onChange={v => setField('experienceBudget', v)}
-                  />
+                  <div className="sm:col-span-2">
+                    <RangeSlider
+                      id="exp-budget"
+                      label={t('wizard.fields.experience.budget')}
+                      steps={BUDGET_EXPERIENCE}
+                      value={[
+                        num(fields.experienceBudgetMin, BUDGET_EXPERIENCE[0]),
+                        num(
+                          fields.experienceBudgetMax,
+                          BUDGET_EXPERIENCE[BUDGET_EXPERIENCE.length - 1]!,
+                        ),
+                      ]}
+                      onChange={([min, max]) => {
+                        setField('experienceBudgetMin', String(min));
+                        setField('experienceBudgetMax', String(max));
+                      }}
+                      format={formatCHF}
+                      maxSuffix="+"
+                    />
+                  </div>
                 </div>
               )}
             </div>
           )}
 
           {step === 'extras' && category && (
-            <div className="space-y-7">
-              <header className="space-y-3">
+            <div className="space-y-5 sm:space-y-7">
+              <header className="space-y-2 sm:space-y-3">
                 <div className="flex items-center gap-2">
                   <span className="border-fg/15 bg-surface/60 text-fg inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-[10px] tracking-[0.15em] uppercase">
                     {(() => {
@@ -719,7 +856,7 @@ export const ConciergeRequestWizard = ({
                     {t(`wizard.category.${category}.title`)}
                   </span>
                 </div>
-                <h2 className="text-fg font-mono text-2xl font-bold tracking-tight uppercase sm:text-3xl">
+                <h2 className="text-fg font-mono text-xl font-bold tracking-tight uppercase sm:text-2xl md:text-3xl">
                   {t('wizard.step.extras')}
                 </h2>
                 <p className="text-muted max-w-prose text-sm leading-relaxed">
@@ -746,87 +883,179 @@ export const ConciergeRequestWizard = ({
           )}
 
           {step === 'review' && category && (
-            <div className="space-y-7">
-              <header className="space-y-3">
-                <span className="text-muted font-mono text-[10px] tracking-[0.2em] uppercase">
-                  {t('wizard.step.review')}
-                </span>
-                <h2 className="text-fg font-mono text-2xl font-bold tracking-tight uppercase sm:text-3xl">
+            <div className="space-y-5">
+              <header className="space-y-1.5">
+                <h2 className="text-fg font-mono text-xl font-bold tracking-tight uppercase sm:text-2xl">
                   {t('wizard.review.title')}
                 </h2>
-                <p className="text-muted max-w-prose text-sm leading-relaxed">
+                <p className="text-muted text-xs leading-relaxed sm:text-sm">
                   {t('wizard.review.lede')}
                 </p>
               </header>
 
-              <dl className="border-fg/15 divide-fg/10 bg-surface/60 divide-y rounded-xl border">
-                <div className="flex flex-col gap-1.5 px-5 py-4 sm:px-6 sm:py-5">
-                  <dt className="text-muted font-mono text-[10px] tracking-[0.18em] uppercase">
-                    {t('wizard.review.categoryLabel')}
-                  </dt>
-                  <dd className="text-fg text-sm font-medium">
-                    {t(`wizard.category.${category}.title`)}
-                  </dd>
-                </div>
-                {Object.entries(fields)
-                  .filter(([, v]) => v.trim().length > 0)
-                  .map(([key, value]) => (
-                    <div key={key} className="flex flex-col gap-1.5 px-5 py-4 sm:px-6 sm:py-5">
-                      <dt className="text-muted font-mono text-[10px] tracking-[0.18em] uppercase">
-                        {/* i18n lookup : map prefix → category i18n key. */}
-                        {(() => {
-                          const lookups: { prefix: string; ns: string }[] = [
-                            { prefix: 'travel', ns: 'travel' },
-                            { prefix: 'timepiece', ns: 'timepiece' },
-                            { prefix: 'realEstate', ns: 'real-estate' },
-                            { prefix: 'art', ns: 'art' },
-                            { prefix: 'experience', ns: 'experience' },
-                          ];
-                          for (const { prefix, ns } of lookups) {
-                            if (key.startsWith(prefix)) {
-                              const sub = key.slice(prefix.length);
-                              return t(
-                                `wizard.fields.${ns}.${sub.charAt(0).toLowerCase()}${sub.slice(1)}`,
-                              );
-                            }
-                          }
-                          return key;
-                        })()}
-                      </dt>
-                      <dd className="text-fg text-sm">{value}</dd>
-                    </div>
-                  ))}
-                {description.trim().length > 0 && (
-                  <div className="flex flex-col gap-1.5 px-5 py-4 sm:px-6 sm:py-5">
-                    <dt className="text-muted font-mono text-[10px] tracking-[0.18em] uppercase">
-                      {t('wizard.review.descriptionLabel')}
-                    </dt>
-                    <dd className="text-fg text-sm leading-relaxed whitespace-pre-wrap">
-                      {description}
-                    </dd>
-                  </div>
-                )}
-              </dl>
+              {/* Compact review grid — 2 cols sm+, each cell is a label
+                  over value pair. Range pairs (min/max) are combined into
+                  one row so 6 wizard fields don't render as 12 review
+                  lines. Description spans the full width when present. */}
+              {(() => {
+                type Item = { key: string; label: string; value: string; fullWidth?: boolean };
+                const items: Item[] = [
+                  {
+                    key: 'category',
+                    label: t('wizard.review.categoryLabel'),
+                    value: t(`wizard.category.${category}.title`),
+                  },
+                ];
 
-              {/* Alternative fast lane : ask Salva to call back, no form
-                  needed. Same h-12 / mono caps treatment as the main
-                  footer ghost button so the two ghost CTAs feel
-                  coherent. */}
-              <button
-                type="button"
-                onClick={() => handleSubmit('callback')}
-                disabled={submitting}
-                className={cn(
-                  'border-fg/20 text-fg hover:border-fg/50 hover:bg-surface/40 focus-visible:ring-accent',
-                  'inline-flex h-12 w-full items-center justify-center gap-2.5 rounded-md border bg-transparent font-mono text-[11px] tracking-[0.18em] whitespace-nowrap uppercase',
-                  'duration-base transition-[color,border-color,background-color]',
-                  'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
-                  'disabled:cursor-not-allowed disabled:opacity-50',
-                )}
-              >
-                <PhoneCall size={14} strokeWidth={1.5} aria-hidden="true" />
-                {t('callback.cta')}
-              </button>
+                // Range pairs to combine — each (minKey, maxKey) tuple
+                // collapses to a single "x — y" row when at least one
+                // value differs from the bucket default of 0.
+                const rangePairs: {
+                  min: string;
+                  max: string;
+                  label: string;
+                  format: (n: number) => string;
+                }[] = [
+                  {
+                    min: 'realEstateSurfaceMin',
+                    max: 'realEstateSurfaceMax',
+                    label: t('wizard.fields.real-estate.surface'),
+                    format: formatM2,
+                  },
+                  {
+                    min: 'realEstateBudgetMin',
+                    max: 'realEstateBudgetMax',
+                    label: t('wizard.fields.real-estate.budget'),
+                    format: formatCHF,
+                  },
+                  {
+                    min: 'timepieceYearMin',
+                    max: 'timepieceYearMax',
+                    label: t('wizard.fields.timepiece.year'),
+                    format: formatYear,
+                  },
+                  {
+                    min: 'timepieceBudgetMin',
+                    max: 'timepieceBudgetMax',
+                    label: t('wizard.fields.timepiece.budget'),
+                    format: formatCHF,
+                  },
+                  {
+                    min: 'artBudgetMin',
+                    max: 'artBudgetMax',
+                    label: t('wizard.fields.art.budget'),
+                    format: formatCHF,
+                  },
+                  {
+                    min: 'travelBudgetMin',
+                    max: 'travelBudgetMax',
+                    label: t('wizard.fields.travel.budget'),
+                    format: formatCHF,
+                  },
+                  {
+                    min: 'experienceBudgetMin',
+                    max: 'experienceBudgetMax',
+                    label: t('wizard.fields.experience.budget'),
+                    format: formatCHF,
+                  },
+                ];
+
+                const consumed = new Set<string>();
+                for (const pair of rangePairs) {
+                  const minStr = fields[pair.min];
+                  const maxStr = fields[pair.max];
+                  if (minStr === undefined && maxStr === undefined) continue;
+                  consumed.add(pair.min);
+                  consumed.add(pair.max);
+                  const minN = num(minStr, 0);
+                  const maxN = num(maxStr, 0);
+                  if (minN === 0 && maxN === 0) continue;
+                  items.push({
+                    key: pair.min,
+                    label: pair.label,
+                    value: `${pair.format(minN)}  —  ${pair.format(maxN)}`,
+                  });
+                }
+
+                // Remaining scalar fields — reuse the original i18n lookup.
+                const labelFor = (key: string): string => {
+                  const lookups: { prefix: string; ns: string }[] = [
+                    { prefix: 'travel', ns: 'travel' },
+                    { prefix: 'timepiece', ns: 'timepiece' },
+                    { prefix: 'realEstate', ns: 'real-estate' },
+                    { prefix: 'art', ns: 'art' },
+                    { prefix: 'experience', ns: 'experience' },
+                  ];
+                  for (const { prefix, ns } of lookups) {
+                    if (key.startsWith(prefix)) {
+                      const sub = key.slice(prefix.length);
+                      return t(`wizard.fields.${ns}.${sub.charAt(0).toLowerCase()}${sub.slice(1)}`);
+                    }
+                  }
+                  return key;
+                };
+
+                for (const [key, value] of Object.entries(fields)) {
+                  if (consumed.has(key)) continue;
+                  if (!value.trim()) continue;
+                  items.push({ key, label: labelFor(key), value });
+                }
+
+                if (description.trim().length > 0) {
+                  items.push({
+                    key: '__description',
+                    label: t('wizard.review.descriptionLabel'),
+                    value: description,
+                    fullWidth: true,
+                  });
+                }
+
+                return (
+                  <dl className="border-fg/15 bg-surface/60 grid grid-cols-1 gap-x-6 gap-y-4 rounded-xl border p-5 sm:grid-cols-2 sm:p-6">
+                    {items.map(item => (
+                      <div
+                        key={item.key}
+                        className={cn('flex flex-col gap-1', item.fullWidth && 'sm:col-span-2')}
+                      >
+                        <dt className="text-muted font-mono text-[10px] tracking-[0.18em] uppercase">
+                          {item.label}
+                        </dt>
+                        <dd
+                          className={cn(
+                            'text-fg text-sm leading-snug',
+                            item.fullWidth && 'whitespace-pre-wrap',
+                          )}
+                        >
+                          {item.value}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                );
+              })()}
+
+              {/* Fast lane — owner direction 2026-05-14 15:34 : "le bouton
+                  on a callback.cta" : keep the option, present it as a
+                  clearly secondary action with a quiet style so it
+                  doesn't compete with the primary footer Submit. */}
+              <div className="flex items-center gap-3 text-xs">
+                <span className="text-muted font-mono text-[10px] tracking-[0.18em] uppercase">
+                  {t('callback.or')}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => handleSubmit('callback')}
+                  disabled={submitting}
+                  className={cn(
+                    'text-fg duration-base inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.18em] uppercase underline underline-offset-4 transition-opacity',
+                    'focus-visible:ring-accent rounded-sm focus-visible:ring-2 focus-visible:outline-none',
+                    'disabled:cursor-not-allowed disabled:opacity-50',
+                  )}
+                >
+                  <PhoneCall size={12} strokeWidth={1.75} aria-hidden="true" />
+                  {t('callback.cta')}
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -834,7 +1063,7 @@ export const ConciergeRequestWizard = ({
         {/* ─── Footer — h-12 generous touch targets, mono caps chrome
               consistent with the rest of the dashboard. Back is a
               minimal text-link ; primary action fills with bg-fg. ── */}
-        <footer className="border-fg/10 bg-bg/95 sticky bottom-0 flex items-center justify-between gap-3 border-t px-6 py-4 sm:px-8 sm:py-5">
+        <footer className="border-fg/10 bg-bg/95 sticky bottom-0 flex items-center justify-between gap-3 border-t px-5 py-3 sm:px-8 sm:py-5">
           {canGoBack ? (
             <button
               type="button"
