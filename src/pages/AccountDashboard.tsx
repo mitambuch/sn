@@ -1,19 +1,17 @@
 // ═══════════════════════════════════════════════════
 // AccountDashboard — member home for /:locale/account
 //
-// WHAT: Premium concierge dashboard, deliberately minimal (3 sections) —
-//       greeting + dedicated concierge card + 3 most recent inquiries.
-//       Catalogue navigation lives in the sidebar; cross-module curated
-//       items live on /account/catalogue. The dashboard = human hub
-//       (who said hi to you + who's available + what's pending).
+// WHAT: App-shell dashboard for HNW clients, mobile-first. Flush under
+//       AuthHeader (no marketing gap), 5 sections separated by hairlines,
+//       no floating cards : greeting · personalised request + shortcuts ·
+//       exclusive offers · concierge · recent inquiries.
 // WHEN: Index route under AppLayout.
 // EDIT COPY: src/locales/{fr,en}.json under account.* — never inline.
+// CHANGE DENSITY: section padding lives in `SECTION_PAD` below.
+// CHANGE SHORTCUTS: edit REQUEST_SHORTCUTS array.
 // ═══════════════════════════════════════════════════
 
 import { useLocale } from '@app/LocaleProvider';
-import { Container } from '@components/layout/Container';
-import { Card } from '@components/ui/Card';
-import { MagneticHover } from '@components/ui/MagneticHover';
 import { Skeleton } from '@components/ui/Skeleton';
 import { StatusPill } from '@components/ui/StatusPill';
 import { ROUTES } from '@constants/routes';
@@ -29,9 +27,12 @@ import { Link } from 'react-router-dom';
 import { listInquiriesForUser } from '@/mocks';
 import { currentUser } from '@/mocks/users';
 
-// Dashboard quick-shortcuts — 4 most-used categories (HNW reality at launch :
-// real estate + timepiece + art + travel). Full picker (incl. experience +
-// other) accessible via the main "Une demande personnalisée" CTA = step 1.
+// WHY: shared section padding — single source of truth keeps the vertical
+// rhythm consistent across all dashboard blocks. App density (py-5), not
+// marketing (py-12).
+const SECTION_PAD = 'px-4 py-5 md:px-8 md:py-6';
+
+// Dashboard quick-shortcuts — 4 most-used categories at launch.
 const REQUEST_SHORTCUTS: { category: WizardCategory; icon: LucideIcon }[] = [
   { category: 'real-estate', icon: Briefcase },
   { category: 'timepiece', icon: Watch },
@@ -45,7 +46,7 @@ const Initials = ({ name }: { name: string }) => {
   return (
     <span
       aria-hidden="true"
-      className="border-border bg-surface text-fg flex h-12 w-12 items-center justify-center rounded-full border text-sm tracking-widest uppercase"
+      className="border-border bg-surface text-fg flex h-10 w-10 items-center justify-center rounded-full border text-xs tracking-widest uppercase"
     >
       {initials}
     </span>
@@ -60,7 +61,7 @@ const greetingKey = (hour: number): 'morning' | 'afternoon' | 'evening' => {
   return 'evening';
 };
 
-// WHY: hours computed at module scope so react-hooks/purity stays clean.
+// WHY: hour computed at module scope so react-hooks/purity stays clean.
 const NOW_HOUR = new Date().getHours();
 
 /* ─── Section: Greeting ─────────────────────────────── */
@@ -72,32 +73,29 @@ const GreetingSection = () => {
     month: 'long',
   });
   return (
-    <header className="flex flex-col gap-3">
-      {/* Terminal-style eyebrow — picks up the landing chrome */}
+    <header className={cn(SECTION_PAD, 'pt-6 md:pt-8')}>
       <span className="text-muted flex items-center gap-2 font-mono text-[10px] tracking-widest uppercase">
         <span
           aria-hidden="true"
           className="bg-fg inline-block h-1.5 w-1.5 rounded-full"
           style={{ animation: 'terminal-pulse 1.4s ease-in-out infinite' }}
         />
-        ↘ {t('account.eyebrow')}
+        {t('account.eyebrow')}
+        <span aria-hidden="true" className="text-muted/60">
+          ·
+        </span>
+        <span className="tracking-[0.25em]">{todayLabel}</span>
       </span>
-      <span className="text-muted text-xs tracking-[0.3em] uppercase">{todayLabel}</span>
-      <h1 className="text-fg font-mono text-2xl font-bold tracking-tight text-balance uppercase sm:text-3xl md:text-4xl">
+      <h1 className="text-fg mt-2 font-mono text-xl font-bold tracking-tight uppercase sm:text-2xl md:text-3xl">
         {t(`account.greeting.${greetingKey(NOW_HOUR)}`, { name: firstName(currentUser.fullName) })}
       </h1>
-      <p className="text-muted max-w-2xl text-sm leading-relaxed text-pretty sm:text-base md:text-lg">
-        {t('account.dashboardLede')}
-      </p>
     </header>
   );
 };
 
-/* ─── Section: Personalised request CTA + shortcuts ──── */
+/* ─── Section: Personalised request + shortcuts ─────── */
 const PersonalisedRequestSection = () => {
   const { t } = useTranslation();
-  // Wizard is mounted globally at AppLayout level via AccountRequestModalProvider
-  // so the same instance is shared with the bottom-nav FAB. No local state.
   const { openRequest } = useAccountRequest();
 
   const openWith = (category?: WizardCategory) => {
@@ -105,136 +103,136 @@ const PersonalisedRequestSection = () => {
   };
 
   return (
-    <>
-      <section className="space-y-4">
-        <button
-          type="button"
-          onClick={() => openWith()}
-          className={cn(
-            'group border-border bg-surface rounded-card shadow-card-rest',
-            'flex w-full items-center justify-between gap-4 border p-6 text-left',
-            'hover:border-fg/30 hover:shadow-card-hover transition-[border-color,box-shadow] duration-500 ease-out',
-            'animate-important motion-reduce:animate-none',
-            'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
-          )}
+    <section className={SECTION_PAD}>
+      <span className="text-muted text-[10px] tracking-widest uppercase">
+        {t('wizard.openCta')}
+      </span>
+      <button
+        type="button"
+        onClick={() => openWith()}
+        className={cn(
+          'group mt-2 flex w-full items-center justify-between gap-4 text-left',
+          'focus-visible:ring-accent rounded-sm focus-visible:ring-2 focus-visible:outline-none',
+        )}
+      >
+        <span className="text-fg text-base leading-snug font-medium sm:text-lg">
+          {t('wizard.openHint')}
+        </span>
+        <span
+          aria-hidden="true"
+          className="text-fg shrink-0 text-xl leading-none transition-transform duration-200 group-hover:translate-x-1"
         >
-          <div className="flex min-w-0 flex-col gap-1">
-            <span className="text-muted text-xs tracking-widest uppercase">
-              {t('wizard.openCta')}
-            </span>
-            <p className="text-fg text-base leading-snug font-medium sm:text-lg">
-              {t('wizard.openHint')}
-            </p>
-          </div>
-          <span className="text-fg shrink-0 text-xl leading-none" aria-hidden="true">
-            →
-          </span>
-        </button>
+          →
+        </span>
+      </button>
 
-        {/* Quick shortcuts — 2x2 grid mobile, flex row desktop.
-            Forces alignment with the parent column grid, no overflow wrap. */}
-        <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-          {REQUEST_SHORTCUTS.map(({ category, icon: Icon }) => (
-            <MagneticHover key={category} radius={70} strength={0.22}>
-              <button
-                type="button"
-                onClick={() => openWith(category)}
-                className={cn(
-                  'border-border text-muted hover:text-fg hover:border-fg/40',
-                  'inline-flex w-full items-center justify-center gap-1.5 rounded-md border px-3 py-2.5 text-[11px] tracking-widest whitespace-nowrap uppercase',
-                  'duration-base transition-[color,border-color]',
-                  'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
-                )}
-              >
-                <Icon size={12} strokeWidth={1.5} aria-hidden="true" />
-                {t(`wizard.category.${category}.title`)}
-              </button>
-            </MagneticHover>
-          ))}
-        </div>
-      </section>
-    </>
+      <div className="mt-4 grid grid-cols-2 gap-2">
+        {REQUEST_SHORTCUTS.map(({ category, icon: Icon }) => (
+          <button
+            key={category}
+            type="button"
+            onClick={() => openWith(category)}
+            className={cn(
+              'border-fg/15 text-muted hover:text-fg hover:border-fg/40',
+              'inline-flex items-center justify-center gap-1.5 rounded-md border px-3 py-2.5 font-mono text-[11px] tracking-widest whitespace-nowrap uppercase',
+              'duration-base transition-[color,border-color]',
+              'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
+            )}
+          >
+            <Icon size={12} strokeWidth={1.5} aria-hidden="true" />
+            {t(`wizard.category.${category}.title`)}
+          </button>
+        ))}
+      </div>
+    </section>
   );
 };
 
 /* ─── Section: Exclusive offers shortcut ────────────── */
-const ExclusiveShortcut = () => {
+const ExclusiveSection = () => {
   const { t } = useTranslation();
   const { localePath } = useLocale();
   return (
-    <Card to={localePath(ROUTES.ACCOUNT_CATALOGUE)} padding="lg" important>
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex min-w-0 flex-col gap-1">
-          <span className="text-muted text-xs tracking-widest uppercase">
-            {t('account.exclusive.eyebrow')}
-          </span>
-          <p className="text-fg text-base leading-snug font-medium sm:text-lg">
-            {t('account.exclusive.cta')}
-          </p>
-        </div>
-        <span className="text-fg shrink-0 text-xl leading-none" aria-hidden="true">
+    <Link
+      to={localePath(ROUTES.ACCOUNT_CATALOGUE)}
+      className={cn(
+        SECTION_PAD,
+        'group hover:bg-surface/40 block transition-colors duration-200',
+        'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-inset',
+      )}
+    >
+      <span className="text-muted text-[10px] tracking-widest uppercase">
+        {t('account.exclusive.eyebrow')}
+      </span>
+      <div className="mt-2 flex items-center justify-between gap-4">
+        <span className="text-fg text-base leading-snug font-medium sm:text-lg">
+          {t('account.exclusive.cta')}
+        </span>
+        <span
+          aria-hidden="true"
+          className="text-fg shrink-0 text-xl leading-none transition-transform duration-200 group-hover:translate-x-1"
+        >
           →
         </span>
       </div>
-    </Card>
+    </Link>
   );
 };
 
-/* ─── Section: Concierge card ────────────────────────── */
-const ConciergeCard = () => {
+/* ─── Section: Concierge ─────────────────────────────── */
+const ConciergeSection = () => {
   const { t } = useTranslation();
   return (
-    <Card padding="lg">
-      <h2 className="sr-only">{t('account.dashboardTitle')}</h2>
-      <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between md:gap-6">
-        <div className="flex items-center gap-4">
-          <Initials name={currentUser.conciergeName} />
-          <div>
-            <span className="text-muted flex items-center gap-2 text-xs tracking-widest uppercase">
-              <span
-                aria-hidden="true"
-                className="bg-success inline-block h-1.5 w-1.5 rounded-full"
-                style={{ animation: 'terminal-pulse 1.4s ease-in-out infinite' }}
-              />
-              {t('dock.eyebrow')}
-            </span>
-            <p className="text-fg mt-1 text-lg font-medium">{currentUser.conciergeName}</p>
-            <p className="text-muted text-sm">salvatore@sawnext.studio</p>
-          </div>
-        </div>
-        {/* WHY: on mobile, labels "Appeler maintenant" + "Écrire un message"
-            are too long to fit in a shared-width row. We collapse to icon-only
-            (sr-only label for a11y) on mobile and reveal the label on md+. */}
-        <div className="flex items-center gap-3">
-          <a
-            href="tel:+41215550000"
-            aria-label={t('dock.call')}
-            className={cn(
-              'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
-              'inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-full border text-xs tracking-widest whitespace-nowrap uppercase md:h-auto md:flex-none md:px-5 md:py-2.5',
-              'duration-base transition-[border-color,background-color]',
-              'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
-            )}
-          >
-            <Phone size={16} strokeWidth={1.5} aria-hidden="true" />
-            <span className="sr-only md:not-sr-only">{t('dock.call')}</span>
-          </a>
-          <a
-            href="mailto:salvatore@sawnext.studio"
-            aria-label={t('dock.write')}
-            className={cn(
-              'border-border text-fg hover:border-fg/60 focus-visible:ring-accent',
-              'inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-full border text-xs tracking-widest whitespace-nowrap uppercase md:h-auto md:flex-none md:px-5 md:py-2.5',
-              'duration-base transition-[border-color]',
-              'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
-            )}
-          >
-            <Mail size={16} strokeWidth={1.5} aria-hidden="true" />
-            <span className="sr-only md:not-sr-only">{t('dock.write')}</span>
-          </a>
+    <section aria-labelledby="concierge-heading" className={SECTION_PAD}>
+      <h2 id="concierge-heading" className="sr-only">
+        {t('account.dashboardTitle')}
+      </h2>
+      <span className="text-muted flex items-center gap-2 text-[10px] tracking-widest uppercase">
+        <span
+          aria-hidden="true"
+          className="bg-success inline-block h-1.5 w-1.5 rounded-full"
+          style={{ animation: 'terminal-pulse 1.4s ease-in-out infinite' }}
+        />
+        {t('dock.eyebrow')}
+      </span>
+      <div className="mt-3 flex items-center gap-3">
+        <Initials name={currentUser.conciergeName} />
+        <div className="min-w-0">
+          <p className="text-fg truncate text-sm font-medium sm:text-base">
+            {currentUser.conciergeName}
+          </p>
+          <p className="text-muted truncate text-xs">salvatore@sawnext.studio</p>
         </div>
       </div>
-    </Card>
+      <div className="mt-4 flex items-center gap-2">
+        <a
+          href="tel:+41215550000"
+          aria-label={t('dock.call')}
+          className={cn(
+            'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
+            'inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-md border text-[11px] tracking-widest whitespace-nowrap uppercase',
+            'duration-base transition-[border-color,background-color]',
+            'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+          )}
+        >
+          <Phone size={14} strokeWidth={1.5} aria-hidden="true" />
+          <span>{t('dock.call')}</span>
+        </a>
+        <a
+          href="mailto:salvatore@sawnext.studio"
+          aria-label={t('dock.write')}
+          className={cn(
+            'border-fg/15 text-fg hover:border-fg/60 focus-visible:ring-accent',
+            'inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-md border text-[11px] tracking-widest whitespace-nowrap uppercase',
+            'duration-base transition-[border-color]',
+            'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+          )}
+        >
+          <Mail size={14} strokeWidth={1.5} aria-hidden="true" />
+          <span>{t('dock.write')}</span>
+        </a>
+      </div>
+    </section>
   );
 };
 
@@ -245,55 +243,50 @@ const RecentInquiriesSection = ({ loading }: { loading: boolean }) => {
   const inquiries = listInquiriesForUser(currentUser.id).slice(0, 3);
 
   return (
-    <section aria-labelledby="inquiries-heading" className="space-y-6">
-      <div className="flex items-end justify-between">
-        <h2 id="inquiries-heading" className="text-fg font-mono text-2xl font-bold uppercase">
+    <section aria-labelledby="inquiries-heading" className={SECTION_PAD}>
+      <header className="flex items-center justify-between gap-3">
+        <h2
+          id="inquiries-heading"
+          className="text-muted font-mono text-[10px] tracking-widest uppercase"
+        >
           {t('account.yourInquiries')}
         </h2>
         <Link
           to={localePath(ROUTES.ACCOUNT_INQUIRIES)}
-          className="text-muted hover:text-fg duration-base text-xs tracking-widest uppercase transition-colors"
+          className="text-muted hover:text-fg duration-base text-[10px] tracking-widest uppercase transition-colors"
         >
           {t('common.viewAll')} →
         </Link>
-      </div>
+      </header>
       {loading ? (
-        <ul className="border-border divide-border divide-y rounded-lg border">
+        <ul className="divide-fg/10 mt-3 divide-y">
           {Array.from({ length: 3 }).map((_, i) => (
-            <li key={i} className="flex items-center justify-between gap-4 px-6 py-4">
-              <div className="flex flex-1 flex-col gap-2">
-                <Skeleton className="h-4 w-2/3 rounded-full" />
-                <Skeleton className="h-3 w-1/4 rounded-full" />
-              </div>
-              <Skeleton className="h-5 w-24 rounded-full" />
+            <li key={i} className="flex flex-col gap-2 py-3">
+              <Skeleton className="h-3 w-1/3 rounded-full" />
+              <Skeleton className="h-4 w-2/3 rounded-full" />
             </li>
           ))}
         </ul>
       ) : inquiries.length === 0 ? (
-        <p className="text-muted text-sm">{t('account.noInquiries')}</p>
+        <p className="text-muted mt-3 text-sm">{t('account.noInquiries')}</p>
       ) : (
-        <Card padding="none">
-          <ul className="divide-border divide-y">
-            {inquiries.map(inq => (
-              <li
-                key={inq.id}
-                className="flex flex-col gap-2 px-5 py-4 transition-[padding] duration-300 ease-out hover:pl-7"
-              >
-                {/* Top row : meta + StatusPill — both tiny uppercase,
-                    fit easily on one line on every viewport. */}
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-muted text-xs tracking-widest uppercase">
-                    {t(`inquiry.sourceLabel.${inq.source}`)} ·{' '}
-                    {new Date(inq.createdAt).toLocaleDateString(i18n.language)}
-                  </span>
-                  <StatusPill variant={inq.status} label={t(`inquiry.status.${inq.status}`)} />
-                </div>
-                {/* Body : message full-width, wraps freely. */}
-                <span className="text-fg text-sm leading-relaxed">{inq.message ?? '—'}</span>
-              </li>
-            ))}
-          </ul>
-        </Card>
+        <ul className="divide-fg/10 mt-3 divide-y">
+          {inquiries.map(inq => (
+            <li
+              key={inq.id}
+              className="flex flex-col gap-1.5 py-3 transition-[padding] duration-300 ease-out hover:pl-2"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-muted text-[10px] tracking-widest uppercase">
+                  {t(`inquiry.sourceLabel.${inq.source}`)} ·{' '}
+                  {new Date(inq.createdAt).toLocaleDateString(i18n.language)}
+                </span>
+                <StatusPill variant={inq.status} label={t(`inquiry.status.${inq.status}`)} />
+              </div>
+              <span className="text-fg text-sm leading-relaxed">{inq.message ?? '—'}</span>
+            </li>
+          ))}
+        </ul>
       )}
     </section>
   );
@@ -303,14 +296,14 @@ export default function AccountDashboard() {
   const loading = useFakeLoading(450);
 
   return (
-    <Container size="md">
-      <div className="space-y-12 py-12 md:space-y-16 md:py-16">
+    <div className="mx-auto w-full max-w-3xl">
+      <div className="divide-fg/10 divide-y">
         <GreetingSection />
         <PersonalisedRequestSection />
-        <ExclusiveShortcut />
-        <ConciergeCard />
+        <ExclusiveSection />
+        <ConciergeSection />
         <RecentInquiriesSection loading={loading} />
       </div>
-    </Container>
+    </div>
   );
 }
