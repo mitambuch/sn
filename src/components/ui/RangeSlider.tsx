@@ -110,7 +110,16 @@ export const RangeSlider = ({
   };
 
   return (
-    <div className={cn('flex flex-col gap-3', className)}>
+    <div
+      className={cn(
+        // Bordered + bg-bg container — owner direction 2026-05-14 16:21
+        // "faut mettre ce module aussi dans une box avec un border, qu'on
+        // comprenne bien". The slider now reads as its own defined module,
+        // not floating between the surrounding inputs.
+        'border-fg/15 bg-bg flex flex-col gap-3 rounded-md border px-4 py-3.5',
+        className,
+      )}
+    >
       <div className="flex items-baseline justify-between gap-3">
         <label
           htmlFor={`${id}-min`}
