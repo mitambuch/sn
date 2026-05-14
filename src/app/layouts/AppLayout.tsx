@@ -18,7 +18,6 @@ import { Header } from '@components/layout/Header';
 import { ROUTES } from '@constants/routes';
 import { AccountRequestModalProvider } from '@context/AccountRequestModalContext';
 import { useAuth } from '@context/AuthContext';
-import { ConciergeDock } from '@features/concierge/ConciergeDock';
 import { CommandPalette } from '@features/search/CommandPalette';
 import { useCommandPalette } from '@hooks/useCommandPalette';
 import { useMediaQuery } from '@hooks/useMediaQuery';
@@ -248,10 +247,11 @@ const AppShell = () => {
         moreOpen={drawerOpen}
       />
 
-      <ConciergeDock />
       {/* CommandPalette stays mounted — accessible via Cmd+K shortcut from
           useCommandPalette hook. Floating button removed per owner audit
-          (UI clutter without clear use). */}
+          (UI clutter without clear use). ConciergeDock removed entirely
+          2026-05-14 14:08 — owner direction : redondant avec le FAB
+          central du bottom nav + le ConciergeCard dans le dashboard. */}
       <CommandPalette open={palette.open} onClose={() => palette.setOpen(false)} />
     </>
   );
