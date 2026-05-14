@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-05-14** — [Session — Live deploy + admin UX rework (20:14 → 21:40)](sessions/2026-05-14-2140.md)
 - **2026-05-14** — [Session — Production-grade ship push (18:14 → 18:50)](sessions/2026-05-14-1850.md)
 - **2026-05-14** — [Session — Sanity content mirror epic (16:37 → 17:45)](sessions/2026-05-14-1745.md)
-- **2026-05-13** — [Session — Salva autonomy démo-ready (13:38 → 17:01)](sessions/2026-05-13-1701.md)
 
 ## Active decisions (top 5)
 
@@ -31,7 +31,7 @@
 
 ## Deep dive
 
-- Full catalogue (112 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (113 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
