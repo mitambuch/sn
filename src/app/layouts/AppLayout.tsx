@@ -151,8 +151,11 @@ const AppShell = () => {
   }, [drawerOpen]);
 
   const handleSignOut = async () => {
-    await signOut();
+    // Navigate FIRST so RequireAuth doesn't redirect to /login while
+    // the session is being cleared (see AuthHeader.tsx for the
+    // matching pattern + rationale).
     void navigate(localePath(ROUTES.HOME), { replace: true });
+    await signOut();
   };
 
   return (

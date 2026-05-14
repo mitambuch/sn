@@ -37,8 +37,15 @@ export const AuthHeader = ({ homeHref, postLogoutHref }: AuthHeaderProps) => {
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
-    await signOut();
+    // WHY: navigate to the public landing FIRST, then run signOut.
+    // Awaiting signOut() before navigating would clear the session
+    // while AppLayout/AdminLayout (wrapped in RequireAuth) still
+    // renders — the guard sees !session and redirects to /login,
+    // racing past our intended HOME navigation. Owner direction
+    // 2026-05-14 16:26 : "quand on se déco ça arrive sur une vieille
+    // page et faut que ça arrive sur la page du site".
     void navigate(postLogoutHref, { replace: true });
+    await signOut();
   };
 
   return (
