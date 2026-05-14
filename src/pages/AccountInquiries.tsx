@@ -13,17 +13,20 @@ import { Container } from '@components/layout/Container';
 import { Card } from '@components/ui/Card';
 import { FilterBar } from '@components/ui/FilterBar';
 import { SectionHeader } from '@components/ui/SectionHeader';
+import { Spinner } from '@components/ui/Spinner';
 import { StatusPill } from '@components/ui/StatusPill';
-import { useMemo, useState } from 'react';
+import { useAuth } from '@context/AuthContext';
+import { useInquiriesUser } from '@hooks/useInquiries';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { listInquiriesForUser } from '@/mocks';
 import { currentUser } from '@/mocks/users';
 import type { InquiryStatus } from '@/types/inquiry';
 
 export default function AccountInquiries() {
   const { t, i18n } = useTranslation();
-  const all = useMemo(() => listInquiriesForUser(currentUser.id), []);
+  const { user } = useAuth();
+  const { rows: all, loading } = useInquiriesUser(user?.id ?? currentUser.id);
   const [activeStatuses, setActiveStatuses] = useState<Set<InquiryStatus>>(new Set());
 
   const toggleStatus = (s: InquiryStatus) => {
@@ -64,7 +67,11 @@ export default function AccountInquiries() {
           />
         </FilterBar>
 
-        {filtered.length === 0 ? (
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <Spinner size="sm" aria-label={t('common.loading')} />
+          </div>
+        ) : filtered.length === 0 ? (
           <p className="text-muted text-sm">{t('account.noInquiries')}</p>
         ) : (
           <Card padding="none">
