@@ -224,12 +224,15 @@ const ConciergeSection = () => {
           <p className="text-muted truncate text-xs md:text-sm">salvatore@sawnext.studio</p>
         </div>
       </div>
-      {/* Tall touch targets — h-16 (64px) + min-h-16 so the box itself has
-          visual mass. Owner direction 2026-05-14 14:46 : "la taille du
-          texte était bien, je te parlais de la hauteur de la box". Inner
-          chrome (text-[11px] tracking-widest font-mono + icon 16/1.5)
-          left untouched. Appel = filled fg/bg ; écrire = ghost outline. */}
-      <div className="mt-5 flex flex-col gap-2 sm:flex-row lg:mt-auto lg:pt-6">
+      {/* Tall touch targets — h-16 (64px), stacked column up to lg (the
+          dashboard col-span-4 only kicks in at lg+ so until then the
+          single column reads cleaner than a cramped 2-up row). Owner
+          direction 2026-05-14 14:50 : "sur smartphone met les en
+          colonne et juste appeler et message dedans". Visible label
+          uses dock.callShort / dock.writeShort (just "Appeler" /
+          "Message") ; aria-label keeps the full string for screen
+          readers. */}
+      <div className="mt-5 flex flex-col gap-2 lg:mt-auto lg:flex-row lg:pt-6">
         <a
           href="tel:+41215550000"
           aria-label={t('dock.call')}
@@ -241,7 +244,7 @@ const ConciergeSection = () => {
           )}
         >
           <Phone size={16} strokeWidth={1.5} aria-hidden="true" />
-          <span>{t('dock.call')}</span>
+          <span>{t('dock.callShort')}</span>
         </a>
         <a
           href="mailto:salvatore@sawnext.studio"
@@ -254,7 +257,7 @@ const ConciergeSection = () => {
           )}
         >
           <Mail size={16} strokeWidth={1.5} aria-hidden="true" />
-          <span>{t('dock.write')}</span>
+          <span>{t('dock.writeShort')}</span>
         </a>
       </div>
     </section>

@@ -687,8 +687,10 @@
     "availability": "Available 7 days a week, 6 a.m. – 11 p.m. Europe/Zurich",
     "cta": "Salvatore",
     "call": "Call now",
+    "callShort": "Call",
     "schedule": "Book 30 min",
     "write": "Write a message",
+    "writeShort": "Message",
     "writeLede": "Write freely — Salvatore reads each message personally and replies within 24 hours."
   },
   "audio": {

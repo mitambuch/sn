@@ -708,8 +708,10 @@
     "availability": "Disponible 7j/7, 6h–23h Europe/Zurich",
     "cta": "Salvatore",
     "call": "Appeler maintenant",
+    "callShort": "Appeler",
     "schedule": "Réserver 30 min",
     "write": "Écrire un message",
+    "writeShort": "Message",
     "writeLede": "Écrivez librement — Salvatore lit chaque message personnellement et répond sous 24 heures."
   },
   "audio": {
