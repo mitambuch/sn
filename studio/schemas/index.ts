@@ -15,6 +15,7 @@ import { artwork } from './documents/artwork';
 import { conciergeService } from './documents/conciergeService';
 import { event } from './documents/event';
 import { journey } from './documents/journey';
+import { landing } from './documents/landing';
 import { page } from './documents/page';
 import { property } from './documents/property';
 import { siteConfig } from './documents/siteConfig';
@@ -37,6 +38,7 @@ export const schemaTypes = [
   programmeStep,
   // ─── Singletons ───
   siteConfig,
+  landing,
   page,
   // ─── Domain documents ───
   event,

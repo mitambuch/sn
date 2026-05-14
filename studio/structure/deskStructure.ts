@@ -19,7 +19,7 @@ import type { StructureResolver } from 'sanity/structure';
 import { icon } from '../icons';
 
 /** Document types that must remain single-instance (blocked in "New document"). */
-export const SINGLETON_TYPES = ['siteConfig'];
+export const SINGLETON_TYPES = ['siteConfig', 'landing'];
 
 /**
  * Page documents with fixed IDs.
@@ -73,6 +73,17 @@ export const structure: StructureResolver = S =>
             .documentId('siteConfig-singleton')
             .schemaType('siteConfig')
             .title('Configuration globale'),
+        ),
+      // ── Landing page singleton ───────────────────
+      S.listItem()
+        .id('landing')
+        .title('Landing — page publique')
+        .icon(icon('🌐'))
+        .child(
+          S.document()
+            .documentId('landing-singleton')
+            .schemaType('landing')
+            .title('Landing — page publique'),
         ),
       S.divider(),
 
