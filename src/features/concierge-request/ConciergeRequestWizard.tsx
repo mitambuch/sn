@@ -347,13 +347,14 @@ export const ConciergeRequestWizard = ({
         className="bg-bg/80 absolute inset-0 backdrop-blur-sm"
       />
 
-      {/* Modal — fixed height so the chrome doesn't jump step-to-step
-          (owner 2026-05-14 15:49 : "la taille de la box change à chaque
-          fois c'est bizarre"). h-[680px] capped to 88vh on smaller
-          viewports ; the body handles overflow-y internally so the
-          header / footer stay locked in place. Always centered (parent
-          flex items-center). */}
-      <div className="border-fg/15 bg-bg shadow-card-rest sm:rounded-card relative flex h-170 max-h-[88vh] w-full max-w-3xl flex-col overflow-hidden rounded-lg border">
+      {/* Modal — fixed viewport-relative height so the chrome doesn't
+          jump step-to-step AND the body always has the same vertical
+          budget (owner 2026-05-14 15:59 : "il y a un scroll encore,
+          fais en sorte que ça soit fluide"). h-[88vh] caps the modal
+          to 88% of the viewport whatever the device — same height
+          between steps, more room on tall screens to accomodate the
+          heaviest fields step (real-estate : 4 fields + 2 sliders). */}
+      <div className="border-fg/15 bg-bg shadow-card-rest sm:rounded-card relative flex h-[88vh] w-full max-w-3xl flex-col overflow-hidden rounded-lg border">
         {/* ─── Header — eyebrow row + visual progress bar. Each segment
               animates fill on step change so the member feels forward
               motion. The category breadcrumb (when set) reminds them of
@@ -474,27 +475,18 @@ export const ConciergeRequestWizard = ({
           )}
 
           {step === 'fields' && category && category !== 'other' && (
-            <div className="space-y-5 sm:space-y-7">
-              <header className="space-y-2 sm:space-y-3">
-                <div className="flex items-center gap-2">
-                  <span className="border-fg/15 bg-surface/60 text-fg inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-[10px] tracking-[0.15em] uppercase">
-                    {(() => {
-                      const CatIcon = CATEGORY_ICON[category];
-                      return <CatIcon size={12} strokeWidth={1.5} aria-hidden="true" />;
-                    })()}
-                    {t(`wizard.category.${category}.title`)}
-                  </span>
-                </div>
-                <h2 className="text-fg font-mono text-xl font-bold tracking-tight uppercase sm:text-2xl md:text-3xl">
-                  {t('wizard.step.fields')}
+            <div className="space-y-4 sm:space-y-6">
+              {/* Tight header — title only, breadcrumb chip already in
+                  the wizard header bar. Lede dropped : owner direction
+                  2026-05-14 15:59 "pas d'infos inutiles". */}
+              <header>
+                <h2 className="text-fg font-mono text-lg font-bold tracking-tight uppercase sm:text-xl md:text-2xl">
+                  {t(`wizard.category.${category}.title`)}
                 </h2>
-                <p className="text-muted max-w-prose text-sm leading-relaxed">
-                  {t('wizard.details.allOptional')}
-                </p>
               </header>
 
               {category === 'travel' && (
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <FieldText
                     id="travel-departure"
                     label={t('wizard.fields.travel.departure')}
@@ -552,7 +544,7 @@ export const ConciergeRequestWizard = ({
               )}
 
               {category === 'timepiece' && (
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <FieldText
                     id="tp-brand"
                     label={t('wizard.fields.timepiece.brand')}
@@ -622,7 +614,7 @@ export const ConciergeRequestWizard = ({
               )}
 
               {category === 'real-estate' && (
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <FieldSelect
                     id="re-type"
                     label={t('wizard.fields.real-estate.type')}
@@ -703,7 +695,7 @@ export const ConciergeRequestWizard = ({
               )}
 
               {category === 'art' && (
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <FieldText
                     id="art-artist"
                     label={t('wizard.fields.art.artist')}
@@ -777,7 +769,7 @@ export const ConciergeRequestWizard = ({
               )}
 
               {category === 'experience' && (
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <FieldSelect
                     id="exp-type"
                     label={t('wizard.fields.experience.type')}
@@ -851,27 +843,15 @@ export const ConciergeRequestWizard = ({
           )}
 
           {step === 'extras' && category && (
-            <div className="space-y-5 sm:space-y-7">
-              <header className="space-y-2 sm:space-y-3">
-                <div className="flex items-center gap-2">
-                  <span className="border-fg/15 bg-surface/60 text-fg inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-[10px] tracking-[0.15em] uppercase">
-                    {(() => {
-                      const CatIcon = CATEGORY_ICON[category];
-                      return <CatIcon size={12} strokeWidth={1.5} aria-hidden="true" />;
-                    })()}
-                    {t(`wizard.category.${category}.title`)}
-                  </span>
-                </div>
-                <h2 className="text-fg font-mono text-xl font-bold tracking-tight uppercase sm:text-2xl md:text-3xl">
+            <div className="space-y-4 sm:space-y-6">
+              <header>
+                <h2 className="text-fg font-mono text-lg font-bold tracking-tight uppercase sm:text-xl md:text-2xl">
                   {t('wizard.step.extras')}
                 </h2>
-                <p className="text-muted max-w-prose text-sm leading-relaxed">
-                  {category === 'other' ? t('wizard.other.lede') : t('wizard.extras.lede')}
-                </p>
               </header>
               <Textarea
                 label={t('wizard.details.freeFormLabel')}
-                rows={category === 'other' ? 7 : 5}
+                rows={category === 'other' ? 6 : 4}
                 placeholder={
                   category === 'other'
                     ? t('wizard.other.placeholder')
