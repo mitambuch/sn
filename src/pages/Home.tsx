@@ -47,7 +47,7 @@ export default function Home() {
 
 function HomeContent() {
   const { t } = useTranslation();
-  const { openLogin } = useLoginModal();
+  const { openLogin, isOpen: isLoginOpen } = useLoginModal();
   const [indexOpen, setIndexOpen] = useState(false);
   const [compactLogo, setCompactLogo] = useState(false);
   // Top-corner chrome stays hidden while the Loader is on screen, then
@@ -125,31 +125,40 @@ function HomeContent() {
       />
 
       {/* ─── Main — TerminalBar sits at the natural end. overflow-x clip
-           kills any horizontal scroll from negative-margin or grain overlays. ─── */}
-      <main className="overflow-x-clip">
-        <Hero />
-        <Marquee items={heroMarquee} tone="dark" />
-        <Manifesto />
-        <Presentation />
-        <Marquee items={finalMarquee} tone="light" />
-        <Principles />
-        <Domains />
-        <Marquee items={finalMarquee} tone="light" />
-        <Access />
-        <Interlocutor />
-        <Marquee items={finalMarquee} tone="dark" />
-        <LandingFooter />
+           kills any horizontal scroll from negative-margin or grain overlays.
+           UNMOUNTED while the LoginModal is open : the CSS animation-pause
+           rule isn't enough because the JS loops (typewriter setState every
+           90ms, video autoplay, Manifesto scroll listeners, IntersectionObservers,
+           Lenis smooth scroll, autoplay vidéos rendering) keep saturating the
+           main thread → laggy input. Unmounting releases the CPU entirely.
+           Trade-off : re-mount on close resets typewriter to phrase 0 + picks
+           a new random video. Acceptable for a login surface. ─── */}
+      {!isLoginOpen && (
+        <main className="overflow-x-clip">
+          <Hero />
+          <Marquee items={heroMarquee} tone="dark" />
+          <Manifesto />
+          <Presentation />
+          <Marquee items={finalMarquee} tone="light" />
+          <Principles />
+          <Domains />
+          <Marquee items={finalMarquee} tone="light" />
+          <Access />
+          <Interlocutor />
+          <Marquee items={finalMarquee} tone="dark" />
+          <LandingFooter />
 
-        <TerminalBar
-          statusLabel={t('landing.terminal.status')}
-          tzLabel={t('landing.terminal.tz')}
-          primaryCtaLabel={t('landing.cta.requestAccess')}
-          primaryCtaHref="#s08"
-          secondaryCtaLabel={t('landing.cta.privateArea')}
-          onSecondaryCta={openLogin}
-          callCtaLabel={t('landing.cta.callDirect')}
-        />
-      </main>
+          <TerminalBar
+            statusLabel={t('landing.terminal.status')}
+            tzLabel={t('landing.terminal.tz')}
+            primaryCtaLabel={t('landing.cta.requestAccess')}
+            primaryCtaHref="#s08"
+            secondaryCtaLabel={t('landing.cta.privateArea')}
+            onSecondaryCta={openLogin}
+            callCtaLabel={t('landing.cta.callDirect')}
+          />
+        </main>
+      )}
     </>
   );
 }
