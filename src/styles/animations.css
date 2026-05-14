@@ -3,6 +3,20 @@
    Imported automatically via index.css.
    ═══════════════════════════════════════════════════════════════ */
 
+/* ─── Modal-active freeze ─────────────────────────────────
+   When a Modal is open, `body.modal-active` is set by Modal.tsx.
+   Pause every descendant animation so the heavy landing scene
+   (manifesto fog, grain, caret blink, marquee, etc.) stops eating
+   CPU while the user is interacting with the modal form.
+   Incident 2026-05-14 12:09 — owner reported laggy typing inside
+   the LoginModal because the landing kept animating behind. */
+
+body.modal-active *,
+body.modal-active *::before,
+body.modal-active *::after {
+  animation-play-state: paused !important;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

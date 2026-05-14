@@ -62,7 +62,14 @@ export const Modal = ({ isOpen, onClose, title, children, className }: ModalProp
     const previouslyFocused =
       document.activeElement instanceof HTMLElement ? document.activeElement : null;
 
+    // WHY: freeze the underlying page while the modal is open. This adds
+    // `body.modal-active` which the global animation rule (animations.css)
+    // uses to set `animation-play-state: paused` on every descendant. Without
+    // this, heavy landing animations (manifesto fog, grain, typewriter,
+    // marquee, caret) keep running and starve input handling → laggy typing
+    // inside the modal. Incident reported 2026-05-14 12:09 by owner.
     document.body.style.overflow = 'hidden';
+    document.body.classList.add('modal-active');
     document.addEventListener('keydown', handleKeyDown);
 
     // WHY: focus first focusable element, or the dialog itself as fallback
@@ -75,6 +82,7 @@ export const Modal = ({ isOpen, onClose, title, children, className }: ModalProp
 
     return () => {
       document.body.style.overflow = '';
+      document.body.classList.remove('modal-active');
       document.removeEventListener('keydown', handleKeyDown);
       clearTimeout(timer);
       previouslyFocused?.focus();
