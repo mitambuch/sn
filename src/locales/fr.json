@@ -300,6 +300,7 @@
         "brandPlaceholder": "Patek Philippe, Rolex…",
         "model": "Modèle / Référence",
         "modelPlaceholder": "Nautilus 5711, Submariner…",
+        "year": "Année",
         "yearMin": "Année min.",
         "yearMax": "Année max.",
         "condition": "État",
@@ -320,6 +321,7 @@
         "typeTownhouse": "Hôtel particulier",
         "region": "Région recherchée",
         "regionPlaceholder": "Megève, Cap-Ferrat, Lac Léman…",
+        "surface": "Surface (m²)",
         "surfaceMin": "Surface min. (m²)",
         "surfaceMax": "Surface max. (m²)",
         "bedrooms": "Chambres min.",
@@ -344,8 +346,9 @@
         "mediumPhoto": "Photographie",
         "mediumPrint": "Estampe",
         "mediumMixed": "Mixte",
-        "heightMax": "Hauteur max. (cm)",
-        "widthMax": "Largeur max. (cm)",
+        "heightMax": "Hauteur max.",
+        "widthMax": "Largeur max.",
+        "dimensionsUnit": "cm",
         "budget": "Budget approximatif",
         "budgetPlaceholder": "ex. 50 000 — 500 000 CHF"
       },
@@ -376,6 +379,7 @@
     },
     "callback": {
       "cta": "Demander un rappel à Salvatore",
+      "or": "Ou",
       "hint": "Sans formulaire — il revient vers vous sous 24h."
     },
     "review": {
