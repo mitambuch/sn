@@ -231,9 +231,10 @@ const AppShell = () => {
         </nav>
       </aside>
 
-      {/* Main content — pb-20 mobile clears the bottom nav (h-14 + safe-area).
-          Desktop pl-56 clears the sidebar floor-to-ceiling. */}
-      <main id="main-content" className="flex-1 pt-20 pb-20 md:pb-0 md:pl-56">
+      {/* Main content — pt-14 flush under the h-14 AuthHeader (app density, no
+          marketing-page gap). pb-20 mobile clears the bottom nav (h-14 +
+          safe-area). Desktop pl-56 clears the sidebar floor-to-ceiling. */}
+      <main id="main-content" className="flex-1 pt-14 pb-20 md:pb-0 md:pl-56">
         <div key={pathname} className={prefersReducedMotion ? undefined : 'animate-page-enter'}>
           <Outlet />
         </div>
