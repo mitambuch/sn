@@ -1,24 +1,26 @@
 // ═══════════════════════════════════════════════════
 // AccountCatalogue — /:locale/account/catalogue
 //
-// WHAT: Unified "everything" view — aggregates Property + Timepiece +
-//       Artwork + Event + Journey + Concierge + Article entries into one
-//       grid sorted by recency. FilterBar chips per module (toggleable
-//       multi-select). Built for the HNW small-inventory reality
-//       (12-15 items total at launch) — single-page scan replaces hopping
-//       across 7 module-specific lists.
-// WHEN: Top-of-nav entry, right after Dashboard. The catch-all entry
-//       for clients who want to see everything curated for them.
-// PATTERN: each item rendered with its own domain card component; cards
+// WHAT: Unified "tout" view — aggregates Property + Timepiece + Artwork
+//       + Event + Journey + Concierge + Article entries grouped by
+//       module, with a sticky filter bar pinned just below the
+//       AuthHeader. When no filter is active, every non-empty module
+//       gets its own section ; toggling a chip restricts the visible
+//       sections to that subset.
+//
+//       Owner direction 2026-05-14 15:15 — "sur la page 'tout' on peut
+//       catégoriser, je veux que ça remplisse l'espace pas d'infos
+//       inutiles". The big "Le catalogue" + lede header was dropped ;
+//       a single sr-only h1 keeps the page named for screen readers.
+// WHEN: Top-of-nav entry, right after Dashboard.
+// PATTERN: each item rendered with its own domain card component ; cards
 //       share the same Apple-closed Card atom so the mixed grid reads
 //       coherent despite mixed types.
 // ═══════════════════════════════════════════════════
 
 import { useLocale } from '@app/LocaleProvider';
-import { Container } from '@components/layout/Container';
 import { FilterBar } from '@components/ui/FilterBar';
 import { Reveal } from '@components/ui/Reveal';
-import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { ArtworkCard } from '@features/artworks/ArtworkCard';
 import { ConciergeServiceCard } from '@features/concierge/ConciergeServiceCard';
@@ -74,11 +76,9 @@ function buildEntries(t: TFn, locale: string, localePath: LocalePathFn): Catalog
   const onRequest = t('common.onRequest');
   const all: CatalogueEntry[] = [];
 
-  // WHY: demo flags for "offre limitée" countdown + "important" pulsing
-  // outline. First Property of the list gets both, first Timepiece gets
-  // important only, first Event gets both (countdown replaces date badge).
-  // To wire real data: lift `endsAt` + `important` into the domain types
-  // and mocks, drop these constants.
+  // Demo flags for "offre limitée" countdown + "important" pulsing
+  // outline. To wire real data: lift `endsAt` + `important` into the
+  // domain types and mocks, drop these constants.
   const COUNTDOWN_3D_5H = new Date(Date.now() + 86_400_000 * 3 + 3_600_000 * 5).toISOString();
   const COUNTDOWN_18H = new Date(Date.now() + 3_600_000 * 18).toISOString();
   let firstProperty = true;
@@ -199,6 +199,7 @@ function buildEntries(t: TFn, locale: string, localePath: LocalePathFn): Catalog
     });
   }
 
+  // Sort within each module by recency — preserved when grouping below.
   return all.sort((x, y) => y.sortKey.localeCompare(x.sortKey));
 }
 
@@ -212,6 +213,17 @@ export default function AccountCatalogue() {
     [t, i18n.language, localePath],
   );
 
+  // Group by module ; each bucket inherits the recency sort from buildEntries.
+  const entriesByModule = useMemo(() => {
+    const grouped = new Map<ModuleKey, CatalogueEntry[]>();
+    for (const e of entries) {
+      const bucket = grouped.get(e.module) ?? [];
+      bucket.push(e);
+      grouped.set(e.module, bucket);
+    }
+    return grouped;
+  }, [entries]);
+
   const toggleModule = (m: ModuleKey) => {
     setActiveModules(prev => {
       const next = new Set(prev);
@@ -221,48 +233,83 @@ export default function AccountCatalogue() {
     });
   };
 
-  const filtered =
-    activeModules.size === 0 ? entries : entries.filter(e => activeModules.has(e.module));
+  // Module visible if : (no filter) OR (it's in the active set) — AND it has
+  // at least one entry to show.
+  const visibleModules = MODULES.filter(m => {
+    const hasEntries = (entriesByModule.get(m.key)?.length ?? 0) > 0;
+    const matchesFilter = activeModules.size === 0 || activeModules.has(m.key);
+    return hasEntries && matchesFilter;
+  });
+
+  const totalVisible = visibleModules.reduce(
+    (sum, m) => sum + (entriesByModule.get(m.key)?.length ?? 0),
+    0,
+  );
 
   return (
-    <Container size="xl">
-      <div className="space-y-12 py-12">
-        <SectionHeader
-          eyebrow={t('account.eyebrow')}
-          title={t('account.catalogue.title')}
-          lede={t('account.catalogue.lede')}
-          size="md"
-          as="h1"
-        />
+    <div className="pb-12">
+      {/* sr-only h1 — visible chrome was dropped per owner direction.
+          Screen readers still get a proper page heading. */}
+      <h1 className="sr-only">{t('account.catalogue.title')}</h1>
 
-        <FilterBar>
-          {MODULES.map(m => (
-            <FilterBar.Chip
-              key={m.key}
-              label={t(m.labelKey)}
-              selected={activeModules.has(m.key)}
-              onToggle={() => toggleModule(m.key)}
+      {/* Sticky filter row — pinned just under the AuthHeader. The
+          backdrop-blur keeps the underlying grid scrolling readable
+          but slightly veiled when content passes behind. Full-bleed
+          (no Container) per owner direction 2026-05-14 15:17 — "il
+          faut que ça soit sur tout l'écran comme pour la page accueil". */}
+      <div className="bg-bg/95 border-fg/10 sticky top-14 z-30 border-b backdrop-blur-md">
+        <div className="px-4 py-4 md:px-6 md:py-5 lg:px-8">
+          <FilterBar>
+            {MODULES.map(m => (
+              <FilterBar.Chip
+                key={m.key}
+                label={t(m.labelKey)}
+                selected={activeModules.has(m.key)}
+                onToggle={() => toggleModule(m.key)}
+              />
+            ))}
+            <FilterBar.Reset
+              label={t('common.reset')}
+              onReset={() => setActiveModules(new Set())}
+              visible={activeModules.size > 0}
             />
-          ))}
-          <FilterBar.Reset
-            label={t('common.reset')}
-            onReset={() => setActiveModules(new Set())}
-            visible={activeModules.size > 0}
-          />
-        </FilterBar>
-
-        <div className="grid auto-rows-fr grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((e, i) => (
-            <Reveal key={`${e.module}-${e.id}`} index={i} className="h-full *:h-full">
-              {e.card}
-            </Reveal>
-          ))}
+          </FilterBar>
         </div>
-
-        <p className="text-muted text-xs tracking-widest uppercase">
-          {t('common.showing', { count: filtered.length })}
-        </p>
       </div>
-    </Container>
+
+      <div className="space-y-12 px-4 pt-8 md:space-y-14 md:px-6 lg:px-8">
+        {visibleModules.map(m => {
+          const moduleEntries = entriesByModule.get(m.key) ?? [];
+          return (
+            <section key={m.key} aria-labelledby={`module-${m.key}`}>
+              <header className="mb-5 flex items-baseline justify-between gap-3">
+                <h2
+                  id={`module-${m.key}`}
+                  className="text-fg font-mono text-lg font-bold tracking-tight uppercase md:text-xl"
+                >
+                  {t(m.labelKey)}
+                </h2>
+                <span className="text-muted font-mono text-[10px] tracking-[0.18em] uppercase">
+                  {t('common.showing', { count: moduleEntries.length })}
+                </span>
+              </header>
+              <div className="grid auto-rows-fr grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {moduleEntries.map((e, i) => (
+                  <Reveal key={`${e.module}-${e.id}`} index={i} className="h-full *:h-full">
+                    {e.card}
+                  </Reveal>
+                ))}
+              </div>
+            </section>
+          );
+        })}
+
+        {totalVisible === 0 && (
+          <p className="text-muted font-mono text-[10px] tracking-[0.18em] uppercase">
+            {t('common.empty')}
+          </p>
+        )}
+      </div>
+    </div>
   );
 }

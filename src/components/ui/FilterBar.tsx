@@ -35,10 +35,12 @@ interface FilterResetProps {
 }
 
 // WHY: shared chip chrome so every pill on every page stays in sync.
-// h-10 (40px) keeps the bar compact ; shrink-0 so chips don't compress
-// when the row scrolls horizontally on mobile.
+// rounded-md gives a square-ish box (owner direction 2026-05-14 15:15 —
+// "des boites plus carrées, pas flottant") ; h-10 (40px) keeps the bar
+// compact ; shrink-0 so chips don't compress when the row scrolls
+// horizontally on mobile.
 const CHIP_BASE = cn(
-  'inline-flex h-10 shrink-0 items-center rounded-full border',
+  'inline-flex h-10 shrink-0 items-center rounded-md border',
   'px-4 font-mono text-[11px] tracking-[0.15em] whitespace-nowrap uppercase',
   'duration-base transition-[color,background-color,border-color,box-shadow]',
   'focus-visible:ring-accent focus-visible:ring-offset-bg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
