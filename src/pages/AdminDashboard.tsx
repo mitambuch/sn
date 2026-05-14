@@ -11,6 +11,9 @@ import { SectionHeader } from '@components/ui/SectionHeader';
 import { Stat } from '@components/ui/Stat';
 import { StatusPill } from '@components/ui/StatusPill';
 import { ROUTES } from '@constants/routes';
+import { useInquiriesAdmin } from '@hooks/useInquiries';
+import { useInvitationsAdmin } from '@hooks/useInvitationsAdmin';
+import { useUsersAdmin } from '@hooks/useUsersAdmin';
 import type { LucideIcon } from 'lucide-react';
 import {
   Building2,
@@ -24,8 +27,6 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-
-import { listInquiries, listInvitations, listUsers } from '@/mocks';
 
 // WHY: Date.now() called once at module scope so react-hooks/purity is happy.
 const NOW_MS = Date.now();
@@ -79,9 +80,10 @@ export default function AdminDashboard() {
   const { t, i18n } = useTranslation();
   const { localePath } = useLocale();
 
-  const inquiries = listInquiries();
-  const invitations = listInvitations();
-  const members = listUsers().filter(u => u.role === 'client');
+  const { rows: inquiries } = useInquiriesAdmin();
+  const { rows: invitations } = useInvitationsAdmin();
+  const { rows: users } = useUsersAdmin();
+  const members = users.filter(u => u.role === 'client');
 
   const pending = inquiries.filter(i => i.status === 'new' || i.status === 'in_review').length;
   const unusedCodes = invitations.filter(i => i.status === 'unused').length;

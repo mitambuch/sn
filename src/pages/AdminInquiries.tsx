@@ -6,17 +6,19 @@
 
 import { Container } from '@components/layout/Container';
 import { SectionHeader } from '@components/ui/SectionHeader';
+import { Spinner } from '@components/ui/Spinner';
+import { useInquiriesAdmin } from '@hooks/useInquiries';
+import { useUsersAdmin } from '@hooks/useUsersAdmin';
 import { useTranslation } from 'react-i18next';
 
-import { listInquiries } from '@/mocks';
-import { users } from '@/mocks/users';
 import type { InquiryStatus } from '@/types/inquiry';
 
 const COLUMNS: InquiryStatus[] = ['new', 'in_review', 'contacted', 'closed'];
 
 export default function AdminInquiries() {
   const { t, i18n } = useTranslation();
-  const all = listInquiries();
+  const { rows: all, loading } = useInquiriesAdmin();
+  const { rows: users } = useUsersAdmin();
   const userById = (id: string) => users.find(u => u.id === id)?.fullName ?? '—';
 
   return (
@@ -28,6 +30,12 @@ export default function AdminInquiries() {
           size="md"
           as="h1"
         />
+
+        {loading && (
+          <div className="flex items-center justify-center py-12">
+            <Spinner size="sm" aria-label={t('common.loading')} />
+          </div>
+        )}
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {COLUMNS.map(col => {
