@@ -378,8 +378,7 @@
       "placeholder": "Quel que soit votre besoin — accès privé, recherche d'objet rare, arrangement spécifique, urgence médicale — racontez-nous."
     },
     "callback": {
-      "cta": "Demander un rappel à Salvatore",
-      "or": "Ou",
+      "cta": "Préférer un appel direct",
       "hint": "Sans formulaire — il revient vers vous sous 24h."
     },
     "review": {
