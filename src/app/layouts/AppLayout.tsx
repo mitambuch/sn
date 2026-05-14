@@ -14,7 +14,7 @@
 import { RequireAuth } from '@app/guards/RequireAuth';
 import { AppBottomNav } from '@app/layouts/AppBottomNav';
 import { useLocale } from '@app/LocaleProvider';
-import { Header } from '@components/layout/Header';
+import { AuthHeader } from '@components/layout/AuthHeader';
 import { ROUTES } from '@constants/routes';
 import { AccountRequestModalProvider } from '@context/AccountRequestModalContext';
 import { useAuth } from '@context/AuthContext';
@@ -157,7 +157,7 @@ const AppShell = () => {
 
   return (
     <>
-      <Header />
+      <AuthHeader homeHref={localePath(ROUTES.ACCOUNT)} postLogoutHref={localePath(ROUTES.HOME)} />
 
       {/* Backdrop — mobile only when drawer open. The drawer is triggered by
           the "+" tab in the AppBottomNav (no hamburger top-left). */}

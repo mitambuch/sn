@@ -68,7 +68,7 @@ const TabLink = ({ tab, pathname }: { tab: BottomTab; pathname: string }) => {
       className={cn(
         'flex flex-col items-center justify-center gap-1 px-1 text-[10px] tracking-widest uppercase',
         'transition-colors duration-200',
-        isActive ? 'text-on-ink' : 'text-on-ink/55',
+        isActive ? 'text-fg' : 'text-muted',
       )}
     >
       <Icon size={18} strokeWidth={1.5} aria-hidden="true" />
@@ -87,15 +87,15 @@ export const AppBottomNav = ({ onMoreClick, moreOpen }: AppBottomNavProps) => {
     <nav
       aria-label="Mobile navigation"
       className={cn(
-        'bg-ink text-on-ink fixed inset-x-0 bottom-0 z-40',
-        'border-on-ink/15 border-t',
+        'bg-bg/95 text-fg fixed inset-x-0 bottom-0 z-40 backdrop-blur-md',
+        'border-fg/15 border-t',
         'pb-[env(safe-area-inset-bottom)]',
         'md:hidden',
       )}
     >
-      {/* Center FAB — bg-bg + text-ink for max contrast, raised above the
-          bar by ~28px so it reads as a primary action separate from the
-          flat tabs. Opens the ConciergeRequestWizard (any-form entry). */}
+      {/* Center FAB — inverted bg-fg + text-bg so it reads as the primary
+          action, raised ~24px above the light bar. Opens the
+          ConciergeRequestWizard (any-form entry). */}
       <button
         type="button"
         onClick={() => {
@@ -103,10 +103,10 @@ export const AppBottomNav = ({ onMoreClick, moreOpen }: AppBottomNavProps) => {
         }}
         aria-label={t('account.fab.request')}
         className={cn(
-          'bg-bg text-ink border-ink/10 absolute -top-6 left-1/2 -translate-x-1/2',
+          'bg-fg text-bg border-bg absolute -top-6 left-1/2 -translate-x-1/2',
           'inline-flex h-14 w-14 items-center justify-center rounded-full border-2 shadow-lg',
           'transition-transform duration-150 ease-out active:scale-95',
-          'focus-visible:ring-on-ink focus-visible:ring-offset-ink focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+          'focus-visible:ring-accent focus-visible:ring-offset-bg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
         )}
       >
         <Plus size={26} strokeWidth={1.75} aria-hidden="true" />
@@ -134,7 +134,7 @@ export const AppBottomNav = ({ onMoreClick, moreOpen }: AppBottomNavProps) => {
           className={cn(
             'flex flex-col items-center justify-center gap-1 px-1 text-[10px] tracking-widest uppercase',
             'transition-colors duration-200',
-            moreOpen ? 'text-on-ink' : 'text-on-ink/55',
+            moreOpen ? 'text-fg' : 'text-muted',
           )}
         >
           <MoreHorizontal size={18} strokeWidth={1.5} aria-hidden="true" />

@@ -11,7 +11,7 @@
 
 import { RequireRole } from '@app/guards/RequireRole';
 import { useLocale } from '@app/LocaleProvider';
-import { Header } from '@components/layout/Header';
+import { AuthHeader } from '@components/layout/AuthHeader';
 import { ROUTES } from '@constants/routes';
 import { useAuth } from '@context/AuthContext';
 import { useMediaQuery } from '@hooks/useMediaQuery';
@@ -59,7 +59,7 @@ const AdminShell = () => {
 
   return (
     <>
-      <Header />
+      <AuthHeader homeHref={localePath(ROUTES.ADMIN)} postLogoutHref={localePath(ROUTES.HOME)} />
       <aside
         className={cn(
           'border-border bg-bg fixed top-20 right-0 left-0 z-30 border-b',
