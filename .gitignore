@@ -70,3 +70,5 @@ dist-handoff/
 !.claude/CLIENT-KICKOFF-PROMPT.md
 !.claude/DEMO-SANITY-SETUP.md
 .claude/.dispatch-state.json
+
+.vercel

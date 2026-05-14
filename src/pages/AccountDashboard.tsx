@@ -73,6 +73,10 @@ const NOW_HOUR = new Date().getHours();
 /* ─── Section: Greeting ─────────────────────────────── */
 const GreetingSection = () => {
   const { t, i18n } = useTranslation();
+  const { user } = useAuth();
+  // Authenticated profile name takes priority ; mock currentUser is the
+  // demo-mode fallback when Supabase isn't wired.
+  const displayName = user?.fullName ?? currentUser.fullName;
   const todayLabel = new Date().toLocaleDateString(i18n.language, {
     weekday: 'long',
     day: '2-digit',
@@ -93,7 +97,7 @@ const GreetingSection = () => {
         <span className="tracking-[0.25em]">{todayLabel}</span>
       </span>
       <h1 className="text-fg mt-3 font-mono text-2xl font-bold tracking-tight uppercase sm:text-3xl md:text-4xl lg:text-5xl">
-        {t(`account.greeting.${greetingKey(NOW_HOUR)}`, { name: firstName(currentUser.fullName) })}
+        {t(`account.greeting.${greetingKey(NOW_HOUR)}`, { name: firstName(displayName) })}
       </h1>
     </header>
   );

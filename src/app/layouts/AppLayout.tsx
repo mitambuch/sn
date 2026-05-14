@@ -35,7 +35,9 @@ import {
   LogOut,
   Newspaper,
   Settings,
+  Shield,
   Sparkles,
+  Ticket,
   User,
   Watch,
   X,
@@ -70,6 +72,13 @@ const ACCOUNT_NAV_USER: NavItem[] = [
   { to: ROUTES.ACCOUNT_INQUIRIES, labelKey: 'account.nav.inquiries', icon: Inbox },
   { to: ROUTES.ACCOUNT_PROFILE, labelKey: 'account.nav.profile', icon: User },
   { to: ROUTES.ACCOUNT_PREFERENCES, labelKey: 'account.nav.preferences', icon: Settings },
+];
+
+// WHY: shown only when the authenticated profile has role='admin'. Salva
+// reaches the back-office without having to type the URL by hand.
+const ACCOUNT_NAV_ADMIN: NavItem[] = [
+  { to: ROUTES.ADMIN, labelKey: 'account.nav.adminHome', icon: Shield },
+  { to: ROUTES.ADMIN_INVITATIONS, labelKey: 'account.nav.adminInvitations', icon: Ticket },
 ];
 
 export const AppLayout = () => {
@@ -117,7 +126,8 @@ const AppShell = () => {
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
   const { t } = useTranslation();
   const { localePath } = useLocale();
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
+  const isAdmin = user?.role === 'admin';
   const navigate = useNavigate();
   const palette = useCommandPalette();
 
@@ -217,6 +227,14 @@ const AppShell = () => {
           {ACCOUNT_NAV_USER.map(item => (
             <NavLink key={item.to} item={item} pathname={pathname} exact />
           ))}
+          {isAdmin && (
+            <>
+              <span className="bg-fg/15 my-3 block h-px w-full" aria-hidden="true" />
+              {ACCOUNT_NAV_ADMIN.map(item => (
+                <NavLink key={item.to} item={item} pathname={pathname} exact />
+              ))}
+            </>
+          )}
           <button
             type="button"
             onClick={() => {
