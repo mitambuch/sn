@@ -76,6 +76,15 @@ const GreetingSection = () => {
   });
   return (
     <header className="flex flex-col gap-3">
+      {/* Terminal-style eyebrow — picks up the landing chrome */}
+      <span className="text-muted flex items-center gap-2 font-mono text-[10px] tracking-widest uppercase">
+        <span
+          aria-hidden="true"
+          className="bg-fg inline-block h-1.5 w-1.5 rounded-full"
+          style={{ animation: 'terminal-pulse 1.4s ease-in-out infinite' }}
+        />
+        ↘ {t('account.eyebrow')}
+      </span>
       <span className="text-muted text-xs tracking-[0.3em] uppercase">{todayLabel}</span>
       <h1 className="text-fg font-mono text-2xl font-bold tracking-tight text-balance uppercase sm:text-3xl md:text-4xl">
         {t(`account.greeting.${greetingKey(NOW_HOUR)}`, { name: firstName(currentUser.fullName) })}
@@ -190,7 +199,12 @@ const ConciergeCard = () => {
         <div className="flex items-center gap-4">
           <Initials name={currentUser.conciergeName} />
           <div>
-            <span className="text-muted text-xs tracking-widest uppercase">
+            <span className="text-muted flex items-center gap-2 text-xs tracking-widest uppercase">
+              <span
+                aria-hidden="true"
+                className="bg-success inline-block h-1.5 w-1.5 rounded-full"
+                style={{ animation: 'terminal-pulse 1.4s ease-in-out infinite' }}
+              />
               {t('dock.eyebrow')}
             </span>
             <p className="text-fg mt-1 text-lg font-medium">{currentUser.conciergeName}</p>
@@ -270,7 +284,10 @@ const RecentInquiriesSection = ({ loading }: { loading: boolean }) => {
         <Card padding="none">
           <ul className="divide-border divide-y">
             {inquiries.map(inq => (
-              <li key={inq.id} className="flex flex-col gap-2 px-5 py-4">
+              <li
+                key={inq.id}
+                className="flex flex-col gap-2 px-5 py-4 transition-[padding] duration-300 ease-out hover:pl-7"
+              >
                 {/* Top row : meta + StatusPill — both tiny uppercase,
                     fit easily on one line on every viewport. */}
                 <div className="flex items-center justify-between gap-3">
