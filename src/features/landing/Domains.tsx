@@ -16,9 +16,11 @@
 
 import { Card } from '@components/ui/Card';
 import { Modal } from '@components/ui/Modal';
+import { useLandingContext } from '@context/LandingContentContext';
 import { SectionTag } from '@features/landing/SectionTag';
 import { useMediaQuery } from '@hooks/useMediaQuery';
 import { useReveal } from '@hooks/useReveal';
+import { resolveFieldOrFallback } from '@lib/i18nField';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -27,7 +29,9 @@ type DomainKey = (typeof DOMAIN_KEYS)[number];
 
 /** Landing S05 — 10 service verticales with hover-driven preview + mobile modal. */
 export const Domains = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { data: landing } = useLandingContext();
+  const locale = (i18n.language as 'fr' | 'en') ?? 'fr';
   const ref = useReveal<HTMLDivElement>();
   const [active, setActive] = useState<DomainKey>('01');
   const [detailOpen, setDetailOpen] = useState(false);
@@ -39,17 +43,28 @@ export const Domains = () => {
         {/* ─── Header ─── */}
         <div className="border-border mb-14 flex flex-col gap-6 border-b pb-8 md:flex-row md:items-end md:justify-between md:gap-12">
           <div className="flex flex-col gap-4">
-            <SectionTag num="05" label={t('landing.domains.tag')} />
+            <SectionTag
+              num="05"
+              label={resolveFieldOrFallback(
+                landing?.domainsEyebrow,
+                locale,
+                t('landing.domains.tag'),
+              )}
+            />
             <h2 className="font-mono text-[clamp(1.75rem,4vw,4rem)] leading-[0.95] font-medium tracking-[-0.025em] uppercase">
-              {t('landing.domains.h2line1')}
-              <br />
-              {t('landing.domains.h2line2')}
+              {resolveFieldOrFallback(
+                landing?.domainsHeadline,
+                locale,
+                `${t('landing.domains.h2line1')} ${t('landing.domains.h2line2')}`,
+              )}
             </h2>
           </div>
           <p className="text-muted font-mono text-[10px] leading-[1.9] tracking-widest uppercase md:text-right">
-            {t('landing.domains.metaTop')}
-            <br />
-            {t('landing.domains.metaBottom')}
+            {resolveFieldOrFallback(
+              landing?.domainsLede,
+              locale,
+              `${t('landing.domains.metaTop')} ${t('landing.domains.metaBottom')}`,
+            )}
           </p>
         </div>
 

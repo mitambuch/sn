@@ -16,9 +16,11 @@
 
 import { Card } from '@components/ui/Card';
 import { MonoGradientPlaceholder } from '@components/ui/MonoGradientPlaceholder';
+import { useLandingContext } from '@context/LandingContentContext';
 import { AccessRequestModal } from '@features/access/AccessRequestModal';
 import { SectionTag } from '@features/landing/SectionTag';
 import { useReveal } from '@hooks/useReveal';
+import { resolveFieldOrFallback } from '@lib/i18nField';
 import { cn } from '@utils/cn';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -56,7 +58,9 @@ const LOCKED_KEYS = ['locked1', 'locked2', 'locked3', 'locked4'] as const;
 
 /** Landing S08 — catalogue teaser + cooptation gate. */
 export const Access = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { data: landing } = useLandingContext();
+  const locale = (i18n.language as 'fr' | 'en') ?? 'fr';
   const ref = useReveal<HTMLDivElement>();
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<ModalMode>('request');
@@ -74,21 +78,38 @@ export const Access = () => {
       >
         {/* ─── Header ─── */}
         <header className="flex flex-col gap-6">
-          <SectionTag num="08.A" label={t('landing.access.eyebrow')} />
+          <SectionTag
+            num="08.A"
+            label={resolveFieldOrFallback(
+              landing?.accessEyebrow,
+              locale,
+              t('landing.access.eyebrow'),
+            )}
+          />
           <h2 className="max-w-5xl font-mono text-[clamp(1.75rem,4vw,4rem)] leading-[0.95] font-medium tracking-tight uppercase">
-            {t('landing.access.heroTitleA')}
+            {resolveFieldOrFallback(landing?.accessTitleA, locale, t('landing.access.heroTitleA'))}
             <br />
-            <span className="text-white/60">{t('landing.access.heroTitleB')}</span>
+            <span className="text-white/60">
+              {resolveFieldOrFallback(
+                landing?.accessTitleB,
+                locale,
+                t('landing.access.heroTitleB'),
+              )}
+            </span>
           </h2>
           <p className="max-w-2xl text-base leading-relaxed text-white/75 md:text-lg">
-            {t('landing.access.heroLede')}
+            {resolveFieldOrFallback(landing?.accessLede, locale, t('landing.access.heroLede'))}
           </p>
         </header>
 
         {/* ─── Catalogue teaser — backend Card style, 4-up ─── */}
         <div className="flex flex-col gap-6">
           <span className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
-            {t('landing.access.eventsEyebrow')}
+            {resolveFieldOrFallback(
+              landing?.accessEventsEyebrow,
+              locale,
+              t('landing.access.eventsEyebrow'),
+            )}
           </span>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
             {/* Real event teasers — Cloudinary imagery */}
@@ -133,7 +154,11 @@ export const Access = () => {
         {/* ─── Off-market secondary row (2 more locked teasers, compact) ─── */}
         <div className="flex flex-col gap-6">
           <span className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
-            {t('landing.access.lockedEyebrow')}
+            {resolveFieldOrFallback(
+              landing?.accessLockedEyebrow,
+              locale,
+              t('landing.access.lockedEyebrow'),
+            )}
           </span>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {LOCKED_KEYS.slice(2).map(key => (

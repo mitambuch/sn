@@ -13,23 +13,38 @@
 //       in fr.json / en.json.
 // ═══════════════════════════════════════════════════
 
+import { useLandingContext } from '@context/LandingContentContext';
 import { SectionTag } from '@features/landing/SectionTag';
+import { resolveFieldOrFallback } from '@lib/i18nField';
 import { useTranslation } from 'react-i18next';
 
 const VERBS = ['identify', 'structure', 'facilitate'] as const;
 
 /** Landing S03 — 3-col body : meta · paragraphs · method triptyque. */
 export const Presentation = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { data: landing } = useLandingContext();
+  const locale = (i18n.language as 'fr' | 'en') ?? 'fr';
 
   return (
     <section id="s03" className="border-border bg-bg border-b px-5 py-20 md:px-12 md:py-28">
       {/* ─── Header : h2 left + lead quote right ─── */}
       <div className="border-border mb-16 grid grid-cols-1 items-end gap-8 border-b pb-8 md:grid-cols-2 md:gap-16">
         <div className="flex flex-col gap-4">
-          <SectionTag num="03" label={t('landing.presentation.tag')} />
+          <SectionTag
+            num="03"
+            label={resolveFieldOrFallback(
+              landing?.presentationEyebrow,
+              locale,
+              t('landing.presentation.tag'),
+            )}
+          />
           <h2 className="font-mono text-[clamp(1.75rem,4vw,3.5rem)] leading-[0.95] font-medium tracking-tight uppercase">
-            {t('landing.presentation.h2line1')} {t('landing.presentation.h2line2')}
+            {resolveFieldOrFallback(
+              landing?.presentationHeadline,
+              locale,
+              `${t('landing.presentation.h2line1')} ${t('landing.presentation.h2line2')}`,
+            )}
           </h2>
         </div>
         <div className="self-end">
@@ -37,7 +52,11 @@ export const Presentation = () => {
             ↘
           </span>
           <p className="text-fg font-mono text-[clamp(1rem,1.5vw,1.25rem)] leading-[1.4] tracking-tight uppercase">
-            {t('landing.presentation.lead')}
+            {resolveFieldOrFallback(
+              landing?.presentationLede,
+              locale,
+              t('landing.presentation.lead'),
+            )}
           </p>
         </div>
       </div>

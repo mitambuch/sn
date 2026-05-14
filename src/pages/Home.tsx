@@ -15,6 +15,7 @@
 
 import { BrandMark } from '@components/brand/BrandMark';
 import { SeoHead } from '@components/features/SeoHead';
+import { LandingContentProvider, useLandingContext } from '@context/LandingContentContext';
 import { LoginModalProvider } from '@context/LoginModalContext';
 import { useLoginModal } from '@context/useLoginModal';
 import {
@@ -33,20 +34,25 @@ import {
   useLandingData,
 } from '@features/landing';
 import { Loader } from '@features/landing/Loader/Loader';
+import { resolveFieldOrFallback } from '@lib/i18nField';
 import { cn } from '@utils/cn';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Home() {
   return (
-    <LoginModalProvider>
-      <HomeContent />
-    </LoginModalProvider>
+    <LandingContentProvider>
+      <LoginModalProvider>
+        <HomeContent />
+      </LoginModalProvider>
+    </LandingContentProvider>
   );
 }
 
 function HomeContent() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { data: landing } = useLandingContext();
+  const locale = (i18n.language as 'fr' | 'en') ?? 'fr';
   const { openLogin, isOpen: isLoginOpen } = useLoginModal();
   const [indexOpen, setIndexOpen] = useState(false);
   const [compactLogo, setCompactLogo] = useState(false);
@@ -101,14 +107,30 @@ function HomeContent() {
         open={indexOpen}
         onClose={closeIndex}
         sections={sections}
-        location={t('landing.index.footerLocation')}
+        location={resolveFieldOrFallback(
+          landing?.footerLocation,
+          locale,
+          t('landing.index.footerLocation'),
+        )}
         count={t('landing.index.footerCount')}
-        edition={t('landing.index.footerEdition')}
+        edition={resolveFieldOrFallback(
+          landing?.footerEdition,
+          locale,
+          t('landing.index.footerEdition'),
+        )}
         closeLabel={t('common.close')}
         title={t('landing.index.title')}
-        primaryCtaLabel={t('landing.cta.requestAccess')}
+        primaryCtaLabel={resolveFieldOrFallback(
+          landing?.ctaRequestAccess,
+          locale,
+          t('landing.cta.requestAccess'),
+        )}
         primaryCtaHref="#s08"
-        secondaryCtaLabel={t('landing.cta.privateArea')}
+        secondaryCtaLabel={resolveFieldOrFallback(
+          landing?.ctaPrivateArea,
+          locale,
+          t('landing.cta.privateArea'),
+        )}
         secondaryCtaNode={
           <button
             type="button"
@@ -118,7 +140,13 @@ function HomeContent() {
             }}
             className="border-bg text-bg hover:bg-bg hover:text-fg inline-flex items-center justify-between gap-3 rounded-full border px-6 py-4 font-mono text-xs tracking-widest uppercase transition-colors md:py-5 md:text-sm"
           >
-            <span>{t('landing.cta.privateArea')}</span>
+            <span>
+              {resolveFieldOrFallback(
+                landing?.ctaPrivateArea,
+                locale,
+                t('landing.cta.privateArea'),
+              )}
+            </span>
             <span aria-hidden="true">↗</span>
           </button>
         }
@@ -149,13 +177,29 @@ function HomeContent() {
           <LandingFooter />
 
           <TerminalBar
-            statusLabel={t('landing.terminal.status')}
-            tzLabel={t('landing.terminal.tz')}
-            primaryCtaLabel={t('landing.cta.requestAccess')}
+            statusLabel={resolveFieldOrFallback(
+              landing?.terminalStatus,
+              locale,
+              t('landing.terminal.status'),
+            )}
+            tzLabel={resolveFieldOrFallback(landing?.terminalTz, locale, t('landing.terminal.tz'))}
+            primaryCtaLabel={resolveFieldOrFallback(
+              landing?.ctaRequestAccess,
+              locale,
+              t('landing.cta.requestAccess'),
+            )}
             primaryCtaHref="#s08"
-            secondaryCtaLabel={t('landing.cta.privateArea')}
+            secondaryCtaLabel={resolveFieldOrFallback(
+              landing?.ctaPrivateArea,
+              locale,
+              t('landing.cta.privateArea'),
+            )}
             onSecondaryCta={openLogin}
-            callCtaLabel={t('landing.cta.callDirect')}
+            callCtaLabel={resolveFieldOrFallback(
+              landing?.ctaCallDirect,
+              locale,
+              t('landing.cta.callDirect'),
+            )}
           />
         </main>
       )}

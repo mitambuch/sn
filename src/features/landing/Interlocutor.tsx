@@ -18,7 +18,9 @@
 // WHEN: Anchored at #s09 of the landing.
 // ═══════════════════════════════════════════════════
 
+import { useLandingContext } from '@context/LandingContentContext';
 import { useReveal } from '@hooks/useReveal';
+import { resolveFieldOrFallback } from '@lib/i18nField';
 import { cn } from '@utils/cn';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -48,7 +50,9 @@ const SLIDE_DURATION_MS = 8000;
 
 /** Landing S09 — autoplay focal interlocutor + supporting circle. */
 export const Interlocutor = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { data: landing } = useLandingContext();
+  const locale = (i18n.language as 'fr' | 'en') ?? 'fr';
   const ref = useReveal<HTMLDivElement>();
   const [focalKey, setFocalKey] = useState<Member['key']>('salva');
   const [progress, setProgress] = useState(0); // 0..1 of current slide
@@ -123,13 +127,30 @@ export const Interlocutor = () => {
       {/* ─── Header strip — eyebrow + monumental title ─── */}
       <div className="border-border border-b px-8 py-8 md:px-12 md:py-10">
         <div className="flex items-center justify-between font-mono text-[10px] tracking-widest uppercase">
-          <span>↘ 09 / {t('landing.interlocutor.eyebrowTeam')}</span>
+          <span>
+            ↘ 09 /{' '}
+            {resolveFieldOrFallback(
+              landing?.interlocutorEyebrow,
+              locale,
+              t('landing.interlocutor.eyebrowTeam'),
+            )}
+          </span>
           <span className="text-muted">{t('landing.interlocutor.countLabel')}</span>
         </div>
         <h2 className="mt-6 font-mono text-[clamp(1.75rem,4.2vw,3.5rem)] leading-[0.95] font-medium tracking-tight uppercase">
-          {t('landing.interlocutor.headlineA')}
+          {resolveFieldOrFallback(
+            landing?.interlocutorHeadlineA,
+            locale,
+            t('landing.interlocutor.headlineA'),
+          )}
           <br />
-          <span className="text-muted">{t('landing.interlocutor.headlineB')}</span>
+          <span className="text-muted">
+            {resolveFieldOrFallback(
+              landing?.interlocutorHeadlineB,
+              locale,
+              t('landing.interlocutor.headlineB'),
+            )}
+          </span>
         </h2>
       </div>
 

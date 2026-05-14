@@ -18,6 +18,8 @@
 //       after} in i18n.
 // ═══════════════════════════════════════════════════
 
+import { useLandingContext } from '@context/LandingContentContext';
+import { resolveFieldOrFallback } from '@lib/i18nField';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -48,7 +50,9 @@ function fullPhrase(p: PhraseParts): string {
 
 /** Landing S01 — typewriter hero over cycling video bg. */
 export const Hero = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { data: landing } = useLandingContext();
+  const locale = (i18n.language as 'fr' | 'en') ?? 'fr';
   const [phraseIdx, setPhraseIdx] = useState(0);
   const [text, setText] = useState('');
   const [phase, setPhase] = useState<TypewriterPhase>('typing');
@@ -151,40 +155,91 @@ export const Hero = () => {
               className="inline-block h-1 w-1 rounded-full bg-white"
               style={{ animation: 'terminal-pulse 1.4s ease-in-out infinite' }}
             />
-            {t('landing.hero.topRightGps')}
+            {resolveFieldOrFallback(landing?.heroGpsLabel, locale, t('landing.hero.topRightGps'))}
           </span>
-          <span>{t('landing.hero.topRightLoc')}</span>
+          <span>
+            {resolveFieldOrFallback(landing?.heroGpsValue, locale, t('landing.hero.topRightLoc'))}
+          </span>
         </div>
 
         {/* 3-col meta */}
         <div className="grid grid-cols-1 items-end gap-8 md:grid-cols-[1fr_1.5fr_auto] md:gap-12">
           <div className="flex flex-col gap-3.5">
             <span className="font-mono text-[10px] tracking-widest text-white/60 uppercase">
-              ↘ {t('landing.hero.metaStructureLabel')}
+              ↘{' '}
+              {resolveFieldOrFallback(
+                landing?.heroMetaStructure,
+                locale,
+                t('landing.hero.metaStructureLabel'),
+              )}
             </span>
             <dl className="font-mono text-[10px] leading-[1.9] tracking-wider text-white/85 uppercase">
-              <MetaRow term={t('landing.hero.metaType')} value={t('landing.hero.metaTypeValue')} />
               <MetaRow
-                term={t('landing.hero.metaStatus')}
-                value={t('landing.hero.metaStatusValue')}
+                term={resolveFieldOrFallback(
+                  landing?.heroMetaType,
+                  locale,
+                  t('landing.hero.metaType'),
+                )}
+                value={resolveFieldOrFallback(
+                  landing?.heroMetaTypeValue,
+                  locale,
+                  t('landing.hero.metaTypeValue'),
+                )}
               />
               <MetaRow
-                term={t('landing.hero.metaModel')}
-                value={t('landing.hero.metaModelValue')}
+                term={resolveFieldOrFallback(
+                  landing?.heroMetaStatus,
+                  locale,
+                  t('landing.hero.metaStatus'),
+                )}
+                value={resolveFieldOrFallback(
+                  landing?.heroMetaStatusValue,
+                  locale,
+                  t('landing.hero.metaStatusValue'),
+                )}
               />
               <MetaRow
-                term={t('landing.hero.metaEstablished')}
-                value={t('landing.hero.metaEstablishedValue')}
+                term={resolveFieldOrFallback(
+                  landing?.heroMetaModel,
+                  locale,
+                  t('landing.hero.metaModel'),
+                )}
+                value={resolveFieldOrFallback(
+                  landing?.heroMetaModelValue,
+                  locale,
+                  t('landing.hero.metaModelValue'),
+                )}
+              />
+              <MetaRow
+                term={resolveFieldOrFallback(
+                  landing?.heroMetaEstablished,
+                  locale,
+                  t('landing.hero.metaEstablished'),
+                )}
+                value={resolveFieldOrFallback(
+                  landing?.heroMetaEstablishedValue,
+                  locale,
+                  t('landing.hero.metaEstablishedValue'),
+                )}
               />
             </dl>
           </div>
 
           <div className="flex flex-col gap-3.5">
             <span className="font-mono text-[10px] tracking-widest text-white/60 uppercase">
-              ↘ {t('landing.hero.metaFieldLabel')}
+              ↘{' '}
+              {resolveFieldOrFallback(
+                landing?.heroFieldLabel,
+                locale,
+                t('landing.hero.metaFieldLabel'),
+              )}
             </span>
             <p className="max-w-115 text-sm leading-relaxed text-white">
-              {t('landing.hero.metaFieldText')}
+              {resolveFieldOrFallback(
+                landing?.heroFieldText,
+                locale,
+                t('landing.hero.metaFieldText'),
+              )}
             </p>
           </div>
 
@@ -196,7 +251,11 @@ export const Hero = () => {
               }}
               className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 font-mono text-xs tracking-widest text-black uppercase transition-colors hover:bg-white/90 focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none"
             >
-              {t('landing.cta.requestAccess')}
+              {resolveFieldOrFallback(
+                landing?.ctaRequestAccess,
+                locale,
+                t('landing.cta.requestAccess'),
+              )}
               <span aria-hidden="true">↗</span>
             </button>
             <button
