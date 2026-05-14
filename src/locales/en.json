@@ -378,6 +378,10 @@
     "eyebrow": "Operator",
     "dashboardTitle": "Dashboard",
     "dashboardLede": "Active inquiries, invitation codes, recent signups.",
+    "shareCodes": {
+      "notePlaceholder": "E.g. WhatsApp to Pierre Dupont 13/05",
+      "empty": "No code generated yet."
+    },
     "invitations": {
       "title": "Invitations",
       "code": "Code",
@@ -868,6 +872,9 @@
       "imprint": "Imprint",
       "privacy": "Privacy"
     }
+  },
+  "example": {
+    "metaTitle": "Private preview — SAW NEXT"
   },
   "landing": {
     "sessionActive": "Session live",

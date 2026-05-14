@@ -416,7 +416,7 @@ export default function AdminShareCodes() {
               onChange={e => {
                 setNote(e.target.value);
               }}
-              placeholder="Ex: WhatsApp à Pierre Dupont 13/05"
+              placeholder={t('admin.shareCodes.notePlaceholder')}
               className="bg-bg/80 border-border text-fg rounded-md border px-3 py-2 text-sm"
             />
           </div>
@@ -433,13 +433,13 @@ export default function AdminShareCodes() {
         {loading ? (
           <p className="text-muted py-12 text-center text-sm">Chargement…</p>
         ) : rows.length === 0 ? (
-          <p className="text-muted py-12 text-center text-sm">Aucun code généré pour le moment.</p>
+          <p className="text-muted py-12 text-center text-sm">{t('admin.shareCodes.empty')}</p>
         ) : (
           <DataTable<ShareCode>
             columns={columns}
             rows={rows}
             rowKey={r => r.id}
-            emptyLabel="Aucun code généré pour le moment."
+            emptyLabel={t('admin.shareCodes.empty')}
           />
         )}
       </div>

@@ -399,6 +399,10 @@
     "eyebrow": "Opérateur",
     "dashboardTitle": "Tableau de bord",
     "dashboardLede": "Inquiries en cours, codes d’invitation, signups récents.",
+    "shareCodes": {
+      "notePlaceholder": "Ex : WhatsApp à Pierre Dupont 13/05",
+      "empty": "Aucun code généré pour le moment."
+    },
     "invitations": {
       "title": "Invitations",
       "code": "Code",
@@ -872,6 +876,9 @@
       "imprint": "Mentions légales",
       "privacy": "Confidentialité"
     }
+  },
+  "example": {
+    "metaTitle": "Aperçu privé — SAW NEXT"
   },
   "landing": {
     "sessionActive": "Session active",
