@@ -224,21 +224,18 @@ const ConciergeSection = () => {
           <p className="text-muted truncate text-xs md:text-sm">salvatore@sawnext.studio</p>
         </div>
       </div>
-      {/* Tall touch targets — h-16 (64px), stacked column up to lg (the
-          dashboard col-span-4 only kicks in at lg+ so until then the
-          single column reads cleaner than a cramped 2-up row). Owner
-          direction 2026-05-14 14:50 : "sur smartphone met les en
-          colonne et juste appeler et message dedans". Visible label
-          uses dock.callShort / dock.writeShort (just "Appeler" /
-          "Message") ; aria-label keeps the full string for screen
-          readers. */}
-      <div className="mt-5 flex flex-col gap-2 lg:mt-auto lg:flex-row lg:pt-6">
+      {/* Side-by-side row at every viewport, h-12 (48px) — owner direction
+          2026-05-14 15:01 : "met les côte à côte et hauteur comme un
+          bouton normal". With short labels (Appeler / Message) two
+          columns fit cleanly even at 375px (~159px each), and the
+          ratio reads as a proper CTA rather than a flat bar. */}
+      <div className="mt-5 flex flex-row gap-2 lg:mt-auto lg:pt-6">
         <a
           href="tel:+41215550000"
           aria-label={t('dock.call')}
           className={cn(
             'bg-fg text-bg border-fg hover:bg-fg/90 focus-visible:ring-accent',
-            'inline-flex h-16 flex-1 items-center justify-center gap-2 rounded-md border font-mono text-[11px] tracking-widest whitespace-nowrap uppercase',
+            'inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-md border font-mono text-[11px] tracking-widest whitespace-nowrap uppercase',
             'duration-base transition-[border-color,background-color]',
             'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
           )}
@@ -251,7 +248,7 @@ const ConciergeSection = () => {
           aria-label={t('dock.write')}
           className={cn(
             'border-fg/20 text-fg hover:border-fg/50 hover:bg-bg/40 focus-visible:ring-accent',
-            'inline-flex h-16 flex-1 items-center justify-center gap-2 rounded-md border bg-transparent font-mono text-[11px] tracking-widest whitespace-nowrap uppercase',
+            'inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-md border bg-transparent font-mono text-[11px] tracking-widest whitespace-nowrap uppercase',
             'duration-base transition-[border-color,background-color]',
             'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
           )}
