@@ -357,8 +357,7 @@
       "placeholder": "Whatever you need — private access, rare object search, specific arrangement, medical urgency — just tell us."
     },
     "callback": {
-      "cta": "Request a callback from Salvatore",
-      "or": "Or",
+      "cta": "Prefer a direct call",
       "hint": "No form — he gets back to you within 24h."
     },
     "review": {

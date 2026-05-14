@@ -338,7 +338,7 @@ export const ConciergeRequestWizard = ({
       role="dialog"
       aria-modal="true"
       aria-label={t('wizard.title')}
-      className="fixed inset-0 z-(--z-modal) flex items-end justify-center p-3 sm:items-center sm:p-4"
+      className="fixed inset-0 z-(--z-modal) flex items-center justify-center p-3 sm:p-4"
     >
       <button
         type="button"
@@ -347,7 +347,13 @@ export const ConciergeRequestWizard = ({
         className="bg-bg/80 absolute inset-0 backdrop-blur-sm"
       />
 
-      <div className="border-fg/15 bg-bg shadow-card-rest sm:rounded-card relative flex max-h-[92vh] w-full max-w-3xl flex-col overflow-hidden rounded-lg border">
+      {/* Modal — fixed height so the chrome doesn't jump step-to-step
+          (owner 2026-05-14 15:49 : "la taille de la box change à chaque
+          fois c'est bizarre"). h-[680px] capped to 88vh on smaller
+          viewports ; the body handles overflow-y internally so the
+          header / footer stay locked in place. Always centered (parent
+          flex items-center). */}
+      <div className="border-fg/15 bg-bg shadow-card-rest sm:rounded-card relative flex h-170 max-h-[88vh] w-full max-w-3xl flex-col overflow-hidden rounded-lg border">
         {/* ─── Header — eyebrow row + visual progress bar. Each segment
               animates fill on step change so the member feels forward
               motion. The category breadcrumb (when set) reminds them of
@@ -1034,28 +1040,26 @@ export const ConciergeRequestWizard = ({
                 );
               })()}
 
-              {/* Fast lane — owner direction 2026-05-14 15:34 : "le bouton
-                  on a callback.cta" : keep the option, present it as a
-                  clearly secondary action with a quiet style so it
-                  doesn't compete with the primary footer Submit. */}
-              <div className="flex items-center gap-3 text-xs">
-                <span className="text-muted font-mono text-[10px] tracking-[0.18em] uppercase">
-                  {t('callback.or')}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => handleSubmit('callback')}
-                  disabled={submitting}
-                  className={cn(
-                    'text-fg duration-base inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.18em] uppercase underline underline-offset-4 transition-opacity',
-                    'focus-visible:ring-accent rounded-sm focus-visible:ring-2 focus-visible:outline-none',
-                    'disabled:cursor-not-allowed disabled:opacity-50',
-                  )}
-                >
-                  <PhoneCall size={12} strokeWidth={1.75} aria-hidden="true" />
-                  {t('callback.cta')}
-                </button>
-              </div>
+              {/* Secondary action — owner direction 2026-05-14 15:49 :
+                  "que le callback aie un nom normal". The label was
+                  reworded to "Préférer un appel direct" (was the
+                  awkward "Ou demander un rappel à Salvatore") ; the
+                  "Ou" prefix removed, the button now reads as a clean
+                  secondary action standing on its own. */}
+              <button
+                type="button"
+                onClick={() => handleSubmit('callback')}
+                disabled={submitting}
+                className={cn(
+                  'text-muted hover:text-fg duration-base inline-flex items-center gap-2 self-start',
+                  'font-mono text-[11px] tracking-[0.18em] uppercase underline underline-offset-4 transition-colors',
+                  'focus-visible:ring-accent rounded-sm focus-visible:ring-2 focus-visible:outline-none',
+                  'disabled:cursor-not-allowed disabled:opacity-50',
+                )}
+              >
+                <PhoneCall size={12} strokeWidth={1.75} aria-hidden="true" />
+                {t('callback.cta')}
+              </button>
             </div>
           )}
         </div>
