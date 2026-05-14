@@ -235,7 +235,9 @@
       "profile": "Profil",
       "inquiries": "Demandes",
       "preferences": "Préférences",
-      "more": "Plus"
+      "more": "Plus",
+      "adminHome": "Admin",
+      "adminInvitations": "Codes d'invitation"
     },
     "fab": {
       "request": "Nouvelle demande"
