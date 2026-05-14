@@ -86,7 +86,7 @@ export default function EventsList() {
       </div>
 
       <div className={`${ROW_PAD} space-y-10 pt-8`}>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4 lg:gap-6 xl:grid-cols-5">
           {filtered.map((e, i) => (
             <Reveal key={e.id} index={i}>
               <EventCard
