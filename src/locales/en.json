@@ -118,6 +118,9 @@
     "recentlyAdded": "Recently added",
     "recommendations": "Discover",
     "noInquiries": "No active inquiries.",
+    "shortcut": {
+      "travel": "Travel"
+    },
     "profileTitle": "Your profile",
     "preferencesTitle": "Your preferences",
     "inquiriesTitle": "Inquiries history",

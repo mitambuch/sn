@@ -34,29 +34,24 @@ import { currentUser } from '@/mocks/users';
 // each box reads as its own area, tight enough on mobile to stay app-like.
 const SECTION_PAD = 'p-6 md:p-8 lg:p-10';
 
-const REQUEST_SHORTCUTS: { category: WizardCategory; icon: LucideIcon }[] = [
+// WHY: each shortcut may use a short override label (account.shortcut.<cat>)
+// when the wizard's canonical title would wrap on a single button line.
+// Today : "Voyage sur mesure" → "Voyage" for the dashboard surface only ;
+// the wizard category screen keeps the full title.
+const REQUEST_SHORTCUTS: { category: WizardCategory; icon: LucideIcon; shortKey?: string }[] = [
   { category: 'real-estate', icon: Briefcase },
   { category: 'timepiece', icon: Watch },
   { category: 'art', icon: Frame },
-  { category: 'travel', icon: Compass },
+  { category: 'travel', icon: Compass, shortKey: 'account.shortcut.travel' },
 ];
 
-const Initials = ({
-  name,
-  variant = 'default',
-}: {
-  name: string;
-  variant?: 'default' | 'invert';
-}) => {
+const Initials = ({ name }: { name: string }) => {
   const parts = name.split(' ');
   const initials = (parts[0]?.[0] ?? '') + (parts.at(-1)?.[0] ?? '');
   return (
     <span
       aria-hidden="true"
-      className={cn(
-        'flex h-11 w-11 shrink-0 items-center justify-center rounded-full border text-xs tracking-widest uppercase',
-        variant === 'invert' ? 'border-bg/30 bg-bg/10 text-bg' : 'border-border bg-surface text-fg',
-      )}
+      className="border-border bg-bg text-fg flex h-11 w-11 shrink-0 items-center justify-center rounded-full border text-xs tracking-widest uppercase"
     >
       {initials}
     </span>
@@ -144,7 +139,7 @@ const PersonalisedRequestSection = () => {
       {/* Quick shortcuts — bigger, breathable. 2x2 on mobile, 4-up on
           tablet/desktop. */}
       <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
-        {REQUEST_SHORTCUTS.map(({ category, icon: Icon }) => (
+        {REQUEST_SHORTCUTS.map(({ category, icon: Icon, shortKey }) => (
           <button
             key={category}
             type="button"
@@ -157,7 +152,7 @@ const PersonalisedRequestSection = () => {
             )}
           >
             <Icon size={14} strokeWidth={1.5} aria-hidden="true" />
-            {t(`wizard.category.${category}.title`)}
+            {t(shortKey ?? `wizard.category.${category}.title`)}
           </button>
         ))}
       </div>
@@ -196,18 +191,23 @@ const ExclusiveSection = () => {
   );
 };
 
-/* ─── Section: Concierge (inverted palette — primary anchor) ── */
+/* ─── Section: Concierge (light surface variant) ────── */
+// WHY: original draft used inverted palette (bg-fg text-bg). Owner direction
+// 2026-05-14 14:41 — "le noir est trop présent sur mobile, ça nique les yeux".
+// Switched to bg-surface light variant : still reads as its own box thanks
+// to the surface tint + section border, without the visual weight of a
+// black slab on a 375px-wide screen.
 const ConciergeSection = () => {
   const { t } = useTranslation();
   return (
     <section
       aria-labelledby="concierge-heading"
-      className={cn(SECTION_PAD, 'bg-fg text-bg flex h-full flex-col')}
+      className={cn(SECTION_PAD, 'bg-surface flex h-full flex-col')}
     >
       <h2 id="concierge-heading" className="sr-only">
         {t('account.dashboardTitle')}
       </h2>
-      <span className="text-bg/60 flex items-center gap-2 font-mono text-[10px] tracking-widest uppercase">
+      <span className="text-muted flex items-center gap-2 font-mono text-[10px] tracking-widest uppercase">
         <span
           aria-hidden="true"
           className="bg-success inline-block h-1.5 w-1.5 rounded-full"
@@ -216,39 +216,41 @@ const ConciergeSection = () => {
         {t('dock.eyebrow')}
       </span>
       <div className="mt-4 flex items-center gap-3">
-        <Initials name={currentUser.conciergeName} variant="invert" />
+        <Initials name={currentUser.conciergeName} />
         <div className="min-w-0">
-          <p className="text-bg truncate text-base font-medium md:text-lg">
+          <p className="text-fg truncate text-base font-medium md:text-lg">
             {currentUser.conciergeName}
           </p>
-          <p className="text-bg/60 truncate text-xs md:text-sm">salvatore@sawnext.studio</p>
+          <p className="text-muted truncate text-xs md:text-sm">salvatore@sawnext.studio</p>
         </div>
       </div>
+      {/* Big touch targets — h-14 (56px) reads as solid action buttons, not
+          thin links. Appel = filled fg/bg ; écrire = ghost outline. */}
       <div className="mt-5 flex flex-col gap-2 sm:flex-row lg:mt-auto lg:pt-6">
         <a
           href="tel:+41215550000"
           aria-label={t('dock.call')}
           className={cn(
-            'bg-bg text-fg border-bg hover:bg-bg/90 focus-visible:ring-bg',
-            'inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-md border font-mono text-[11px] tracking-widest whitespace-nowrap uppercase',
+            'bg-fg text-bg border-fg hover:bg-fg/90 focus-visible:ring-accent',
+            'inline-flex h-14 flex-1 items-center justify-center gap-2 rounded-md border font-mono text-[11px] tracking-widest whitespace-nowrap uppercase',
             'duration-base transition-[border-color,background-color]',
-            'focus-visible:ring-offset-fg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+            'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
           )}
         >
-          <Phone size={14} strokeWidth={1.5} aria-hidden="true" />
+          <Phone size={16} strokeWidth={1.5} aria-hidden="true" />
           <span>{t('dock.call')}</span>
         </a>
         <a
           href="mailto:salvatore@sawnext.studio"
           aria-label={t('dock.write')}
           className={cn(
-            'border-bg/30 text-bg hover:border-bg/70 hover:bg-bg/5 focus-visible:ring-bg',
-            'inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-md border font-mono text-[11px] tracking-widest whitespace-nowrap uppercase',
+            'border-fg/20 text-fg hover:border-fg/50 hover:bg-bg/40 focus-visible:ring-accent',
+            'inline-flex h-14 flex-1 items-center justify-center gap-2 rounded-md border bg-transparent font-mono text-[11px] tracking-widest whitespace-nowrap uppercase',
             'duration-base transition-[border-color,background-color]',
-            'focus-visible:ring-offset-fg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+            'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
           )}
         >
-          <Mail size={14} strokeWidth={1.5} aria-hidden="true" />
+          <Mail size={16} strokeWidth={1.5} aria-hidden="true" />
           <span>{t('dock.write')}</span>
         </a>
       </div>
