@@ -124,7 +124,7 @@
     "back": "Retour à l’accueil"
   },
   "account": {
-    "eyebrow": "Membre",
+    "eyebrow": "Espace privé",
     "greeting": {
       "morning": "Bonjour {{name}}.",
       "afternoon": "Bon après-midi {{name}}.",
@@ -231,7 +231,8 @@
       "saved": "Ma collection",
       "profile": "Profil",
       "inquiries": "Demandes",
-      "preferences": "Préférences"
+      "preferences": "Préférences",
+      "more": "Plus"
     },
     "catalogue": {
       "title": "Le catalogue",

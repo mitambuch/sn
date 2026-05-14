@@ -106,7 +106,7 @@
     "back": "Back to home"
   },
   "account": {
-    "eyebrow": "Member",
+    "eyebrow": "Private area",
     "greeting": {
       "morning": "Good morning {{name}}.",
       "afternoon": "Good afternoon {{name}}.",
@@ -207,9 +207,11 @@
       "artworks": "Artworks",
       "journeys": "Journeys",
       "concierge": "Concierge",
+      "saved": "Collection",
       "profile": "Profile",
       "inquiries": "Inquiries",
-      "preferences": "Preferences"
+      "preferences": "Preferences",
+      "more": "More"
     },
     "catalogue": {
       "title": "The catalogue",

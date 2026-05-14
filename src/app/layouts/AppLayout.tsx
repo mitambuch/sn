@@ -12,6 +12,7 @@
 // ═══════════════════════════════════════════════════
 
 import { RequireAuth } from '@app/guards/RequireAuth';
+import { AppBottomNav } from '@app/layouts/AppBottomNav';
 import { useLocale } from '@app/LocaleProvider';
 import { Header } from '@components/layout/Header';
 import { ROUTES } from '@constants/routes';
@@ -32,7 +33,6 @@ import {
   Inbox,
   LayoutDashboard,
   LogOut,
-  Menu,
   Newspaper,
   Settings,
   Sparkles,
@@ -99,9 +99,9 @@ const NavLink = ({
       to={href}
       aria-current={isActive ? 'page' : undefined}
       className={cn(
-        'duration-base flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors',
+        'duration-base flex items-center gap-3 rounded-md px-3 py-2 font-mono text-[13px] tracking-tight transition-colors',
         'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
-        isActive ? 'text-fg bg-surface' : 'text-muted hover:text-fg hover:bg-surface/60',
+        isActive ? 'bg-fg text-bg font-medium' : 'text-muted hover:text-fg hover:bg-surface/60',
       )}
     >
       <Icon size={16} strokeWidth={1.5} aria-hidden="true" />
@@ -157,26 +157,8 @@ const AppShell = () => {
     <>
       <Header />
 
-      {/* Mobile hamburger — visible only on mobile when drawer is closed. */}
-      {!drawerOpen && (
-        <button
-          type="button"
-          onClick={() => setDrawerOpen(true)}
-          aria-label={t('a11y.openMenu')}
-          aria-controls="account-sidebar"
-          aria-expanded={drawerOpen}
-          className={cn(
-            'fixed top-4 left-4 z-50 inline-flex h-10 w-10 items-center justify-center rounded-full',
-            'border-border bg-surface/80 text-fg border backdrop-blur-md',
-            'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
-            'md:hidden',
-          )}
-        >
-          <Menu size={16} strokeWidth={1.5} aria-hidden="true" />
-        </button>
-      )}
-
-      {/* Backdrop — mobile only when drawer open. */}
+      {/* Backdrop — mobile only when drawer open. The drawer is triggered by
+          the "+" tab in the AppBottomNav (no hamburger top-left). */}
       {drawerOpen && (
         <button
           type="button"
@@ -222,11 +204,11 @@ const AppShell = () => {
               exact={item.to === ROUTES.ACCOUNT}
             />
           ))}
-          <span className="bg-border my-2 block h-px w-full" aria-hidden="true" />
+          <span className="bg-fg/15 my-3 block h-px w-full" aria-hidden="true" />
           {ACCOUNT_NAV_MODULES.map(item => (
             <NavLink key={item.to} item={item} pathname={pathname} />
           ))}
-          <span className="bg-border my-2 block h-px w-full" aria-hidden="true" />
+          <span className="bg-fg/15 my-3 block h-px w-full" aria-hidden="true" />
           {ACCOUNT_NAV_USER.map(item => (
             <NavLink key={item.to} item={item} pathname={pathname} exact />
           ))}
@@ -247,11 +229,22 @@ const AppShell = () => {
         </nav>
       </aside>
 
-      <main id="main-content" className="flex-1 pt-20 md:pl-56">
+      {/* Main content — pb-20 mobile clears the bottom nav (h-14 + safe-area).
+          Desktop pl-56 clears the sidebar floor-to-ceiling. */}
+      <main id="main-content" className="flex-1 pt-20 pb-20 md:pb-0 md:pl-56">
         <div key={pathname} className={prefersReducedMotion ? undefined : 'animate-page-enter'}>
           <Outlet />
         </div>
       </main>
+
+      {/* Mobile bottom nav — 4 primary tabs + "+" opens the sidebar drawer. */}
+      <AppBottomNav
+        onMoreClick={() => {
+          setDrawerOpen(true);
+        }}
+        moreOpen={drawerOpen}
+      />
+
       <ConciergeDock />
       {/* CommandPalette stays mounted — accessible via Cmd+K shortcut from
           useCommandPalette hook. Floating button removed per owner audit
