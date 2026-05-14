@@ -41,11 +41,15 @@ interface RangeSliderProps {
 // re-enables interaction on the thumb itself after the parent <input>
 // got `pointer-events-none` (so the underlying track stays clickable
 // for both thumbs without one input shadowing the other).
+// h-6 w-6 (24px) thumb — owner direction 2026-05-14 16:13 "le module de
+// prix est super mais il faut qu'il soit plus haut, on risque de la
+// manquer". Combined with the h-2 track and 32px wrapper area below,
+// the slider now reads as a substantial control, not a thin line.
 const THUMB_TW = cn(
   '[&::-webkit-slider-thumb]:pointer-events-auto',
   '[&::-webkit-slider-thumb]:appearance-none',
-  '[&::-webkit-slider-thumb]:h-5',
-  '[&::-webkit-slider-thumb]:w-5',
+  '[&::-webkit-slider-thumb]:h-6',
+  '[&::-webkit-slider-thumb]:w-6',
   '[&::-webkit-slider-thumb]:rounded-full',
   '[&::-webkit-slider-thumb]:bg-fg',
   '[&::-webkit-slider-thumb]:border-2',
@@ -54,8 +58,8 @@ const THUMB_TW = cn(
   '[&::-webkit-slider-thumb]:cursor-grab',
   '[&:active::-webkit-slider-thumb]:cursor-grabbing',
   '[&::-moz-range-thumb]:appearance-none',
-  '[&::-moz-range-thumb]:h-5',
-  '[&::-moz-range-thumb]:w-5',
+  '[&::-moz-range-thumb]:h-6',
+  '[&::-moz-range-thumb]:w-6',
   '[&::-moz-range-thumb]:rounded-full',
   '[&::-moz-range-thumb]:bg-fg',
   '[&::-moz-range-thumb]:border-2',
@@ -114,22 +118,25 @@ export const RangeSlider = ({
         >
           {label}
         </label>
-        <span className="text-fg font-mono text-xs tabular-nums">
+        <span className="text-fg font-mono text-sm font-medium tabular-nums">
           {format(minVal)} <span className="text-muted">—</span> {format(maxVal)}
           {isAtMax ? maxSuffix : ''}
         </span>
       </div>
 
-      <div className="relative h-5">
+      {/* h-8 wrapper gives the slider a substantial vertical footprint
+          (was h-5 = 20px → 32px). Track is h-2 (8px, was 4px), thumb is
+          24px (was 20px) — easier to grab, harder to miss visually. */}
+      <div className="relative h-8 py-1">
         {/* Track background */}
         <div
           aria-hidden="true"
-          className="bg-fg/10 absolute inset-x-0 top-1/2 h-1 -translate-y-1/2 rounded-full"
+          className="bg-fg/10 absolute inset-x-0 top-1/2 h-2 -translate-y-1/2 rounded-full"
         />
         {/* Selected range fill */}
         <div
           aria-hidden="true"
-          className="bg-fg absolute top-1/2 h-1 -translate-y-1/2 rounded-full"
+          className="bg-fg absolute top-1/2 h-2 -translate-y-1/2 rounded-full"
           style={{ left: `${pctMin}%`, right: `${100 - pctMax}%` }}
         />
         {/* Min thumb input */}
@@ -147,7 +154,7 @@ export const RangeSlider = ({
           aria-valuenow={minVal}
           aria-valuetext={format(minVal)}
           className={cn(
-            'pointer-events-none absolute inset-x-0 top-1/2 h-5 w-full -translate-y-1/2 appearance-none bg-transparent',
+            'pointer-events-none absolute inset-x-0 top-1/2 h-6 w-full -translate-y-1/2 appearance-none bg-transparent',
             'focus-visible:outline-none',
             '[&::-webkit-slider-thumb]:focus-visible:ring-accent [&::-webkit-slider-thumb]:focus-visible:ring-2',
             THUMB_TW,
@@ -168,7 +175,7 @@ export const RangeSlider = ({
           aria-valuenow={maxVal}
           aria-valuetext={`${format(maxVal)}${isAtMax ? maxSuffix : ''}`}
           className={cn(
-            'pointer-events-none absolute inset-x-0 top-1/2 h-5 w-full -translate-y-1/2 appearance-none bg-transparent',
+            'pointer-events-none absolute inset-x-0 top-1/2 h-6 w-full -translate-y-1/2 appearance-none bg-transparent',
             'focus-visible:outline-none',
             '[&::-webkit-slider-thumb]:focus-visible:ring-accent [&::-webkit-slider-thumb]:focus-visible:ring-2',
             THUMB_TW,

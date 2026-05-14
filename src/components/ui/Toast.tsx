@@ -14,19 +14,26 @@ import { cn } from '@utils/cn';
 import { AlertTriangle, Check, Info, X } from 'lucide-react';
 import type { ReactNode } from 'react';
 
+// WHY: Owner direction 2026-05-14 16:13 — "le bouton qui affiche que ça
+// a bien été envoyé il faut pas qu'il ai d'effet de glass aussi marqué
+// parce on arrive pas à lire le texte dedans". The toast now sits on a
+// solid bg-bg surface with the variant colour shown via a left accent
+// strip + icon only — readable against any underlying page.
 const variantStyles: Record<ToastData['variant'], string> = {
-  success: 'border-success/30 bg-success/10 text-success-text',
-  error: 'border-danger/30 bg-danger/10 text-danger-text',
-  warning: 'border-warning/30 bg-warning/10 text-warning-text',
-  info: 'border-info/30 bg-info/10 text-info-text',
+  success:
+    'border-success/40 [&_[data-variant-strip]]:bg-success [&_[data-variant-icon]]:text-success',
+  error: 'border-danger/40 [&_[data-variant-strip]]:bg-danger [&_[data-variant-icon]]:text-danger',
+  warning:
+    'border-warning/40 [&_[data-variant-strip]]:bg-warning [&_[data-variant-icon]]:text-warning',
+  info: 'border-info/40 [&_[data-variant-strip]]:bg-info [&_[data-variant-icon]]:text-info',
 };
 
 // WHY: strokeWidth 1.5 matches the lighter icon weight used across the system
 const variantIcons: Record<ToastData['variant'], ReactNode> = {
-  success: <Check size={16} strokeWidth={1.5} />,
-  error: <X size={16} strokeWidth={1.5} />,
-  warning: <AlertTriangle size={16} strokeWidth={1.5} />,
-  info: <Info size={16} strokeWidth={1.5} />,
+  success: <Check size={16} strokeWidth={1.75} />,
+  error: <X size={16} strokeWidth={1.75} />,
+  warning: <AlertTriangle size={16} strokeWidth={1.75} />,
+  info: <Info size={16} strokeWidth={1.75} />,
 };
 
 interface ToastItemProps {
@@ -42,22 +49,25 @@ function ToastItem({ toast, onDismiss }: ToastItemProps) {
         // WHY max-w-[calc(100vw-2rem)]: on 320px viewports, w-80 (320px) + the
         // right-4 positioning (~16px gutter) overflowed horizontally. Desktop
         // keeps the 320px target; mobile clips to fit.
-        'pointer-events-auto flex w-80 max-w-[calc(100vw-2rem)] items-start gap-3 rounded-lg border p-4 shadow-lg backdrop-blur-md',
+        // Solid bg-bg + variant accent strip — no glass blur (text would be
+        // unreadable against busy backgrounds).
+        'bg-bg text-fg pointer-events-auto relative flex w-80 max-w-[calc(100vw-2rem)] items-start gap-3 overflow-hidden rounded-lg border p-4 shadow-lg',
         'animate-toast-in',
         variantStyles[toast.variant],
       )}
     >
-      <span className="mt-0.5 shrink-0" aria-hidden="true">
+      <span aria-hidden="true" data-variant-strip className="absolute inset-y-0 left-0 w-1" />
+      <span data-variant-icon className="mt-0.5 shrink-0 pl-1" aria-hidden="true">
         {toast.icon ?? variantIcons[toast.variant]}
       </span>
       <div className="min-w-0 flex-1">
-        {toast.title && <p className="text-sm font-semibold">{toast.title}</p>}
-        <p className={cn('text-sm', toast.title && 'mt-0.5 opacity-80')}>{toast.message}</p>
+        {toast.title && <p className="text-fg text-sm font-semibold">{toast.title}</p>}
+        <p className={cn('text-fg text-sm', toast.title && 'text-muted mt-0.5')}>{toast.message}</p>
       </div>
       <button
         type="button"
         onClick={() => onDismiss(toast.id)}
-        className="focus-visible:ring-accent mt-0.5 shrink-0 rounded-sm opacity-50 transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:outline-none"
+        className="text-muted hover:text-fg focus-visible:ring-accent mt-0.5 shrink-0 rounded-sm transition-colors focus-visible:ring-2 focus-visible:outline-none"
         aria-label="Dismiss notification"
       >
         <X size={14} strokeWidth={1.5} />
