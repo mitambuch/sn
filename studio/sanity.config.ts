@@ -78,6 +78,7 @@ export default defineConfig({
       documentTypes: [
         'page',
         'siteConfig',
+        'landing',
         'event',
         'property',
         'timepiece',
@@ -115,7 +116,7 @@ export default defineConfig({
     // /:locale/:slug, domain types → their listing or detail URL.
     productionUrl: async (prev, context) => {
       const { document } = context;
-      if (document._type === 'siteConfig') {
+      if (document._type === 'siteConfig' || document._type === 'landing') {
         return `${PREVIEW_URL}/${DEFAULT_LOCALE}`;
       }
       if (document._type === 'page') {

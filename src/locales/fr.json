@@ -399,6 +399,10 @@
     "eyebrow": "Opérateur",
     "dashboardTitle": "Tableau de bord",
     "dashboardLede": "Inquiries en cours, codes d’invitation, signups récents.",
+    "shareCodes": {
+      "notePlaceholder": "Ex : WhatsApp à Pierre Dupont 13/05",
+      "empty": "Aucun code généré pour le moment."
+    },
     "invitations": {
       "title": "Invitations",
       "code": "Code",
@@ -409,6 +413,9 @@
       "copied": "Code copié dans le presse-papier",
       "generate": "Générer un code",
       "generated": "Nouveau code généré",
+      "revoke": "Révoquer",
+      "revoked": "Code révoqué",
+      "mockBanner": "Mode démo — Supabase non configuré. Les actions sont locales uniquement.",
       "statusValues": {
         "unused": "Non utilisé",
         "redeemed": "Utilisé",
@@ -870,6 +877,9 @@
       "privacy": "Confidentialité"
     }
   },
+  "example": {
+    "metaTitle": "Aperçu privé — SAW NEXT"
+  },
   "landing": {
     "sessionActive": "Session active",
     "indexButton": "Index",
@@ -1163,6 +1173,14 @@
           "messagePlaceholder": "Qui vous a parlé de nous, ce que vous cherchez, et quand vous aimeriez en parler."
         },
         "legal": "Vos informations restent strictement entre vous et Salvatore. Aucune base partagée, aucune newsletter, aucun relais commercial.",
+        "steps": {
+          "identity": "Identité",
+          "profile": "Profil",
+          "message": "Message",
+          "counter": "Étape {{current}} / {{total}}",
+          "next": "Continuer",
+          "back": "Retour"
+        },
         "submitting": "Envoi…",
         "submitRequest": "Envoyer la demande",
         "submitCode": "Valider mon code",
@@ -1267,7 +1285,6 @@
     "cta": {
       "requestAccess": "Demander un accès",
       "privateArea": "Espace privé",
-      "contactDirect": "Contact direct",
       "callDirect": "Appeler"
     }
   }

@@ -6,14 +6,16 @@
 import { Container } from '@components/layout/Container';
 import { DataTable, type DataTableColumn } from '@components/ui/DataTable';
 import { SectionHeader } from '@components/ui/SectionHeader';
+import { Spinner } from '@components/ui/Spinner';
+import { useUsersAdmin } from '@hooks/useUsersAdmin';
 import { useTranslation } from 'react-i18next';
 
-import { listUsers } from '@/mocks';
 import type { User } from '@/types/auth';
 
 export default function AdminUsers() {
   const { t, i18n } = useTranslation();
-  const members = listUsers().filter(u => u.role === 'client');
+  const { rows, loading } = useUsersAdmin();
+  const members = rows.filter(u => u.role === 'client');
 
   const columns: DataTableColumn<User>[] = [
     {
@@ -61,12 +63,18 @@ export default function AdminUsers() {
           size="md"
           as="h1"
         />
-        <DataTable
-          rows={members}
-          columns={columns}
-          rowKey={r => r.id}
-          emptyLabel={t('common.empty')}
-        />
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <Spinner size="sm" aria-label={t('common.loading')} />
+          </div>
+        ) : (
+          <DataTable
+            rows={members}
+            columns={columns}
+            rowKey={r => r.id}
+            emptyLabel={t('common.empty')}
+          />
+        )}
       </div>
     </Container>
   );

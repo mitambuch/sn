@@ -51,6 +51,35 @@ const ALLOWED_RAW = new Set([
   'language',
   'heroDate',
   'order',
+  // ─── Catalogue technical fields ───────────────────────────
+  // These are values from radio lists / proper nouns / ISO codes that
+  // do not translate per locale — keeping them as raw strings is the
+  // right call.
+  'category',       // radio-list value (event, conciergeService, article)
+  'kind',           // property kind value
+  'transactionType',// property transaction value
+  'venue',          // proper noun (Palais des Nations stays Palais des Nations)
+  'city',           // proper noun
+  'region',         // proper noun
+  'countryCode',    // ISO 2-letter
+  'dressCode',      // radio-list value
+  'duration',       // free text (e.g. "12 jours")
+  'partySize',      // free text (e.g. "4 à 8 voyageurs")
+  'brand',          // proper noun (Patek Philippe, Rolex…)
+  'reference',      // alphanumeric (5711/1A-018)
+  'caseMaterial',   // technical term that's idiomatic FR
+  'movement',       // technical term
+  'condition',      // radio-list value
+  'papers',         // radio-list value
+  'artistName',     // proper noun
+  'medium',         // technical term (huile sur toile)
+  'dimensions',     // numeric+unit string
+  'edition',        // alphanumeric
+  'catalogueRaisonne', // catalogue reference
+  'firstName',      // proper noun
+  'lastName',       // proper noun
+  'role',           // radio-list value
+  'key',            // technical key used to map landing domainTiles to catalogue type slugs
 ]);
 
 function* walkDocs() {

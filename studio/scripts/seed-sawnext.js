@@ -6,12 +6,23 @@
    Variant of seed-demo.js pointing at studio/fixtures/sawnext-seed.json
    instead of the steaksoap template fixture. Use this when you spin up
    the Sanity project for the first time to give Salva a non-empty
-   Studio (siteConfig + 3 pages + 8 fiches HNW + 3 team members).
+   Studio.
+
+   The bundled fixture matches the owner's "1 fiche fake par catégorie"
+   directive : 2 singletons (siteConfig + landing), 3 pages, 1 doc per
+   catalogue type (event / property / timepiece / artwork / journey /
+   conciergeService / article) and the 3 team members the Interlocutor
+   section needs.
 
    Usage :
      pnpm sanity:seed:sawnext             → dataset production by default
      pnpm sanity:seed:sawnext --staging   → dataset staging
      pnpm sanity:seed:sawnext --dry-run   → preview only
+     pnpm sanity:seed:sawnext --wipe      → delete every doc of the
+                                            catalogue types we manage
+                                            BEFORE creating the fixture.
+                                            Use to "supprimer les autres"
+                                            when re-seeding.
 
    Requires :
      SANITY_STUDIO_PROJECT_ID (or VITE_SANITY_PROJECT_ID)
@@ -34,6 +45,20 @@ for (const envFile of ['.env.local', 'studio/.env.local', 'studio/.env']) {
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const USE_STAGING = args.includes('--staging');
+const WIPE = args.includes('--wipe');
+
+// Catalogue types that get fully wiped on --wipe. Singletons + pages
+// stay (they're idempotently replaced by createOrReplace).
+const WIPEABLE_TYPES = [
+  'event',
+  'property',
+  'timepiece',
+  'artwork',
+  'journey',
+  'conciergeService',
+  'article',
+  'teamMember',
+];
 
 const PROJECT_ID =
   process.env.SANITY_STUDIO_PROJECT_ID || process.env.VITE_SANITY_PROJECT_ID;
@@ -69,10 +94,17 @@ if (!docs.length) {
 
 const target = PROJECT_ID ? `${PROJECT_ID}/${DATASET}` : '(no project configured)';
 console.log(
-  `\n  Seed Sawnext — target ${target}  (${docs.length} documents)${DRY_RUN ? '  [DRY-RUN]' : ''}\n`,
+  `\n  Seed Sawnext — target ${target}  (${docs.length} documents)${
+    DRY_RUN ? '  [DRY-RUN]' : ''
+  }${WIPE ? '  [WIPE]' : ''}\n`,
 );
 
 if (DRY_RUN) {
+  if (WIPE) {
+    console.log(
+      `  ⚠  --wipe is set : all docs of types [${WIPEABLE_TYPES.join(', ')}] would be deleted.`,
+    );
+  }
   for (const doc of docs) {
     console.log(`  • ${doc._type}/${doc._id}`);
   }
@@ -88,7 +120,30 @@ const client = createClient({
   useCdn: false,
 });
 
+async function wipeCatalogueTypes() {
+  console.log('  ⚠  Wipe pass — removing existing catalogue docs…');
+  let deleted = 0;
+  for (const type of WIPEABLE_TYPES) {
+    try {
+      const result = await client.delete({ query: `*[_type == "${type}"]` });
+      const ids = result.results?.map(r => r.id) ?? [];
+      if (ids.length) {
+        console.log(`    • ${type} — ${ids.length} doc(s) removed`);
+        deleted += ids.length;
+      }
+    } catch (err) {
+      console.error(`    ✗ wipe ${type} failed — ${err.message}`);
+      throw err;
+    }
+  }
+  console.log(`  ✓ Wipe complete — ${deleted} document(s) removed.\n`);
+}
+
 async function main() {
+  if (WIPE) {
+    await wipeCatalogueTypes();
+  }
+
   let ok = 0;
   let failed = 0;
   for (const doc of docs) {

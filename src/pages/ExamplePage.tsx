@@ -16,6 +16,7 @@
 import { BrandMark } from '@components/brand/BrandMark';
 import { OtpInput } from '@components/ui/OtpInput';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 import { consumeShareCode } from '@/lib/shareCode';
@@ -26,6 +27,7 @@ type Status = 'idle' | 'checking' | 'invalid' | 'unknown';
 const DEMO_CODE = 'APERCU';
 
 export default function ExamplePage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const presetCode = params.get('code') ?? '';
@@ -68,7 +70,7 @@ export default function ExamplePage() {
       className="bg-bg text-fg relative flex min-h-screen flex-col overflow-hidden px-6 py-10 md:px-12 md:py-12"
     >
       {/* React 19 hoists these into <head> automatically */}
-      <title>Aperçu privé — SAW NEXT</title>
+      <title>{t('example.metaTitle')}</title>
       <meta
         name="description"
         content="Entrez le code à 6 caractères transmis par Salvatore pour ouvrir l'aperçu privé."

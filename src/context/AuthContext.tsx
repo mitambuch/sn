@@ -36,10 +36,22 @@ interface AuthContextValue extends AuthState {
   signOut: () => Promise<void>;
   signInWithMagicLink: (email: string) => Promise<AuthActionResult>;
   redeemInvitationCode: (rawCode: string, email: string) => Promise<AuthActionResult>;
+  /** Atomic single-use redemption — called by Onboarding once the user is
+   *  authenticated (post-magic-link). Marks the code as `redeemed` in the
+   *  DB and refuses if it's already been used. */
+  confirmInvitationRedemption: (rawCode: string) => Promise<AuthActionResult>;
   /** DEV-only: simulate a logged-in session for local UI work. No-op in prod. */
   __setDevSession: (role: Role) => void;
   /** DEV-only: clear the simulated session. No-op in prod. */
   __clearDevSession: () => void;
+}
+
+interface RedeemRpcResult {
+  ok: boolean;
+  error?: string;
+  status?: string;
+  code_id?: string;
+  redeemed_by?: string;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -175,6 +187,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (!INVITATION_CODE_CANONICAL_PATTERN.test(normalized)) {
         return { ok: false, error: 'Format de code invalide.' };
       }
+      // Permissive existence check before sending the magic link — gives the
+      // user a clean "code introuvable" error early. The atomic mark-as-
+      // redeemed happens AFTER auth via confirmInvitationRedemption().
       const { data: codeRow, error: codeErr } = await supabase
         .from('invitation_codes')
         .select('id, code, status')
@@ -192,6 +207,39 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         },
       });
       if (otpErr) return { ok: false, error: otpErr.message };
+      return { ok: true };
+    },
+    [],
+  );
+
+  const confirmInvitationRedemption = useCallback<AuthContextValue['confirmInvitationRedemption']>(
+    async rawCode => {
+      if (!hasSupabase || !supabase) {
+        // DEV / no-backend mode : pretend it worked.
+        return { ok: true };
+      }
+      const normalized = normalizeInvitationCode(rawCode);
+      if (!INVITATION_CODE_CANONICAL_PATTERN.test(normalized)) {
+        return { ok: false, error: 'Format de code invalide.' };
+      }
+      const { data, error } = await supabase.rpc('redeem_invitation_code', {
+        p_code: normalized,
+      });
+      if (error) return { ok: false, error: error.message };
+      const result = data as RedeemRpcResult | null;
+      if (!result || typeof result !== 'object') {
+        return { ok: false, error: 'Réponse inattendue du serveur.' };
+      }
+      if (!result.ok) {
+        const code = result.error ?? 'unknown';
+        const map: Record<string, string> = {
+          not_authenticated: 'Session expirée. Reconnectez-vous.',
+          invalid_format: 'Format de code invalide.',
+          not_found: 'Code introuvable.',
+          already_used: 'Ce code a déjà été utilisé.',
+        };
+        return { ok: false, error: map[code] ?? `Échec (${code})` };
+      }
       return { ok: true };
     },
     [],
@@ -220,6 +268,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       signOut,
       signInWithMagicLink,
       redeemInvitationCode,
+      confirmInvitationRedemption,
       __setDevSession,
       __clearDevSession,
     }),
@@ -229,6 +278,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       signOut,
       signInWithMagicLink,
       redeemInvitationCode,
+      confirmInvitationRedemption,
       __setDevSession,
       __clearDevSession,
     ],

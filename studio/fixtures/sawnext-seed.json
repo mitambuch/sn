@@ -1,10 +1,237 @@
 {
   "_meta": {
     "brand": "Sawnext — conciergerie privée suisse HNW",
-    "purpose": "Pousse ces fiches dans le dataset Sanity de Sawnext pour que Salva ouvre le Studio sur du contenu réaliste plutôt que des collections vides. Brick-friendly : chaque doc remplit le strict minimum, les sections vides se masquent côté front.",
-    "generatedFor": "sawnext v0.9+"
+    "purpose": "Pousse ces fiches dans le dataset Sanity de Sawnext. Une fiche fake par catégorie catalogue + les deux singletons (siteConfig, landing) + 3 pages + 3 membres d'équipe (Salva est focal, Harry et Bokar sont nécessaires à la rotation Interlocutor du landing). Brick-friendly : chaque doc remplit le strict minimum, les sections vides se masquent côté front.",
+    "generatedFor": "sawnext v0.10+ (Sanity mirror epic)"
   },
   "documents": [
+    {
+      "_id": "siteConfig-singleton",
+      "_type": "siteConfig",
+      "siteName": {
+        "fr": "SAW↗NEXT",
+        "en": "SAW↗NEXT"
+      },
+      "tagline": {
+        "fr": "Conciergerie privée suisse — accès par cooptation",
+        "en": "Swiss private concierge — access by cooptation"
+      },
+      "primaryNav": [
+        {
+          "_key": "nav-01",
+          "label": { "fr": "Accueil", "en": "Home" },
+          "href": "/"
+        },
+        {
+          "_key": "nav-02",
+          "label": { "fr": "À propos", "en": "About" },
+          "href": "/about"
+        },
+        {
+          "_key": "nav-03",
+          "label": { "fr": "Contact", "en": "Contact" },
+          "href": "/contact"
+        }
+      ],
+      "footerTagline": {
+        "fr": "Confidentialité comme livrable.",
+        "en": "Confidentiality as a deliverable."
+      },
+      "copyright": "© 2026 Sawnext Sàrl",
+      "contactEmail": "info@saw-next.ch",
+      "contactPhone": "+41 78 749 81 70",
+      "contactAddress": {
+        "fr": "Boudry, Suisse",
+        "en": "Boudry, Switzerland"
+      },
+      "socials": {
+        "instagram": "",
+        "linkedin": "",
+        "facebook": "",
+        "x": ""
+      },
+      "seoTitle": {
+        "fr": "SAW↗NEXT — Conciergerie privée suisse",
+        "en": "SAW↗NEXT — Swiss private concierge"
+      },
+      "seoDescription": {
+        "fr": "Cercle restreint suisse pour clientèle HNW. Évènements, propriétés, garde-temps, œuvres, voyages, conciergerie sur mesure. Accès par cooptation.",
+        "en": "Swiss restricted circle for HNW clientele. Events, properties, timepieces, artworks, journeys, bespoke concierge. Access by cooptation."
+      }
+    },
+    {
+      "_id": "landing-singleton",
+      "_type": "landing",
+      "terminalStatus": { "fr": "Cooptation ouverte", "en": "Cooptation open" },
+      "terminalTz": { "fr": "CH / CET", "en": "CH / CET" },
+      "ctaRequestAccess": { "fr": "Demander un accès", "en": "Request access" },
+      "ctaPrivateArea": { "fr": "Espace privé", "en": "Private area" },
+      "ctaCallDirect": { "fr": "Appeler", "en": "Call" },
+      "heroMetaStructure": { "fr": "Structure", "en": "Structure" },
+      "heroMetaType": { "fr": "Type", "en": "Type" },
+      "heroMetaTypeValue": { "fr": "Conciergerie privée", "en": "Private concierge" },
+      "heroMetaStatus": { "fr": "Statut", "en": "Status" },
+      "heroMetaStatusValue": { "fr": "Cooptation ouverte", "en": "Cooptation open" },
+      "heroMetaModel": { "fr": "Modèle", "en": "Model" },
+      "heroMetaModelValue": { "fr": "Sur invitation", "en": "By invitation" },
+      "heroMetaEstablished": { "fr": "Établi", "en": "Established" },
+      "heroMetaEstablishedValue": { "fr": "2026 — Boudry, CH", "en": "2026 — Boudry, CH" },
+      "heroFieldLabel": { "fr": "Champ d'action", "en": "Field of action" },
+      "heroFieldText": {
+        "fr": "Évènements fermés, biens hors-marché, garde-temps et œuvres documentés, voyages sur mesure. Une seule voix opérationnelle pour orchestrer tout cela.",
+        "en": "Closed events, off-market goods, documented timepieces and artworks, bespoke travel. A single operational voice to orchestrate all of it."
+      },
+      "heroGpsLabel": { "fr": "Coordonnées", "en": "Coordinates" },
+      "heroGpsValue": {
+        "fr": "46.831°N · 6.842°E · Boudry, Suisse",
+        "en": "46.831°N · 6.842°E · Boudry, Switzerland"
+      },
+      "presentationEyebrow": {
+        "fr": "03 · Présentation",
+        "en": "03 · Presentation"
+      },
+      "presentationHeadline": {
+        "fr": "Un cercle, pas une marketplace.",
+        "en": "A circle, not a marketplace."
+      },
+      "presentationLede": {
+        "fr": "Sawnext est un cabinet privé. Le client devient membre par cooptation, jamais par souscription. Chaque demande est un dossier nominatif traité en direct par Salvatore.",
+        "en": "Sawnext is a private firm. Clients become members by cooptation, never by subscription. Every request is a named file handled directly by Salvatore."
+      },
+      "principlesEyebrow": { "fr": "04 · Principes", "en": "04 · Principles" },
+      "principlesHeadline": {
+        "fr": "Quatre engagements, jamais discutés.",
+        "en": "Four commitments, never debated."
+      },
+      "principles": [
+        {
+          "_key": "p1",
+          "title": { "fr": "Confidentialité absolue", "en": "Absolute confidentiality" },
+          "body": {
+            "fr": "Aucune base partagée, aucune diffusion. Chaque dossier vit dans un canal nommé.",
+            "en": "No shared database, no broadcast. Each file lives in a named channel."
+          }
+        },
+        {
+          "_key": "p2",
+          "title": { "fr": "Acquisitions off-market", "en": "Off-market acquisitions" },
+          "body": {
+            "fr": "Les biens et œuvres ne passent pas par le marché public. Nous activons les vendeurs en direct.",
+            "en": "Goods and artworks don't go through the public market. We engage sellers directly."
+          }
+        },
+        {
+          "_key": "p3",
+          "title": { "fr": "Voix unique", "en": "Single voice" },
+          "body": {
+            "fr": "Un seul interlocuteur opérationnel — pas de relais, pas de chaîne d'intermédiaires.",
+            "en": "A single operational contact — no relays, no chain of intermediaries."
+          }
+        },
+        {
+          "_key": "p4",
+          "title": { "fr": "Engagement suisse", "en": "Swiss commitment" },
+          "body": {
+            "fr": "Cadre légal et fiscal local maîtrisé. Hébergement européen des données.",
+            "en": "Mastered local legal and tax framework. European data hosting."
+          }
+        }
+      ],
+      "domainsEyebrow": { "fr": "05 · Domaines", "en": "05 · Domains" },
+      "domainsHeadline": {
+        "fr": "Six chantiers, un seul standard.",
+        "en": "Six fields, a single standard."
+      },
+      "domainsLede": {
+        "fr": "Le périmètre est volontairement restreint. Nous opérons là où l'accès rare fait la différence.",
+        "en": "The scope is deliberately narrow. We operate where rare access makes the difference."
+      },
+      "domainTiles": [
+        {
+          "_key": "d-event",
+          "key": "event",
+          "title": { "fr": "Évènements privés", "en": "Private events" },
+          "lead": {
+            "fr": "Galas, ouvertures, dîners protocolaires — accès tenu hors-marché.",
+            "en": "Galas, openings, protocol dinners — kept off-market."
+          }
+        },
+        {
+          "_key": "d-property",
+          "key": "property",
+          "title": { "fr": "Propriétés", "en": "Properties" },
+          "lead": {
+            "fr": "Résidences sélectionnées en Suisse et en Europe, sur demande.",
+            "en": "Selected residences across Switzerland and Europe, on request."
+          }
+        },
+        {
+          "_key": "d-timepiece",
+          "key": "timepiece",
+          "title": { "fr": "Garde-temps", "en": "Timepieces" },
+          "lead": {
+            "fr": "Horlogerie de collection, full set avec provenance documentée.",
+            "en": "Collector horology, full set with documented provenance."
+          }
+        },
+        {
+          "_key": "d-artwork",
+          "key": "artwork",
+          "title": { "fr": "Œuvres d'art", "en": "Artworks" },
+          "lead": {
+            "fr": "Pièces uniques d'artistes contemporains, certificats d'authenticité inclus.",
+            "en": "Unique pieces by contemporary artists, certificates of authenticity included."
+          }
+        },
+        {
+          "_key": "d-journey",
+          "key": "journey",
+          "title": { "fr": "Voyages", "en": "Journeys" },
+          "lead": {
+            "fr": "Itinéraires sur mesure — jet privé, yacht, expéditions guidées.",
+            "en": "Bespoke itineraries — private jet, yacht, guided expeditions."
+          }
+        },
+        {
+          "_key": "d-concierge",
+          "key": "concierge",
+          "title": { "fr": "Conciergerie", "en": "Concierge" },
+          "lead": {
+            "fr": "Réponse opérationnelle 24/7 sur tout ce qui sort des six domaines.",
+            "en": "24/7 operational response for anything outside the six fields."
+          }
+        }
+      ],
+      "accessEyebrow": { "fr": "08 · Aperçu du catalogue", "en": "08 · Catalogue preview" },
+      "accessTitleA": { "fr": "Le catalogue,", "en": "The catalogue," },
+      "accessTitleB": { "fr": "en aperçu.", "en": "as a glimpse." },
+      "accessLede": {
+        "fr": "Quelques exclusivités du moment, telles qu'elles apparaissent dans votre espace privé. Ce que vous voyez ici n'est qu'un fragment.",
+        "en": "A few current exclusives, as they appear in your private space. What you see here is only a fragment."
+      },
+      "accessEventsEyebrow": {
+        "fr": "↘ Quelques rendez-vous fermés en cours",
+        "en": "↘ A few closed engagements in motion"
+      },
+      "accessLockedEyebrow": {
+        "fr": "↘ Disponibles uniquement après cooptation",
+        "en": "↘ Available only after cooptation"
+      },
+      "interlocutorEyebrow": { "fr": "Interlocuteur", "en": "Contact" },
+      "interlocutorHeadlineA": { "fr": "Une voix.", "en": "One voice." },
+      "interlocutorHeadlineB": {
+        "fr": "Trois fondateurs derrière.",
+        "en": "Three founders behind."
+      },
+      "interlocutorCircleTag": { "fr": "Cercle", "en": "Circle" },
+      "interlocutorRole": { "fr": "Concierge", "en": "Concierge" },
+      "footerNote": {
+        "fr": "Sawnext Sàrl — cercle restreint suisse. Aucune diffusion commerciale, aucun relais. Confidentialité comme livrable.",
+        "en": "Sawnext Sàrl — Swiss restricted circle. No commercial broadcast, no relay. Confidentiality as a deliverable."
+      },
+      "footerLocation": { "fr": "Boudry, Suisse", "en": "Boudry, Switzerland" },
+      "footerEdition": { "fr": "Édition mai 2026", "en": "May 2026 edition" }
+    },
     {
       "_id": "page-home",
       "_type": "page",
@@ -15,12 +242,20 @@
         "en": "Swiss private concierge"
       },
       "heroHeading": {
-        "fr": "L'accès retenue.",
+        "fr": "L'accès retenu.",
         "en": "Restrained access."
       },
       "heroText": {
         "fr": "Sawnext est un cercle restreint. Nous accompagnons une clientèle privée suisse vers des biens, des évènements et des rendez-vous fermés au reste du marché. Chaque demande est traitée comme une rencontre, jamais comme une transaction.",
         "en": "Sawnext is a restricted circle. We guide a Swiss private clientele toward goods, events and meetings closed to the rest of the market. Every request is treated as an encounter, never as a transaction."
+      },
+      "seoTitle": {
+        "fr": "SAW↗NEXT — Conciergerie privée suisse",
+        "en": "SAW↗NEXT — Swiss private concierge"
+      },
+      "seoDescription": {
+        "fr": "Cercle restreint suisse pour clientèle HNW.",
+        "en": "Swiss restricted circle for HNW clientele."
       }
     },
     {
@@ -28,10 +263,7 @@
       "_type": "page",
       "title": "À propos",
       "slug": { "_type": "slug", "current": "about" },
-      "eyebrow": {
-        "fr": "Notre méthode",
-        "en": "Our method"
-      },
+      "eyebrow": { "fr": "Notre méthode", "en": "Our method" },
       "heroHeading": {
         "fr": "Une voix, trois fondateurs, un seul standard.",
         "en": "One voice, three founders, a single standard."
@@ -39,6 +271,14 @@
       "heroText": {
         "fr": "Salvatore Tamburini, Harry Novillo et Bokar Guissé fondent Sawnext autour d'un constat simple : le luxe contemporain s'épuise dans le bruit. Notre proposition est inverse — un cercle silencieux où la confidentialité est un livrable.",
         "en": "Salvatore Tamburini, Harry Novillo and Bokar Guissé founded Sawnext around a simple observation : contemporary luxury wears itself out in the noise. Our proposition is the inverse — a silent circle where confidentiality is a deliverable."
+      },
+      "seoTitle": {
+        "fr": "À propos — SAW↗NEXT",
+        "en": "About — SAW↗NEXT"
+      },
+      "seoDescription": {
+        "fr": "Trois fondateurs, un standard unique.",
+        "en": "Three founders, a single standard."
       }
     },
     {
@@ -46,10 +286,7 @@
       "_type": "page",
       "title": "Contact",
       "slug": { "_type": "slug", "current": "contact" },
-      "eyebrow": {
-        "fr": "Prendre contact",
-        "en": "Get in touch"
-      },
+      "eyebrow": { "fr": "Prendre contact", "en": "Get in touch" },
       "heroHeading": {
         "fr": "Une fenêtre vers le cercle.",
         "en": "A window into the circle."
@@ -57,7 +294,14 @@
       "heroText": {
         "fr": "Les demandes d'accès sont étudiées au cas par cas. Décrivez le besoin, le contexte et la fenêtre temporelle — Salvatore revient sous 24 heures.",
         "en": "Access requests are reviewed case by case. Describe the need, the context and the time window — Salvatore comes back within 24 hours."
-      }
+      },
+      "ctaHeading": { "fr": "Prêt à entrer ?", "en": "Ready to step in?" },
+      "ctaText": {
+        "fr": "Demande d'accès ou code d'invitation — choisissez le mode qui correspond.",
+        "en": "Access request or invitation code — pick the mode that fits."
+      },
+      "ctaLabel": { "fr": "Demander un accès", "en": "Request access" },
+      "ctaHref": "/#s08"
     },
     {
       "_id": "evt-01",
@@ -103,28 +347,6 @@
       ]
     },
     {
-      "_id": "evt-02",
-      "_type": "event",
-      "visibility": "public",
-      "title": {
-        "fr": "Art Basel — Preview Vernissage VIP",
-        "en": "Art Basel — VIP Preview"
-      },
-      "slug": { "_type": "slug", "current": "art-basel-preview" },
-      "category": "opening",
-      "summary": {
-        "fr": "Première journée de la foire avant ouverture au public. Trois cartes VIP réservées, accès aux salons collectionneurs.",
-        "en": "First day of the fair before public opening. Three VIP cards reserved, access to collector lounges."
-      },
-      "startsAt": "2026-09-15T11:00:00.000Z",
-      "venue": "Messe Basel",
-      "city": "Bâle",
-      "countryCode": "CH",
-      "capacity": 1200,
-      "allocatedSeats": 3,
-      "dressCode": "smart-casual"
-    },
-    {
       "_id": "prop-01",
       "_type": "property",
       "visibility": "shareCode",
@@ -148,29 +370,6 @@
       "landArea": 1200
     },
     {
-      "_id": "prop-02",
-      "_type": "property",
-      "visibility": "private",
-      "title": {
-        "fr": "Villa balnéaire, Cap-Ferrat",
-        "en": "Seaside villa, Cap-Ferrat"
-      },
-      "slug": { "_type": "slug", "current": "villa-cap-ferrat" },
-      "kind": "villa",
-      "transactionType": "sale",
-      "summary": {
-        "fr": "Villa des années 30 restaurée par un architecte parisien. Accès direct à la crique, 1.2 ha de jardin méditerranéen.",
-        "en": "1930s villa restored by a Parisian architect. Direct access to the cove, 1.2 ha of Mediterranean garden."
-      },
-      "city": "Saint-Jean-Cap-Ferrat",
-      "region": "Alpes-Maritimes",
-      "countryCode": "FR",
-      "bedrooms": 8,
-      "bathrooms": 9,
-      "livingArea": 720,
-      "landArea": 12000
-    },
-    {
       "_id": "tp-01",
       "_type": "timepiece",
       "visibility": "shareCode",
@@ -190,28 +389,6 @@
       "summary": {
         "fr": "L'édition limitée Tiffany & Co. produite à 170 exemplaires. Full set 2021, livré avec certificat d'authenticité co-signé.",
         "en": "The limited Tiffany & Co. edition produced in 170 units. Full set 2021, delivered with a co-signed certificate of authenticity."
-      }
-    },
-    {
-      "_id": "tp-02",
-      "_type": "timepiece",
-      "visibility": "public",
-      "title": {
-        "fr": "Audemars Piguet Royal Oak 15202ST — Jumbo",
-        "en": "Audemars Piguet Royal Oak 15202ST — Jumbo"
-      },
-      "slug": { "_type": "slug", "current": "ap-royal-oak-15202st" },
-      "brand": "Audemars Piguet",
-      "reference": "15202ST.OO.1240ST.01",
-      "caseDiameter": 39,
-      "caseMaterial": "Acier inoxydable",
-      "movement": "Automatique calibre 2121",
-      "productionYear": 2020,
-      "condition": "excellent",
-      "papers": "box-papers",
-      "summary": {
-        "fr": "Jumbo extra-fine, cadran bleu Petite Tapisserie. État excellent, révision Audemars Piguet de 2024.",
-        "en": "Extra-thin Jumbo, blue Petite Tapisserie dial. Excellent condition, Audemars Piguet service done in 2024."
       }
     },
     {
@@ -252,10 +429,7 @@
       "_id": "concierge-01",
       "_type": "conciergeService",
       "visibility": "public",
-      "title": {
-        "fr": "Jet privé & protocole",
-        "en": "Private jet & protocol"
-      },
+      "title": { "fr": "Jet privé & protocole", "en": "Private jet & protocol" },
       "slug": { "_type": "slug", "current": "jet-prive-protocole" },
       "category": "transport",
       "summary": {
@@ -287,14 +461,11 @@
       "lastName": "Tamburini",
       "slug": { "_type": "slug", "current": "salvatore-tamburini" },
       "role": "founder-operational",
-      "tag": {
-        "fr": "Point de contact principal",
-        "en": "Primary point of contact"
-      },
+      "tag": { "fr": "Point de contact principal", "en": "Primary point of contact" },
       "isFocal": true,
-      "phone": "+41 79 000 00 00",
-      "email": "salvatore@sawnext.ch",
-      "whatsapp": "+41 79 000 00 00",
+      "phone": "+41 78 749 81 70",
+      "email": "info@saw-next.ch",
+      "whatsapp": "+41 78 749 81 70",
       "bio": {
         "fr": "Salvatore opère le quotidien de Sawnext. Quinze ans dans la gestion patrimoniale puis l'hôtellerie ultra-haut de gamme. Italien de naissance, suisse d'adoption, francophone par formation. C'est lui que vous appelez.",
         "en": "Salvatore runs the day-to-day at Sawnext. Fifteen years in wealth management then ultra-high-end hospitality. Italian by birth, Swiss by adoption, francophone by training. He's the one you call."
@@ -307,10 +478,7 @@
       "lastName": "Novillo",
       "slug": { "_type": "slug", "current": "harry-novillo" },
       "role": "cofounder",
-      "tag": {
-        "fr": "Sport & lifestyle",
-        "en": "Sport & lifestyle"
-      },
+      "tag": { "fr": "Sport & lifestyle", "en": "Sport & lifestyle" },
       "isFocal": false,
       "bio": {
         "fr": "Harry apporte le réseau sport haut de gamme. Ancien international, il garde un carnet d'adresses dans la F1, le football, le tennis et la voile. Pour les évènements et les rencontres rares.",
@@ -324,10 +492,7 @@
       "lastName": "Guissé",
       "slug": { "_type": "slug", "current": "bokar-guisse" },
       "role": "cofounder",
-      "tag": {
-        "fr": "Sport & relation HNW",
-        "en": "Sport & HNW relations"
-      },
+      "tag": { "fr": "Sport & relation HNW", "en": "Sport & HNW relations" },
       "isFocal": false,
       "bio": {
         "fr": "Bokar relie le cercle aux institutions sportives africaines et internationales. Carrière entre le tennis professionnel et le développement de partenariats. Il ouvre les portes que personne ne voit.",

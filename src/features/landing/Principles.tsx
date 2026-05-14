@@ -13,6 +13,8 @@
 // CHANGE COPY: edit landing.principles.* keys in fr.json / en.json.
 // ═══════════════════════════════════════════════════
 
+import { useLandingContext } from '@context/LandingContentContext';
+import { resolveFieldOrFallback } from '@lib/i18nField';
 import { cn } from '@utils/cn';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +24,9 @@ type PillarKey = (typeof PILLARS)[number];
 
 /** Landing S04 — blur-by-default, cursor-or-scroll reveal manifesto. */
 export const Principles = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { data: landing } = useLandingContext();
+  const locale = (i18n.language as 'fr' | 'en') ?? 'fr';
   const sectionRef = useRef<HTMLElement>(null);
   const [scrollActive, setScrollActive] = useState<PillarKey>('1');
   const [hoverActive, setHoverActive] = useState<PillarKey | null>(null);
@@ -68,8 +72,17 @@ export const Principles = () => {
     >
       {/* ─── Top meta strip ─── */}
       <div className="text-bg/70 mb-16 flex items-baseline justify-between font-mono text-[10px] tracking-widest uppercase md:mb-24">
-        <span>↘ 04 / {t('landing.principles.tag')}</span>
-        <span>{t('landing.principles.eyebrow')}</span>
+        <span>
+          ↘ 04 /{' '}
+          {resolveFieldOrFallback(landing?.principlesEyebrow, locale, t('landing.principles.tag'))}
+        </span>
+        <span>
+          {resolveFieldOrFallback(
+            landing?.principlesHeadline,
+            locale,
+            t('landing.principles.eyebrow'),
+          )}
+        </span>
       </div>
 
       {/* ─── Body : pillar index + manifesto ─── */}

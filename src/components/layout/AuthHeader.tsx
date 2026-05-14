@@ -55,7 +55,7 @@ export const AuthHeader = ({ homeHref, postLogoutHref }: AuthHeaderProps) => {
       <div className="mx-auto flex h-14 items-center justify-between px-4 md:px-8">
         <Link
           to={homeHref}
-          aria-label="SAW NEXT — espace privé"
+          aria-label={`SAW NEXT — ${t('landing.cta.privateArea')}`}
           className="text-fg focus-visible:ring-accent focus-visible:ring-offset-bg rounded-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         >
           <BrandMark variant="short" className="text-base md:text-lg" />

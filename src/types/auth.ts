@@ -19,6 +19,8 @@ export interface User {
   role: Role;
   locale: UserLocale;
   contactPreference: UserContactPreference;
+  /** Phone — collected by the Onboarding wizard. Optional. */
+  phone?: string;
   /** Display avatar URL. Optional — falls back to initials. */
   avatarUrl?: string;
   /** Operator assigned as the member's dedicated concierge. */

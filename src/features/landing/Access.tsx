@@ -16,16 +16,15 @@
 
 import { Card } from '@components/ui/Card';
 import { MonoGradientPlaceholder } from '@components/ui/MonoGradientPlaceholder';
-import { AccessRequestModal } from '@features/access/AccessRequestModal';
+import { useLandingContext } from '@context/LandingContentContext';
+import { useAccessRequestModal } from '@context/useAccessRequestModal';
 import { SectionTag } from '@features/landing/SectionTag';
 import { useReveal } from '@hooks/useReveal';
+import { resolveFieldOrFallback } from '@lib/i18nField';
 import { cn } from '@utils/cn';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { unsplash } from '@/mocks/unsplash';
-
-type ModalMode = 'request' | 'code';
 
 interface EventTeaser {
   imgSlug: string;
@@ -56,15 +55,11 @@ const LOCKED_KEYS = ['locked1', 'locked2', 'locked3', 'locked4'] as const;
 
 /** Landing S08 — catalogue teaser + cooptation gate. */
 export const Access = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { data: landing } = useLandingContext();
+  const locale = (i18n.language as 'fr' | 'en') ?? 'fr';
   const ref = useReveal<HTMLDivElement>();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState<ModalMode>('request');
-
-  const openModal = (mode: ModalMode) => {
-    setModalMode(mode);
-    setModalOpen(true);
-  };
+  const { openAccessRequest } = useAccessRequestModal();
 
   return (
     <section id="s08" data-landing-dark="true" data-theme="dark" className="bg-ink text-white">
@@ -74,21 +69,38 @@ export const Access = () => {
       >
         {/* ─── Header ─── */}
         <header className="flex flex-col gap-6">
-          <SectionTag num="08.A" label={t('landing.access.eyebrow')} />
+          <SectionTag
+            num="08.A"
+            label={resolveFieldOrFallback(
+              landing?.accessEyebrow,
+              locale,
+              t('landing.access.eyebrow'),
+            )}
+          />
           <h2 className="max-w-5xl font-mono text-[clamp(1.75rem,4vw,4rem)] leading-[0.95] font-medium tracking-tight uppercase">
-            {t('landing.access.heroTitleA')}
+            {resolveFieldOrFallback(landing?.accessTitleA, locale, t('landing.access.heroTitleA'))}
             <br />
-            <span className="text-white/60">{t('landing.access.heroTitleB')}</span>
+            <span className="text-white/60">
+              {resolveFieldOrFallback(
+                landing?.accessTitleB,
+                locale,
+                t('landing.access.heroTitleB'),
+              )}
+            </span>
           </h2>
           <p className="max-w-2xl text-base leading-relaxed text-white/75 md:text-lg">
-            {t('landing.access.heroLede')}
+            {resolveFieldOrFallback(landing?.accessLede, locale, t('landing.access.heroLede'))}
           </p>
         </header>
 
         {/* ─── Catalogue teaser — backend Card style, 4-up ─── */}
         <div className="flex flex-col gap-6">
           <span className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
-            {t('landing.access.eventsEyebrow')}
+            {resolveFieldOrFallback(
+              landing?.accessEventsEyebrow,
+              locale,
+              t('landing.access.eventsEyebrow'),
+            )}
           </span>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
             {/* Real event teasers — Cloudinary imagery */}
@@ -133,7 +145,11 @@ export const Access = () => {
         {/* ─── Off-market secondary row (2 more locked teasers, compact) ─── */}
         <div className="flex flex-col gap-6">
           <span className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
-            {t('landing.access.lockedEyebrow')}
+            {resolveFieldOrFallback(
+              landing?.accessLockedEyebrow,
+              locale,
+              t('landing.access.lockedEyebrow'),
+            )}
           </span>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {LOCKED_KEYS.slice(2).map(key => (
@@ -171,7 +187,7 @@ export const Access = () => {
             <button
               type="button"
               onClick={() => {
-                openModal('request');
+                openAccessRequest('request');
               }}
               className={cn(
                 'text-ink inline-flex items-center justify-center gap-3 rounded-full bg-white px-7 py-4 font-mono text-xs tracking-[0.3em] uppercase',
@@ -184,7 +200,7 @@ export const Access = () => {
             <button
               type="button"
               onClick={() => {
-                openModal('code');
+                openAccessRequest('code');
               }}
               className={cn(
                 'inline-flex items-center justify-center gap-3 rounded-full border border-white/40 px-7 py-4 font-mono text-xs tracking-[0.3em] text-white uppercase',
@@ -197,14 +213,6 @@ export const Access = () => {
           </div>
         </div>
       </div>
-
-      <AccessRequestModal
-        isOpen={modalOpen}
-        onClose={() => {
-          setModalOpen(false);
-        }}
-        initialMode={modalMode}
-      />
     </section>
   );
 };

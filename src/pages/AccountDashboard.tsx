@@ -17,16 +17,17 @@ import { useLocale } from '@app/LocaleProvider';
 import { Skeleton } from '@components/ui/Skeleton';
 import { StatusPill } from '@components/ui/StatusPill';
 import { ROUTES } from '@constants/routes';
+import { useAuth } from '@context/AuthContext';
 import { useAccountRequest } from '@context/useAccountRequest';
 import { type WizardCategory } from '@features/concierge-request/ConciergeRequestWizard';
 import { useFakeLoading } from '@hooks/useFakeLoading';
+import { useInquiriesUser } from '@hooks/useInquiries';
 import { cn } from '@utils/cn';
 import type { LucideIcon } from 'lucide-react';
 import { ArrowUpRight, Briefcase, Compass, Frame, Mail, Phone, Watch } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import { listInquiriesForUser } from '@/mocks';
 import { currentUser } from '@/mocks/users';
 
 // WHY: shared section padding — single source of truth keeps the vertical
@@ -265,7 +266,9 @@ const ConciergeSection = () => {
 const RecentInquiriesSection = ({ loading }: { loading: boolean }) => {
   const { t, i18n } = useTranslation();
   const { localePath } = useLocale();
-  const inquiries = listInquiriesForUser(currentUser.id).slice(0, 3);
+  const { user } = useAuth();
+  const { rows: allInquiries } = useInquiriesUser(user?.id ?? currentUser.id);
+  const inquiries = allInquiries.slice(0, 3);
 
   return (
     <section aria-labelledby="inquiries-heading" className={SECTION_PAD}>
