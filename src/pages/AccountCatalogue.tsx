@@ -293,7 +293,7 @@ export default function AccountCatalogue() {
                   {t('common.showing', { count: moduleEntries.length })}
                 </span>
               </header>
-              <div className="grid auto-rows-fr grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <div className="grid auto-rows-fr grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4 lg:gap-6 xl:grid-cols-5">
                 {moduleEntries.map((e, i) => (
                   <Reveal key={`${e.module}-${e.id}`} index={i} className="h-full *:h-full">
                     {e.card}
