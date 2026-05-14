@@ -224,37 +224,36 @@ const ConciergeSection = () => {
           <p className="text-muted truncate text-xs md:text-sm">salvatore@sawnext.studio</p>
         </div>
       </div>
-      {/* Big touch targets — h-14 (56px) + font-mono text-sm + font-semibold
-          + icon size 18 stroke 2 so the buttons read substantial, not
-          skinny. Owner direction 2026-05-14 14:45 : "ces boutons sont au
-          régime, donne leur à manger". Appel = filled fg/bg ; écrire =
-          ghost outline. Uppercase + tracking-[0.15em] keeps the SN mono
-          chrome readable at this larger size. */}
+      {/* Tall touch targets — h-16 (64px) + min-h-16 so the box itself has
+          visual mass. Owner direction 2026-05-14 14:46 : "la taille du
+          texte était bien, je te parlais de la hauteur de la box". Inner
+          chrome (text-[11px] tracking-widest font-mono + icon 16/1.5)
+          left untouched. Appel = filled fg/bg ; écrire = ghost outline. */}
       <div className="mt-5 flex flex-col gap-2 sm:flex-row lg:mt-auto lg:pt-6">
         <a
           href="tel:+41215550000"
           aria-label={t('dock.call')}
           className={cn(
             'bg-fg text-bg border-fg hover:bg-fg/90 focus-visible:ring-accent',
-            'inline-flex h-14 flex-1 items-center justify-center gap-2.5 rounded-md border font-mono text-sm font-semibold tracking-[0.15em] whitespace-nowrap uppercase',
+            'inline-flex h-16 flex-1 items-center justify-center gap-2 rounded-md border font-mono text-[11px] tracking-widest whitespace-nowrap uppercase',
             'duration-base transition-[border-color,background-color]',
             'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
           )}
         >
-          <Phone size={18} strokeWidth={2} aria-hidden="true" />
+          <Phone size={16} strokeWidth={1.5} aria-hidden="true" />
           <span>{t('dock.call')}</span>
         </a>
         <a
           href="mailto:salvatore@sawnext.studio"
           aria-label={t('dock.write')}
           className={cn(
-            'border-fg/30 text-fg hover:border-fg/60 hover:bg-bg/40 focus-visible:ring-accent',
-            'inline-flex h-14 flex-1 items-center justify-center gap-2.5 rounded-md border bg-transparent font-mono text-sm font-semibold tracking-[0.15em] whitespace-nowrap uppercase',
+            'border-fg/20 text-fg hover:border-fg/50 hover:bg-bg/40 focus-visible:ring-accent',
+            'inline-flex h-16 flex-1 items-center justify-center gap-2 rounded-md border bg-transparent font-mono text-[11px] tracking-widest whitespace-nowrap uppercase',
             'duration-base transition-[border-color,background-color]',
             'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
           )}
         >
-          <Mail size={18} strokeWidth={2} aria-hidden="true" />
+          <Mail size={16} strokeWidth={1.5} aria-hidden="true" />
           <span>{t('dock.write')}</span>
         </a>
       </div>
