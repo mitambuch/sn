@@ -17,5 +17,5 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=(), usb=()"
     Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'sha256-wwPqzA0ZWfbqSj6y58O0xWP4wF3WbZH30uKifyuEwwM='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://res.cloudinary.com https://cdn.sanity.io; media-src 'self' https://res.cloudinary.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.api.sanity.io https://*.apicdn.sanity.io; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'sha256-wwPqzA0ZWfbqSj6y58O0xWP4wF3WbZH30uKifyuEwwM='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://res.cloudinary.com https://cdn.sanity.io; media-src 'self' https://res.cloudinary.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.api.sanity.io https://*.apicdn.sanity.io https://*.sentry.io https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://*.ingest.de.sentry.io; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
     Cross-Origin-Opener-Policy = "same-origin"

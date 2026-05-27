@@ -187,17 +187,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (!INVITATION_CODE_CANONICAL_PATTERN.test(normalized)) {
         return { ok: false, error: 'Format de code invalide.' };
       }
-      // Permissive existence check before sending the magic link — gives the
-      // user a clean "code introuvable" error early. The atomic mark-as-
-      // redeemed happens AFTER auth via confirmInvitationRedemption().
-      const { data: codeRow, error: codeErr } = await supabase
-        .from('invitation_codes')
-        .select('id, code, status')
-        .eq('code', normalized)
-        .eq('status', 'unused')
-        .maybeSingle<{ id: string; code: string; status: string }>();
+      // Existence check via verify_invitation_code RPC — returns only a
+      // boolean so the anon role can't enumerate the whole pool of codes.
+      // The atomic mark-as-redeemed still happens AFTER auth via
+      // confirmInvitationRedemption(). See migration 0010 / audit P0-1.
+      const { data: codeExists, error: codeErr } = await supabase.rpc('verify_invitation_code', {
+        p_code: normalized,
+      });
       if (codeErr) return { ok: false, error: codeErr.message };
-      if (!codeRow) return { ok: false, error: 'Code introuvable ou déjà utilisé.' };
+      if (codeExists !== true) return { ok: false, error: 'Code introuvable ou déjà utilisé.' };
 
       const { error: otpErr } = await supabase.auth.signInWithOtp({
         email,
