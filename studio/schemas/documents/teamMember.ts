@@ -1,9 +1,9 @@
 // ═══════════════════════════════════════════════════
 // teamMember — Membre de l'équipe (fondateur, conciergerie)
 //
-// WHAT: A person on the Sawnext team. Salva is the focal contact ;
-//       Harry + Bokar are the inner circle. Used by Interlocutor
-//       section + article.author references.
+// WHAT: A person on the Sawnext team. Valmont is the focal contact ;
+//       Harvy + Lucian + Tavio + Sergio form the network circle.
+//       Used by Interlocutor section + article.author references.
 // ═══════════════════════════════════════════════════
 
 import { defineField, defineType } from 'sanity';
@@ -23,7 +23,8 @@ export const teamMember = defineType({
   title: "Membre de l'équipe",
   type: 'document',
   icon: icon('👤'),
-  description: 'Fondateurs et cercle restreint. Salvatore reste le point de contact principal.',
+  description:
+    'Fondateur opérationnel et cercle réseau. Valmont reste le point de contact principal.',
   groups: [
     { name: 'essentiel', title: '🎯 Essentiel', default: true },
     { name: 'contact', title: '📞 Contact' },
@@ -86,7 +87,7 @@ export const teamMember = defineType({
       type: 'number',
       group: 'essentiel',
       initialValue: 99,
-      description: 'Plus le nombre est petit, plus haut dans la liste. Salva = 1.',
+      description: 'Plus le nombre est petit, plus haut dans la liste. Valmont = 1.',
     }),
     // ─── Contact ───
     defineField({

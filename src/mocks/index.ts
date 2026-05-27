@@ -3,7 +3,7 @@
 //
 // Catalogue helpers (Properties, Timepieces, Artworks, Events,
 // Journeys, Concierge services, Articles) delegate to the adminStore
-// so live edits made by Salvatore in /admin/catalogue surface in the
+// so live edits made by Valmont in /admin/catalogue surface in the
 // public catalogue immediately and persist across reloads.
 //
 // Lot C will swap the adminStore localStorage layer for Supabase

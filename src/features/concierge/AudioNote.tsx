@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════
-// AudioNote — Salvatore's spoken commentary on a catalogue piece
+// AudioNote — Valmont's spoken commentary on a catalogue piece
 //
 // WHAT: Premium signature widget. Bordered surface with avatar
 //       (initials), name, "Note vocale" eyebrow, simulated waveform
@@ -9,10 +9,10 @@
 //       play button simulates a deterministic playthrough by ticking
 //       the progress over `durationSeconds`. The TRANSCRIPT carries
 //       the substance — when lot C plugs an actual file URL we just
-//       drop the simulator. The "wow" is the visual + Salvatore's
+//       drop the simulator. The "wow" is the visual + Valmont's
 //       human voice metaphor; transcript ensures accessibility +
 //       value capture even for muted users.
-// WHEN: Embed in any DetailPage that has Salvatore's commentary.
+// WHEN: Embed in any DetailPage that has Valmont's commentary.
 // EDGE: respects prefers-reduced-motion (waveform stops animating).
 // ═══════════════════════════════════════════════════
 

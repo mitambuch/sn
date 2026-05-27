@@ -4,7 +4,7 @@
 // WHAT: Three compact column blocks (Navigation / Legal / Siège) above
 //       a full-width SAW NEXT wordmark with the infinite breathing
 //       stroke-draw + liquid-fill loop. Contact column dropped (handled
-//       by Salvatore's interlocutor section), bottom legal strip dropped
+//       by Valmont's interlocutor section), bottom legal strip dropped
 //       (no document-version metadata in the visible footer), ticker
 //       handled by TerminalBar.
 // WHEN: Last block of the landing, before the TerminalBar.

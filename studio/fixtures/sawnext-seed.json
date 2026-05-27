@@ -1,7 +1,7 @@
 {
   "_meta": {
     "brand": "Sawnext — conciergerie privée suisse HNW",
-    "purpose": "Pousse ces fiches dans le dataset Sanity de Sawnext. Une fiche fake par catégorie catalogue + les deux singletons (siteConfig, landing) + 3 pages + 3 membres d'équipe (Salva est focal, Harry et Bokar sont nécessaires à la rotation Interlocutor du landing). Brick-friendly : chaque doc remplit le strict minimum, les sections vides se masquent côté front.",
+    "purpose": "Pousse ces fiches dans le dataset Sanity de Sawnext. Une fiche fake par catégorie catalogue + les deux singletons (siteConfig, landing) + 3 pages + 5 membres d'équipe (Valmont est focal, Harvy/Lucian/Tavio/Sergio composent le cercle réseau de la rotation Interlocutor du landing). Brick-friendly : chaque doc remplit le strict minimum, les sections vides se masquent côté front.",
     "generatedFor": "sawnext v0.10+ (Sanity mirror epic)"
   },
   "documents": [
@@ -95,8 +95,8 @@
         "en": "A circle, not a marketplace."
       },
       "presentationLede": {
-        "fr": "Sawnext est un cabinet privé. Le client devient membre par cooptation, jamais par souscription. Chaque demande est un dossier nominatif traité en direct par Salvatore.",
-        "en": "Sawnext is a private firm. Clients become members by cooptation, never by subscription. Every request is a named file handled directly by Salvatore."
+        "fr": "Sawnext est un cabinet privé. Le client devient membre par cooptation, jamais par souscription. Chaque demande est un dossier nominatif traité en direct par Valmont.",
+        "en": "Sawnext is a private firm. Clients become members by cooptation, never by subscription. Every request is a named file handled directly by Valmont."
       },
       "principlesEyebrow": { "fr": "04 · Principes", "en": "04 · Principles" },
       "principlesHeadline": {
@@ -269,8 +269,8 @@
         "en": "One voice, three founders, a single standard."
       },
       "heroText": {
-        "fr": "Salvatore Tamburini, Harry Novillo et Bokar Guissé fondent Sawnext autour d'un constat simple : le luxe contemporain s'épuise dans le bruit. Notre proposition est inverse — un cercle silencieux où la confidentialité est un livrable.",
-        "en": "Salvatore Tamburini, Harry Novillo and Bokar Guissé founded Sawnext around a simple observation : contemporary luxury wears itself out in the noise. Our proposition is the inverse — a silent circle where confidentiality is a deliverable."
+        "fr": "Autour de Valmont Seragone Mato, un cercle de cinq présences construit Sawnext sur un constat simple : le luxe contemporain s'épuise dans le bruit. Notre proposition est inverse — un cercle silencieux où la confidentialité est un livrable.",
+        "en": "Around Valmont Seragone Mato, a circle of five presences builds Sawnext on a simple observation : contemporary luxury wears itself out in the noise. Our proposition is the inverse — a silent circle where confidentiality is a deliverable."
       },
       "seoTitle": {
         "fr": "À propos — SAW↗NEXT",
@@ -292,8 +292,8 @@
         "en": "A window into the circle."
       },
       "heroText": {
-        "fr": "Les demandes d'accès sont étudiées au cas par cas. Décrivez le besoin, le contexte et la fenêtre temporelle — Salvatore revient sous 24 heures.",
-        "en": "Access requests are reviewed case by case. Describe the need, the context and the time window — Salvatore comes back within 24 hours."
+        "fr": "Les demandes d'accès sont étudiées au cas par cas. Décrivez le besoin, le contexte et la fenêtre temporelle — Valmont revient sous 24 heures.",
+        "en": "Access requests are reviewed case by case. Describe the need, the context and the time window — Valmont comes back within 24 hours."
       },
       "ctaHeading": { "fr": "Prêt à entrer ?", "en": "Ready to step in?" },
       "ctaText": {
@@ -455,48 +455,81 @@
       }
     },
     {
-      "_id": "team-salvatore",
+      "_id": "team-valmont",
       "_type": "teamMember",
-      "firstName": "Salvatore",
-      "lastName": "Tamburini",
-      "slug": { "_type": "slug", "current": "salvatore-tamburini" },
+      "firstName": "Valmont",
+      "lastName": "Seragone Mato",
+      "slug": { "_type": "slug", "current": "valmont-seragone-mato" },
       "role": "founder-operational",
-      "tag": { "fr": "Point de contact principal", "en": "Primary point of contact" },
+      "tag": { "fr": "Fondateur opérationnel", "en": "Operating founder" },
       "isFocal": true,
+      "order": 1,
       "phone": "+41 78 749 81 70",
       "email": "info@saw-next.ch",
       "whatsapp": "+41 78 749 81 70",
       "bio": {
-        "fr": "Salvatore opère le quotidien de Sawnext. Quinze ans dans la gestion patrimoniale puis l'hôtellerie ultra-haut de gamme. Italien de naissance, suisse d'adoption, francophone par formation. C'est lui que vous appelez.",
-        "en": "Salvatore runs the day-to-day at Sawnext. Fifteen years in wealth management then ultra-high-end hospitality. Italian by birth, Swiss by adoption, francophone by training. He's the one you call."
+        "fr": "Au fil des années, Valmont Seragone Mato a développé un réseau international solide dans les domaines du luxe, de l'horlogerie, de l'événementiel privé, de l'aviation et des services sur mesure, avec une approche basée sur la discrétion, la confiance et la qualité des relations humaines. Votre interlocuteur direct, du premier échange jusqu'à la concrétisation de chaque projet.",
+        "en": "Over the years, Valmont Seragone Mato has built a solid international network across luxury, watchmaking, private events, aviation and bespoke services, with an approach grounded in discretion, trust and the quality of human relationships. Your direct interlocutor, from first conversation to the delivery of each project."
       }
     },
     {
-      "_id": "team-harry",
+      "_id": "team-harvy",
       "_type": "teamMember",
-      "firstName": "Harry",
-      "lastName": "Novillo",
-      "slug": { "_type": "slug", "current": "harry-novillo" },
-      "role": "cofounder",
-      "tag": { "fr": "Sport & lifestyle", "en": "Sport & lifestyle" },
+      "firstName": "Harvy",
+      "lastName": "O'Rollin",
+      "slug": { "_type": "slug", "current": "harvy-orollin" },
+      "role": "advisor",
+      "tag": { "fr": "Sport & lifestyle premium", "en": "Sport & premium lifestyle" },
       "isFocal": false,
+      "order": 2,
       "bio": {
-        "fr": "Harry apporte le réseau sport haut de gamme. Ancien international, il garde un carnet d'adresses dans la F1, le football, le tennis et la voile. Pour les évènements et les rencontres rares.",
-        "en": "Harry brings the high-end sports network. A former international athlete, he keeps a directory across F1, football, tennis and sailing. For events and rare encounters."
+        "fr": "Évoluant depuis de nombreuses années dans l'univers du sport professionnel et des environnements internationaux à haute exigence, Harvy O'Rollin a développé un réseau solide dans les domaines du sport, de l'événementiel et du lifestyle premium. Impliqué dans différents projets entrepreneuriaux et de mise en relation, il accompagne aujourd'hui une clientèle privée et professionnelle avec une approche humaine, discrète et orientée opportunités.",
+        "en": "Active for many years in professional sport and demanding international environments, Harvy O'Rollin has developed a solid network across sport, events and premium lifestyle. Involved in various entrepreneurial and matchmaking ventures, he today supports a private and professional clientele with a human, discreet and opportunity-driven approach."
       }
     },
     {
-      "_id": "team-bokar",
+      "_id": "team-lucian",
       "_type": "teamMember",
-      "firstName": "Bokar",
-      "lastName": "Guissé",
-      "slug": { "_type": "slug", "current": "bokar-guisse" },
-      "role": "cofounder",
-      "tag": { "fr": "Sport & relation HNW", "en": "Sport & HNW relations" },
+      "firstName": "Lucian",
+      "lastName": "Trial",
+      "slug": { "_type": "slug", "current": "lucian-trial" },
+      "role": "advisor",
+      "tag": { "fr": "Nuit & showbiz", "en": "Nightlife & showbiz" },
       "isFocal": false,
+      "order": 3,
       "bio": {
-        "fr": "Bokar relie le cercle aux institutions sportives africaines et internationales. Carrière entre le tennis professionnel et le développement de partenariats. Il ouvre les portes que personne ne voit.",
-        "en": "Bokar connects the circle to African and international sports institutions. A career bridging professional tennis and partnership development. He opens the doors no one sees."
+        "fr": "Présent depuis de nombreuses années dans les univers de la nuit, du divertissement et des environnements liés au showbiz international, Lucian Trial a su développer au fil du temps un réseau solide ainsi qu'une relation de confiance avec différentes personnalités et leur entourage. Habitué aux environnements à haute exigence et à la gestion de demandes sensibles, il intervient aujourd'hui dans l'accompagnement personnalisé, la coordination de besoins spécifiques et la mise en relation.",
+        "en": "Present for many years in the worlds of nightlife, entertainment and international showbiz, Lucian Trial has built over time a solid network and a relationship of trust with various personalities and their entourage. Accustomed to high-stakes environments and the handling of sensitive requests, he today operates across personalised support, coordination of specific needs and connection-making."
+      }
+    },
+    {
+      "_id": "team-tavio",
+      "_type": "teamMember",
+      "firstName": "Tavio",
+      "lastName": "Modic",
+      "slug": { "_type": "slug", "current": "tavio-modic" },
+      "role": "advisor",
+      "tag": { "fr": "Immobilier & architecture", "en": "Real estate & architecture" },
+      "isFocal": false,
+      "order": 4,
+      "bio": {
+        "fr": "Évoluant depuis plusieurs années dans des univers liés à l'immobilier, à l'architecture et au développement de projets, Tavio Modic possède une vision polyvalente mêlant sens esthétique, approche terrain et compréhension globale des différentes étapes de conception et de réalisation. Intéressé par les projets à forte identité et les environnements haut de gamme, il apporte une approche transversale attentive aux détails et aux connexions humaines.",
+        "en": "Active for several years across real estate, architecture and project development, Tavio Modic has a versatile vision combining aesthetic sense, ground-level approach and an overall understanding of the different stages of design and execution. Drawn to projects with strong identity and high-end environments, he brings a transversal approach attentive to detail and to human connections."
+      }
+    },
+    {
+      "_id": "team-sergio",
+      "_type": "teamMember",
+      "firstName": "Sergio",
+      "lastName": "Kubas",
+      "slug": { "_type": "slug", "current": "sergio-kubas" },
+      "role": "advisor",
+      "tag": { "fr": "Sport & cercles privés", "en": "Sport & private circles" },
+      "isFocal": false,
+      "order": 5,
+      "bio": {
+        "fr": "Évoluant depuis de nombreuses années dans des environnements internationaux liés au sport de haut niveau et à son écosystème, Sergio Kubas a développé un réseau solide au sein de cercles privés et d'une clientèle internationale exigeante. Actif dans la mise en relation, l'accompagnement et le développement d'opportunités, il intervient avec une approche discrète et orientée vers des connexions à forte valeur ajoutée.",
+        "en": "Active for many years in international environments linked to top-level sport and its ecosystem, Sergio Kubas has built a solid network within private circles and a demanding international clientele. Active in matchmaking, advisory and the development of opportunities, he operates with a discreet approach oriented toward high-value connections."
       }
     }
   ]

@@ -3,17 +3,17 @@
     "cta": "Rechercher",
     "label": "Recherche dans votre espace",
     "placeholder": "Rechercher une montre, une propriété, un événement…",
-    "empty": "Aucun résultat. Reformulez ou décrivez votre besoin à Salvatore.",
+    "empty": "Aucun résultat. Reformulez ou décrivez votre besoin à Valmont.",
     "navigate": "Naviguer",
     "open": "Ouvrir"
   },
   "saved": {
     "title": "Ma collection",
-    "lede": "Les pièces que vous avez épinglées. Salvatore voit votre collection et peut anticiper.",
+    "lede": "Les pièces que vous avez épinglées. Valmont voit votre collection et peut anticiper.",
     "add": "Ajouter à ma collection",
     "remove": "Retirer de ma collection",
     "emptyTitle": "Votre collection est vide.",
-    "emptyLede": "Cliquez le ❤ sur n’importe quelle pièce qui vous intéresse — elle apparaîtra ici. Salvatore lit la liste et propose en conséquence.",
+    "emptyLede": "Cliquez le ❤ sur n’importe quelle pièce qui vous intéresse — elle apparaîtra ici. Valmont lit la liste et propose en conséquence.",
     "emptyCta": "Découvrir le catalogue"
   },
   "common": {
@@ -100,11 +100,11 @@
     "step2": {
       "eyebrow": "Faisons connaissance",
       "title": "Comment souhaitez-vous être appelé ?",
-      "lede": "Salvatore et son équipe vous adresseront chaque échange à votre nom. Aucune donnée transmise à un tiers."
+      "lede": "Valmont et son équipe vous adresseront chaque échange à votre nom. Aucune donnée transmise à un tiers."
     },
     "step3": {
       "eyebrow": "Votre conciergerie dédiée",
-      "title": "Salvatore Montemagno vous accompagne.",
+      "title": "Valmont Seragone Mato vous accompagne.",
       "lede": "Un seul interlocuteur, joignable à tout moment depuis votre espace. Réponse sous 30 minutes ouvrées, NDA standard activé."
     }
   },
@@ -117,7 +117,7 @@
     "titleB": "Trois portes, une seule clé.",
     "titleModal": "Connexion.",
     "ledeModal": "Choisissez votre mode d’accès.",
-    "lede": "Vous avez déjà un accès. Choisissez le mode qui vous convient : votre couple email + mot de passe, un lien d’accès unique envoyé par email, ou le code d’invitation que Salvatore vous a transmis.",
+    "lede": "Vous avez déjà un accès. Choisissez le mode qui vous convient : votre couple email + mot de passe, un lien d’accès unique envoyé par email, ou le code d’invitation que Valmont vous a transmis.",
     "modeEmail": "Email et mot de passe",
     "modeMagicLink": "Lien magique",
     "modeInvitation": "Code d’invitation",
@@ -158,7 +158,7 @@
         "title": "Je voudrais voyager",
         "hint": "Itinéraire sur mesure, jet, yacht, expédition.",
         "drawerTitle": "Je voudrais voyager",
-        "drawerLede": "Décrivez la destination, les dates, le nombre de voyageurs et vos contraintes — Salvatore compose l’itinéraire.",
+        "drawerLede": "Décrivez la destination, les dates, le nombre de voyageurs et vos contraintes — Valmont compose l’itinéraire.",
         "placeholder": "Ex. Maldives en novembre, 4 personnes, 10 jours, jet inclus, hôtel sur l’atoll privé."
       },
       "object": {
@@ -166,7 +166,7 @@
         "title": "Je cherche un objet précis",
         "hint": "Horlogerie, œuvre, voiture de collection — décrivez la pièce.",
         "drawerTitle": "Je cherche un objet précis",
-        "drawerLede": "Soyez précis — référence, années acceptables, état attendu, papiers, fourchette de prix éventuelle. Salvatore active son réseau.",
+        "drawerLede": "Soyez précis — référence, années acceptables, état attendu, papiers, fourchette de prix éventuelle. Valmont active son réseau.",
         "placeholder": "Ex. Patek Philippe Nautilus 5711/1A cadran bleu, 2018-2022, full set, bon état minimum."
       },
       "event": {
@@ -303,7 +303,7 @@
       "placeholder": "Soyez aussi précis que possible…",
       "photoLabel": "Photos de référence (facultatif)",
       "photoHint": "Utile pour une montre, une œuvre, un objet précis.",
-      "allOptional": "Tous les champs sont facultatifs. Laissez vides ceux que vous ne savez pas encore — Salvatore reviendra vers vous pour préciser.",
+      "allOptional": "Tous les champs sont facultatifs. Laissez vides ceux que vous ne savez pas encore — Valmont reviendra vers vous pour préciser.",
       "freeFormLabel": "Autres précisions",
       "freeFormPlaceholder": "Tout ce qui peut nous aider…"
     },
@@ -705,7 +705,7 @@
     "messagePlaceholder": "Indiquez vos contraintes, dates ou questions.",
     "submit": "Envoyer la demande",
     "sending": "Envoi en cours…",
-    "success": "Demande transmise. Salvatore vous recontacte sous 24 heures.",
+    "success": "Demande transmise. Valmont vous recontacte sous 24 heures.",
     "sourceLabel": {
       "event": "Événement",
       "property": "Propriété",
@@ -727,7 +727,7 @@
   },
   "jet": {
     "drawerTitle": "Affréter un jet privé",
-    "drawerLede": "Indiquez départ, arrivée et passagers — Salvatore confirme la disponibilité sous 30 minutes.",
+    "drawerLede": "Indiquez départ, arrivée et passagers — Valmont confirme la disponibilité sous 30 minutes.",
     "from": "Départ",
     "fromPlaceholder": "Ex. Genève (LSGG)",
     "to": "Arrivée",
@@ -740,23 +740,23 @@
     "notes": "Notes complémentaires",
     "notesPlaceholder": "Animaux, équipements particuliers, repas, contraintes diplomatiques…",
     "submit": "Envoyer la demande",
-    "success": "Demande de vol transmise. Salvatore confirme sous 30 minutes.",
-    "salvaReassurance": "Salvatore (votre conciergerie) reçoit cette demande directement et confirme sous 30 minutes ouvrées. À tout moment, vous pouvez l’appeler depuis le bouton en bas à droite."
+    "success": "Demande de vol transmise. Valmont confirme sous 30 minutes.",
+    "focalReassurance": "Valmont (votre conciergerie) reçoit cette demande directement et confirme sous 30 minutes ouvrées. À tout moment, vous pouvez l’appeler depuis le bouton en bas à droite."
   },
   "dock": {
     "title": "Votre conciergerie",
     "eyebrow": "Conciergerie dédiée",
     "availability": "Disponible 7j/7, 6h–23h Europe/Zurich",
-    "cta": "Salvatore",
+    "cta": "Valmont",
     "call": "Appeler maintenant",
     "callShort": "Appeler",
     "schedule": "Réserver 30 min",
     "write": "Écrire un message",
     "writeShort": "Message",
-    "writeLede": "Écrivez librement — Salvatore lit chaque message personnellement et répond sous 24 heures."
+    "writeLede": "Écrivez librement — Valmont lit chaque message personnellement et répond sous 24 heures."
   },
   "audio": {
-    "label": "Note vocale de Salvatore",
+    "label": "Note vocale de Valmont",
     "eyebrow": "Note vocale",
     "play": "Écouter la note vocale",
     "pause": "Mettre en pause",
@@ -768,18 +768,18 @@
     }
   },
   "schedule": {
-    "eyebrow": "Salvatore Montemagno",
-    "title": "Réserver 30 minutes avec Salvatore",
+    "eyebrow": "Valmont Seragone Mato",
+    "title": "Réserver 30 minutes avec Valmont",
     "lede": "Choisissez un créneau dans les 7 prochains jours. Vous recevez la confirmation et l’invitation iCal sous 30 minutes.",
     "chooseDay": "Choisir un jour",
     "chooseSlot": "Choisir un créneau",
-    "timezone": "Heures Europe/Zurich. Si aucune option ne convient, écrivez à Salvatore — il s’adapte.",
+    "timezone": "Heures Europe/Zurich. Si aucune option ne convient, écrivez à Valmont — il s’adapte.",
     "notes": "Quoi évoquer (optionnel)",
-    "notesHint": "Aide Salvatore à préparer la conversation. Quelques mots suffisent.",
+    "notesHint": "Aide Valmont à préparer la conversation. Quelques mots suffisent.",
     "notesPlaceholder": "Ex. revue de la liste de souhaits + question sur le séjour de juillet.",
     "calendarHint": "Une fois confirmé, l’invitation iCal arrive par e-mail. Ajout à Google Calendar / Outlook en un clic.",
     "submit": "Réserver le créneau",
-    "success": "Demande envoyée. Salvatore confirme {{day}} à {{slot}} dans 30 minutes."
+    "success": "Demande envoyée. Valmont confirme {{day}} à {{slot}} dans 30 minutes."
   },
   "articles": {
     "readMinutes": "min de lecture",
@@ -795,7 +795,7 @@
   "bespoke": {
     "eyebrow": "Demande sur mesure",
     "title": "Décrivez ce que vous cherchez, on s’en occupe",
-    "lede": "Salvatore et son réseau activent les bonnes portes. Plus vous êtes précis (référence, fourchette, dates), plus la réponse arrive vite.",
+    "lede": "Valmont et son réseau activent les bonnes portes. Plus vous êtes précis (référence, fourchette, dates), plus la réponse arrive vite.",
     "domain": "Que cherchez-vous ?",
     "domainHint": "Sélectionnez un ou plusieurs domaines.",
     "domainValues": {
@@ -826,15 +826,15 @@
     "attachLabel": "Joindre des photos ou documents",
     "attachHint": "Visuels de référence, screenshots, certificats existants, plans. Jusqu’à 5 fichiers.",
     "confidential": "Confidentialité absolue",
-    "confidentialHint": "Votre demande est traitée par Salvatore uniquement. NDA standard activé, aucune indexation, aucune revente.",
+    "confidentialHint": "Votre demande est traitée par Valmont uniquement. NDA standard activé, aucune indexation, aucune revente.",
     "submit": "Transmettre la demande",
-    "success": "Demande sur mesure transmise. Salvatore revient vers vous sous 24 heures.",
+    "success": "Demande sur mesure transmise. Valmont revient vers vous sous 24 heures.",
     "banner": {
       "eyebrow": "Vous ne trouvez pas ?",
       "cta": "Faire une demande sur mesure",
       "generic": {
         "title": "Vous ne trouvez pas ce que vous cherchez ?",
-        "lede": "Décrivez-le. Salvatore active son réseau — montres rares, propriétés hors-marché, accès événementiels, voyages composés sur mesure."
+        "lede": "Décrivez-le. Valmont active son réseau — montres rares, propriétés hors-marché, accès événementiels, voyages composés sur mesure."
       },
       "property": {
         "title": "La propriété idéale n’est pas ici ?",
@@ -842,7 +842,7 @@
       },
       "timepiece": {
         "title": "La référence que vous cherchez n’est pas listée ?",
-        "lede": "Indiquez la marque, la référence, l’année, l’état attendu. Salvatore active les détaillants et collectionneurs partenaires."
+        "lede": "Indiquez la marque, la référence, l’année, l’état attendu. Valmont active les détaillants et collectionneurs partenaires."
       },
       "artwork": {
         "title": "L’œuvre n’est pas dans le catalogue ?",
@@ -854,7 +854,7 @@
       },
       "journey": {
         "title": "Votre voyage de rêve n’est pas listé ?",
-        "lede": "Destination, durée, niveau d’encadrement, contraintes — Salvatore compose l’itinéraire de A à Z."
+        "lede": "Destination, durée, niveau d’encadrement, contraintes — Valmont compose l’itinéraire de A à Z."
       },
       "concierge": {
         "title": "Un service spécifique manque ?",
@@ -866,7 +866,7 @@
     "badge": "Sécurité & confidentialité",
     "modalTitle": "Sept garanties premium",
     "modalLede": "Sawnext Studio est une conciergerie privée suisse. Chaque demande, chaque transaction, chaque échange suit le protocole ci-dessous — sans exception.",
-    "footerNote": "Pour toute question juridique précise, votre avocat ou notaire est invité à contacter directement notre département conformité — Salvatore vous met en relation.",
+    "footerNote": "Pour toute question juridique précise, votre avocat ou notaire est invité à contacter directement notre département conformité — Valmont vous met en relation.",
     "pillar": {
       "nda": {
         "title": "NDA standard sur chaque demande",
@@ -894,7 +894,7 @@
       },
       "audit": {
         "title": "Journal d’audit accessible sur demande",
-        "body": "Chaque consultation, chaque demande, chaque modification de votre profil est journalisée. Vous pouvez exporter votre journal complet à tout moment auprès de Salvatore."
+        "body": "Chaque consultation, chaque demande, chaque modification de votre profil est journalisée. Vous pouvez exporter votre journal complet à tout moment auprès de Valmont."
       }
     }
   },
@@ -1215,7 +1215,7 @@
       "modal": {
         "eyebrow": "08 · Accès cooptation",
         "title": "Présentez-vous.",
-        "lede": "Quelques informations pour qu'on se comprenne avant la conversation. Salvatore vous rappelle sous 24 heures.",
+        "lede": "Quelques informations pour qu'on se comprenne avant la conversation. Valmont vous rappelle sous 24 heures.",
         "modeToggleLabel": "Choisir un mode d'accès",
         "mode": {
           "request": "Demander un accès",
@@ -1231,7 +1231,7 @@
           "message": "Message (optionnel)",
           "messagePlaceholder": "Qui vous a parlé de nous, ce que vous cherchez, et quand vous aimeriez en parler."
         },
-        "legal": "Vos informations restent strictement entre vous et Salvatore. Aucune base partagée, aucune newsletter, aucun relais commercial.",
+        "legal": "Vos informations restent strictement entre vous et Valmont. Aucune base partagée, aucune newsletter, aucun relais commercial.",
         "steps": {
           "identity": "Identité",
           "profile": "Profil",
@@ -1243,11 +1243,11 @@
         "submitting": "Envoi…",
         "submitRequest": "Envoyer la demande",
         "submitCode": "Valider mon code",
-        "requestSuccess": "Demande envoyée. Salvatore vous rappelle sous 24 heures.",
+        "requestSuccess": "Demande envoyée. Valmont vous rappelle sous 24 heures.",
         "noCodeYet": "Je n'ai pas de code — formulaire",
         "code": {
           "label": "Code d'invitation",
-          "helper": "Format SAW-XXXX-XXXX, transmis par Salvatore en direct.",
+          "helper": "Format SAW-XXXX-XXXX, transmis par Valmont en direct.",
           "legal": "Le code est personnel et à usage unique. Il ne demande aucune information préalable."
         },
         "codeAccepted": "Code reconnu. Redirection vers l'onboarding…",
@@ -1257,23 +1257,38 @@
     "interlocutor": {
       "eyebrow": "Interlocuteur",
       "eyebrowTeam": "Équipe",
-      "countLabel": "Trois fondateurs",
+      "countLabel": "Cinq présences",
       "headlineA": "Une voix.",
-      "headlineB": "Trois fondateurs derrière.",
+      "headlineB": "Un réseau derrière.",
       "header": "Votre point de contact unique",
       "focalTag": "01 · Point de contact",
       "role": "Fondateur opérationnel",
       "bio": "Chaque échange commence par une conversation. Un seul interlocuteur, du premier contact à la réalisation.",
-      "salvaBio": "20 ans d'expérience dans l'industrie du luxe. Distribution, conseil et gestion de relations avec une clientèle HNWI et UHNW. Expertise du luxe, des partenariats premium et de la relation client. Votre interlocuteur direct, du premier mot à la réalisation.",
-      "circleTag": "Cercle restreint",
-      "circleCount": "02 personnes",
-      "harry": {
-        "tag": "Sport & lifestyle",
-        "bio": "Ancien sportif professionnel de haut niveau. Réseau international dans le sport, l'événementiel et le lifestyle haut de gamme. Impliqué dans plusieurs projets entrepreneuriaux axés sur la mise en relation et l'accompagnement."
+      "circleTag": "Réseau",
+      "circleCount": "04 profils",
+      "viaFocal": "Contact opérationnel · Valmont",
+      "seeFocal": "Voir Valmont",
+      "promoteAria": "Mettre en avant {{name}}",
+      "tablistLabel": "Membres de l'équipe",
+      "valmont": {
+        "tag": "Fondateur opérationnel",
+        "bio": "Au fil des années, Valmont Seragone Mato a développé un réseau international solide dans les domaines du luxe, de l'horlogerie, de l'événementiel privé, de l'aviation et des services sur mesure, avec une approche basée sur la discrétion, la confiance et la qualité des relations humaines. Votre interlocuteur direct, du premier échange jusqu'à la concrétisation de chaque projet."
       },
-      "bokar": {
-        "tag": "Sport & relation HNW",
-        "bio": "Agent de joueurs de football de premier plan au niveau européen, basé à Paris. Connaissance des attentes d'une clientèle internationale exigeante et accès à des cercles fermés."
+      "harvy": {
+        "tag": "Sport & lifestyle premium",
+        "bio": "Évoluant depuis de nombreuses années dans l'univers du sport professionnel et des environnements internationaux à haute exigence, Harvy O'Rollin a développé un réseau solide dans les domaines du sport, de l'événementiel et du lifestyle premium. Impliqué dans différents projets entrepreneuriaux et de mise en relation, il accompagne aujourd'hui une clientèle privée et professionnelle avec une approche humaine, discrète et orientée opportunités."
+      },
+      "lucian": {
+        "tag": "Nuit & showbiz",
+        "bio": "Présent depuis de nombreuses années dans les univers de la nuit, du divertissement et des environnements liés au showbiz international, Lucian Trial a su développer au fil du temps un réseau solide ainsi qu'une relation de confiance avec différentes personnalités et leur entourage. Habitué aux environnements à haute exigence et à la gestion de demandes sensibles, il intervient aujourd'hui dans l'accompagnement personnalisé, la coordination de besoins spécifiques et la mise en relation."
+      },
+      "tavio": {
+        "tag": "Immobilier & architecture",
+        "bio": "Évoluant depuis plusieurs années dans des univers liés à l'immobilier, à l'architecture et au développement de projets, Tavio Modic possède une vision polyvalente mêlant sens esthétique, approche terrain et compréhension globale des différentes étapes de conception et de réalisation. Intéressé par les projets à forte identité et les environnements haut de gamme, il apporte une approche transversale attentive aux détails et aux connexions humaines."
+      },
+      "sergio": {
+        "tag": "Sport & cercles privés",
+        "bio": "Évoluant depuis de nombreuses années dans des environnements internationaux liés au sport de haut niveau et à son écosystème, Sergio Kubas a développé un réseau solide au sein de cercles privés et d'une clientèle internationale exigeante. Actif dans la mise en relation, l'accompagnement et le développement d'opportunités, il intervient avec une approche discrète et orientée vers des connexions à forte valeur ajoutée."
       },
       "phone": "Téléphone direct",
       "email": "Email",

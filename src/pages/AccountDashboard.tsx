@@ -226,7 +226,7 @@ const ConciergeSection = () => {
           <p className="text-fg truncate text-base font-medium md:text-lg">
             {currentUser.conciergeName}
           </p>
-          <p className="text-muted truncate text-xs md:text-sm">salvatore@sawnext.studio</p>
+          <p className="text-muted truncate text-xs md:text-sm">valmont@sawnext.studio</p>
         </div>
       </div>
       {/* Side-by-side row at every viewport, h-12 (48px) — owner direction
@@ -249,7 +249,7 @@ const ConciergeSection = () => {
           <span>{t('dock.callShort')}</span>
         </a>
         <a
-          href="mailto:salvatore@sawnext.studio"
+          href="mailto:valmont@sawnext.studio"
           aria-label={t('dock.write')}
           className={cn(
             'border-fg/20 text-fg hover:border-fg/50 hover:bg-bg/40 focus-visible:ring-accent',

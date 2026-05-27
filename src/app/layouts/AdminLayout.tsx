@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════
-// AdminLayout — Salvatore's super-admin shell
+// AdminLayout — Valmont's super-admin shell
 //
 // WHAT: Header + sidebar (Dashboard / Catalogue / Invitations /
 //       Inquiries / Users) + main content. RequireRole 'admin' guards
