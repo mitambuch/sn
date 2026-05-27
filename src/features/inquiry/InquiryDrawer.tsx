@@ -19,7 +19,7 @@ import { cn } from '@utils/cn';
 import { type FormEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { hasSupabase, supabase } from '@/lib/supabase';
+import { submitInquiry } from '@/lib/inquiry';
 import type { InquirySource } from '@/types/inquiry';
 
 interface InquiryDrawerProps {
@@ -61,42 +61,20 @@ export const InquiryDrawer = ({
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-
-    const userId = session?.user?.id;
-    const canPersist =
-      hasSupabase && supabase !== null && typeof userId === 'string' && !userId.startsWith('dev-');
-
-    if (canPersist && supabase) {
-      const insertPayload: {
-        user_id: string;
-        source: InquirySource;
-        message: string | null;
-        target_id?: string;
-      } = {
-        user_id: userId as string,
-        source,
-        message: message.trim() || null,
-      };
-      if (targetId) insertPayload.target_id = targetId;
-
-      const { error } = await supabase.from('inquiries').insert(insertPayload);
-      setSubmitting(false);
-      if (error) {
-        toast({ variant: 'error', message: error.message });
-        return;
-      }
-      toast({ variant: 'success', message: t('inquiry.success') });
-      setMessage('');
-      onClose();
+    const result = await submitInquiry({
+      source,
+      message,
+      targetId,
+      userId: session?.user?.id,
+    });
+    setSubmitting(false);
+    if (!result.ok) {
+      toast({ variant: 'error', message: result.error ?? t('inquiry.error') });
       return;
     }
-
-    window.setTimeout(() => {
-      toast({ variant: 'success', message: t('inquiry.success') });
-      setMessage('');
-      setSubmitting(false);
-      onClose();
-    }, 600);
+    toast({ variant: 'success', message: t('inquiry.success') });
+    setMessage('');
+    onClose();
   };
 
   return (

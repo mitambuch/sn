@@ -52,6 +52,7 @@ import { ImageUpload } from '@components/ui/ImageUpload';
 import { RangeSlider } from '@components/ui/RangeSlider';
 import { Stepper } from '@components/ui/Stepper';
 import { Textarea } from '@components/ui/Textarea';
+import { useAuth } from '@context/AuthContext';
 import { useToast } from '@hooks/useToast';
 import { cn } from '@utils/cn';
 import type { LucideIcon } from 'lucide-react';
@@ -69,6 +70,9 @@ import {
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { submitInquiry } from '@/lib/inquiry';
+import type { InquirySource } from '@/types/inquiry';
+
 export type WizardCategory =
   | 'real-estate'
   | 'timepiece'
@@ -76,6 +80,17 @@ export type WizardCategory =
   | 'experience'
   | 'travel'
   | 'other';
+
+/** Map the wizard's UI categories to the canonical InquirySource enum
+ *  (matches the Postgres enum + the operator inbox grouping). */
+const CATEGORY_TO_SOURCE: Record<WizardCategory, InquirySource> = {
+  'real-estate': 'property',
+  timepiece: 'timepiece',
+  art: 'artwork',
+  experience: 'event',
+  travel: 'journey',
+  other: 'concierge',
+};
 
 type Step = 'category' | 'fields' | 'extras' | 'review';
 
@@ -239,6 +254,7 @@ export const ConciergeRequestWizard = ({
 }: ConciergeRequestWizardProps) => {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const { session } = useAuth();
 
   // Entry step depends on initialCategory : Other skips 'fields' entirely.
   const initialEntryStep: Step = initialCategory
@@ -315,18 +331,38 @@ export const ConciergeRequestWizard = ({
 
   const canGoBack = stepIdx > 0 && step !== firstReachable;
 
-  const handleSubmit = (kind: 'full' | 'callback') => {
+  /** Flatten the wizard's category + fields + description into a single
+   *  message body for the operator inbox. Skips empty fields. */
+  const composeMessage = (kind: 'full' | 'callback'): string => {
+    if (kind === 'callback') return 'Demande de rappel — préfère un appel direct.';
+    const lines: string[] = [];
+    if (category) lines.push(`Catégorie : ${category}`);
+    for (const [key, value] of Object.entries(fields)) {
+      const trimmed = value.trim();
+      if (trimmed) lines.push(`${key} : ${trimmed}`);
+    }
+    if (description.trim()) lines.push('', 'Description :', description.trim());
+    return lines.join('\n');
+  };
+
+  const handleSubmit = async (kind: 'full' | 'callback') => {
     setSubmitting(true);
-    // Simulated for MVP — wire to Supabase inquiries.insert once data
-    // shape is finalised. Callback mode = minimal request, no fields.
-    window.setTimeout(() => {
-      toast({
-        variant: 'success',
-        message: kind === 'callback' ? t('callback.hint') : t('inquiry.success'),
-      });
-      setSubmitting(false);
-      onClose();
-    }, 700);
+    const source: InquirySource = category ? CATEGORY_TO_SOURCE[category] : 'concierge';
+    const result = await submitInquiry({
+      source,
+      message: composeMessage(kind),
+      userId: session?.user?.id,
+    });
+    setSubmitting(false);
+    if (!result.ok) {
+      toast({ variant: 'error', message: result.error ?? t('inquiry.error') });
+      return;
+    }
+    toast({
+      variant: 'success',
+      message: kind === 'callback' ? t('callback.hint') : t('inquiry.success'),
+    });
+    onClose();
   };
 
   const stepNumber = stepIdx + 1;
@@ -1028,7 +1064,9 @@ export const ConciergeRequestWizard = ({
                   secondary action standing on its own. */}
               <button
                 type="button"
-                onClick={() => handleSubmit('callback')}
+                onClick={() => {
+                  void handleSubmit('callback');
+                }}
                 disabled={submitting}
                 className={cn(
                   'text-muted hover:text-fg duration-base inline-flex items-center gap-2 self-start',
@@ -1068,7 +1106,9 @@ export const ConciergeRequestWizard = ({
           {step === 'review' ? (
             <button
               type="button"
-              onClick={() => handleSubmit('full')}
+              onClick={() => {
+                void handleSubmit('full');
+              }}
               disabled={submitting}
               className={cn(
                 'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',

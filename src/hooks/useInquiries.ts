@@ -10,7 +10,7 @@
 // WHEN: Account dashboard, account inquiries, admin inquiries.
 // ═══════════════════════════════════════════════════
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { hasSupabase, supabase } from '@/lib/supabase';
 import { listInquiries, listInquiriesForUser } from '@/mocks';
@@ -44,6 +44,13 @@ interface UseInquiriesResult {
   error: string | null;
   /** True when the data shown is mocks. */
   usingFallback: boolean;
+}
+
+interface UseInquiriesAdminResult extends UseInquiriesResult {
+  /** Update an inquiry's status. Optimistic local update + Supabase
+   *  UPDATE behind the RLS admin policy. Falls back to local-only when
+   *  no backend is wired so the demo keeps working. */
+  updateStatus: (id: string, next: InquiryStatus) => Promise<{ ok: boolean; error?: string }>;
 }
 
 function useInquiriesQuery(
@@ -89,6 +96,31 @@ export function useInquiriesUser(userId: string | null | undefined): UseInquirie
   return useInquiriesQuery(userId ?? null, fallback);
 }
 
-export function useInquiriesAdmin(): UseInquiriesResult {
-  return useInquiriesQuery(null, listInquiries());
+export function useInquiriesAdmin(): UseInquiriesAdminResult {
+  const base = useInquiriesQuery(null, listInquiries());
+  const [overrides, setOverrides] = useState<Record<string, InquiryStatus>>({});
+
+  const updateStatus = useCallback(
+    async (id: string, next: InquiryStatus): Promise<{ ok: boolean; error?: string }> => {
+      // Optimistic local update — the kanban re-renders immediately.
+      setOverrides(prev => ({ ...prev, [id]: next }));
+      if (!hasSupabase || !supabase) return { ok: true };
+      const { error } = await supabase.from('inquiries').update({ status: next }).eq('id', id);
+      if (error) {
+        // Roll back the optimistic write on remote failure.
+        setOverrides(prev => {
+          const { [id]: _drop, ...rest } = prev;
+          return rest;
+        });
+        return { ok: false, error: error.message };
+      }
+      return { ok: true };
+    },
+    [],
+  );
+
+  // Splice the optimistic overrides onto the base rows so consumers see
+  // the new status immediately without waiting for a refetch.
+  const rows = base.rows.map(r => (overrides[r.id] ? { ...r, status: overrides[r.id]! } : r));
+  return { ...base, rows, updateStatus };
 }

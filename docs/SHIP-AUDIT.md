@@ -1,199 +1,196 @@
 # Ship audit — Sawnext production readiness
 
-Generated 2026-05-14 18:50 Europe/Zurich after the production-grade
-push session (Option C of the user's tier choice).
+Last refreshed **2026-05-27 14:21 Europe/Zurich** — after the
+Phase 1 security audit + v0.2.0 release + team personas rework
++ Sanity team wiring.
 
-This document is the **honest** truth about what works, what's
-configured, what's deferred — no theatre, no "all green".
+This document is the **honest** state of the platform : what works
+today, what's been written but not yet applied, what's deferred.
+Pair it with [`DEMO-CHECKLIST.md`](DEMO-CHECKLIST.md) which is the
+paste-ready action list for the owner.
 
 ---
 
 ## Verdict snapshot
 
-| Axis | State | Blocking ship? |
+| Axis | State | Blocking client demo ? |
 |---|---|---|
-| Landing + UX publique | ✅ Live | no |
-| Supabase auth (login / magic-link / invitation code) | ✅ Live | no |
-| **Single-use invitation code (atomic redemption)** | ✅ **RPC live (Phase 1)** | no |
-| **AdminInvitations CRUD** | ✅ **Live (Phase 2)** | no |
-| **Onboarding validates code + writes profile** | ✅ **Live (Phase 3)** | no |
-| AccountDashboard / Inquiries read from DB | ✅ Live (Phase 4) | no |
-| AccountSaved (wishlist) | ⚠️ localStorage only | deferred — single device works |
-| AdminInquiries / Users / Dashboard read from DB | ✅ Live (Phase 5) | no |
-| Hardcoded FR strings | ✅ Localized (Phase 6) | no |
-| E2E coverage on admin + auth routes | ✅ 5 specs (Phase 7) | no |
-| Sentry observability | ✅ Opt-in (Phase 8) | no |
-| **Sanity Studio + landing content mirror** | ⛔ creds missing | **YES for client edits** |
-| Resend transactional emails | ⚠️ needs Vault setup | no — flow works without |
-| Migrations 0008 + 0009 to apply | ⛔ not pushed | **YES for prod** |
+| Landing + UX publique | ✅ Live (5-persona Interlocutor S09) | no |
+| Public identity locked down (no Salvatore exposure) | ✅ Live | no |
+| Supabase auth (login / magic-link / invitation code) | ✅ Live (with migrations applied) | **YES until 0008+0009+0010 push** |
+| Single-use invitation code (atomic redemption) | ✅ RPC live | needs 0008 push |
+| Admin invitations / inquiries / users / dashboard | ✅ Live | needs Supabase env |
+| Onboarding validates code + writes profile | ✅ Live | needs 0008+0009 push |
+| AccountDashboard + Inquiries read from DB | ✅ Live | needs Supabase env |
+| AccountSaved (wishlist) | ⚠️ localStorage only | deferred — Phase C in flight |
+| Sanity Studio + landing copy mirror | ✅ Code-side, needs creds | optional (i18n fallback works) |
+| Sanity teamMember docs → Interlocutor section | ✅ Wired with i18n fallback | optional |
+| Resend transactional email on inquiry insert | ⚠️ Trigger present, needs Vault `RESEND_API_KEY` | no — flow works, just no email |
+| OPERATOR_EMAIL secret | ⚠️ Fallback to mitamburini@gmail.com hardcoded | optional |
+| Security hardening (0010) | ✅ Written | **YES — anti-enum + anti-escalation gates** |
+| Sentry observability | ✅ Opt-in via env | optional |
+| E2E coverage (auth + admin) | ✅ 5 specs | no |
+| Migrations 0008 + 0009 + 0010 to apply | ⛔ Not pushed | **YES for prod** |
 
 ---
 
-## What ships TODAY without further action
+## What ships TODAY locally without further action
 
-- Public landing, all 6 catalogue modules, /share/:code, /exemple
-- Login (email/password), magic-link, invitation-code redemption
-- Onboarding with real code validation + profile write
-- Admin invitations CRUD (generate / list / revoke)
-- Admin dashboard + admin inquiries kanban + admin users table
-- Account dashboard + account inquiries reading the user's own rows
-- /admin/share-codes with full Supabase wiring
+Boot `pnpm dev` with no `.env.local` and the following work in **fully
+mocked / fallback** mode :
 
-## What requires owner action BEFORE going live
+- Public landing S00-S09 (Sanity falls back to i18n strings)
+- All 6 catalogue modules (Events/Properties/Timepieces/Artworks/
+  Journeys/Concierge) with localStorage-backed CRUD via adminStore
+- Login screen (UI), Onboarding flow (UI), AccessRequestModal wizard
+- /share/:code OTP-protected preview
+- /exemple landing
+- Account dashboard / inquiries / saved (localStorage)
+- Admin dashboard / invitations / inquiries / users / catalogue
+- Full design system playground at /playground
+- Full lab sandbox at /lab
 
-### 1. Apply the 2 new migrations to your Supabase project (5 min)
+What requires real Supabase env to be functional :
+- Actual auth (login, magic-link, code redemption)
+- Actual DB-backed inquiry + admin tables (today reads mocks)
+- Actual email notification to operator
 
-```sh
-# Option A — Supabase Dashboard
-# 1. Open https://supabase.com/dashboard → your project → SQL Editor
-# 2. Paste the content of supabase/migrations/0008_redeem_invitation_rpc.sql → Run
-# 3. Paste the content of supabase/migrations/0009_profile_phone.sql → Run
+---
 
-# Option B — Supabase CLI (if installed)
-supabase db push
+## What requires OWNER ACTION before going live
+
+See [`DEMO-CHECKLIST.md`](DEMO-CHECKLIST.md) for the paste-ready
+commands. Summary :
+
+### 1. Apply 3 migrations to Supabase (5 min — owner runs SQL)
+
+```
+0008_redeem_invitation_rpc.sql   atomic single-use redemption
+0009_profile_phone.sql           add profiles.phone column
+0010_security_hardening.sql      anti-enum + anti-escalation + escape_html
+                                  (closes P0/P1 findings from AUDIT-SECURITY.md)
 ```
 
-Without 0008 the redemption call from the Onboarding step 1 will fail
-with "function does not exist". Without 0009 the profile UPDATE will
-fail with "column phone of relation profiles does not exist".
+### 2. Configure Sanity (15 min — owner + Claude seeder)
 
-### 2. Configure Sanity (5 min — optional but recommended)
+- Owner : create Sanity project at sanity.io/manage → grab
+  `projectId`, generate Editor write token
+- Set `VITE_SANITY_PROJECT_ID`, `VITE_SANITY_DATASET=staging`,
+  `SANITY_WRITE_TOKEN` in `.env.local`
+- Run `pnpm sanity:seed:sawnext:dry` → preview
+- Run `pnpm sanity:seed:sawnext` → push 5-team + singletons + fixtures
+- Run `pnpm sanity:promote` once content is curated
 
-`docs/SANITY-HANDOFF.md` has the 3 steps. Without this the landing
-falls back to the i18n strings — works visually, but the client can't
-edit anything.
+Without this : landing falls back cleanly to i18n strings. Works
+visually, but the client can't edit team names/copy/sections.
 
-### 3. Configure Sentry (optional, 2 min)
+### 3. Resend Vault secret (5 min — owner)
 
-Create a Sentry project, copy the DSN, paste it into Vercel env as
-`VITE_SENTRY_DSN`. Without it, no telemetry.
+In Supabase Dashboard → Vault → add :
+- `RESEND_API_KEY` (required for emails to actually send)
+- `OPERATOR_EMAIL` (optional — falls back to hardcoded value)
 
-### 4. Resend Vault secret (already setup if you tested inquiries)
+### 4. Hosting (Vercel or Netlify)
 
-`RESEND_API_KEY` must be set in Supabase Vault for the `notify_new_inquiry`
-trigger to actually send the email. Friction memory 2026-05-11 documents
-the naming.
+Both `vercel.json` and `netlify.toml` exist with matching CSP + redirects.
+Pick one. Set the `VITE_*` env vars in the deploy dashboard (mirror
+of `.env.local`).
+
+### 5. First admin + first invitation code
+
+In Supabase Dashboard → SQL Editor :
+```sql
+update profiles set role = 'admin' where email = '<your-admin-email>';
+```
+Then sign in as admin → `/admin/invitations` → generate the first code.
 
 ---
 
 ## What's DELIBERATELY deferred (documented, not hidden)
 
-### AccountSaved → Supabase wishlist_items
+### AccountSaved → Supabase saved_items
 
-Today : localStorage per device. 10+ consumers (HeartButton, every
-catalogue card). Refactoring to Supabase async would require a
-loading state on every heart toggle — visible UX cost for a feature
-that 95 % of the time the user does on a single device anyway.
-
-Migration to add :
-
-```sql
-create table public.saved_items (
-  user_id uuid not null references public.profiles(id) on delete cascade,
-  module  text not null check (module in ('property','timepiece','artwork','event','journey','concierge')),
-  slug    text not null,
-  saved_at timestamptz not null default now(),
-  primary key (user_id, module, slug)
-);
-
-alter table public.saved_items enable row level security;
-
-create policy "saved_items: self all"
-  on public.saved_items for all
-  using (auth.uid() = user_id)
-  with check (auth.uid() = user_id);
-
-grant select, insert, delete on public.saved_items to authenticated;
-```
-
-Then refactor `useSavedItems` to do an optimistic-local-first +
-background-sync to Supabase. Estimated 2-3 h.
+**Phase C in this branch.** Today : localStorage per device. The
+migration script + new hook + consumer refactor lands in commit 3/N
+of `feat/demo-readiness`.
 
 ### E2E for AccessRequestModal wizard + LoginModal mode rows
 
-Tried during Phase 7 — flaky because the cinematic Loader (5 s
-animation + position:fixed CTAs) is hard to drive deterministically.
-The right fix is a `VITE_SKIP_LOADER` test mode that mounts the
-landing without the cinematic, and dedicated specs against that
-test fixture. Estimated 2 h.
+Tried in 2026-05-14 Phase 7 — flaky because the cinematic Loader is
+hard to drive deterministically. Right fix : `VITE_SKIP_LOADER` test
+mode + dedicated specs against test fixture. ~2 h estimated. Not
+shipped — auth-flows.spec.ts is the reliable layer.
 
 ### Sentry session replay
 
-Currently disabled (`replaysSessionSampleRate: 0`). Add when the
-team wants to see actual user sessions on errors. Cost : Sentry
-plan quota.
+Disabled (`replaysSessionSampleRate: 0`). Add when the team wants
+actual user sessions on errors. Cost : Sentry plan quota.
 
 ### Manifesto + Hero typewriter copy in Sanity
 
 Structural content (typewriter mix-blend-mode highlight, per-phrase
-Manifesto indentation). Deliberately stays in i18n — documented in
+Manifesto indentation). Stays in i18n by design — see
 `decisions/2026-05-14-sanity-landing-singleton.md`.
 
 ### Supabase content gate in CI
 
 `pnpm validate:sanity-content:required` enforces zero empty locale
-fields, but only runs when credentials are present. Once Sanity is
-seeded, add `SANITY_*` secrets to the Vercel build env + remove the
-opt-in skip in `scripts/validate-sanity-content.js`.
-
-### Old E2E flakiness (pre-existing)
-
-Some smoke tests have minor timing flakes related to the Loader.
-Not introduced by this session ; the auth-flows.spec.ts is the new
-reliable layer.
+fields, but only runs when credentials are present. Wire post-seed.
 
 ---
 
 ## Migration audit — supabase/migrations/
 
 ```
-0001_initial_schema.sql        profiles, invitation_codes, inquiries + RLS
-0002_fix_rls_recursion.sql     drop recursive admin policies
-0003_grant_table_access.sql    fix GRANT after "expose new tables" toggle off
-0004_resend_inquiry_notification.sql  pg_net trigger → Resend on new inquiry
-0005_share_codes.sql           share_codes table for /share/:code
-0006_share_codes_6chars.sql    code length tweak
-0007_dashboard_stats.sql       materialized views for admin counters
-0008_redeem_invitation_rpc.sql NEW — atomic single-use redemption RPC
-0009_profile_phone.sql         NEW — add profiles.phone column
+0001_initial_schema.sql              profiles, invitation_codes, inquiries + RLS
+0002_fix_rls_recursion.sql           drop recursive admin policies
+0003_grant_table_access.sql          fix GRANT after "expose new tables" off
+0004_resend_inquiry_notification.sql pg_net trigger → Resend on new inquiry
+0005_share_codes.sql                 share_codes table for /share/:code
+0006_share_codes_6chars.sql          code length tweak
+0007_dashboard_stats.sql             materialized views for admin counters
+0008_redeem_invitation_rpc.sql       atomic single-use redemption RPC
+0009_profile_phone.sql               add profiles.phone column
+0010_security_hardening.sql          anti-enum + role pin + HTML escape + Vault op email
+                                       ↑ APPLY BEFORE CLIENT DEMO ↑
+```
+
+If `saved_items` Supabase migration (Phase C) lands this session :
+
+```
+0011_saved_items.sql                 wishlist cross-device persistence
 ```
 
 ---
 
-## Final pre-flight checklist
+## Final pre-demo checklist (tick before flipping the demo switch)
 
-Tick each box before flipping the production switch :
-
-- [ ] Apply migrations 0008 + 0009 (or `supabase db push`)
-- [ ] Set `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY` in Vercel (likely already done — `.env.local` has them)
-- [ ] Set `VITE_SANITY_PROJECT_ID` + `VITE_SANITY_DATASET` in Vercel (run seed-sawnext once)
-- [ ] Set `RESEND_API_KEY` in Supabase Vault (operator notification email)
-- [ ] Optional : set `VITE_SENTRY_DSN` in Vercel
-- [ ] Create at least 1 admin profile manually : `update profiles set role='admin' where email='salva@…'`
-- [ ] Generate at least 1 invitation code (via `/admin/invitations` after the admin promotion)
+- [ ] Apply migrations 0008 + 0009 + 0010 (and 0011 if shipped)
+- [ ] `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY` in deploy env
+- [ ] `VITE_SANITY_PROJECT_ID` + `VITE_SANITY_DATASET` in deploy env
+- [ ] `pnpm sanity:seed:sawnext` ran against the production dataset
+- [ ] `RESEND_API_KEY` in Supabase Vault
+- [ ] (optional) `OPERATOR_EMAIL` in Supabase Vault
+- [ ] (optional) `VITE_SENTRY_DSN` in deploy env
+- [ ] Promote first admin profile via SQL UPDATE
+- [ ] Generate first invitation code via `/admin/invitations`
 - [ ] Smoke test from incognito :
-  - [ ] Click "Demander un accès" → fill form → submit → toast success
-  - [ ] Click "Espace privé" → pick "Code d'invitation" → enter the SAW-XXXX-XXXX from previous step → magic link arrives → click → onboarding → reach /account
-  - [ ] /admin/invitations shows the code with status='redeemed', redeemed_at populated
-  - [ ] Re-entering the same code on the landing → "Code introuvable ou déjà utilisé" error
-- [ ] `pnpm test:e2e` passes
-- [ ] `pnpm validate` passes (except sanity-content gate which skips without creds)
+  - [ ] Public landing renders 5 personas at #s09
+  - [ ] "Demander un accès" wizard submits + toast success
+  - [ ] "Espace privé" → code redemption → magic link → onboarding → /account
+  - [ ] `/admin/invitations` shows code with status='redeemed', redeemed_at populated
+  - [ ] Re-entering the same code on the landing → "Code introuvable ou déjà utilisé"
+- [ ] `pnpm test` passes (currently 457/457)
+- [ ] `pnpm validate:gates` passes (~20s)
+- [ ] No "Salvatore" mentions found by `grep -rn "Salvatore" src/ studio/`
 
 ---
 
-## Commits delivered this session (Option C)
+## Cross-refs
 
-```
-ad4e8fb  feat(observability): opt-in Sentry init + CSP whitelist + env documentation
-880d5cd  test(e2e): admin route reachability + public auth surface specs
-3998f5c  fix(i18n): localize 4 hardcoded FR strings flagged by validate-i18n
-025d939  feat(admin): Inquiries + Users + Dashboard read from Supabase
-7928031  feat(account): AccountInquiries + Dashboard read from Supabase
-173b34d  feat(onboarding): step 1 validates code via RPC + step 2 updates profile
-b09f5d8  feat(admin): AdminInvitations Supabase live (generate + revoke + list)
-f3529f9  feat(auth): atomic redeem_invitation_code RPC + confirmInvitationRedemption
-```
-
-Total : 8 commits on top of the Sanity content mirror epic.
-
-— done at 2026-05-14 18:50 Europe/Zurich.
+- [`DEMO-CHECKLIST.md`](DEMO-CHECKLIST.md) — paste-ready owner actions
+- [`AUDIT-SECURITY.md`](AUDIT-SECURITY.md) — Phase 1 findings + remediation
+- [`SANITY-HANDOFF.md`](SANITY-HANDOFF.md) — Sanity onboarding steps
+- `.claude/memory/decisions/2026-05-14-atomic-redemption-rpc.md` — 0008 design
+- `.claude/memory/sessions/2026-05-27-1230.md` — security audit + v0.2.0 release
+- `supabase/migrations/0010_security_hardening.sql` — owner action SQL

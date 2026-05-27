@@ -42,6 +42,8 @@ import { cn } from '@utils/cn';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { isVitrineMode } from '@/config/env';
+
 export default function Home() {
   return (
     <LandingContentProvider>
@@ -152,19 +154,21 @@ function HomeContent() {
             <span aria-hidden="true">↗</span>
           </button>
         }
-        secondaryCtaLabel={labelPrivateArea}
+        secondaryCtaLabel={isVitrineMode ? undefined : labelPrivateArea}
         secondaryCtaNode={
-          <button
-            type="button"
-            onClick={() => {
-              closeIndex();
-              openLogin();
-            }}
-            className="border-bg text-bg hover:bg-bg hover:text-fg inline-flex items-center justify-between gap-3 rounded-full border px-6 py-4 font-mono text-xs tracking-widest uppercase transition-colors md:py-5 md:text-sm"
-          >
-            <span>{labelPrivateArea}</span>
-            <span aria-hidden="true">↗</span>
-          </button>
+          isVitrineMode ? undefined : (
+            <button
+              type="button"
+              onClick={() => {
+                closeIndex();
+                openLogin();
+              }}
+              className="border-bg text-bg hover:bg-bg hover:text-fg inline-flex items-center justify-between gap-3 rounded-full border px-6 py-4 font-mono text-xs tracking-widest uppercase transition-colors md:py-5 md:text-sm"
+            >
+              <span>{labelPrivateArea}</span>
+              <span aria-hidden="true">↗</span>
+            </button>
+          )
         }
       />
 
@@ -202,8 +206,8 @@ function HomeContent() {
           onPrimaryCta={() => {
             openAccessRequest('request');
           }}
-          secondaryCtaLabel={labelPrivateArea}
-          onSecondaryCta={openLogin}
+          secondaryCtaLabel={isVitrineMode ? undefined : labelPrivateArea}
+          onSecondaryCta={isVitrineMode ? undefined : openLogin}
           callCtaLabel={resolveFieldOrFallback(
             landing?.ctaCallDirect,
             locale,

@@ -10,17 +10,24 @@
 //       from the dashboard "demande sur mesure" intent.
 // CHROME: <RequestDrawerShell /> canonical (header + slide-in + backdrop).
 //         Form-only logic lives here.
-// EDGE: No real submission yet — simulated 800ms latency + toast.
+// SUBMISSION: composes a structured message body and inserts a row in
+//       `public.inquiries` via the unified submitInquiry helper. Source
+//       defaults to 'object-search' ; flips to 'event-organize' when
+//       only the 'event' domain chip is selected.
 // ═══════════════════════════════════════════════════
 
 import { ImageUpload } from '@components/ui/ImageUpload';
 import { Input } from '@components/ui/Input';
 import { RequestDrawerShell } from '@components/ui/RequestDrawerShell';
+import { useAuth } from '@context/AuthContext';
 import { useToast } from '@hooks/useToast';
 import { cn } from '@utils/cn';
 import { ShieldCheck } from 'lucide-react';
 import { type FormEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { submitInquiry } from '@/lib/inquiry';
+import type { InquirySource } from '@/types/inquiry';
 
 const DOMAINS = [
   'property',
@@ -53,6 +60,7 @@ export const BespokeRequestDrawer = ({
 }: BespokeRequestDrawerProps) => {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const { session } = useAuth();
 
   const [domains, setDomains] = useState<Set<Domain>>(
     new Set(initialDomain ? [initialDomain] : []),
@@ -75,18 +83,47 @@ export const BespokeRequestDrawer = ({
     });
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  /** Pick the InquirySource enum value matching the form intent. */
+  const inferSource = (): InquirySource => {
+    if (domains.size === 1 && domains.has('event')) return 'event-organize';
+    return 'object-search';
+  };
+
+  /** Flatten the structured bespoke fields into one message body for the
+   *  operator inbox. Labels in French (operator language). */
+  const composeMessage = (): string => {
+    const lines: string[] = [];
+    if (domains.size > 0) lines.push(`Domaines : ${Array.from(domains).join(', ')}`);
+    if (budgetMin || budgetMax) {
+      const range = [budgetMin, budgetMax].filter(Boolean).join(' – ');
+      lines.push(`Budget : ${range} ${currency}`);
+    }
+    lines.push(`Urgence : ${urgency}`);
+    if (targetDate) lines.push(`Date cible : ${targetDate}`);
+    lines.push(`Confidentiel : ${confidential ? 'oui' : 'non'}`);
+    if (description.trim()) lines.push('', 'Description :', description.trim());
+    return lines.join('\n');
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    setTimeout(() => {
-      toast({ variant: 'success', message: t('bespoke.success') });
-      setDescription('');
-      setBudgetMin('');
-      setBudgetMax('');
-      setTargetDate('');
-      setSubmitting(false);
-      onClose();
-    }, 800);
+    const result = await submitInquiry({
+      source: inferSource(),
+      message: composeMessage(),
+      userId: session?.user?.id,
+    });
+    setSubmitting(false);
+    if (!result.ok) {
+      toast({ variant: 'error', message: result.error ?? t('bespoke.error') });
+      return;
+    }
+    toast({ variant: 'success', message: t('bespoke.success') });
+    setDescription('');
+    setBudgetMin('');
+    setBudgetMax('');
+    setTargetDate('');
+    onClose();
   };
 
   return (
@@ -98,7 +135,12 @@ export const BespokeRequestDrawer = ({
       lede={t('bespoke.lede')}
       widthClass="max-w-2xl"
     >
-      <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col gap-6"
+        onSubmit={e => {
+          void handleSubmit(e);
+        }}
+      >
         {/* ─── Domain chips ─── */}
         <fieldset className="flex flex-col gap-2">
           <legend className="text-fg text-sm font-medium">{t('bespoke.domain')}</legend>

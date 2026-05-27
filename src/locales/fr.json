@@ -50,6 +50,7 @@
     "continue": "Continuer",
     "fullName": "Nom complet",
     "phone": "Téléphone",
+    "edit": "Modifier",
     "yes": "Oui",
     "no": "Non",
     "similar": "Vous pourriez aussi aimer"
@@ -148,6 +149,12 @@
       "travel": "Voyage"
     },
     "profileTitle": "Votre profil",
+    "profile": {
+      "editTitle": "Modifier le profil",
+      "editLede": "Vos informations restent strictement entre vous et Valmont. Aucune base partagée, aucune newsletter.",
+      "save": "Enregistrer",
+      "saved": "Profil mis à jour."
+    },
     "preferencesTitle": "Vos préférences",
     "inquiriesTitle": "Historique des demandes",
     "intent": {
@@ -455,7 +462,9 @@
       }
     },
     "inquiries": {
-      "title": "Demandes"
+      "title": "Demandes",
+      "moveTo": "Statut",
+      "statusFor": "Statut de la demande {{source}}"
     },
     "users": {
       "title": "Membres"
@@ -706,6 +715,7 @@
     "submit": "Envoyer la demande",
     "sending": "Envoi en cours…",
     "success": "Demande transmise. Valmont vous recontacte sous 24 heures.",
+    "error": "L’envoi a échoué. Réessayez dans un instant ou écrivez à Valmont.",
     "sourceLabel": {
       "event": "Événement",
       "property": "Propriété",
@@ -741,6 +751,7 @@
     "notesPlaceholder": "Animaux, équipements particuliers, repas, contraintes diplomatiques…",
     "submit": "Envoyer la demande",
     "success": "Demande de vol transmise. Valmont confirme sous 30 minutes.",
+    "error": "L’envoi a échoué. Réessayez dans un instant ou appelez Valmont.",
     "focalReassurance": "Valmont (votre conciergerie) reçoit cette demande directement et confirme sous 30 minutes ouvrées. À tout moment, vous pouvez l’appeler depuis le bouton en bas à droite."
   },
   "dock": {
@@ -779,7 +790,8 @@
     "notesPlaceholder": "Ex. revue de la liste de souhaits + question sur le séjour de juillet.",
     "calendarHint": "Une fois confirmé, l’invitation iCal arrive par e-mail. Ajout à Google Calendar / Outlook en un clic.",
     "submit": "Réserver le créneau",
-    "success": "Demande envoyée. Valmont confirme {{day}} à {{slot}} dans 30 minutes."
+    "success": "Demande envoyée. Valmont confirme {{day}} à {{slot}} dans 30 minutes.",
+    "error": "L’envoi a échoué. Réessayez dans un instant ou écrivez à Valmont."
   },
   "articles": {
     "readMinutes": "min de lecture",
@@ -829,6 +841,7 @@
     "confidentialHint": "Votre demande est traitée par Valmont uniquement. NDA standard activé, aucune indexation, aucune revente.",
     "submit": "Transmettre la demande",
     "success": "Demande sur mesure transmise. Valmont revient vers vous sous 24 heures.",
+    "error": "L’envoi a échoué. Réessayez dans un instant ou écrivez à Valmont.",
     "banner": {
       "eyebrow": "Vous ne trouvez pas ?",
       "cta": "Faire une demande sur mesure",

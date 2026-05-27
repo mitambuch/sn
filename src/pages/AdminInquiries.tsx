@@ -1,25 +1,41 @@
 // ═══════════════════════════════════════════════════
 // AdminInquiries — /:locale/admin/inquiries
-// Kanban-style 4-column board: new / in_review / contacted / closed.
-// Cards are read-only in lot B; assign + status transition land in lot C.
+//
+// WHAT: Kanban-style 4-column board (new / in_review / contacted /
+//       closed) of every inquiry the operator has received. Each card
+//       has a status <select> that updates the row in public.inquiries
+//       via the admin RLS policy. Local-optimistic — the card moves
+//       columns immediately ; remote failure rolls back.
+// WHEN: Admin sidebar entry "Inquiries". Requires role='admin'.
 // ═══════════════════════════════════════════════════
 
 import { Container } from '@components/layout/Container';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { Spinner } from '@components/ui/Spinner';
 import { useInquiriesAdmin } from '@hooks/useInquiries';
+import { useToast } from '@hooks/useToast';
 import { useUsersAdmin } from '@hooks/useUsersAdmin';
+import { cn } from '@utils/cn';
 import { useTranslation } from 'react-i18next';
 
 import type { InquiryStatus } from '@/types/inquiry';
 
 const COLUMNS: InquiryStatus[] = ['new', 'in_review', 'contacted', 'closed'];
+const ALL_STATUSES: InquiryStatus[] = ['new', 'in_review', 'contacted', 'closed', 'cancelled'];
 
 export default function AdminInquiries() {
   const { t, i18n } = useTranslation();
-  const { rows: all, loading } = useInquiriesAdmin();
+  const { toast } = useToast();
+  const { rows: all, loading, updateStatus } = useInquiriesAdmin();
   const { rows: users } = useUsersAdmin();
   const userById = (id: string) => users.find(u => u.id === id)?.fullName ?? '—';
+
+  const handleStatusChange = async (id: string, next: InquiryStatus) => {
+    const result = await updateStatus(id, next);
+    if (!result.ok) {
+      toast({ variant: 'error', message: result.error ?? t('common.error') });
+    }
+  };
 
   return (
     <Container size="xl">
@@ -56,7 +72,7 @@ export default function AdminInquiries() {
                   {items.map(inq => (
                     <li
                       key={inq.id}
-                      className="border-border bg-bg rounded-media flex flex-col gap-2 border p-4"
+                      className="border-border bg-bg rounded-media flex flex-col gap-3 border p-4"
                     >
                       <span className="text-muted text-xs tracking-widest uppercase">
                         {inq.source}
@@ -66,6 +82,33 @@ export default function AdminInquiries() {
                         {userById(inq.userId)} ·{' '}
                         {new Date(inq.createdAt).toLocaleDateString(i18n.language)}
                       </span>
+                      <div className="flex items-center gap-2 pt-2">
+                        <label
+                          htmlFor={`status-${inq.id}`}
+                          className="text-muted font-mono text-[9px] tracking-[0.2em] uppercase"
+                        >
+                          {t('admin.inquiries.moveTo')}
+                        </label>
+                        <select
+                          id={`status-${inq.id}`}
+                          value={inq.status}
+                          onChange={e => {
+                            void handleStatusChange(inq.id, e.target.value as InquiryStatus);
+                          }}
+                          className={cn(
+                            'border-border bg-bg text-fg font-mono text-[10px] tracking-[0.18em] uppercase',
+                            'rounded-md border px-2 py-1.5',
+                            'focus-visible:border-fg/40 focus-visible:ring-fg/10 focus-visible:ring-2 focus-visible:outline-none',
+                          )}
+                          aria-label={t('admin.inquiries.statusFor', { source: inq.source })}
+                        >
+                          {ALL_STATUSES.map(s => (
+                            <option key={s} value={s}>
+                              {t(`inquiry.status.${s}`)}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </li>
                   ))}
                   {items.length === 0 && (

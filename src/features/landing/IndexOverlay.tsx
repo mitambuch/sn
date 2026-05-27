@@ -47,10 +47,12 @@ interface IndexOverlayProps {
    *  click via the wrapping `onClickCapture` so the node only owns the
    *  visual + action concern. */
   primaryCtaNode: ReactNode;
-  /** Secondary CTA label (e.g. "Espace privé"). */
-  secondaryCtaLabel: string;
-  /** Secondary CTA — react-router Link target (rendered as <a>). */
-  secondaryCtaNode: ReactNode;
+  /** Secondary CTA label (e.g. "Espace privé"). Omit to hide the slot
+   *  entirely (used in vitrine launch mode where member access is gated). */
+  secondaryCtaLabel?: string | undefined;
+  /** Secondary CTA — react-router Link target (rendered as <a>).
+   *  Omit alongside the label to hide the slot. */
+  secondaryCtaNode?: ReactNode | undefined;
 }
 
 /** Full-screen landing index — slides down on open, Escape to close. */
@@ -127,12 +129,21 @@ export const IndexOverlay = ({
         ))}
       </nav>
 
-      {/* ─── CTAs : 2 boutons d'accès toujours visibles ─── */}
-      <div className="border-bg/20 grid grid-cols-1 gap-3 border-t pt-6 md:grid-cols-2 md:gap-4">
+      {/* ─── CTAs : primary always shown, secondary hidden in vitrine. */}
+      <div
+        className={cn(
+          'border-bg/20 grid grid-cols-1 gap-3 border-t pt-6 md:gap-4',
+          secondaryCtaNode ? 'md:grid-cols-2' : 'md:grid-cols-1',
+        )}
+      >
         <span className="contents">{primaryCtaNode}</span>
         <span className="sr-only">{primaryCtaLabel}</span>
-        <span className="contents">{secondaryCtaNode}</span>
-        <span className="sr-only">{secondaryCtaLabel}</span>
+        {secondaryCtaNode ? (
+          <>
+            <span className="contents">{secondaryCtaNode}</span>
+            <span className="sr-only">{secondaryCtaLabel}</span>
+          </>
+        ) : null}
       </div>
 
       <div className="border-bg/20 text-bg/55 mt-6 grid grid-cols-1 gap-2 border-t pt-4 font-mono text-[10px] tracking-widest uppercase md:grid-cols-3 md:gap-4">

@@ -13,11 +13,13 @@
 import { ImageUpload } from '@components/ui/ImageUpload';
 import { RequestDrawerShell } from '@components/ui/RequestDrawerShell';
 import { Textarea } from '@components/ui/Textarea';
+import { useAuth } from '@context/AuthContext';
 import { useToast } from '@hooks/useToast';
 import { cn } from '@utils/cn';
 import { type FormEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { submitInquiry } from '@/lib/inquiry';
 import type { InquirySource } from '@/types/inquiry';
 
 interface FreeFormInquiryDrawerProps {
@@ -42,18 +44,26 @@ export const FreeFormInquiryDrawer = ({
 }: FreeFormInquiryDrawerProps) => {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const { session } = useAuth();
   const [message, setMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    setTimeout(() => {
-      toast({ variant: 'success', message: t('inquiry.success') });
-      setMessage('');
-      setSubmitting(false);
-      onClose();
-    }, 600);
+    const result = await submitInquiry({
+      source,
+      message,
+      userId: session?.user?.id,
+    });
+    setSubmitting(false);
+    if (!result.ok) {
+      toast({ variant: 'error', message: result.error ?? t('inquiry.error') });
+      return;
+    }
+    toast({ variant: 'success', message: t('inquiry.success') });
+    setMessage('');
+    onClose();
   };
 
   return (
@@ -65,7 +75,12 @@ export const FreeFormInquiryDrawer = ({
       lede={intentLede}
       widthClass="max-w-lg"
     >
-      <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col gap-6"
+        onSubmit={e => {
+          void handleSubmit(e);
+        }}
+      >
         <Textarea
           label={t('inquiry.drawerTitle')}
           rows={6}

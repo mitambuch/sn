@@ -24,6 +24,7 @@ import { resolveFieldOrFallback } from '@lib/i18nField';
 import { cn } from '@utils/cn';
 import { useTranslation } from 'react-i18next';
 
+import { isVitrineMode } from '@/config/env';
 import { unsplash } from '@/mocks/unsplash';
 
 interface EventTeaser {
@@ -197,19 +198,21 @@ export const Access = () => {
               {t('landing.access.ctaRequest')}
               <span aria-hidden="true">↗</span>
             </button>
-            <button
-              type="button"
-              onClick={() => {
-                openAccessRequest('code');
-              }}
-              className={cn(
-                'inline-flex items-center justify-center gap-3 rounded-full border border-white/40 px-7 py-4 font-mono text-xs tracking-[0.3em] text-white uppercase',
-                'duration-base transition-colors hover:border-white hover:bg-white/5 focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none',
-              )}
-            >
-              {t('landing.access.ctaCode')}
-              <span aria-hidden="true">↗</span>
-            </button>
+            {isVitrineMode ? null : (
+              <button
+                type="button"
+                onClick={() => {
+                  openAccessRequest('code');
+                }}
+                className={cn(
+                  'inline-flex items-center justify-center gap-3 rounded-full border border-white/40 px-7 py-4 font-mono text-xs tracking-[0.3em] text-white uppercase',
+                  'duration-base transition-colors hover:border-white hover:bg-white/5 focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none',
+                )}
+              >
+                {t('landing.access.ctaCode')}
+                <span aria-hidden="true">↗</span>
+              </button>
+            )}
           </div>
         </div>
       </div>

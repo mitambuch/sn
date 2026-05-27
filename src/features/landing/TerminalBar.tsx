@@ -28,10 +28,12 @@ interface TerminalBarProps {
   primaryCtaLabel: string;
   /** Primary CTA — invoked on click (opens the access request modal). */
   onPrimaryCta: () => void;
-  /** Secondary CTA label (e.g. "Espace privé"). */
-  secondaryCtaLabel: string;
-  /** Secondary CTA — invoked on click (e.g. opens the global LoginModal). */
-  onSecondaryCta: () => void;
+  /** Secondary CTA label (e.g. "Espace privé"). Omit to hide the
+   *  button entirely (vitrine launch mode). */
+  secondaryCtaLabel?: string | undefined;
+  /** Secondary CTA — invoked on click (e.g. opens the global LoginModal).
+   *  Omit alongside the label to hide the button. */
+  onSecondaryCta?: (() => void) | undefined;
   /** Call CTA label (e.g. "Appeler"). */
   callCtaLabel: string;
 }
@@ -121,16 +123,20 @@ export const TerminalBar = ({
           <span aria-hidden="true">↗</span>
         </button>
 
-        {/* Secondary — Espace — white border (short label on mobile) */}
-        <button
-          type="button"
-          onClick={onSecondaryCta}
-          className="border-bg/50 text-bg hover:border-bg hover:bg-bg/10 focus-visible:ring-bg/40 inline-flex items-center gap-1 rounded-full border px-3 py-2 font-mono text-[10px] tracking-widest whitespace-nowrap uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none sm:gap-2 sm:px-5 sm:text-xs"
-        >
-          <span className="sm:hidden">Espace</span>
-          <span className="hidden sm:inline">{secondaryCtaLabel}</span>
-          <span aria-hidden="true">↗</span>
-        </button>
+        {/* Secondary — Espace — white border (short label on mobile).
+            Hidden when secondaryCtaLabel/onSecondaryCta omitted (vitrine
+            launch mode where member access is gated). */}
+        {secondaryCtaLabel && onSecondaryCta ? (
+          <button
+            type="button"
+            onClick={onSecondaryCta}
+            className="border-bg/50 text-bg hover:border-bg hover:bg-bg/10 focus-visible:ring-bg/40 inline-flex items-center gap-1 rounded-full border px-3 py-2 font-mono text-[10px] tracking-widest whitespace-nowrap uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none sm:gap-2 sm:px-5 sm:text-xs"
+          >
+            <span className="sm:hidden">Espace</span>
+            <span className="hidden sm:inline">{secondaryCtaLabel}</span>
+            <span aria-hidden="true">↗</span>
+          </button>
+        ) : null}
       </div>
     </div>
   );
