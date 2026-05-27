@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════
 // AdminDashboard — /:locale/admin
-// Salvatore's home: stats, quick actions to add catalogue items / codes,
+// Valmont's home: stats, quick actions to add catalogue items / codes,
 // and the 5 most recent inquiries.
 // ═══════════════════════════════════════════════════
 

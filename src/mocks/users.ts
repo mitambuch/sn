@@ -2,7 +2,7 @@
 // Users mock dataset — lot B fake data
 //
 // Current member (used by AuthContext dev session) + concierge operator
-// (Salva) + 5 fake members for admin views.
+// (Valmont) + 5 fake members for admin views.
 // ═══════════════════════════════════════════════════
 
 import type { User } from '@/types/auth';
@@ -14,18 +14,18 @@ export const currentUser: User = {
   role: 'client',
   locale: 'fr',
   contactPreference: 'phone',
-  conciergeName: 'Salvatore Montemagno',
+  conciergeName: 'Valmont Seragone Mato',
   createdAt: '2025-11-12T10:00:00.000Z',
 };
 
 export const operator: User = {
-  id: 'usr-op-salva',
-  email: 'salvatore@sawnext.studio',
-  fullName: 'Salvatore Montemagno',
+  id: 'usr-op-valmont',
+  email: 'valmont@sawnext.studio',
+  fullName: 'Valmont Seragone Mato',
   role: 'admin',
   locale: 'fr',
   contactPreference: 'email',
-  conciergeName: 'Salvatore Montemagno',
+  conciergeName: 'Valmont Seragone Mato',
   createdAt: '2025-09-01T00:00:00.000Z',
 };
 
@@ -39,7 +39,7 @@ export const users: User[] = [
     role: 'client',
     locale: 'fr',
     contactPreference: 'phone',
-    conciergeName: 'Salvatore Montemagno',
+    conciergeName: 'Valmont Seragone Mato',
     createdAt: '2025-12-05T09:00:00.000Z',
   },
   {
@@ -49,7 +49,7 @@ export const users: User[] = [
     role: 'client',
     locale: 'en',
     contactPreference: 'secure-message',
-    conciergeName: 'Salvatore Montemagno',
+    conciergeName: 'Valmont Seragone Mato',
     createdAt: '2026-01-18T14:00:00.000Z',
   },
   {
@@ -59,7 +59,7 @@ export const users: User[] = [
     role: 'client',
     locale: 'en',
     contactPreference: 'email',
-    conciergeName: 'Salvatore Montemagno',
+    conciergeName: 'Valmont Seragone Mato',
     createdAt: '2026-02-02T11:00:00.000Z',
   },
   {
@@ -69,7 +69,7 @@ export const users: User[] = [
     role: 'client',
     locale: 'fr',
     contactPreference: 'phone',
-    conciergeName: 'Salvatore Montemagno',
+    conciergeName: 'Valmont Seragone Mato',
     createdAt: '2026-02-22T15:00:00.000Z',
   },
   {
@@ -79,7 +79,7 @@ export const users: User[] = [
     role: 'client',
     locale: 'en',
     contactPreference: 'phone',
-    conciergeName: 'Salvatore Montemagno',
+    conciergeName: 'Valmont Seragone Mato',
     createdAt: '2026-03-10T10:00:00.000Z',
   },
 ];

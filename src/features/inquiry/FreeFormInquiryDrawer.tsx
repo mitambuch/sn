@@ -77,7 +77,7 @@ export const FreeFormInquiryDrawer = ({
         <ImageUpload label={t('inquiry.attachLabel')} hint={t('inquiry.attachHint')} maxFiles={3} />
 
         <p className="text-muted border-border border-t pt-4 text-xs leading-relaxed">
-          {t('jet.salvaReassurance')}
+          {t('jet.focalReassurance')}
         </p>
 
         <div className="mt-auto flex items-center gap-4">

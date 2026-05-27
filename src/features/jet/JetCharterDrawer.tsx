@@ -145,7 +145,7 @@ export const JetCharterDrawer = ({ open, onClose }: JetCharterDrawerProps) => {
         <ImageUpload label={t('jet.attachLabel')} hint={t('jet.attachHint')} maxFiles={3} />
 
         <p className="text-muted border-border mt-2 border-t pt-4 text-xs leading-relaxed">
-          {t('jet.salvaReassurance')}
+          {t('jet.focalReassurance')}
         </p>
 
         <div className="mt-2 flex items-center gap-4">

@@ -292,11 +292,11 @@ function __setDevSessionImpl(role: Role, setState: (s: AuthState) => void): void
     user: {
       id: `dev-${role}`,
       email: `dev+${role}@sawnext.local`,
-      fullName: role === 'admin' ? 'Salvatore Montemagno' : 'Hugo Méredith',
+      fullName: role === 'admin' ? 'Valmont Seragone Mato' : 'Hugo Méredith',
       role,
       locale: 'fr',
       contactPreference: 'phone',
-      conciergeName: 'Salvatore Montemagno',
+      conciergeName: 'Valmont Seragone Mato',
       createdAt: now.toISOString(),
     },
     expiresAt: new Date(now.getTime() + DEV_SESSION_TTL_MS).toISOString(),

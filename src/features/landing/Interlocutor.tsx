@@ -1,19 +1,21 @@
 // ═══════════════════════════════════════════════════
-// Interlocutor — landing S09 (focal contact + restricted circle)
+// Interlocutor — landing S09 (focal contact + extended network)
 //
-// WHAT: Two-column section with autoplay rotation through the three
-//       founders. Salvatore always loads first, then advances every
-//       8s to Harry, then Bokar, then loops. Hovering the focal card
-//       freezes the timer ; leaving resumes. A 3-segment progress
-//       bar at the bottom of the section shows the active member and
-//       the time remaining on the current segment.
+// WHAT: Two-column section with autoplay rotation through five
+//       personas. Valmont (operational founder) always loads first,
+//       then advances every 8s through the network circle, then
+//       loops. Hovering the focal card freezes the timer ; leaving
+//       resumes. A 5-segment progress bar at the bottom shows the
+//       active member and the time remaining on the current segment.
 //
 //       Owner directions :
-//       1. Always start with Salva (ego-canonical).
+//       1. Always start with Valmont (focal contact).
 //       2. 8s per slide, auto-advance.
 //       3. Hover on focal card → lock timer.
 //       4. Bottom progress bar visualises the rotation.
 //       5. Click on any segment or circle card → jump to that member.
+//       6. Channels (phone/email/wa/li) shown only when Valmont focal.
+//          Other members show a "Contact via Valmont" pill.
 //
 // WHEN: Anchored at #s09 of the landing.
 // ═══════════════════════════════════════════════════
@@ -33,19 +35,24 @@ const FOCAL_CHANNELS = {
   linkedin: '#',
 } as const;
 
+type MemberKey = 'valmont' | 'harvy' | 'lucian' | 'tavio' | 'sergio';
+
 interface Member {
-  key: 'salva' | 'harry' | 'bokar';
+  key: MemberKey;
   firstName: string;
   lastName: string;
 }
 
 const MEMBERS: ReadonlyArray<Member> = [
-  { key: 'salva', firstName: 'Salvatore', lastName: 'Montemagno' },
-  { key: 'harry', firstName: 'Harry', lastName: 'Novillo' },
-  { key: 'bokar', firstName: 'Bokar', lastName: 'Guissé' },
+  { key: 'valmont', firstName: 'Valmont', lastName: 'Seragone Mato' },
+  { key: 'harvy', firstName: 'Harvy', lastName: "O'Rollin" },
+  { key: 'lucian', firstName: 'Lucian', lastName: 'Trial' },
+  { key: 'tavio', firstName: 'Tavio', lastName: 'Modic' },
+  { key: 'sergio', firstName: 'Sergio', lastName: 'Kubas' },
 ] as const;
 
-const SEQUENCE: ReadonlyArray<Member['key']> = ['salva', 'harry', 'bokar'];
+const FOCAL_KEY: MemberKey = 'valmont';
+const SEQUENCE: ReadonlyArray<MemberKey> = MEMBERS.map(m => m.key);
 const SLIDE_DURATION_MS = 8000;
 
 /** Landing S09 — autoplay focal interlocutor + supporting circle. */
@@ -54,7 +61,7 @@ export const Interlocutor = () => {
   const { data: landing } = useLandingContext();
   const locale = (i18n.language as 'fr' | 'en') ?? 'fr';
   const ref = useReveal<HTMLDivElement>();
-  const [focalKey, setFocalKey] = useState<Member['key']>('salva');
+  const [focalKey, setFocalKey] = useState<MemberKey>(FOCAL_KEY);
   const [progress, setProgress] = useState(0); // 0..1 of current slide
 
   // Refs drive the autoplay loop without forcing the effect to re-run
@@ -63,7 +70,7 @@ export const Interlocutor = () => {
   // fresh values without re-subscribing.
   const accumRef = useRef(0);
   const pausedRef = useRef(false);
-  const focalRef = useRef<Member['key']>('salva');
+  const focalRef = useRef<MemberKey>(FOCAL_KEY);
 
   // Sync focalRef with the focalKey state via effect (React 19 forbids
   // ref writes during render).
@@ -105,7 +112,7 @@ export const Interlocutor = () => {
 
   // Manual promotion (click on a circle card or a progress segment) —
   // jumps the rotation onto that member and resets the timer.
-  const promote = (key: Member['key']) => {
+  const promote = (key: MemberKey) => {
     setFocalKey(key);
     accumRef.current = 0;
     setProgress(0);
@@ -113,12 +120,10 @@ export const Interlocutor = () => {
 
   const focal = MEMBERS.find(m => m.key === focalKey) ?? MEMBERS[0]!;
   const circle = MEMBERS.filter(m => m.key !== focalKey);
-  const isSalvaFocal = focal.key === 'salva';
+  const isFocalContact = focal.key === FOCAL_KEY;
 
-  const focalBio = t(
-    isSalvaFocal ? 'landing.interlocutor.salvaBio' : `landing.interlocutor.${focal.key}.bio`,
-  );
-  const focalTag = isSalvaFocal
+  const focalBio = t(`landing.interlocutor.${focal.key}.bio`);
+  const focalTag = isFocalContact
     ? t('landing.interlocutor.focalTag')
     : t(`landing.interlocutor.${focal.key}.tag`);
 
@@ -202,12 +207,12 @@ export const Interlocutor = () => {
           </span>
           <p className="text-fg max-w-prose text-sm leading-relaxed md:text-base">{focalBio}</p>
 
-          {/* Channels — only when Salvatore is focal. Otherwise a single
-              "via Salvatore" link, since he is the operational contact.
-              `mt-auto` anchors both variants to the bottom of the focal
-              article so the contact block sits at the same vertical
-              position regardless of who is shown. */}
-          {isSalvaFocal ? (
+          {/* Channels — only when Valmont (focal contact) is shown.
+              Otherwise a single "via Valmont" link, since he is the
+              operational contact. `mt-auto` anchors both variants to
+              the bottom of the focal article so the contact block sits
+              at the same vertical position regardless of who is shown. */}
+          {isFocalContact ? (
             <ul className="border-border mt-auto border-t">
               {[
                 {
@@ -245,14 +250,14 @@ export const Interlocutor = () => {
           ) : (
             <div className="border-border mt-auto flex items-center justify-between gap-4 border-t pt-4">
               <span className="text-muted font-mono text-[11px] tracking-[0.18em] uppercase">
-                Contact opérationnel · Salvatore
+                {t('landing.interlocutor.viaFocal')}
               </span>
               <button
                 type="button"
-                onClick={() => promote('salva')}
+                onClick={() => promote(FOCAL_KEY)}
                 className="border-fg text-fg hover:bg-fg hover:text-bg duration-base inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-[10px] tracking-[0.25em] uppercase transition-colors"
               >
-                Voir Salvatore
+                {t('landing.interlocutor.seeFocal')}
                 <span aria-hidden="true">↗</span>
               </button>
             </div>
@@ -266,48 +271,40 @@ export const Interlocutor = () => {
             <span className="text-muted">{t('landing.interlocutor.circleCount')}</span>
           </div>
           {circle.map((member, i) => {
-            const bioKey =
-              member.key === 'salva'
-                ? 'landing.interlocutor.salvaBio'
-                : `landing.interlocutor.${member.key}.bio`;
-            const tagKey =
-              member.key === 'salva'
-                ? 'landing.interlocutor.focalTag'
-                : `landing.interlocutor.${member.key}.tag`;
+            const tagKey = `landing.interlocutor.${member.key}.tag`;
+            const isLast = i === circle.length - 1;
             return (
-              <article key={member.key} className={i === 0 ? 'border-border border-b' : ''}>
+              <article key={member.key} className={isLast ? '' : 'border-border border-b'}>
                 <button
                   type="button"
                   onClick={() => promote(member.key)}
-                  aria-label={`Mettre en avant ${member.firstName} ${member.lastName}`}
-                  className="hover:bg-bg/40 focus-visible:ring-fg/30 group w-full text-left transition-colors focus-visible:ring-2 focus-visible:outline-none"
+                  aria-label={t('landing.interlocutor.promoteAria', {
+                    name: `${member.firstName} ${member.lastName}`,
+                  })}
+                  className="hover:bg-bg/40 focus-visible:ring-fg/30 group flex w-full items-center gap-4 px-8 py-5 text-left transition-colors focus-visible:ring-2 focus-visible:outline-none md:px-12 md:py-6"
                 >
-                  <div className="flex flex-col gap-5 p-8 md:p-12">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex flex-col gap-2">
-                        <span className="text-muted font-mono text-[9px] tracking-[0.3em] uppercase">
-                          {t(tagKey)}
-                        </span>
-                        <h3 className="font-mono text-[clamp(1.25rem,2.6vw,2rem)] leading-[0.95] font-medium tracking-tight uppercase">
-                          {member.firstName}
-                          <br />
-                          {member.lastName}.
-                        </h3>
-                      </div>
-                      <div
-                        aria-hidden="true"
-                        className="border-border bg-bg/40 aspect-3/4 w-16 shrink-0 border md:w-20"
-                        style={{
-                          backgroundImage:
-                            'linear-gradient(135deg, color-mix(in srgb, var(--color-fg) 6%, transparent) 0%, color-mix(in srgb, var(--color-fg) 14%, transparent) 100%)',
-                        }}
-                      />
-                    </div>
-                    <p className="text-fg/85 text-sm leading-relaxed">{t(bioKey)}</p>
-                    <span className="text-muted group-hover:text-fg font-mono text-[10px] tracking-[0.3em] uppercase transition-colors">
-                      Mettre en avant ↗
+                  <div
+                    aria-hidden="true"
+                    className="border-border bg-bg/40 aspect-3/4 w-12 shrink-0 border md:w-14"
+                    style={{
+                      backgroundImage:
+                        'linear-gradient(135deg, color-mix(in srgb, var(--color-fg) 6%, transparent) 0%, color-mix(in srgb, var(--color-fg) 14%, transparent) 100%)',
+                    }}
+                  />
+                  <div className="flex min-w-0 flex-1 flex-col gap-1">
+                    <span className="text-muted font-mono text-[9px] tracking-[0.3em] uppercase">
+                      {t(tagKey)}
                     </span>
+                    <h3 className="truncate font-mono text-base leading-tight font-medium tracking-tight uppercase md:text-lg">
+                      {member.firstName} {member.lastName}.
+                    </h3>
                   </div>
+                  <span
+                    aria-hidden="true"
+                    className="text-muted group-hover:text-fg font-mono text-[10px] tracking-[0.3em] uppercase transition-colors"
+                  >
+                    ↗
+                  </span>
                 </button>
               </article>
             );
@@ -315,14 +312,17 @@ export const Interlocutor = () => {
         </aside>
       </div>
 
-      {/* ─── Bottom progress bar : 3 segments, active fills 0 → 100% ─── */}
+      {/* ─── Bottom progress bar : 5 segments, active fills 0 → 100%.
+           Consolidated layout : centered first name only, hairline
+           divider between cells, single underline bar per segment. */}
       <div
         role="tablist"
-        aria-label="Membres de l'équipe"
-        className="border-border bg-bg/60 grid grid-cols-3 gap-px border-t backdrop-blur-sm"
+        aria-label={t('landing.interlocutor.tablistLabel')}
+        className="border-border bg-bg/60 grid grid-cols-5 border-t backdrop-blur-sm"
       >
-        {MEMBERS.map(member => {
+        {MEMBERS.map((member, idx) => {
           const isActive = focalKey === member.key;
+          const isLast = idx === MEMBERS.length - 1;
           return (
             <button
               key={member.key}
@@ -331,29 +331,20 @@ export const Interlocutor = () => {
               aria-selected={isActive}
               onClick={() => promote(member.key)}
               className={cn(
-                'duration-base group flex flex-col gap-2 px-4 py-3 text-left transition-colors md:px-6 md:py-4',
-                'hover:bg-fg/5 focus-visible:ring-fg/30 focus-visible:ring-2 focus-visible:outline-none',
+                'duration-base flex flex-col items-center gap-3 px-2 py-4 text-center transition-colors md:px-4 md:py-5',
+                'hover:bg-fg/5 focus-visible:ring-fg/30 focus-visible:ring-2 focus-visible:-outline-offset-2 focus-visible:outline-none',
+                !isLast && 'border-border border-r',
               )}
             >
-              <div className="flex items-baseline justify-between gap-2">
-                <span
-                  className={cn(
-                    'font-mono text-[10px] tracking-[0.3em] uppercase transition-colors',
-                    isActive ? 'text-fg' : 'text-muted',
-                  )}
-                >
-                  {member.firstName}
-                </span>
-                <span
-                  className={cn(
-                    'font-mono text-[9px] tracking-wider uppercase transition-colors',
-                    isActive ? 'text-fg/70' : 'text-muted/50',
-                  )}
-                >
-                  0{SEQUENCE.indexOf(member.key) + 1}
-                </span>
-              </div>
-              <div className="bg-fg/10 relative h-px overflow-hidden">
+              <span
+                className={cn(
+                  'font-mono text-[10px] tracking-[0.25em] uppercase transition-colors md:text-[11px]',
+                  isActive ? 'text-fg' : 'text-muted',
+                )}
+              >
+                {member.firstName}
+              </span>
+              <div className="bg-fg/10 relative h-px w-full overflow-hidden">
                 <div
                   aria-hidden="true"
                   className="bg-fg absolute inset-y-0 left-0"

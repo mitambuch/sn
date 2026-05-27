@@ -58,10 +58,10 @@ export default function ExamplePage() {
   };
 
   const statusLabel: Record<Status, string> = {
-    idle: 'Tapez ou collez le code à 6 caractères transmis par Salvatore.',
+    idle: 'Tapez ou collez le code à 6 caractères transmis par Valmont.',
     checking: 'Vérification du code…',
     invalid: '6 caractères attendus, sans préfixe ni espace.',
-    unknown: "Ce code n'est pas reconnu. Vérifiez la saisie ou contactez Salvatore.",
+    unknown: "Ce code n'est pas reconnu. Vérifiez la saisie ou contactez Valmont.",
   };
 
   return (
@@ -73,7 +73,7 @@ export default function ExamplePage() {
       <title>{t('example.metaTitle')}</title>
       <meta
         name="description"
-        content="Entrez le code à 6 caractères transmis par Salvatore pour ouvrir l'aperçu privé."
+        content="Entrez le code à 6 caractères transmis par Valmont pour ouvrir l'aperçu privé."
       />
       <meta name="robots" content="noindex, nofollow" />
 
@@ -115,7 +115,7 @@ export default function ExamplePage() {
             </h1>
 
             <p className="text-muted max-w-sm text-sm leading-relaxed">
-              Entrez les 6 caractères transmis par Salvatore. Aucun compte, aucune trace — le code
+              Entrez les 6 caractères transmis par Valmont. Aucun compte, aucune trace — le code
               donne accès à <em>une seule</em> fiche, pour vous.
             </p>
 

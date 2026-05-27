@@ -1023,7 +1023,7 @@ export const ConciergeRequestWizard = ({
               {/* Secondary action — owner direction 2026-05-14 15:49 :
                   "que le callback aie un nom normal". The label was
                   reworded to "Préférer un appel direct" (was the
-                  awkward "Ou demander un rappel à Salvatore") ; the
+                  awkward "Ou demander un rappel à Valmont") ; the
                   "Ou" prefix removed, the button now reads as a clean
                   secondary action standing on its own. */}
               <button

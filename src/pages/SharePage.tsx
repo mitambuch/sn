@@ -362,13 +362,13 @@ export default function SharePage() {
             </h1>
             <p className="text-muted leading-relaxed">
               {status === 'invalid-format' &&
-                'Le code attendu fait 6 caractères, sans préfixe ni espace. Vérifiez la saisie ou contactez Salvatore.'}
+                'Le code attendu fait 6 caractères, sans préfixe ni espace. Vérifiez la saisie ou contactez Valmont.'}
               {status === 'not-found' &&
                 "Aucune fiche n'est associée à ce code. Le code est peut-être faux, ou la fiche a été retirée."}
               {status === 'expired' &&
-                "Ce code a atteint sa date d'expiration ou son nombre de vues maximum. Salvatore peut en générer un nouveau."}
+                "Ce code a atteint sa date d'expiration ou son nombre de vues maximum. Valmont peut en générer un nouveau."}
               {status === 'revoked' &&
-                "Salvatore a révoqué ce code. Aucun accès n'est possible avec ce lien."}
+                "Valmont a révoqué ce code. Aucun accès n'est possible avec ce lien."}
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
               <button

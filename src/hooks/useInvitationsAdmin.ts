@@ -132,7 +132,7 @@ export function useInvitationsAdmin(): UseInvitationsAdminResult {
         redeemedAt: null,
         redeemedBy: null,
         expiresAt: new Date(Date.now() + DEFAULT_TTL_DAYS * 86_400_000).toISOString(),
-        createdBy: 'usr-op-salva',
+        createdBy: 'usr-op-valmont',
       };
       setRows(prev => [code, ...prev]);
       return { ok: true, code };

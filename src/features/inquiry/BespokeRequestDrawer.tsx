@@ -254,7 +254,7 @@ export const BespokeRequestDrawer = ({
         </button>
 
         <p className="text-muted border-border border-t pt-4 text-xs leading-relaxed">
-          {t('jet.salvaReassurance')}
+          {t('jet.focalReassurance')}
         </p>
 
         <div className="mt-2 flex items-center gap-4">

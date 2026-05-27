@@ -126,8 +126,8 @@ function StepFields({
   return (
     <div className="border-border bg-surface/60 max-w-md rounded-lg border p-6 backdrop-blur-md">
       <span className="text-muted text-xs tracking-widest uppercase">{t('dock.eyebrow')}</span>
-      <p className="text-fg mt-1 text-lg font-medium">Salvatore Montemagno</p>
-      <p className="text-muted mt-1 text-sm">salvatore@sawnext.studio</p>
+      <p className="text-fg mt-1 text-lg font-medium">Valmont Seragone Mato</p>
+      <p className="text-muted mt-1 text-sm">valmont@sawnext.studio</p>
       <p className="text-muted mt-3 text-sm leading-relaxed">{t('dock.availability')}</p>
     </div>
   );

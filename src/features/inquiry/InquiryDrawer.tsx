@@ -4,7 +4,7 @@
 // WHAT: Slide-in drawer holding a contextualised inquiry form. Triggered
 //       from any DetailHero "Express interest" CTA. On submit, inserts
 //       a row into Supabase `inquiries` when wired + user signed in.
-//       A Postgres trigger then fires the Resend email to Salvatore.
+//       A Postgres trigger then fires the Resend email to Valmont.
 //       Demo mode preserved: simulates submission + toast if no backend.
 // WHEN: Mounted at the page level (PropertyDetail, future module details).
 // CHROME: <RequestDrawerShell /> canonical.

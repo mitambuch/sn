@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════
 // adminStore — localStorage-backed CRUD layer over the 7 catalogue modules
 //
-// WHAT: Salvatore's super-admin store. Wraps Properties, Timepieces,
+// WHAT: Valmont's super-admin store. Wraps Properties, Timepieces,
 //       Artworks, Events, Journeys, Concierge services and Articles.
 //       Reads = static mock seed merged with localStorage delta.
 //       Writes (create/update/remove) persist in localStorage and
