@@ -11,8 +11,8 @@
    The bundled fixture matches the owner's "1 fiche fake par catégorie"
    directive : 2 singletons (siteConfig + landing), 3 pages, 1 doc per
    catalogue type (event / property / timepiece / artwork / journey /
-   conciergeService / article) and the 3 team members the Interlocutor
-   section needs.
+   conciergeService / article) and the 5 team members the Interlocutor
+   section consumes (Valmont focal + Harvy/Lucian/Tavio/Sergio network).
 
    Usage :
      pnpm sanity:seed:sawnext             → dataset production by default
