@@ -21,7 +21,7 @@ memory consultation (#security #rls #supabase #auth)
 | 🔴 P0 | Invitation code enumeration via anon SELECT | Fix in `0010_security_hardening.sql` |
 | 🔴 P0 | Role self-escalation via profile UPDATE | Fix in `0010_security_hardening.sql` |
 | 🟡 P1 | XSS-in-email via unescaped HTML in `notify_new_inquiry` | Fix in `0010_security_hardening.sql` |
-| 🟡 P1 | 11 dependency vulnerabilities (transitive, dev tooling) | Backlog (Phase 5) |
+| ✓ ~~P1~~ | ~~11 dependency vulnerabilities (transitive, dev tooling)~~ | Resolved Phase 5 — pnpm overrides → 0 vulns |
 | 🟡 P2 | Operator email hardcoded in DB function | Fix in `0010_security_hardening.sql` |
 | 🟡 P2 | netlify.toml CSP drift vs vercel.json | Aligned in this branch |
 | ✓ | No `dangerouslySetInnerHTML` / `innerHTML` / `eval` in `src/` or `studio/` | Confirmed |
@@ -441,16 +441,103 @@ secret is missing (raises a warning, returns NEW, doesn't block insert).
    - Generate a new invitation code via admin UI → redeem it → must
      still work end-to-end.
 
-## What this audit did NOT cover (deferred)
+## Phase 2 — Test catch-up (completed 2026-05-27)
 
-- **E2E test for the security invariants** (phase 2 — add `e2e/security.spec.ts`).
-- **`pnpm overrides`** for the 11 transitive vulns (Phase 5).
-- **A11y/WCAG contrast** (Phase 3).
-- **Performance & bundle audit** (Phase 4).
-- **Sanity Studio access control** — Studio runs without Supabase auth,
-  relies on Sanity's own auth (`@sanity/cli` login). Trust boundary
-  unchanged from upstream Sanity defaults. Owner to enforce 2FA on
-  Sanity account.
+Two worker-sonnet dispatches in parallel produced **43 new tests** covering
+six previously 0%-coverage components :
+
+- Batch A (UI atoms) : `OtpInput.test.tsx` (7), `RangeSlider.test.tsx` (7),
+  `Stepper.test.tsx` (10). Worker A surfaced a **real functional bug**
+  in `OtpInput` — `value.includes('')` always returns `true` for strings,
+  so `onComplete` was dead code. Patched to check the `chars` array.
+- Batch B (drawer shells) : `RequestDrawerShell.test.tsx` (7),
+  `ShareActionRow.test.tsx` (5), `IntentCards.test.tsx` (6).
+
+Coverage delta : statements **42.59 → 45.74** (+3.15pt), lines **44.77 →
+48.03**, functions **42.11 → 44.69**, branches **30.37 → 33.41**.
+
+Threshold reset #3 documented inline in `vitest.config.ts` (44/32/43/47,
+−1pt buffer from actuals). 22 files still at 0% coverage — explicit debt
+queued for next dispatch session.
+
+## Phase 3 — A11y i18n pass (completed 2026-05-27)
+
+Five components had hardcoded English `aria-label`s on a FR-default
+site. Screen readers on `/fr/*` routes would announce in English.
+WCAG 3.1.2 (Language of Parts) violation.
+
+Localized via 8 new `a11y.*` keys in `src/locales/{fr,en}.json` :
+
+- `Modal` → `t('common.close')` (reused existing key)
+- `ThemeToggle` → `t('a11y.themeToDark' | 'themeToLight')`
+- `Banner` → `t('a11y.dismiss')`
+- `GalleryGrid` → 4 labels (`closeViewer`, `previousImage`, `nextImage`,
+  `openImageOfTotal` with interpolation)
+- `ImageUpload` → `t('a11y.removeFile', { name })`
+
+Existing tests updated to import `@config/i18n` and match the runtime
+locale (jsdom navigator defaults to en — assertions match EN strings).
+
+✓ **Focus trap on `Modal`** verified : Tab/Shift+Tab cycle, Escape closes.
+✓ **`prefers-reduced-motion` respected** : 15 files reference it across
+the motion stack (CSS animations + JS hooks like `useReveal`,
+`useMagneticHover`, `useCyclingWord`).
+✓ **Complex atoms ARIA** (`OtpInput`, `RangeSlider`, `Stepper`) already
+have proper roles, `aria-valuemin/max/now/text`, `aria-live`,
+French-localized per-handle labels.
+
+## Phase 4 — Performance audit (completed 2026-05-27)
+
+- ✓ Route-level lazy loading correctly applied across all 26 pages via
+  `lazyWithRetry` in `src/app/routes/index.tsx`.
+- ⚠️ Main bundle `index.js` = **618 KB raw / 190 KB gzip** — above the
+  Vite 500 KB warning. Contains all non-route code : global providers,
+  Supabase + Sanity clients, Lenis, i18next, the landing-shell
+  components that mount on every route, plus the auth modals
+  (`AccessRequestModal`, `LoginModal`) which currently load eagerly.
+- ✓ React vendor chunk = 192 KB / 60 KB gzip (expected for React 19).
+- ✓ Sanity client correctly chunked separately (94 KB / 30 KB gzip).
+- ✓ Sentry init gated on `VITE_SENTRY_DSN` — zero telemetry overhead
+  when DSN unset.
+- 🟡 **Recommended next-session work** (P2, deferred — not blocking) :
+  - Code-split `AccessRequestModal` + `LoginModal` to a separate chunk
+    (only loaded when a user opens one).
+  - Defer Lenis init via `requestIdleCallback` (motion preference).
+  - Inline-import audit on landing-shell components — anything not in
+    the first viewport should be lazy.
+  - Lighthouse run on prod build with proper env. Deferred because it
+    requires dev-server-running fixtures.
+
+## Phase 5 — Repo hygiene (completed 2026-05-27)
+
+- ✓ **`pnpm overrides` extended** : 11 transitive vulnerabilities
+  flagged by `pnpm audit` (5 high + 6 moderate) → **0 after overrides**.
+  Added/updated keys : `postcss`, `fast-uri`,
+  `@babel/plugin-transform-modules-systemjs`, `ip-address`,
+  `brace-expansion`, `ws`, `qs` ; bumped existing `basic-ftp`
+  (5.2.2 → 5.3.1) and `tmp` (0.2.4 → 0.2.6) to advisory minimums.
+  All transit through `@sanity/cli` dev tooling — not in client
+  bundle, but now clean across the board.
+- ✓ **TODO/FIXME scan** : 10 grep hits, only 1 actual TODO
+  (`RequireAuth.test.tsx:60` — cover async loading state). All other
+  matches are `SAW-XXXX-XXXX` invitation-code placeholders. Repo
+  hygiene state is acceptable.
+- ✓ **`validate` green end-to-end** with new ratchet + new overrides
+  + Phase 2-5 changes.
+
+## What this audit did NOT cover (deferred to a follow-up session)
+
+- **E2E test for the security invariants** (anon cannot list
+  invitation_codes ; role escalation rejected) — needs the migration
+  applied first. Documented in `docs/AUDIT-SECURITY.md` § Owner action
+  checklist.
+- **Test catch-up for the remaining 22 zero-coverage files** —
+  dispatchable in a dedicated session with worker-sonnet x3 in parallel.
+- **Lighthouse / Real User Monitoring** — needs prod build deployed
+  + Sentry DSN configured.
+- **Bundle reduction below 500 KB** — perf P2 recommendations above.
+- **Sanity Studio access control** — Studio uses Sanity's own auth.
+  Owner to enforce 2FA on Sanity account.
 - **Resend deliverability / SPF / DKIM** — operational, not code.
 
 ## Cross-refs
