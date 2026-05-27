@@ -86,7 +86,13 @@ describe('AppLayout', () => {
     const user = userEvent.setup();
     renderLayout();
 
-    await user.click(screen.getByRole('button', { name: /se déconnecter/i }));
+    // WHY: layout now renders multiple sign-out buttons (desktop sidebar + mobile
+    // header). They all wire the same handler — clicking the first proves the
+    // session-clear path regardless of which surface the user taps.
+    const buttons = screen.getAllByRole('button', { name: /se déconnecter/i });
+    const signOut = buttons[0];
+    if (!signOut) throw new Error('expected at least one sign-out button');
+    await user.click(signOut);
 
     expect(localStorage.getItem(DEV_SESSION_KEY)).toBeNull();
     expect(screen.queryByTestId('account-page')).not.toBeInTheDocument();

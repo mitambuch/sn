@@ -17,7 +17,7 @@ export default mergeConfig(
       globals: true,
       environment: 'jsdom',
       setupFiles: ['./src/test/setup.ts'],
-      exclude: ['e2e/**', 'node_modules/**'],
+      exclude: ['e2e/**', '**/node_modules/**'],
       coverage: {
         provider: 'v8',
         reporter: ['text', 'text-summary', 'html'],
