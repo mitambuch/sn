@@ -25,6 +25,8 @@ import { resolveFieldOrFallback } from '@lib/i18nField';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { isVitrineMode } from '@/config/env';
+
 const HERO_VIDEOS = [
   'https://res.cloudinary.com/df5khdkxl/video/upload/v1778623070/hf_20260512_191454_db3c4649-3862-496f-80bb-b4e156496be2_syjjkp.mp4',
   'https://res.cloudinary.com/df5khdkxl/video/upload/v1778623070/hf_20260512_191448_960c9c4f-91ad-4007-95f4-780d6508252f_dxgdjv.mp4',
@@ -286,18 +288,20 @@ export const Hero = () => {
               )}
               <span aria-hidden="true">↗</span>
             </button>
-            <button
-              type="button"
-              onClick={openLogin}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/50 px-6 py-3 font-mono text-xs tracking-widest text-white uppercase transition-colors hover:border-white hover:bg-white/5 focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none"
-            >
-              {resolveFieldOrFallback(
-                landing?.ctaPrivateArea,
-                locale,
-                t('landing.cta.privateArea'),
-              )}
-              <span aria-hidden="true">↗</span>
-            </button>
+            {isVitrineMode ? null : (
+              <button
+                type="button"
+                onClick={openLogin}
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/50 px-6 py-3 font-mono text-xs tracking-widest text-white uppercase transition-colors hover:border-white hover:bg-white/5 focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none"
+              >
+                {resolveFieldOrFallback(
+                  landing?.ctaPrivateArea,
+                  locale,
+                  t('landing.cta.privateArea'),
+                )}
+                <span aria-hidden="true">↗</span>
+              </button>
+            )}
           </div>
         </div>
       </div>

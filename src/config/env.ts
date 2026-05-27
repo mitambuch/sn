@@ -20,12 +20,25 @@
    • VITE_RESEND_FROM_EMAIL is the verified sender domain address (public).
    • RESEND_API_KEY is BACKEND ONLY — no VITE_ prefix. Lives in .env.local
      and is consumed only by serverless/edge functions.
+
+   Launch mode:
+   • VITE_LAUNCH_MODE = 'vitrine' (default) | 'full'
+   • 'vitrine' : hides member-access entry points ("Espace privé" / code
+     redemption) so the public can express interest via the access form
+     but cannot reach the member login. Flip to 'full' once invitations
+     have been issued.
    ═══════════════════════════════════════════════════════════════ */
 
 if (import.meta.env.PROD && !import.meta.env.VITE_APP_URL) {
   console.warn(
     '[env] VITE_APP_URL not set in production — canonical URLs and OG tags will use localhost. Set it in .env.local or your deploy config.',
   );
+}
+
+export type LaunchMode = 'vitrine' | 'full';
+
+function parseLaunchMode(raw: string | undefined): LaunchMode {
+  return raw === 'full' ? 'full' : 'vitrine';
 }
 
 export const env = {
@@ -39,6 +52,11 @@ export const env = {
   SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY || '',
   RESEND_FROM_EMAIL: import.meta.env.VITE_RESEND_FROM_EMAIL || '',
   DEFAULT_LOCALE: import.meta.env.VITE_DEFAULT_LOCALE || 'fr',
+  LAUNCH_MODE: parseLaunchMode(import.meta.env.VITE_LAUNCH_MODE),
   IS_DEV: import.meta.env.DEV,
   IS_PROD: import.meta.env.PROD,
 } as const;
+
+/** True when the site is in soft-launch vitrine mode — member-access
+ *  CTAs are hidden, only the "Demander un accès" form is reachable. */
+export const isVitrineMode: boolean = env.LAUNCH_MODE === 'vitrine';

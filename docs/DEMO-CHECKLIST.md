@@ -110,7 +110,7 @@ In Supabase Dashboard → Vault :
    - Value : `re_xxxxxxxx`
 5. (Optional) Add secret :
    - Name : `OPERATOR_EMAIL`
-   - Value : your real operator inbox (otherwise falls back to `mitamburini@gmail.com` hardcoded in migration)
+   - Value : `info@saw-next.ch` (otherwise falls back to `mitamburini@gmail.com` hardcoded in migration)
 
 ---
 
