@@ -94,7 +94,13 @@ export const Access = () => {
           </p>
         </header>
 
-        {/* ─── Catalogue teaser — backend Card style, 4-up ─── */}
+        {/* ─── Catalogue teaser — backend Card style, 4-up ───
+             Soft-launch state : offers are deliberately blurred to
+             signal "preview only, content curation in progress".
+             Pointer-events-none so the cards aren't clickable.
+             Owner direction 2026-05-27 17:30 : "flouté les offres
+             dans l'aperçu du catalogue ... on travaillera ça mieux
+             par la suite". */}
         <div className="flex flex-col gap-6">
           <span className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
             {resolveFieldOrFallback(
@@ -103,7 +109,13 @@ export const Access = () => {
               t('landing.access.eventsEyebrow'),
             )}
           </span>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+          <div
+            aria-hidden="true"
+            className={cn(
+              'pointer-events-none blur-sm select-none',
+              'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5',
+            )}
+          >
             {/* Real event teasers — Cloudinary imagery */}
             {EVENTS.map(evt => (
               <Card key={evt.keyBase} padding="none" className="border-white/15">
@@ -143,41 +155,11 @@ export const Access = () => {
           </div>
         </div>
 
-        {/* ─── Off-market secondary row (2 more locked teasers, compact) ─── */}
-        <div className="flex flex-col gap-6">
-          <span className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
-            {resolveFieldOrFallback(
-              landing?.accessLockedEyebrow,
-              locale,
-              t('landing.access.lockedEyebrow'),
-            )}
-          </span>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {LOCKED_KEYS.slice(2).map(key => (
-              <Card key={key} padding="none" className="border-white/15">
-                <div className="grid grid-cols-[140px_1fr]">
-                  <div className="bg-ink relative overflow-hidden">
-                    <MonoGradientPlaceholder
-                      tone="dark"
-                      className="absolute inset-0 h-full w-full"
-                    />
-                  </div>
-                  <Card.Body density="spacious" className="gap-2">
-                    <Card.Eyebrow className="text-white/60">
-                      {t(`landing.access.${key}.tag`)}
-                    </Card.Eyebrow>
-                    <Card.Title className="text-white" size="base">
-                      {t(`landing.access.${key}.title`)}
-                    </Card.Title>
-                    <Card.Meta className="text-xs leading-relaxed text-white/55">
-                      {t(`landing.access.${key}.stat`)}
-                    </Card.Meta>
-                  </Card.Body>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
+        {/* ─── Off-market secondary row HIDDEN 2026-05-27 17:30 ───
+             Owner direction : "masqué la section offmarket on
+             travaillera ça mieux par la suite". The block stays in
+             the source so it's a one-line revert when the content
+             is curated post-launch. */}
 
         {/* ─── Bottom CTA strip — cooptation gate ─── */}
         <div className="flex flex-col gap-6 border-t border-white/15 pt-12 md:flex-row md:items-end md:justify-between">
