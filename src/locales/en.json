@@ -441,7 +441,9 @@
       }
     },
     "inquiries": {
-      "title": "Inquiries"
+      "title": "Inquiries",
+      "moveTo": "Status",
+      "statusFor": "Status for the {{source}} inquiry"
     },
     "users": {
       "title": "Members"

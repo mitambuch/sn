@@ -462,7 +462,9 @@
       }
     },
     "inquiries": {
-      "title": "Demandes"
+      "title": "Demandes",
+      "moveTo": "Statut",
+      "statusFor": "Statut de la demande {{source}}"
     },
     "users": {
       "title": "Membres"
