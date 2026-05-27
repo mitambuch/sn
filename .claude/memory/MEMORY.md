@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-05-27** — [Session — Team personas rework + backend consolidation push (demo-readiness)](sessions/2026-05-27-1430.md)
 - **2026-05-27** — [Session — Sawnext cleanup audit (Phase 1-5) + release v0.2.0](sessions/2026-05-27-1230.md)
 - **2026-05-14** — [Session — Live deploy + admin UX rework (20:14 → 21:40)](sessions/2026-05-14-2140.md)
-- **2026-05-14** — [Session — Production-grade ship push (18:14 → 18:50)](sessions/2026-05-14-1850.md)
 
 ## Active decisions (top 5)
 
@@ -31,7 +31,7 @@
 
 ## Deep dive
 
-- Full catalogue (115 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (116 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
