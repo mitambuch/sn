@@ -19,6 +19,7 @@
 
 ## Open frictions
 
+- **2026-05-27** — [AccessRequestModal — Step 3 (Message) saute, submit direct depuis Step 2](frictions/2026-05-27-access-request-step3-skip.md)
 - **2026-05-11** — [Friction — Supabase Vault secret naming mismatch](frictions/2026-05-11-supabase-vault-secret-naming.md)
 - **2026-05-11** — [Friction — Supabase "Automatically expose new tables" toggle au setup projet](frictions/2026-05-11-supabase-expose-new-tables-toggle.md)
 
@@ -31,7 +32,7 @@
 
 ## Deep dive
 
-- Full catalogue (116 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (117 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
