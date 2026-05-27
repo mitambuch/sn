@@ -11,6 +11,7 @@
 import { Image } from '@components/ui/Image';
 import { cn } from '@utils/cn';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface GalleryImage {
   src: string;
@@ -25,6 +26,7 @@ interface GalleryGridProps {
 /** Asymmetric editorial gallery grid with keyboard-accessible lightbox. */
 export const GalleryGrid = ({ images, className }: GalleryGridProps) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const { t } = useTranslation();
 
   const close = useCallback(() => setActiveIndex(null), []);
   const next = useCallback(
@@ -63,7 +65,7 @@ export const GalleryGrid = ({ images, className }: GalleryGridProps) => {
               'group focus-visible:ring-accent relative overflow-hidden focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
               i === 0 && 'col-span-2 row-span-2',
             )}
-            aria-label={`Open image ${String(i + 1)} of ${String(images.length)}`}
+            aria-label={t('a11y.openImageOfTotal', { i: i + 1, total: images.length })}
           >
             <Image
               src={img.src}
@@ -88,7 +90,7 @@ export const GalleryGrid = ({ images, className }: GalleryGridProps) => {
             type="button"
             onClick={close}
             className="absolute inset-0 cursor-zoom-out"
-            aria-label="Close viewer"
+            aria-label={t('a11y.closeViewer')}
           />
           <img
             src={images[activeIndex]?.src}
@@ -99,7 +101,7 @@ export const GalleryGrid = ({ images, className }: GalleryGridProps) => {
             type="button"
             onClick={prev}
             className="text-fg/80 hover:text-fg absolute left-4 text-xs tracking-widest uppercase"
-            aria-label="Previous image"
+            aria-label={t('a11y.previousImage')}
           >
             ←
           </button>
@@ -107,7 +109,7 @@ export const GalleryGrid = ({ images, className }: GalleryGridProps) => {
             type="button"
             onClick={next}
             className="text-fg/80 hover:text-fg absolute right-4 text-xs tracking-widest uppercase"
-            aria-label="Next image"
+            aria-label={t('a11y.nextImage')}
           >
             →
           </button>

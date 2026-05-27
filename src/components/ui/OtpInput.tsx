@@ -63,13 +63,16 @@ export const OtpInput = ({
 
   useEffect(() => {
     onChange?.(value);
-    if (value.length === length && !value.includes('')) {
+    // String.prototype.includes('') ALWAYS returns true, so the previous
+    // form was dead code (audit Phase 2). Check the chars array instead —
+    // every slot must hold a non-empty single char for onComplete to fire.
+    if (value.length === length && !chars.includes('')) {
       onComplete?.(value);
     }
     // We intentionally exclude onChange/onComplete from deps — they're
     // expected to be stable or change-tolerant from the caller side.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value, length]);
+  }, [value, length, chars]);
 
   const focusAt = useCallback(
     (i: number) => {

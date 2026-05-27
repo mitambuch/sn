@@ -11,6 +11,7 @@ import { cn } from '@utils/cn';
 import { X } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface BannerProps {
   variant?: 'info' | 'success' | 'warning' | 'danger' | 'accent';
@@ -35,6 +36,7 @@ export const Banner = ({
   className,
 }: BannerProps) => {
   const [visible, setVisible] = useState(true);
+  const { t } = useTranslation();
   if (!visible) return null;
 
   return (
@@ -51,7 +53,7 @@ export const Banner = ({
         <button
           type="button"
           onClick={() => setVisible(false)}
-          aria-label="Dismiss"
+          aria-label={t('a11y.dismiss')}
           className="focus-visible:ring-accent shrink-0 rounded-md p-0.5 opacity-70 transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:outline-none"
         >
           <X size={14} strokeWidth={1.5} aria-hidden="true" />

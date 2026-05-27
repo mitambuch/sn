@@ -8,6 +8,7 @@
 
 import { useTheme } from '@context/ThemeContext';
 import { cn } from '@utils/cn';
+import { useTranslation } from 'react-i18next';
 
 interface ThemeToggleProps {
   className?: string;
@@ -16,6 +17,7 @@ interface ThemeToggleProps {
 /** Toggle between light and dark mode with sun/moon icons. */
 export const ThemeToggle = ({ className }: ThemeToggleProps) => {
   const { theme, toggleTheme } = useTheme();
+  const { t } = useTranslation();
   const isDark = theme === 'dark';
 
   return (
@@ -29,7 +31,7 @@ export const ThemeToggle = ({ className }: ThemeToggleProps) => {
         'focus-visible:ring-accent focus-visible:ring-offset-bg focus-visible:ring-2 focus-visible:ring-offset-2',
         className,
       )}
-      aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+      aria-label={isDark ? t('a11y.themeToLight') : t('a11y.themeToDark')}
     >
       {/* Sun icon — visible in dark mode (click to switch to light) */}
       <svg
