@@ -4,9 +4,10 @@ import { axe } from 'vitest-axe';
 
 import { PriceTag } from '../PriceTag';
 
-// WHY: Intl.NumberFormat uses non-breaking space variants as group separator
-// depending on locale (NBSP U+00A0 or narrow NBSP U+202F). Match both.
-const SPACE = '[\\s\\u00A0\\u202F]?';
+// WHY: Intl.NumberFormat picks the locale's group separator — Swiss-FR uses an
+// apostrophe (12'000), Swiss-DE a NBSP (12 000), other locales NBSP/narrow-NBSP.
+// Match any of these so the assertion survives Node/ICU updates.
+const SEP = `['\\s\\u00A0\\u202F]?`;
 
 describe('PriceTag', () => {
   it('shows on-request label by default', () => {
@@ -16,12 +17,12 @@ describe('PriceTag', () => {
 
   it('formats CHF amount with locale', () => {
     render(<PriceTag onRequestLabel="On request" amount={12000} currency="CHF" />);
-    expect(screen.getByText(new RegExp(`12${SPACE}000`))).toBeInTheDocument();
+    expect(screen.getByText(new RegExp(`12${SEP}000`))).toBeInTheDocument();
   });
 
   it('formats EUR amount', () => {
     render(<PriceTag onRequestLabel="On request" amount={5000} currency="EUR" />);
-    expect(screen.getByText(new RegExp(`5${SPACE}000`))).toBeInTheDocument();
+    expect(screen.getByText(new RegExp(`5${SEP}000`))).toBeInTheDocument();
   });
 
   it('has no accessibility violations', async () => {
