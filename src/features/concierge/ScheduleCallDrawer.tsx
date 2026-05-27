@@ -7,15 +7,24 @@
 // WHEN: Opened from the dashboard "Réserver 30 min" CTA, the
 //       ConciergeDock popover, or anywhere a member wants face time.
 // CHROME: <RequestDrawerShell /> canonical.
-// REPLACE LATER: lot C wires Cal.com or a custom Supabase booking row.
+// SUBMISSION: writes a row to `public.inquiries` with source='concierge'
+//       via the unified submitInquiry helper. The Postgres trigger
+//       fires the Resend operator email so Valmont can confirm the
+//       slot manually. A future iteration could promote this to a
+//       dedicated `bookings` table once the operator wants
+//       availability gating, but for the demo a flat inquiry is
+//       sufficient and matches the operator's read-and-call flow.
 // ═══════════════════════════════════════════════════
 
 import { RequestDrawerShell } from '@components/ui/RequestDrawerShell';
+import { useAuth } from '@context/AuthContext';
 import { useToast } from '@hooks/useToast';
 import { cn } from '@utils/cn';
 import { CalendarClock, Clock } from 'lucide-react';
 import { type FormEvent, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { submitInquiry } from '@/lib/inquiry';
 
 const SLOTS = ['09:00', '10:30', '14:00', '15:30', '17:00'] as const;
 type Slot = (typeof SLOTS)[number];
@@ -45,6 +54,7 @@ interface ScheduleCallDrawerProps {
 export const ScheduleCallDrawer = ({ open, onClose }: ScheduleCallDrawerProps) => {
   const { t, i18n } = useTranslation();
   const { toast } = useToast();
+  const { session } = useAuth();
   const days = useMemo(() => nextSevenDays(), []);
 
   const [selectedDay, setSelectedDay] = useState<string>(days[0]?.iso ?? '');
@@ -52,28 +62,49 @@ export const ScheduleCallDrawer = ({ open, onClose }: ScheduleCallDrawerProps) =
   const [notes, setNotes] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: FormEvent) => {
+  const dayLabel = (): string => {
+    const day = days.find(d => d.iso === selectedDay);
+    return day
+      ? day.date.toLocaleDateString(i18n.language, {
+          weekday: 'long',
+          day: '2-digit',
+          month: 'long',
+        })
+      : selectedDay;
+  };
+
+  /** Compose the schedule body for the operator inbox. */
+  const composeMessage = (slot: Slot): string => {
+    const lines: string[] = [
+      `Demande de rendez-vous téléphonique`,
+      `Date : ${dayLabel()} (${selectedDay})`,
+      `Créneau : ${slot}`,
+    ];
+    if (notes.trim()) lines.push('', 'Notes :', notes.trim());
+    return lines.join('\n');
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!selectedSlot) return;
     setSubmitting(true);
-    setTimeout(() => {
-      const day = days.find(d => d.iso === selectedDay);
-      const dayLabel = day
-        ? day.date.toLocaleDateString(i18n.language, {
-            weekday: 'long',
-            day: '2-digit',
-            month: 'long',
-          })
-        : selectedDay;
-      toast({
-        variant: 'success',
-        message: t('schedule.success', { day: dayLabel, slot: selectedSlot }),
-      });
-      setNotes('');
-      setSelectedSlot(null);
-      setSubmitting(false);
-      onClose();
-    }, 700);
+    const result = await submitInquiry({
+      source: 'concierge',
+      message: composeMessage(selectedSlot),
+      userId: session?.user?.id,
+    });
+    setSubmitting(false);
+    if (!result.ok) {
+      toast({ variant: 'error', message: result.error ?? t('schedule.error') });
+      return;
+    }
+    toast({
+      variant: 'success',
+      message: t('schedule.success', { day: dayLabel(), slot: selectedSlot }),
+    });
+    setNotes('');
+    setSelectedSlot(null);
+    onClose();
   };
 
   return (
@@ -85,7 +116,12 @@ export const ScheduleCallDrawer = ({ open, onClose }: ScheduleCallDrawerProps) =
       lede={t('schedule.lede')}
       widthClass="max-w-xl"
     >
-      <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col gap-6"
+        onSubmit={e => {
+          void handleSubmit(e);
+        }}
+      >
         {/* Day picker — 7 day strip */}
         <fieldset className="flex flex-col gap-3">
           <legend className="text-fg flex items-center gap-2 text-sm font-medium">

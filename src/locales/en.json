@@ -685,6 +685,7 @@
     "submit": "Send request",
     "sending": "Sending…",
     "success": "Request transmitted. Valmont will reach out within 24 hours.",
+    "error": "Sending failed. Try again in a moment or message Valmont directly.",
     "sourceLabel": {
       "event": "Event",
       "property": "Property",
@@ -720,6 +721,7 @@
     "notesPlaceholder": "Pets, special equipment, meals, diplomatic constraints…",
     "submit": "Send request",
     "success": "Flight request transmitted. Valmont confirms within 30 minutes.",
+    "error": "Sending failed. Try again in a moment or call Valmont.",
     "focalReassurance": "Valmont (your concierge) receives this request directly and confirms within 30 working minutes. At any time, you can call from the button bottom-right."
   },
   "dock": {
@@ -758,7 +760,8 @@
     "notesPlaceholder": "E.g. review wishlist + question about the July stay.",
     "calendarHint": "Once confirmed, the iCal invitation arrives by email. One-click add to Google Calendar / Outlook.",
     "submit": "Book this slot",
-    "success": "Request sent. Valmont confirms {{day}} at {{slot}} within 30 minutes."
+    "success": "Request sent. Valmont confirms {{day}} at {{slot}} within 30 minutes.",
+    "error": "Sending failed. Try again in a moment or message Valmont."
   },
   "saved": {
     "title": "My collection",
@@ -825,6 +828,7 @@
     "confidentialHint": "Your request is handled by Valmont only. Standard NDA activated, no indexing, no resale.",
     "submit": "Send bespoke request",
     "success": "Bespoke request sent. Valmont will reach out within 24 hours.",
+    "error": "Sending failed. Try again in a moment or message Valmont.",
     "banner": {
       "eyebrow": "Can't find it?",
       "cta": "Make a bespoke request",

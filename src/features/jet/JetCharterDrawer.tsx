@@ -2,23 +2,26 @@
 // JetCharterDrawer — structured private-jet booking inquiry
 //
 // WHAT: From/to + dates + pax form, designed to feel like an aviation
-//       desk request — not a flight-search widget. Submit triggers a
-//       fake transmission with toast confirmation + the standard
-//       "Salva confirme la disponibilité sous 30 minutes" reassurance.
+//       desk request — not a flight-search widget. Submit composes a
+//       structured message and inserts a row in `public.inquiries`
+//       with source='jet' via the unified submitInquiry helper. The
+//       Postgres trigger fires the Resend operator email.
 // WHEN: Opened from the dashboard "J'ai besoin d'un jet privé" intent
 //       card, or from any concierge prompt. Replaces the generic
 //       InquiryDrawer when the request is jet-specific.
 // CHROME: <RequestDrawerShell /> canonical.
-// REPLACE LATER: lot C wires real Resend + Supabase write.
 // ═══════════════════════════════════════════════════
 
 import { ImageUpload } from '@components/ui/ImageUpload';
 import { Input } from '@components/ui/Input';
 import { RequestDrawerShell } from '@components/ui/RequestDrawerShell';
+import { useAuth } from '@context/AuthContext';
 import { useToast } from '@hooks/useToast';
 import { cn } from '@utils/cn';
 import { type FormEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { submitInquiry } from '@/lib/inquiry';
 
 interface JetCharterDrawerProps {
   open: boolean;
@@ -28,6 +31,7 @@ interface JetCharterDrawerProps {
 export const JetCharterDrawer = ({ open, onClose }: JetCharterDrawerProps) => {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const { session } = useAuth();
 
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
@@ -38,19 +42,37 @@ export const JetCharterDrawer = ({ open, onClose }: JetCharterDrawerProps) => {
   const [notes, setNotes] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: FormEvent) => {
+  // Compose the structured jet request into a single `message` body —
+  // the DB schema keeps `inquiries.message` as text. Field labels stay
+  // in French (operator inbox language).
+  const composeMessage = (): string => {
+    const lines: string[] = [`Départ : ${from}`, `Arrivée : ${to}`, `Date départ : ${departDate}`];
+    if (withReturn && returnDate) lines.push(`Date retour : ${returnDate}`);
+    lines.push(`Passagers : ${pax}`);
+    if (notes.trim()) lines.push('', 'Notes :', notes.trim());
+    return lines.join('\n');
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    setTimeout(() => {
-      toast({ variant: 'success', message: t('jet.success') });
-      setFrom('');
-      setTo('');
-      setDepartDate('');
-      setReturnDate('');
-      setNotes('');
-      setSubmitting(false);
-      onClose();
-    }, 600);
+    const result = await submitInquiry({
+      source: 'jet',
+      message: composeMessage(),
+      userId: session?.user?.id,
+    });
+    setSubmitting(false);
+    if (!result.ok) {
+      toast({ variant: 'error', message: result.error ?? t('jet.error') });
+      return;
+    }
+    toast({ variant: 'success', message: t('jet.success') });
+    setFrom('');
+    setTo('');
+    setDepartDate('');
+    setReturnDate('');
+    setNotes('');
+    onClose();
   };
 
   return (
@@ -62,7 +84,12 @@ export const JetCharterDrawer = ({ open, onClose }: JetCharterDrawerProps) => {
       lede={t('jet.drawerLede')}
       widthClass="max-w-xl"
     >
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col gap-4"
+        onSubmit={e => {
+          void handleSubmit(e);
+        }}
+      >
         <div className="grid gap-4 md:grid-cols-2">
           <Input
             label={t('jet.from')}
