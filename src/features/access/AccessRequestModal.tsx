@@ -33,6 +33,7 @@ import { type FormEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
+import { hasSupabase, supabase } from '@/lib/supabase';
 import { INVITATION_CODE_DISPLAY_PATTERN, normalizeInvitationCode } from '@/types/invitation';
 
 type Mode = 'request' | 'code';
@@ -119,7 +120,7 @@ export const AccessRequestModal = ({
     setStep(prev => (prev > 0 ? ((prev - 1) as RequestStep) : prev));
   };
 
-  const handleRequestSubmit = (e: FormEvent) => {
+  const handleRequestSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (submitting) return;
     // The submit lives on step 3 ; this guard is defensive in case the
@@ -129,14 +130,38 @@ export const AccessRequestModal = ({
       return;
     }
     setSubmitting(true);
-    // WHY: stub routed to existing Resend pipeline once the Netlify function
-    // accepts the structured payload. For MVP we surface success + clear.
-    setTimeout(() => {
+
+    if (hasSupabase && supabase) {
+      // Real insert via the anon-write policy from migration 0012.
+      // The Postgres trigger fires the Resend operator email.
+      const { error } = await supabase.from('access_requests').insert({
+        first_name: form.firstName.trim(),
+        last_name: form.lastName.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim() || null,
+        company: form.company.trim() || null,
+        activity: form.activity.trim() || null,
+        message: form.message.trim() || null,
+      });
+      setSubmitting(false);
+      if (error) {
+        toast({ variant: 'error', message: error.message });
+        return;
+      }
       toast({ variant: 'success', message: t('landing.access.modal.requestSuccess') });
       setForm(EMPTY_FORM);
-      setSubmitting(false);
       handleClose();
-    }, 600);
+      return;
+    }
+
+    // Simulator path — preserves demo UX without a backend.
+    await new Promise<void>(resolve => {
+      setTimeout(resolve, 600);
+    });
+    toast({ variant: 'success', message: t('landing.access.modal.requestSuccess') });
+    setForm(EMPTY_FORM);
+    setSubmitting(false);
+    handleClose();
   };
 
   const handleCodeSubmit = (e: FormEvent) => {
@@ -205,7 +230,13 @@ export const AccessRequestModal = ({
 
         {/* ─── Form body ─── */}
         {mode === 'request' ? (
-          <form className="flex flex-col gap-6" onSubmit={handleRequestSubmit} noValidate>
+          <form
+            className="flex flex-col gap-6"
+            onSubmit={e => {
+              void handleRequestSubmit(e);
+            }}
+            noValidate
+          >
             {/* ─── Step progress (3 segments) + counter ─── */}
             <div className="flex flex-col gap-2">
               <div
