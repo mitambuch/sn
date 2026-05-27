@@ -72,6 +72,7 @@
     "doctor:client:strict": "node scripts/doctor-client.js --strict",
     "doctor:client:fix": "node scripts/doctor-client.js --fix",
     "friction:report": "node scripts/upstream-friction-report.js",
+    "vscode:color": "node scripts/vscode-project-color.js",
     "done": "node scripts/done.js"
   },
   "dependencies": {
