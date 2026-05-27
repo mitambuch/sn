@@ -58,7 +58,15 @@
     "closeMenu": "Fermer le menu",
     "openMenu": "Ouvrir le menu",
     "skipToContent": "Aller au contenu principal",
-    "languageSwitcher": "Changer de langue"
+    "languageSwitcher": "Changer de langue",
+    "themeToDark": "Basculer en mode sombre",
+    "themeToLight": "Basculer en mode clair",
+    "dismiss": "Masquer",
+    "closeViewer": "Fermer la visionneuse",
+    "previousImage": "Image précédente",
+    "nextImage": "Image suivante",
+    "openImageOfTotal": "Ouvrir l’image {{i}} sur {{total}}",
+    "removeFile": "Retirer {{name}}"
   },
   "nav": {
     "home": "Accueil",
@@ -265,12 +273,30 @@
     },
     "category": {
       "lede": "Choisissez le domaine de votre demande.",
-      "real-estate": { "title": "Immobilier", "hint": "Chalet, villa, penthouse" },
-      "timepiece": { "title": "Garde-temps", "hint": "Montres de collection" },
-      "art": { "title": "Œuvre d'art", "hint": "Tableau, sculpture, certificat" },
-      "experience": { "title": "Expérience privée", "hint": "Dîner, gala, accès" },
-      "travel": { "title": "Voyage sur mesure", "hint": "Itinéraire, jet, yacht" },
-      "other": { "title": "Autre besoin", "hint": "Décrivez librement" }
+      "real-estate": {
+        "title": "Immobilier",
+        "hint": "Chalet, villa, penthouse"
+      },
+      "timepiece": {
+        "title": "Garde-temps",
+        "hint": "Montres de collection"
+      },
+      "art": {
+        "title": "Œuvre d'art",
+        "hint": "Tableau, sculpture, certificat"
+      },
+      "experience": {
+        "title": "Expérience privée",
+        "hint": "Dîner, gala, accès"
+      },
+      "travel": {
+        "title": "Voyage sur mesure",
+        "hint": "Itinéraire, jet, yacht"
+      },
+      "other": {
+        "title": "Autre besoin",
+        "hint": "Décrivez librement"
+      }
     },
     "details": {
       "lede": "Décrivez votre besoin — marque, modèle, dates, contraintes, budget approximatif. Plus c'est précis, plus nous gagnons du temps.",
@@ -900,7 +926,11 @@
           "highlight": "conciergerie",
           "after": "."
         },
-        "cp2": { "before": "", "highlight": "Bespoke", "after": " par discipline." },
+        "cp2": {
+          "before": "",
+          "highlight": "Bespoke",
+          "after": " par discipline."
+        },
         "cp3": {
           "before": "Services privés. Suisse. Par ",
           "highlight": "cooptation",
@@ -926,7 +956,11 @@
           "highlight": "restreint",
           "after": "."
         },
-        "cp8": { "before": "Pour ceux qui en ont la ", "highlight": "patience", "after": "." }
+        "cp8": {
+          "before": "Pour ceux qui en ont la ",
+          "highlight": "patience",
+          "after": "."
+        }
       },
       "line1": "Certaines portes",
       "line2": "ne s’ouvrent qu’à",
@@ -986,12 +1020,32 @@
     "manifesto": {
       "eyebrow": "Manifeste / 01",
       "hint": "Continuez à dérouler",
-      "p1": ["Pas d’agence.", "Pas de conciergerie."],
-      "p2": ["Une structure.", "Un interlocuteur."],
-      "p3": ["Le luxe", "ne se mesure pas", "à ce qu’on possède."],
-      "p4": ["Le silence est", "notre seule signature."],
-      "p5": ["Ce qui se dit", "ici ne se dit", "nulle part ailleurs."],
-      "p6": ["On ne promet pas.", "On agit."]
+      "p1": [
+        "Pas d’agence.",
+        "Pas de conciergerie."
+      ],
+      "p2": [
+        "Une structure.",
+        "Un interlocuteur."
+      ],
+      "p3": [
+        "Le luxe",
+        "ne se mesure pas",
+        "à ce qu’on possède."
+      ],
+      "p4": [
+        "Le silence est",
+        "notre seule signature."
+      ],
+      "p5": [
+        "Ce qui se dit",
+        "ici ne se dit",
+        "nulle part ailleurs."
+      ],
+      "p6": [
+        "On ne promet pas.",
+        "On agit."
+      ]
     },
     "principles": {
       "tag": "Principes",

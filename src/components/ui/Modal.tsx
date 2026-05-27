@@ -11,6 +11,7 @@ import { X } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useCallback, useEffect, useId, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 
 interface ModalProps {
   isOpen: boolean;
@@ -27,6 +28,7 @@ const FOCUSABLE_SELECTOR =
 export const Modal = ({ isOpen, onClose, title, children, className }: ModalProps) => {
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -131,7 +133,7 @@ export const Modal = ({ isOpen, onClose, title, children, className }: ModalProp
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t('common.close')}
             className="text-muted hover:text-fg focus-visible:ring-accent duration-base rounded-md p-1 transition-colors focus-visible:ring-2"
           >
             <X size={18} strokeWidth={1.5} aria-hidden="true" />

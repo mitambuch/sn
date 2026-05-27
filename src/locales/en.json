@@ -40,7 +40,15 @@
     "closeMenu": "Close menu",
     "openMenu": "Open menu",
     "skipToContent": "Skip to main content",
-    "languageSwitcher": "Change language"
+    "languageSwitcher": "Change language",
+    "themeToDark": "Switch to dark mode",
+    "themeToLight": "Switch to light mode",
+    "dismiss": "Dismiss",
+    "closeViewer": "Close viewer",
+    "previousImage": "Previous image",
+    "nextImage": "Next image",
+    "openImageOfTotal": "Open image {{i}} of {{total}}",
+    "removeFile": "Remove {{name}}"
   },
   "nav": {
     "home": "Home",
@@ -244,12 +252,30 @@
     },
     "category": {
       "lede": "Choose the area of your request.",
-      "real-estate": { "title": "Real estate", "hint": "Chalet, villa, penthouse" },
-      "timepiece": { "title": "Timepiece", "hint": "Collector's watches" },
-      "art": { "title": "Artwork", "hint": "Painting, sculpture, certificate" },
-      "experience": { "title": "Private experience", "hint": "Dinner, gala, access" },
-      "travel": { "title": "Bespoke travel", "hint": "Itinerary, jet, yacht" },
-      "other": { "title": "Other need", "hint": "Describe freely" }
+      "real-estate": {
+        "title": "Real estate",
+        "hint": "Chalet, villa, penthouse"
+      },
+      "timepiece": {
+        "title": "Timepiece",
+        "hint": "Collector's watches"
+      },
+      "art": {
+        "title": "Artwork",
+        "hint": "Painting, sculpture, certificate"
+      },
+      "experience": {
+        "title": "Private experience",
+        "hint": "Dinner, gala, access"
+      },
+      "travel": {
+        "title": "Bespoke travel",
+        "hint": "Itinerary, jet, yacht"
+      },
+      "other": {
+        "title": "Other need",
+        "hint": "Describe freely"
+      }
     },
     "details": {
       "lede": "Describe your need — brand, model, dates, constraints, approximate budget. The more precise, the faster we move.",
@@ -891,8 +917,16 @@
       "topRightLoc": "Boudry / NE",
       "sideMark": "01 / Introduction",
       "cyclePhrases": {
-        "cp1": { "before": "Not an agency. Not a ", "highlight": "concierge", "after": "." },
-        "cp2": { "before": "", "highlight": "Bespoke", "after": " by discipline." },
+        "cp1": {
+          "before": "Not an agency. Not a ",
+          "highlight": "concierge",
+          "after": "."
+        },
+        "cp2": {
+          "before": "",
+          "highlight": "Bespoke",
+          "after": " by discipline."
+        },
         "cp3": {
           "before": "Private services. Swiss. By ",
           "highlight": "cooptation",
@@ -918,7 +952,11 @@
           "highlight": "circle",
           "after": "."
         },
-        "cp8": { "before": "For those who have the ", "highlight": "patience", "after": "." }
+        "cp8": {
+          "before": "For those who have the ",
+          "highlight": "patience",
+          "after": "."
+        }
       },
       "line1": "Certain doors",
       "line2": "open only to",
@@ -978,12 +1016,32 @@
     "manifesto": {
       "eyebrow": "Manifesto / 01",
       "hint": "Keep scrolling",
-      "p1": ["No agency.", "No concierge desk."],
-      "p2": ["One structure.", "One interlocutor."],
-      "p3": ["Luxury", "is not measured", "by what you own."],
-      "p4": ["Silence is", "our only signature."],
-      "p5": ["What is said here", "is said", "nowhere else."],
-      "p6": ["We do not promise.", "We act."]
+      "p1": [
+        "No agency.",
+        "No concierge desk."
+      ],
+      "p2": [
+        "One structure.",
+        "One interlocutor."
+      ],
+      "p3": [
+        "Luxury",
+        "is not measured",
+        "by what you own."
+      ],
+      "p4": [
+        "Silence is",
+        "our only signature."
+      ],
+      "p5": [
+        "What is said here",
+        "is said",
+        "nowhere else."
+      ],
+      "p6": [
+        "We do not promise.",
+        "We act."
+      ]
     },
     "principles": {
       "tag": "Principles",

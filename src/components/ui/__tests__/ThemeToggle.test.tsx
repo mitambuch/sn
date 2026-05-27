@@ -1,3 +1,5 @@
+import '@config/i18n';
+
 import { ThemeProvider } from '@context/ThemeContext';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

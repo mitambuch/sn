@@ -12,6 +12,7 @@
 import { cn } from '@utils/cn';
 import { ImagePlus, X } from 'lucide-react';
 import { type ChangeEvent, useEffect, useId, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ImageUploadProps {
   label: string;
@@ -28,6 +29,7 @@ interface UploadedFile {
 
 export const ImageUpload = ({ label, hint, maxFiles = 3, className }: ImageUploadProps) => {
   const inputId = useId();
+  const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<UploadedFile[]>([]);
 
@@ -80,7 +82,7 @@ export const ImageUpload = ({ label, hint, maxFiles = 3, className }: ImageUploa
             <button
               type="button"
               onClick={() => handleRemove(f.id)}
-              aria-label={`Remove ${f.name}`}
+              aria-label={t('a11y.removeFile', { name: f.name })}
               className={cn(
                 'bg-bg/80 text-fg absolute top-1 right-1 flex h-7 w-7 items-center justify-center rounded-full',
                 'opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100',
