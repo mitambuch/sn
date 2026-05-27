@@ -33,6 +33,7 @@
     "continue": "Continue",
     "fullName": "Full name",
     "phone": "Phone",
+    "edit": "Edit",
     "yes": "Yes",
     "no": "No"
   },
@@ -130,6 +131,12 @@
       "travel": "Travel"
     },
     "profileTitle": "Your profile",
+    "profile": {
+      "editTitle": "Edit your profile",
+      "editLede": "Your information stays strictly between you and Valmont. No shared database, no newsletter.",
+      "save": "Save",
+      "saved": "Profile updated."
+    },
     "preferencesTitle": "Your preferences",
     "inquiriesTitle": "Inquiries history",
     "intent": {

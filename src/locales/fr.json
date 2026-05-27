@@ -50,6 +50,7 @@
     "continue": "Continuer",
     "fullName": "Nom complet",
     "phone": "Téléphone",
+    "edit": "Modifier",
     "yes": "Oui",
     "no": "Non",
     "similar": "Vous pourriez aussi aimer"
@@ -148,6 +149,12 @@
       "travel": "Voyage"
     },
     "profileTitle": "Votre profil",
+    "profile": {
+      "editTitle": "Modifier le profil",
+      "editLede": "Vos informations restent strictement entre vous et Valmont. Aucune base partagée, aucune newsletter.",
+      "save": "Enregistrer",
+      "saved": "Profil mis à jour."
+    },
     "preferencesTitle": "Vos préférences",
     "inquiriesTitle": "Historique des demandes",
     "intent": {
