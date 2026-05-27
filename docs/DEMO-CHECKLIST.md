@@ -62,7 +62,8 @@ Option A — Supabase Dashboard (recommended for first time) :
    - `supabase/migrations/0008_redeem_invitation_rpc.sql`
    - `supabase/migrations/0009_profile_phone.sql`
    - **`supabase/migrations/0010_security_hardening.sql`** (CRITICAL — closes anti-enum + role escalation + XSS)
-   - `supabase/migrations/0011_saved_items.sql` (if Phase C shipped — cross-device wishlist)
+   - `supabase/migrations/0011_saved_items.sql` (cross-device wishlist — AccountSaved persistence)
+   - `supabase/migrations/0012_access_requests.sql` (anonymous access request leads + operator email)
 3. Run each one. They are idempotent — safe to re-run if you got an error mid-way.
 
 Option B — Supabase CLI :
@@ -266,14 +267,17 @@ Without this, magic links and OAuth callbacks won't return to your prod URL.
 From an incognito window pointed at the production URL :
 
 1. [ ] Public landing renders, scroll to `#s09` — see 5 personas, autoplay rotates through Valmont/Harvy/Lucian/Tavio/Sergio every 8s
-2. [ ] Click "Demander un accès" → wizard opens → fill name/email/intent → submit → toast success
-3. [ ] Check your operator inbox — Resend should have delivered the inquiry email
-4. [ ] Check Supabase → Table Editor → `inquiries` → new row appears with status `new`
+2. [ ] Click "Demander un accès" → wizard opens → fill name/email/phone/intent → submit → toast success
+3. [ ] Check Supabase → Table Editor → `access_requests` → new row appears with status `new`
+4. [ ] Check your operator inbox — Resend should have delivered the access request email (Reply-To = lead's email)
 5. [ ] Click "Espace privé" → choose "Code d'invitation" → enter the SAW-XXXX-XXXX from Step 3.3 → magic link email arrives → click → onboarding → reach `/account`
-6. [ ] Back in admin (other browser session) : `/admin/invitations` shows the code with status `redeemed`, `redeemed_at` populated
-7. [ ] Re-enter the same code on the landing → error "Code introuvable ou déjà utilisé" (atomic single-use working)
-8. [ ] Browse a catalogue module (e.g. `/fr/proprietes`) → click a card → "Express interest" CTA opens drawer → submit → another inquiry appears in `/admin/inquiries`
-9. [ ] Click ❤ on a couple of catalogue cards → check `/account/saved` shows them (if Phase C shipped : also visible on another device after sign-in)
+6. [ ] On `/account/profile` → "Modifier" → change phone + contact preference → save → `profiles.phone` updates in Supabase
+7. [ ] Back in admin (other browser session) : `/admin/invitations` shows the code with status `redeemed`, `redeemed_at` populated
+8. [ ] Re-enter the same code on the landing → error "Code introuvable ou déjà utilisé" (atomic single-use working)
+9. [ ] Browse a catalogue module (e.g. `/fr/proprietes`) → click a card → "Express interest" CTA opens drawer → submit → inquiry appears in `/admin/inquiries` "new" column
+10. [ ] On `/admin/inquiries` → pick the new card's status select → move to "in_review" → card jumps column instantly + row updates in `inquiries.status`
+11. [ ] Try every other CTA (jet charter / bespoke / schedule call / concierge wizard) → each writes a typed row to `inquiries` with the right `source` enum value
+12. [ ] Click ❤ on a couple of catalogue cards → check `/account/saved` shows them — sign in on another device → ❤ already filled cross-device (Supabase `saved_items` sync)
 
 ---
 
