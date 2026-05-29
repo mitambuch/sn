@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-05-29** — [Session — v1.1.1 patch + Swatch firewall friction + admin diagnostic](sessions/2026-05-29-1437.md)
 - **2026-05-29** — [Session — Compte admin Salva + outillage cleanup prod data](sessions/2026-05-29-1406.md)
 - **2026-05-29** — [Session — Release v1.1.0 (MVP Shipped & Sanity Live)](sessions/2026-05-29-1344.md)
-- **2026-05-29** — [Session — Landing language switcher + CI rouge éteint en 5 commits](sessions/2026-05-29-1339.md)
 
 ## Active decisions (top 5)
 
@@ -34,7 +34,7 @@
 
 ## Deep dive
 
-- Full catalogue (125 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (126 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
