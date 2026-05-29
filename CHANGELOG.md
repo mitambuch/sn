@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.1.0](https://github.com/mitambuch/sn/compare/v0.2.0...v1.1.0) (2026-05-29)
+
+Post-demo milestone — admin operator panel complete, Sanity Studio populated in production, public Footer reads global config from the CMS. The 1.0.0 jump reflects "MVP shipped at client demo on 2026-05-29 12:00" and 1.1.0 captures same-day polish + Sanity wire-up.
+
+### ✨ Features
+
+* **admin:** access requests kanban triage (`/admin/access-requests`) + nav consolidation
+* **admin:** AdminUsers refondu — promote/demote inline, filters tabs, search, role badges
+* **admin:** AdminDashboard activity feed (4 sources merged) + visibility stats rows on Inquiries / Catalogue
+* **footer:** Footer reads copyright / footerTagline / contactEmail from Sanity `siteConfig-singleton` with i18n fallback
+
+### 🐛 Fixes
+
+* **ci:** hoist VITE_APP_URL to workflow-level env (e2e + lighthouse)
+* **ci:** recalibrate bundle size thresholds to 2.2MB project baseline
+* **landing:** strip trailing dots + commas from titles per Salva feedback
+
+### 🛠 Chore
+
+* **sanity:** surgical `push-site-config.js` for singleton-only writes (does not touch landing / catalogue / team)
+* **sanity:** siteConfig-singleton populated in `k2xrvftw/production` (copyright, contactEmail, footerTagline FR+EN, SEO defaults)
+* **docs:** session journals 1105 + 1316 + bilingual catalogue gap friction documented
+
+### 📝 Known limitation (carry-over)
+
+* Catalogue detail pages render `title.fr` regardless of active locale. Bilingual rendering across catalogue (event, property, timepiece, artwork, journey, conciergeService, article) deferred — see `.claude/memory/frictions/2026-05-29-bilingual-detail-gap.md` for the refactor plan. Target : v1.2.x.
+
 ## [0.2.0](https://github.com/mitambuch/sn/compare/v0.3.0...v0.2.0) (2026-05-27)
 
 ### ✨ Features
