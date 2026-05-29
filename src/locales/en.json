@@ -446,7 +446,28 @@
       "statusFor": "Status for the {{source}} inquiry"
     },
     "users": {
-      "title": "Members"
+      "title": "Users",
+      "lede": "Account management — members and operators. Promote or demote inline by clicking the action on each row.",
+      "roleLabel": "Role",
+      "roles": {
+        "client": "Member",
+        "admin": "Operator"
+      },
+      "actions": "Actions",
+      "promote": "Promote to operator",
+      "demote": "Demote to member",
+      "promoted": "{{name}} is now an operator.",
+      "demoted": "{{name}} is now a member.",
+      "confirmPromote": "Promote {{name}} to operator? This person will gain admin access.",
+      "confirmDemote": "Demote {{name}} to member? Admin access will be revoked.",
+      "cannotChangeSelf": "You cannot change your own role.",
+      "searchPlaceholder": "Search name or email…",
+      "tabs": {
+        "label": "Filter by role",
+        "all": "All",
+        "members": "Members",
+        "admins": "Operators"
+      }
     },
     "stats": {
       "pendingInquiries": "Pending inquiries",

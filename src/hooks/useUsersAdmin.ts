@@ -8,7 +8,7 @@
 // WHEN: /admin/users + admin inquiries (lookup user name by id).
 // ═══════════════════════════════════════════════════
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { hasSupabase, supabase } from '@/lib/supabase';
 import { listUsers } from '@/mocks';
@@ -43,11 +43,14 @@ function rowToDomain(row: ProfileRow): User {
   return user;
 }
 
-interface UseUsersAdminResult {
+export interface UseUsersAdminResult {
   rows: readonly User[];
   loading: boolean;
   error: string | null;
   usingFallback: boolean;
+  /** Optimistic role swap. Updates Supabase under the "profiles: admin
+   *  update all" RLS policy. Rolls back on remote failure. */
+  updateRole: (id: string, next: Role) => Promise<{ ok: boolean; error?: string }>;
 }
 
 export function useUsersAdmin(): UseUsersAdminResult {
@@ -82,5 +85,23 @@ export function useUsersAdmin(): UseUsersAdminResult {
     };
   }, []);
 
-  return { rows, loading, error, usingFallback };
+  const updateRole = useCallback(
+    async (id: string, next: Role): Promise<{ ok: boolean; error?: string }> => {
+      const prevRows = rows;
+      setRows(rows.map(r => (r.id === id ? { ...r, role: next } : r)));
+      if (!hasSupabase || !supabase) return { ok: true };
+      const { error: updateErr } = await supabase
+        .from('profiles')
+        .update({ role: next })
+        .eq('id', id);
+      if (updateErr) {
+        setRows(prevRows);
+        return { ok: false, error: updateErr.message };
+      }
+      return { ok: true };
+    },
+    [rows],
+  );
+
+  return { rows, loading, error, usingFallback, updateRole };
 }
