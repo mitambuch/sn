@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.1](https://github.com/mitambuch/sn/compare/v1.2.0...v1.2.1) (2026-05-29)
+
+### 🐛 Fixes
+
+* **login:** submit button now uses stable `on-ink` tokens so it reliably renders WHITE regardless of theme cascade (was visually dark on the live deploy because `bg-fg` resolved via the `data-theme='dark'` wrapper which wasn't winning the cascade). Matches the landing primary CTA visual language.
+
 ## [1.2.0](https://github.com/mitambuch/sn/compare/v1.1.1...v1.2.0) (2026-05-29)
 
 Same-day minor — finishes the Sanity wire-up by surfacing SEO meta defaults from the singleton and populating the landing-singleton in prod.
