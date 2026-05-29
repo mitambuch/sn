@@ -41,6 +41,12 @@ jobs:
         run: node scripts/done.js --quick
 
       - name: Validate (lint + typecheck + test + build)
+        env:
+          # WHY: production build gate in vite.config.ts requires a public host
+          # URL for canonical/OG/sitemap. saw-next.ch is the production domain;
+          # it's public (already in sitemap.xml) so it lives inline, not as a
+          # secret. Vercel deploys use their own VITE_APP_URL env var.
+          VITE_APP_URL: https://saw-next.ch
         run: pnpm validate
 
       - name: Check bundle size
