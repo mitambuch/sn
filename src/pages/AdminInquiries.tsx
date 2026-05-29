@@ -12,6 +12,7 @@
 import { Container } from '@components/layout/Container';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { Spinner } from '@components/ui/Spinner';
+import { Stat } from '@components/ui/Stat';
 import { useInquiriesAdmin } from '@hooks/useInquiries';
 import { useToast } from '@hooks/useToast';
 import { useUsersAdmin } from '@hooks/useUsersAdmin';
@@ -37,15 +38,31 @@ export default function AdminInquiries() {
     }
   };
 
+  const stats = {
+    total: all.length,
+    open: all.filter(i => i.status === 'new' || i.status === 'in_review').length,
+    contacted: all.filter(i => i.status === 'contacted').length,
+    closed: all.filter(i => i.status === 'closed').length,
+  };
+
   return (
     <Container size="xl">
-      <div className="space-y-12 py-12">
+      <div className="space-y-10 py-10 md:space-y-12 md:py-12">
         <SectionHeader
           eyebrow={t('admin.eyebrow')}
           title={t('admin.inquiries.title')}
+          lede={t('admin.inquiries.lede')}
           size="md"
           as="h1"
         />
+
+        {/* Stats */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <Stat label={t('admin.inquiries.statsTotal')} value={String(stats.total)} />
+          <Stat label={t('admin.inquiries.statsOpen')} value={String(stats.open)} />
+          <Stat label={t('admin.inquiries.statsContacted')} value={String(stats.contacted)} />
+          <Stat label={t('admin.inquiries.statsClosed')} value={String(stats.closed)} />
+        </div>
 
         {loading && (
           <div className="flex items-center justify-center py-12">

@@ -19,6 +19,7 @@
 import { Container } from '@components/layout/Container';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { Spinner } from '@components/ui/Spinner';
+import { Stat } from '@components/ui/Stat';
 import {
   type CatalogueModule,
   type CatalogueRow,
@@ -174,16 +175,31 @@ export default function AdminCatalogue() {
     {} as Record<CatalogueModule, number>,
   );
 
+  const stats = {
+    total: rows.length,
+    public: rows.filter(r => r.visibility === 'public').length,
+    shareCode: rows.filter(r => r.visibility === 'shareCode').length,
+    private: rows.filter(r => r.visibility === 'private').length,
+  };
+
   return (
     <Container size="xl">
       <div className="space-y-10 py-10 md:space-y-12 md:py-12">
         <SectionHeader
           eyebrow={t('admin.eyebrow')}
           title={t('admin.catalogue.title')}
-          lede="Vue d'ensemble du catalogue. La création et l'édition des fiches se font dans Sanity Studio."
+          lede={t('admin.catalogue.ledeStudio')}
           size="md"
           as="h1"
         />
+
+        {/* Stats — totals by visibility */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <Stat label={t('admin.catalogue.statsTotal')} value={String(stats.total)} />
+          <Stat label={t('admin.catalogue.statsPublic')} value={String(stats.public)} />
+          <Stat label={t('admin.catalogue.statsShareCode')} value={String(stats.shareCode)} />
+          <Stat label={t('admin.catalogue.statsPrivate')} value={String(stats.private)} />
+        </div>
 
         {/* Module tabs — scrollable on mobile */}
         <nav
@@ -221,7 +237,7 @@ export default function AdminCatalogue() {
 
         {usingFallback && (
           <p className="border-border bg-surface/40 text-muted rounded-md border px-3 py-2 font-mono text-[10px] tracking-widest uppercase">
-            Sanity non configuré — vue limitée. Configurez VITE_SANITY_PROJECT_ID.
+            {t('admin.catalogue.fallbackNotice')}
           </p>
         )}
 
