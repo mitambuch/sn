@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-05-29** — [Session — Compte admin Salva + outillage cleanup prod data](sessions/2026-05-29-1406.md)
 - **2026-05-29** — [Session — Release v1.1.0 (MVP Shipped & Sanity Live)](sessions/2026-05-29-1344.md)
 - **2026-05-29** — [Session — Landing language switcher + CI rouge éteint en 5 commits](sessions/2026-05-29-1339.md)
-- **2026-05-29** — [Session — Audit Sanity wiring + Footer câblé sur siteConfig](sessions/2026-05-29-1316.md)
 
 ## Active decisions (top 5)
 
@@ -33,7 +33,7 @@
 
 ## Deep dive
 
-- Full catalogue (123 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (124 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
