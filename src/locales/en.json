@@ -442,8 +442,13 @@
     },
     "inquiries": {
       "title": "Inquiries",
+      "lede": "Inquiries sent by members from their private space. Drag the status forward as you triage.",
       "moveTo": "Status",
-      "statusFor": "Status for the {{source}} inquiry"
+      "statusFor": "Status for the {{source}} inquiry",
+      "statsTotal": "Total",
+      "statsOpen": "Open",
+      "statsContacted": "Contacted",
+      "statsClosed": "Closed"
     },
     "users": {
       "title": "Users",
@@ -476,6 +481,16 @@
     },
     "recentInquiries": "Recent inquiries",
     "quickActions": "Quick add",
+    "activity": {
+      "title": "Recent activity",
+      "empty": "No activity yet. The feed lights up as soon as visitors interact with the site.",
+      "accessRequest": "{{name}} requested access",
+      "inquiry": "New inquiry — {{source}}",
+      "noMessage": "(no message)",
+      "invitationRedeemed": "Code {{code}} redeemed",
+      "invitationRedeemedSub": "A new member just signed up via this code.",
+      "signup": "{{name}} created an account"
+    },
     "nav": {
       "dashboard": "Dashboard",
       "catalogue": "Catalogue",
@@ -510,6 +525,12 @@
     "catalogue": {
       "title": "Catalogue",
       "lede": "Add, edit or remove items, events, journeys, services and articles. Every change appears in the member space instantly.",
+      "ledeStudio": "Catalogue overview. Creation and editing happen in Sanity Studio — click \"Create in Sanity\" to open the editor.",
+      "fallbackNotice": "Sanity not configured — limited view. Set VITE_SANITY_PROJECT_ID in Netlify and redeploy to enable editing.",
+      "statsTotal": "Total items",
+      "statsPublic": "Public",
+      "statsShareCode": "Share-code",
+      "statsPrivate": "Private",
       "tabs": "Modules"
     },
     "modules": {

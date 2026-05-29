@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════
 // AdminDashboard — /:locale/admin
 // Valmont's home: stats, quick actions to add catalogue items / codes,
-// and the 5 most recent inquiries.
+// and a live cross-source activity feed.
 // ═══════════════════════════════════════════════════
 
 import { useLocale } from '@app/LocaleProvider';
@@ -9,8 +9,8 @@ import { Container } from '@components/layout/Container';
 import { Card } from '@components/ui/Card';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { Stat } from '@components/ui/Stat';
-import { StatusPill } from '@components/ui/StatusPill';
 import { ROUTES } from '@constants/routes';
+import { AdminActivityFeed } from '@features/admin/AdminActivityFeed';
 import { useAccessRequestsAdmin } from '@hooks/useAccessRequestsAdmin';
 import { useInquiriesAdmin } from '@hooks/useInquiries';
 import { useInvitationsAdmin } from '@hooks/useInvitationsAdmin';
@@ -86,7 +86,7 @@ const QUICK_ACTIONS: QuickAction[] = [
 ];
 
 export default function AdminDashboard() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { localePath } = useLocale();
 
   const { rows: inquiries } = useInquiriesAdmin();
@@ -102,8 +102,6 @@ export default function AdminDashboard() {
     const days = (NOW_MS - new Date(u.createdAt).getTime()) / (1000 * 60 * 60 * 24);
     return days < 7;
   }).length;
-
-  const recent = inquiries.slice(0, 5);
 
   return (
     <Container size="xl">
@@ -161,14 +159,11 @@ export default function AdminDashboard() {
           </div>
         </section>
 
-        {/* ─── Recent inquiries ─── */}
-        <section aria-labelledby="recent-inquiries-heading" className="space-y-6">
+        {/* ─── Live activity feed ─── */}
+        <section aria-labelledby="activity-heading" className="space-y-6">
           <div className="flex items-end justify-between">
-            <h2
-              id="recent-inquiries-heading"
-              className="text-fg font-mono text-2xl font-bold uppercase"
-            >
-              {t('admin.recentInquiries')}
+            <h2 id="activity-heading" className="text-fg font-mono text-2xl font-bold uppercase">
+              {t('admin.activity.title')}
             </h2>
             <Link
               to={localePath(ROUTES.ADMIN_INQUIRIES)}
@@ -178,21 +173,13 @@ export default function AdminDashboard() {
             </Link>
           </div>
 
-          <Card padding="none">
-            <ul className="divide-border divide-y">
-              {recent.map(inq => (
-                <li key={inq.id} className="flex items-center justify-between gap-4 px-6 py-4">
-                  <div className="flex flex-col gap-1">
-                    <span className="text-muted text-xs tracking-widest uppercase">
-                      {inq.source} · {new Date(inq.createdAt).toLocaleDateString(i18n.language)}
-                    </span>
-                    <span className="text-fg text-sm">{inq.message ?? '—'}</span>
-                  </div>
-                  <StatusPill variant={inq.status} label={t(`inquiry.status.${inq.status}`)} />
-                </li>
-              ))}
-            </ul>
-          </Card>
+          <AdminActivityFeed
+            accessRequests={accessRequests}
+            inquiries={inquiries}
+            invitations={invitations}
+            members={members}
+            limit={10}
+          />
         </section>
       </div>
     </Container>

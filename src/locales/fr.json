@@ -463,8 +463,13 @@
     },
     "inquiries": {
       "title": "Demandes",
+      "lede": "Demandes d'intérêt envoyées par les membres depuis l'espace privé. Déplace les cartes entre les colonnes pour avancer le triage.",
       "moveTo": "Statut",
-      "statusFor": "Statut de la demande {{source}}"
+      "statusFor": "Statut de la demande {{source}}",
+      "statsTotal": "Total",
+      "statsOpen": "Ouvertes",
+      "statsContacted": "Contactées",
+      "statsClosed": "Clôturées"
     },
     "users": {
       "title": "Utilisateurs",
@@ -497,6 +502,16 @@
     },
     "recentInquiries": "Demandes récentes",
     "quickActions": "Ajouter rapidement",
+    "activity": {
+      "title": "Activité récente",
+      "empty": "Aucune activité encore. Le flux s'animera dès la première interaction sur le site.",
+      "accessRequest": "{{name}} a demandé un accès",
+      "inquiry": "Nouvelle demande — {{source}}",
+      "noMessage": "(pas de message)",
+      "invitationRedeemed": "Code {{code}} utilisé",
+      "invitationRedeemedSub": "Un nouveau membre vient de s'inscrire via ce code.",
+      "signup": "{{name}} a créé son compte"
+    },
     "nav": {
       "dashboard": "Tableau de bord",
       "catalogue": "Catalogue",
@@ -531,6 +546,12 @@
     "catalogue": {
       "title": "Catalogue",
       "lede": "Ajoutez, modifiez ou retirez les pièces, événements, voyages, services et articles. Tout changement apparaît immédiatement dans l’espace membre.",
+      "ledeStudio": "Vue d'ensemble du catalogue. La création et l'édition des fiches se font dans Sanity Studio — clique « Créer dans Sanity » pour ouvrir l'éditeur.",
+      "fallbackNotice": "Sanity non configuré — vue limitée. Ajoute VITE_SANITY_PROJECT_ID dans Netlify et redéploie pour activer l'édition.",
+      "statsTotal": "Total fiches",
+      "statsPublic": "Public",
+      "statsShareCode": "Sur code",
+      "statsPrivate": "Privé",
       "tabs": "Modules"
     },
     "modules": {
