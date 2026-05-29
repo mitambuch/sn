@@ -35,7 +35,8 @@
     "phone": "Phone",
     "edit": "Edit",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "similar": "You may also like"
   },
   "a11y": {
     "closeMenu": "Close menu",
@@ -198,6 +199,9 @@
     "properties": {
       "title": "Properties",
       "lede": "Selected residences across Switzerland and Europe, on request."
+    },
+    "modules": {
+      "filtersHint": "Filter by type"
     },
     "timepieces": {
       "title": "Timepieces",
