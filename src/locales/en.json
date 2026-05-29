@@ -78,7 +78,7 @@
     "enter": "Enter my space",
     "step1": {
       "eyebrow": "Welcome",
-      "title": "Sawnext, your private concierge.",
+      "title": "Sawnext, your private concierge",
       "lede": "A by-invitation selection, without noise. Activate your code to enter your space."
     },
     "step2": {
@@ -88,7 +88,7 @@
     },
     "step3": {
       "eyebrow": "Your dedicated concierge",
-      "title": "Valmont Seragone Mato will guide you.",
+      "title": "Valmont Seragone Mato will guide you",
       "lede": "A single point of contact, reachable any time from your space. Reply within 30 working minutes, standard NDA activated."
     }
   },
@@ -97,9 +97,9 @@
     "signOut": "Sign out",
     "tagline": "Vetted access, by invitation",
     "tagEyebrow": "Private area",
-    "titleA": "Private area.",
-    "titleB": "Three doors, one key.",
-    "titleModal": "Sign in.",
+    "titleA": "Private area",
+    "titleB": "Three doors, one key",
+    "titleModal": "Sign in",
     "ledeModal": "Pick your access mode.",
     "lede": "You already have access. Pick the mode that suits you: your email + password pair, a single-use access link sent by email, or the invitation code Valmont gave you.",
     "modeEmail": "Email and password",
@@ -1084,15 +1084,15 @@
       "eyebrow": "Three verbs, one commitment",
       "act": "Act",
       "identify": {
-        "title": "Identify.",
+        "title": "Identify",
         "desc": "Read the brief, isolate the real need, distinguish the request from the symptom. Five questions, never more."
       },
       "structure": {
-        "title": "Structure.",
+        "title": "Structure",
         "desc": "Frame the scope, select the useful partners, write the plan. Everything is recorded, everything is dated."
       },
       "facilitate": {
-        "title": "Facilitate.",
+        "title": "Facilitate",
         "desc": "Lift obstacles silently, all the way to delivery. Discretion is a deliverable like any other."
       }
     },
@@ -1159,7 +1159,7 @@
       "previewTag": "Selected domain",
       "01": {
         "name": "Fine watchmaking",
-        "title": "Fine watchmaking.",
+        "title": "Fine watchmaking",
         "desc": "Direct access to manufactures. Beyond the act of purchase, we craft the relationship between client and house.",
         "feat1": "Private visits",
         "feat2": "Rare pieces",
@@ -1168,7 +1168,7 @@
       },
       "02": {
         "name": "Off-market assets",
-        "title": "Off-market assets.",
+        "title": "Off-market assets",
         "desc": "Properties and rare assets outside the public market. Restricted circle. Confidential transactions.",
         "feat1": "Exceptional properties",
         "feat2": "Confidential investments",
@@ -1177,7 +1177,7 @@
       },
       "03": {
         "name": "Bespoke real estate",
-        "title": "Bespoke real estate.",
+        "title": "Bespoke real estate",
         "desc": "Design and coordination of exceptional properties. Selected architects.",
         "feat1": "Brief alignment",
         "feat2": "Partner selection",
@@ -1186,7 +1186,7 @@
       },
       "04": {
         "name": "Art & collection",
-        "title": "Art & collection.",
+        "title": "Art & collection",
         "desc": "Acquisition of works and rare objects. Connections to galleries and experts.",
         "feat1": "Old masters",
         "feat2": "Contemporary artists",
@@ -1195,7 +1195,7 @@
       },
       "05": {
         "name": "Travel & experiences",
-        "title": "Travel & experiences.",
+        "title": "Travel & experiences",
         "desc": "Fully bespoke travel. Private aviation, charters, confidential stays.",
         "feat1": "Private aviation",
         "feat2": "Yachting",
@@ -1204,7 +1204,7 @@
       },
       "06": {
         "name": "VIP events",
-        "title": "VIP events.",
+        "title": "VIP events",
         "desc": "Privileged access to the greatest international gatherings. Tailored hospitality.",
         "feat1": "High-level sport",
         "feat2": "Cultural festivals",
@@ -1213,7 +1213,7 @@
       },
       "07": {
         "name": "Lifestyle management",
-        "title": "Lifestyle management.",
+        "title": "Lifestyle management",
         "desc": "Everything that does not fit elsewhere. Research, coordination, follow-through.",
         "feat1": "Rare objects",
         "feat2": "Private events",
@@ -1222,7 +1222,7 @@
       },
       "08": {
         "name": "Introductions",
-        "title": "Introductions.",
+        "title": "Introductions",
         "desc": "Confidential connections between clients, investors, entrepreneurs.",
         "feat1": "Deal flow",
         "feat2": "Collaborations",
@@ -1231,7 +1231,7 @@
       },
       "09": {
         "name": "Wealth management",
-        "title": "Wealth management.",
+        "title": "Wealth management",
         "desc": "A bridge to top-tier Swiss financial partners.",
         "feat1": "Investment solutions",
         "feat2": "Portfolio management",
@@ -1240,7 +1240,7 @@
       },
       "10": {
         "name": "Sports careers",
-        "title": "Sports careers.",
+        "title": "Sports careers",
         "desc": "Support for elite athletes. Image management, structuring.",
         "feat1": "Image management",
         "feat2": "Brand partnerships",
@@ -1251,8 +1251,8 @@
     "access": {
       "tagPrimary": "First door",
       "eyebrow": "08 · Catalogue preview",
-      "heroTitleA": "The catalogue,",
-      "heroTitleB": "at a glance.",
+      "heroTitleA": "The catalogue",
+      "heroTitleB": "at a glance",
       "heroLede": "A few current exclusivities, exactly as they appear inside your private space. What you see here is only a fragment — details, availability and the rest unlock after cooptation.",
       "eventsEyebrow": "↘ A few closed gatherings on the agenda",
       "evt01": {
@@ -1293,7 +1293,7 @@
       "ctaCode": "I have an invitation code",
       "modal": {
         "eyebrow": "08 · Cooptation access",
-        "title": "Introduce yourself.",
+        "title": "Introduce yourself",
         "lede": "A few details so we're aligned before the conversation. Valmont calls you back within 24 hours.",
         "modeToggleLabel": "Pick an access mode",
         "mode": {
@@ -1337,8 +1337,8 @@
       "eyebrow": "Contact",
       "eyebrowTeam": "Team",
       "countLabel": "Five presences",
-      "headlineA": "One voice.",
-      "headlineB": "A network behind it.",
+      "headlineA": "One voice",
+      "headlineB": "A network behind it",
       "header": "Your single point of contact",
       "focalTag": "01 · Point of contact",
       "role": "Operating founder",
