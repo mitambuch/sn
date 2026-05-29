@@ -88,7 +88,7 @@ const FormShell = ({
       <button
         type="submit"
         disabled={submitting}
-        className="border-border bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent inline-flex items-center gap-3 rounded-full border px-7 py-3.5 font-mono text-xs tracking-[0.3em] uppercase focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+        className="bg-on-ink text-ink hover:bg-on-ink/90 focus-visible:ring-on-ink/40 inline-flex items-center gap-3 rounded-full px-7 py-3.5 font-mono text-xs tracking-[0.3em] uppercase focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
       >
         {submitting ? '…' : label}
         {!submitting && <span aria-hidden="true">↗</span>}
