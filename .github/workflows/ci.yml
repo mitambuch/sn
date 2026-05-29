@@ -58,14 +58,17 @@ jobs:
           echo "📊 Largest files:"
           find dist/ -type f -exec du -sk {} \; | sort -rn | head -10
 
-          # Warn at 500KB, fail at 800KB. Current baseline ~380KB (April 2026)
-          # leaves ~2x headroom before the hard cap.
-          if [ "$BUILD_SIZE" -gt 800 ]; then
-            echo "::error::Bundle size (${BUILD_SIZE}KB) exceeds the 800KB fail threshold"
+          # Warn at 2500KB, fail at 3500KB. Baseline 2026-05-29 ~2200KB
+          # (25+ routes account + admin + landing, 2 variable fonts, Sanity
+          # vendor, R3F-ready). The legacy 380KB baseline targeted the empty
+          # SPA template; once real content + modules landed, the cap had to
+          # scale. Tighten when bundle splitting (manualChunks) is reworked.
+          if [ "$BUILD_SIZE" -gt 3500 ]; then
+            echo "::error::Bundle size (${BUILD_SIZE}KB) exceeds the 3500KB fail threshold"
             exit 1
           fi
-          if [ "$BUILD_SIZE" -gt 500 ]; then
-            echo "::warning::Bundle size (${BUILD_SIZE}KB) exceeds the 500KB warn threshold"
+          if [ "$BUILD_SIZE" -gt 2500 ]; then
+            echo "::warning::Bundle size (${BUILD_SIZE}KB) exceeds the 2500KB warn threshold"
           fi
 
       # WHY: a11y checks (alt text, cursor:none) are handled by eslint-plugin-jsx-a11y
