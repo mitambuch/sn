@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
-- **2026-05-27** — [Session — Vitrine launch sur saw-next.ch (LIVE) + punch list à finir](sessions/2026-05-27-1726.md)
-- **2026-05-27** — [Session — Team personas rework + backend consolidation push (demo-readiness)](sessions/2026-05-27-1430.md)
-- **2026-05-27** — [Session — Sawnext cleanup audit (Phase 1-5) + release v0.2.0](sessions/2026-05-27-1230.md)
+- **2026-05-29** — [Session — Release v1.1.0 (MVP Shipped & Sanity Live)](sessions/2026-05-29-1344.md)
+- **2026-05-29** — [Session — Landing language switcher + CI rouge éteint en 5 commits](sessions/2026-05-29-1339.md)
+- **2026-05-29** — [Session — Audit Sanity wiring + Footer câblé sur siteConfig](sessions/2026-05-29-1316.md)
 
 ## Active decisions (top 5)
 
@@ -19,6 +19,7 @@
 
 ## Open frictions
 
+- **2026-05-29** — [Friction — Pages detail mono-FR malgré audience FR/EN](frictions/2026-05-29-bilingual-detail-gap.md)
 - **2026-05-27** — [AccessRequestModal — Step 3 (Message) saute, submit direct depuis Step 2](frictions/2026-05-27-access-request-step3-skip.md)
 - **2026-05-11** — [Friction — Supabase Vault secret naming mismatch](frictions/2026-05-11-supabase-vault-secret-naming.md)
 - **2026-05-11** — [Friction — Supabase "Automatically expose new tables" toggle au setup projet](frictions/2026-05-11-supabase-expose-new-tables-toggle.md)
@@ -32,7 +33,7 @@
 
 ## Deep dive
 
-- Full catalogue (118 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (123 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
