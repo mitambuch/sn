@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.2](https://github.com/mitambuch/sn/compare/v1.2.1...v1.2.2) (2026-05-29)
+
+### 🐛 Fixes
+
+* **login:** removed forced `data-theme="dark"` from the page wrapper — /login now follows the html-level theme (default light) instead of being permanently dark. The submit button reverts to the adaptive `bg-fg text-bg` tokens. v1.2.1 fixed the wrong layer (button color) while the regression was the entire page being theme-forced.
+
 ## [1.2.1](https://github.com/mitambuch/sn/compare/v1.2.0...v1.2.1) (2026-05-29)
 
 ### 🐛 Fixes
