@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.1.1](https://github.com/mitambuch/sn/compare/v1.1.0...v1.1.1) (2026-05-29)
+
+Same-day patch — extends the Sanity wire-up to the home page footer
+and ships operator provisioning tooling.
+
+### 🐛 Fixes
+
+* **landing:** wire LandingFooter seat city to Sanity `landing.footerLocation` with i18n fallback (closes the v1.1.0 audit gap where the home page footer was i18n-only)
+
+### 🛠 Chore
+
+* **supabase:** add `create-admin-user.js` for operator provisioning (invite or password modes)
+* **ops:** add `audit-prod-data.js` + `sql/2026-05-29-salva-promote-and-audit.sql` for prod data audit + Salva admin promotion (postgres-role SQL bypasses column-level GRANTs that `sb_secret_*` keys lack)
+
+### 📝 Docs
+
+* **memory:** session journals 1406 + bilingual catalogue friction (carry-over) + swatch firewall block friction (enterprise client PAN-DB recategorization required)
+
 ## [1.1.0](https://github.com/mitambuch/sn/compare/v0.2.0...v1.1.0) (2026-05-29)
 
 Post-demo milestone — admin operator panel complete, Sanity Studio populated in production, public Footer reads global config from the CMS. The 1.0.0 jump reflects "MVP shipped at client demo on 2026-05-29 12:00" and 1.1.0 captures same-day polish + Sanity wire-up.
