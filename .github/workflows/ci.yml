@@ -9,6 +9,14 @@ on:
 permissions:
   contents: read
 
+# WHY: vite.config.ts enforces VITE_APP_URL on every load in production mode
+# (build + preview). Setting it at workflow scope means all jobs (validate,
+# e2e via `vite preview`, lighthouse via `vite preview`) inherit it.
+# saw-next.ch is the public prod domain — already in sitemap.xml + canonical
+# tags — so it lives inline, not as a secret.
+env:
+  VITE_APP_URL: https://saw-next.ch
+
 jobs:
   validate:
     name: Lint · Typecheck · Test · Build
@@ -41,12 +49,6 @@ jobs:
         run: node scripts/done.js --quick
 
       - name: Validate (lint + typecheck + test + build)
-        env:
-          # WHY: production build gate in vite.config.ts requires a public host
-          # URL for canonical/OG/sitemap. saw-next.ch is the production domain;
-          # it's public (already in sitemap.xml) so it lives inline, not as a
-          # secret. Vercel deploys use their own VITE_APP_URL env var.
-          VITE_APP_URL: https://saw-next.ch
         run: pnpm validate
 
       - name: Check bundle size
