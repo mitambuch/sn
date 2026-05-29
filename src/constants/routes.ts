@@ -45,6 +45,8 @@ export const ROUTES = {
   ADMIN: '/admin',
   ADMIN_CATALOGUE: '/admin/catalogue',
   ADMIN_INVITATIONS: '/admin/invitations',
+  ADMIN_SHARE_CODES: '/admin/share-codes',
+  ADMIN_ACCESS_REQUESTS: '/admin/access-requests',
   ADMIN_INQUIRIES: '/admin/inquiries',
   ADMIN_USERS: '/admin/users',
 

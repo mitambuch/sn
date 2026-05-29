@@ -17,7 +17,16 @@ import { useAuth } from '@context/AuthContext';
 import { useMediaQuery } from '@hooks/useMediaQuery';
 import { cn } from '@utils/cn';
 import type { LucideIcon } from 'lucide-react';
-import { Inbox, LayoutDashboard, Library, LogOut, Ticket, Users } from 'lucide-react';
+import {
+  Inbox,
+  LayoutDashboard,
+  Library,
+  LogOut,
+  MailQuestion,
+  Share2,
+  Ticket,
+  Users,
+} from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
@@ -31,7 +40,9 @@ interface NavItem {
 const ADMIN_NAV: NavItem[] = [
   { to: ROUTES.ADMIN, labelKey: 'admin.nav.dashboard', icon: LayoutDashboard, exact: true },
   { to: ROUTES.ADMIN_CATALOGUE, labelKey: 'admin.nav.catalogue', icon: Library },
+  { to: ROUTES.ADMIN_ACCESS_REQUESTS, labelKey: 'admin.nav.accessRequests', icon: MailQuestion },
   { to: ROUTES.ADMIN_INVITATIONS, labelKey: 'admin.nav.invitations', icon: Ticket },
+  { to: ROUTES.ADMIN_SHARE_CODES, labelKey: 'admin.nav.shareCodes', icon: Share2 },
   { to: ROUTES.ADMIN_INQUIRIES, labelKey: 'admin.nav.inquiries', icon: Inbox },
   { to: ROUTES.ADMIN_USERS, labelKey: 'admin.nav.users', icon: Users },
 ];

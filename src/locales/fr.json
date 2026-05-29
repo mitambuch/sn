@@ -479,9 +479,33 @@
     "nav": {
       "dashboard": "Tableau de bord",
       "catalogue": "Catalogue",
+      "accessRequests": "Demandes d'accès",
       "invitations": "Invitations",
+      "shareCodes": "Codes de partage",
       "inquiries": "Demandes",
       "users": "Utilisateurs"
+    },
+    "accessRequests": {
+      "title": "Demandes d'accès",
+      "lede": "Les visiteurs anonymes qui ont rempli le formulaire « Demander un accès » sur le site. Triage : nouveau → contacté → accepté/refusé.",
+      "fallbackNotice": "Supabase non configuré — vue désactivée.",
+      "moveTo": "Changer le statut",
+      "status": {
+        "new": "Nouveau",
+        "contacted": "Contacté",
+        "accepted": "Accepté",
+        "declined": "Refusé"
+      },
+      "field": {
+        "phone": "Tél",
+        "company": "Société",
+        "activity": "Activité"
+      }
+    },
+    "sanityNotice": {
+      "title": "Sanity Studio non configuré",
+      "body": "Pour ajouter ou modifier news, produits, événements, configure VITE_SANITY_PROJECT_ID dans Netlify puis redéploie. Une fois branché, ces liens ouvriront le Studio externe.",
+      "openStudio": "Ouvrir Sanity Studio"
     },
     "catalogue": {
       "title": "Catalogue",

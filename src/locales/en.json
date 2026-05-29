@@ -458,9 +458,33 @@
     "nav": {
       "dashboard": "Dashboard",
       "catalogue": "Catalogue",
+      "accessRequests": "Access requests",
       "invitations": "Invitations",
+      "shareCodes": "Share codes",
       "inquiries": "Inquiries",
       "users": "Users"
+    },
+    "accessRequests": {
+      "title": "Access requests",
+      "lede": "Anonymous visitors who filled the landing \"Request access\" form. Triage: new → contacted → accepted/declined.",
+      "fallbackNotice": "Supabase not configured — view disabled.",
+      "moveTo": "Change status",
+      "status": {
+        "new": "New",
+        "contacted": "Contacted",
+        "accepted": "Accepted",
+        "declined": "Declined"
+      },
+      "field": {
+        "phone": "Tel",
+        "company": "Company",
+        "activity": "Activity"
+      }
+    },
+    "sanityNotice": {
+      "title": "Sanity Studio not configured",
+      "body": "To add or edit news, products and events, set VITE_SANITY_PROJECT_ID in Netlify and redeploy. Once wired, these links open the external Studio.",
+      "openStudio": "Open Sanity Studio"
     },
     "catalogue": {
       "title": "Catalogue",
