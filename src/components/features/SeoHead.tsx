@@ -16,6 +16,8 @@
 import { useLocale } from '@app/LocaleProvider';
 import { isLocale, localePath, SUPPORTED_LOCALES } from '@config/i18n';
 import { siteConfig } from '@config/site';
+import { useSiteConfig } from '@hooks/useSiteConfig';
+import { resolveField } from '@lib/i18nField';
 import { useLocation } from 'react-router-dom';
 
 const OG_LOCALE_MAP: Record<string, string> = {
@@ -43,33 +45,44 @@ function stripLocale(pathname: string): string {
 
 export function SeoHead({
   title,
-  description = siteConfig.description,
-  ogImage = siteConfig.ogImage,
+  description,
+  ogImage,
   canonicalUrl,
   noIndex = false,
 }: SeoHeadProps) {
   const { pathname } = useLocation();
   const { locale } = useLocale();
+  const { data: sanityCfg } = useSiteConfig();
 
-  const fullTitle =
-    title && title !== siteConfig.name ? `${title} | ${siteConfig.name}` : siteConfig.name;
+  // Resolution chain : prop > Sanity siteConfig (locale) > local config defaults.
+  // Sanity values only land on hydrated client renders ; prerender-meta uses
+  // the local defaults at build time. Bots that execute React see the
+  // freshest Sanity values.
+  const resolvedDescription =
+    description ?? resolveField(sanityCfg?.seoDescription, locale) ?? siteConfig.description;
+  const resolvedOgImage = ogImage ?? siteConfig.ogImage;
+  const brandName = resolveField(sanityCfg?.siteName, locale) ?? siteConfig.name;
+  const sanitySeoTitle = resolveField(sanityCfg?.seoTitle, locale);
+
+  const baseTitle = sanitySeoTitle ?? brandName;
+  const fullTitle = title && title !== brandName ? `${title} | ${brandName}` : baseTitle;
 
   const basePath = stripLocale(pathname);
   const canonicalPath = localePath(locale, basePath);
   const pageUrl = canonicalUrl ?? `${siteConfig.url}${canonicalPath}`;
   const ogLocale = OG_LOCALE_MAP[locale] ?? siteConfig.locale;
 
-  const hasImage = Boolean(ogImage);
+  const hasImage = Boolean(resolvedOgImage);
   const imageUrl = hasImage
-    ? ogImage.startsWith('http')
-      ? ogImage
-      : `${siteConfig.url}${ogImage}`
+    ? resolvedOgImage.startsWith('http')
+      ? resolvedOgImage
+      : `${siteConfig.url}${resolvedOgImage}`
     : '';
 
   return (
     <>
       <title>{fullTitle}</title>
-      {description && <meta name="description" content={description} />}
+      {resolvedDescription && <meta name="description" content={resolvedDescription} />}
       <link rel="canonical" href={pageUrl} />
 
       {/* hreflang alternates — one per supported locale + x-default */}
@@ -89,7 +102,7 @@ export function SeoHead({
 
       {/* Open Graph — only emit image/description when configured */}
       <meta property="og:title" content={fullTitle} />
-      {description && <meta property="og:description" content={description} />}
+      {resolvedDescription && <meta property="og:description" content={resolvedDescription} />}
       {hasImage && <meta property="og:image" content={imageUrl} />}
       <meta property="og:url" content={pageUrl} />
       <meta property="og:type" content="website" />
@@ -98,7 +111,7 @@ export function SeoHead({
       {/* Twitter Card — summary_large_image only when an image exists */}
       <meta name="twitter:card" content={hasImage ? 'summary_large_image' : 'summary'} />
       <meta name="twitter:title" content={fullTitle} />
-      {description && <meta name="twitter:description" content={description} />}
+      {resolvedDescription && <meta name="twitter:description" content={resolvedDescription} />}
       {hasImage && <meta name="twitter:image" content={imageUrl} />}
 
       {/* No index (for staging, private pages, etc.) */}
