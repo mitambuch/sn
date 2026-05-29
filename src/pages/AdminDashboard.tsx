@@ -11,6 +11,7 @@ import { SectionHeader } from '@components/ui/SectionHeader';
 import { Stat } from '@components/ui/Stat';
 import { StatusPill } from '@components/ui/StatusPill';
 import { ROUTES } from '@constants/routes';
+import { useAccessRequestsAdmin } from '@hooks/useAccessRequestsAdmin';
 import { useInquiriesAdmin } from '@hooks/useInquiries';
 import { useInvitationsAdmin } from '@hooks/useInvitationsAdmin';
 import { useUsersAdmin } from '@hooks/useUsersAdmin';
@@ -20,6 +21,7 @@ import {
   CalendarDays,
   Compass,
   Frame,
+  MailQuestion,
   Newspaper,
   Sparkles,
   Ticket,
@@ -27,6 +29,8 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+
+import { hasSanity } from '@/lib/sanity';
 
 // WHY: Date.now() called once at module scope so react-hooks/purity is happy.
 const NOW_MS = Date.now();
@@ -73,6 +77,11 @@ const QUICK_ACTIONS: QuickAction[] = [
     labelKey: 'account.nav.news',
     icon: Newspaper,
   },
+  {
+    to: ROUTES.ADMIN_ACCESS_REQUESTS,
+    labelKey: 'admin.accessRequests.title',
+    icon: MailQuestion,
+  },
   { to: ROUTES.ADMIN_INVITATIONS, labelKey: 'admin.invitations.title', icon: Ticket },
 ];
 
@@ -83,9 +92,11 @@ export default function AdminDashboard() {
   const { rows: inquiries } = useInquiriesAdmin();
   const { rows: invitations } = useInvitationsAdmin();
   const { rows: users } = useUsersAdmin();
+  const { rows: accessRequests } = useAccessRequestsAdmin();
   const members = users.filter(u => u.role === 'client');
 
   const pending = inquiries.filter(i => i.status === 'new' || i.status === 'in_review').length;
+  const newAccessRequests = accessRequests.filter(a => a.status === 'new').length;
   const unusedCodes = invitations.filter(i => i.status === 'unused').length;
   const last7d = members.filter(u => {
     const days = (NOW_MS - new Date(u.createdAt).getTime()) / (1000 * 60 * 60 * 24);
@@ -105,8 +116,24 @@ export default function AdminDashboard() {
           as="h1"
         />
 
+        {/* ─── Sanity status notice ─── */}
+        {!hasSanity && (
+          <Card padding="md" className="gap-3">
+            <div className="flex items-start gap-3">
+              <span className="bg-warning/15 text-warning-text mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-mono text-xs">
+                !
+              </span>
+              <div className="flex flex-col gap-1">
+                <h3 className="text-fg text-sm font-medium">{t('admin.sanityNotice.title')}</h3>
+                <p className="text-muted text-sm leading-relaxed">{t('admin.sanityNotice.body')}</p>
+              </div>
+            </div>
+          </Card>
+        )}
+
         {/* ─── Stats ─── */}
-        <div className="grid gap-6 sm:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <Stat label={t('admin.accessRequests.title')} value={String(newAccessRequests)} />
           <Stat label={t('admin.stats.pendingInquiries')} value={String(pending)} />
           <Stat label={t('admin.stats.unusedCodes')} value={String(unusedCodes)} />
           <Stat label={t('admin.stats.signupsLast7d')} value={String(last7d)} />

@@ -3,6 +3,7 @@
 // Add new domain modules here as they land.
 // ═══════════════════════════════════════════════════
 
+export * from './accessRequest';
 export * from './artwork';
 export * from './auth';
 export * from './concierge';
