@@ -19,6 +19,7 @@
 
 ## Open frictions
 
+- **2026-05-29** — [Friction — Firewall Swatch Group bloque saw-next.ch en "high-risk"](frictions/2026-05-29-swatch-firewall-block.md)
 - **2026-05-29** — [Friction — Pages detail mono-FR malgré audience FR/EN](frictions/2026-05-29-bilingual-detail-gap.md)
 - **2026-05-27** — [AccessRequestModal — Step 3 (Message) saute, submit direct depuis Step 2](frictions/2026-05-27-access-request-step3-skip.md)
 - **2026-05-11** — [Friction — Supabase Vault secret naming mismatch](frictions/2026-05-11-supabase-vault-secret-naming.md)
@@ -33,7 +34,7 @@
 
 ## Deep dive
 
-- Full catalogue (124 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (125 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
