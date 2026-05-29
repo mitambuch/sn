@@ -95,7 +95,7 @@
     "enter": "Découvrir mon espace",
     "step1": {
       "eyebrow": "Bienvenue",
-      "title": "Sawnext, votre conciergerie privée.",
+      "title": "Sawnext, votre conciergerie privée",
       "lede": "Une sélection sur invitation, sans bruit. Activez votre code pour entrer dans votre espace."
     },
     "step2": {
@@ -105,7 +105,7 @@
     },
     "step3": {
       "eyebrow": "Votre conciergerie dédiée",
-      "title": "Valmont Seragone Mato vous accompagne.",
+      "title": "Valmont Seragone Mato vous accompagne",
       "lede": "Un seul interlocuteur, joignable à tout moment depuis votre espace. Réponse sous 30 minutes ouvrées, NDA standard activé."
     }
   },
@@ -114,9 +114,9 @@
     "signOut": "Se déconnecter",
     "tagline": "Accès vetté, sur invitation",
     "tagEyebrow": "Espace privé",
-    "titleA": "Espace privé.",
-    "titleB": "Trois portes, une seule clé.",
-    "titleModal": "Connexion.",
+    "titleA": "Espace privé",
+    "titleB": "Trois portes, une seule clé",
+    "titleModal": "Connexion",
     "ledeModal": "Choisissez votre mode d’accès.",
     "lede": "Vous avez déjà un accès. Choisissez le mode qui vous convient : votre couple email + mot de passe, un lien d’accès unique envoyé par email, ou le code d’invitation que Valmont vous a transmis.",
     "modeEmail": "Email et mot de passe",
@@ -1084,15 +1084,15 @@
       "eyebrow": "Trois verbes, un engagement",
       "act": "Acte",
       "identify": {
-        "title": "Identifier.",
+        "title": "Identifier",
         "desc": "Lire le brief, isoler le besoin réel, distinguer la commande du symptôme. Cinq questions, jamais plus."
       },
       "structure": {
-        "title": "Structurer.",
+        "title": "Structurer",
         "desc": "Cadrer le périmètre, sélectionner les partenaires utiles, écrire le plan. Tout est consigné, tout est daté."
       },
       "facilitate": {
-        "title": "Faciliter.",
+        "title": "Faciliter",
         "desc": "Lever les obstacles silencieusement, jusqu’à la livraison. La discrétion est un livrable comme un autre."
       }
     },
@@ -1159,7 +1159,7 @@
       "previewTag": "Domaine sélectionné",
       "01": {
         "name": "Haute horlogerie",
-        "title": "Haute horlogerie.",
+        "title": "Haute horlogerie",
         "desc": "Accès direct aux manufactures. Au-delà de l’acte d’achat, nous créons la relation entre le client et la maison.",
         "feat1": "Visites privées",
         "feat2": "Pièces rares",
@@ -1168,7 +1168,7 @@
       },
       "02": {
         "name": "Biens off-market",
-        "title": "Biens off-market.",
+        "title": "Biens off-market",
         "desc": "Propriétés et actifs rares hors marché public. Cercle restreint. Transactions confidentielles.",
         "feat1": "Propriétés d’exception",
         "feat2": "Investissements confidentiels",
@@ -1177,7 +1177,7 @@
       },
       "03": {
         "name": "Immobilier sur mesure",
-        "title": "Immobilier sur mesure.",
+        "title": "Immobilier sur mesure",
         "desc": "Conception et coordination de propriétés d’exception. Architectes sélectionnés.",
         "feat1": "Compréhension des attentes",
         "feat2": "Sélection des partenaires",
@@ -1186,7 +1186,7 @@
       },
       "04": {
         "name": "Art & collection",
-        "title": "Art & collection.",
+        "title": "Art & collection",
         "desc": "Acquisitions d’œuvres et d’objets rares. Mise en relation avec galeristes et experts.",
         "feat1": "Grands maîtres",
         "feat2": "Artistes contemporains",
@@ -1195,7 +1195,7 @@
       },
       "05": {
         "name": "Voyages & expériences",
-        "title": "Voyages & expériences.",
+        "title": "Voyages & expériences",
         "desc": "Voyages entièrement sur mesure. Aviation privée, croisières, séjours confidentiels.",
         "feat1": "Aviation privée",
         "feat2": "Yachting",
@@ -1204,7 +1204,7 @@
       },
       "06": {
         "name": "Événementiel VIP",
-        "title": "Événementiel VIP.",
+        "title": "Événementiel VIP",
         "desc": "Accès privilégiés aux plus grands rendez-vous internationaux. Hospitalité sur mesure.",
         "feat1": "Sport haut niveau",
         "feat2": "Festivals culturels",
@@ -1213,7 +1213,7 @@
       },
       "07": {
         "name": "Lifestyle management",
-        "title": "Lifestyle management.",
+        "title": "Lifestyle management",
         "desc": "Tout ce qui ne rentre pas ailleurs. Recherche, organisation, accompagnement.",
         "feat1": "Objets rares",
         "feat2": "Événements privés",
@@ -1222,7 +1222,7 @@
       },
       "08": {
         "name": "Mise en relation",
-        "title": "Mise en relation.",
+        "title": "Mise en relation",
         "desc": "Connexions confidentielles entre clients, investisseurs, entrepreneurs.",
         "feat1": "Opportunités d’affaires",
         "feat2": "Collaborations",
@@ -1231,7 +1231,7 @@
       },
       "09": {
         "name": "Gestion de patrimoine",
-        "title": "Gestion de patrimoine.",
+        "title": "Gestion de patrimoine",
         "desc": "Pont avec des partenaires financiers suisses de premier plan.",
         "feat1": "Solutions d’investissement",
         "feat2": "Gestion de portefeuille",
@@ -1240,7 +1240,7 @@
       },
       "10": {
         "name": "Carrière sportive",
-        "title": "Carrière sportive.",
+        "title": "Carrière sportive",
         "desc": "Accompagnement d’athlètes de haut niveau. Gestion d’image, structuration.",
         "feat1": "Gestion d’image",
         "feat2": "Partenariats de marque",
@@ -1251,8 +1251,8 @@
     "access": {
       "tagPrimary": "Première porte",
       "eyebrow": "08 · Aperçu du catalogue",
-      "heroTitleA": "Le catalogue,",
-      "heroTitleB": "en aperçu.",
+      "heroTitleA": "Le catalogue",
+      "heroTitleB": "en aperçu",
       "heroLede": "Quelques exclusivités du moment, telles qu'elles apparaissent dans votre espace privé. Ce que vous voyez ici n'est qu'un fragment — les détails, la disponibilité et le reste ne sont accessibles qu'après cooptation.",
       "eventsEyebrow": "↘ Quelques rendez-vous fermés en cours",
       "evt01": {
@@ -1293,7 +1293,7 @@
       "ctaCode": "J'ai un code d'invitation",
       "modal": {
         "eyebrow": "08 · Accès cooptation",
-        "title": "Présentez-vous.",
+        "title": "Présentez-vous",
         "lede": "Quelques informations pour qu'on se comprenne avant la conversation. Valmont vous rappelle sous 24 heures.",
         "modeToggleLabel": "Choisir un mode d'accès",
         "mode": {
@@ -1337,8 +1337,8 @@
       "eyebrow": "Interlocuteur",
       "eyebrowTeam": "Équipe",
       "countLabel": "Cinq présences",
-      "headlineA": "Une voix.",
-      "headlineB": "Un réseau derrière.",
+      "headlineA": "Une voix",
+      "headlineB": "Un réseau derrière",
       "header": "Votre point de contact unique",
       "focalTag": "01 · Point de contact",
       "role": "Fondateur opérationnel",

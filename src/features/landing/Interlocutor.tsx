@@ -258,7 +258,7 @@ export const Interlocutor = () => {
               <h3 className="font-mono text-[clamp(1.5rem,3.5vw,3rem)] leading-[0.92] font-medium tracking-tight uppercase">
                 {focal.firstName}
                 <br />
-                {focal.lastName}.
+                {focal.lastName}
               </h3>
             </div>
             <div
@@ -364,7 +364,7 @@ export const Interlocutor = () => {
                       {resolveTag(member)}
                     </span>
                     <h3 className="truncate font-mono text-base leading-tight font-medium tracking-tight uppercase md:text-lg">
-                      {member.firstName} {member.lastName}.
+                      {member.firstName} {member.lastName}
                     </h3>
                   </div>
                   <span
