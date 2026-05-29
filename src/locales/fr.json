@@ -467,7 +467,28 @@
       "statusFor": "Statut de la demande {{source}}"
     },
     "users": {
-      "title": "Membres"
+      "title": "Utilisateurs",
+      "lede": "Gestion des comptes — membres et opérateurs. Promotion/rétrogradation directe en cliquant l'action sur chaque ligne.",
+      "roleLabel": "Rôle",
+      "roles": {
+        "client": "Membre",
+        "admin": "Opérateur"
+      },
+      "actions": "Actions",
+      "promote": "Promouvoir opérateur",
+      "demote": "Rétrograder membre",
+      "promoted": "{{name}} est désormais opérateur.",
+      "demoted": "{{name}} est désormais membre.",
+      "confirmPromote": "Promouvoir {{name}} au rôle d'opérateur ? Cette personne pourra accéder à l'admin.",
+      "confirmDemote": "Rétrograder {{name}} au rôle de membre ? L'accès admin sera révoqué.",
+      "cannotChangeSelf": "Tu ne peux pas changer ton propre rôle.",
+      "searchPlaceholder": "Chercher nom ou email…",
+      "tabs": {
+        "label": "Filtrer par rôle",
+        "all": "Tous",
+        "members": "Membres",
+        "admins": "Opérateurs"
+      }
     },
     "stats": {
       "pendingInquiries": "Demandes en attente",
