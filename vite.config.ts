@@ -73,7 +73,7 @@ export default defineConfig(({ mode }) => {
           // Multi-locale sitemap: emit every canonical path under each locale
           // prefix (i18n-sanity.md lesson #7). Must stay in sync with
           // SUPPORTED_LOCALES from src/config/i18n.ts.
-          const LOCALES = ['fr', 'de', 'en'] as const;
+          const LOCALES = ['fr', 'en'] as const;
           const PATHS = ['', '/playground', '/lab'] as const;
           const dynamicRoutes = LOCALES.flatMap(l => PATHS.map(p => `/${l}${p}`));
           return Sitemap({
