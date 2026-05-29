@@ -14,8 +14,10 @@
 //       `landing-singleton` (preferred for client-editable text).
 // ═══════════════════════════════════════════════════
 
+import { useLocale } from '@app/LocaleProvider';
 import { BrandMark } from '@components/brand/BrandMark';
 import { SeoHead } from '@components/features/SeoHead';
+import { SUPPORTED_LOCALES } from '@config/i18n';
 import { AccessRequestModalProvider } from '@context/AccessRequestModalContext';
 import { LandingContentProvider, useLandingContext } from '@context/LandingContentContext';
 import { LoginModalProvider } from '@context/LoginModalContext';
@@ -60,6 +62,7 @@ function HomeContent() {
   const { t, i18n } = useTranslation();
   const { data: landing } = useLandingContext();
   const locale = (i18n.language as 'fr' | 'en') ?? 'fr';
+  const { locale: routeLocale, setLocale } = useLocale();
   const { openLogin } = useLoginModal();
   const { openAccessRequest } = useAccessRequestModal();
   const [indexOpen, setIndexOpen] = useState(false);
@@ -121,6 +124,9 @@ function HomeContent() {
         title={t('landing.index.title')}
         indexLabel={t('landing.indexButton')}
         visible={loaderDone}
+        currentLocale={routeLocale}
+        onLocaleChange={setLocale}
+        langSwitcherLabel={t('a11y.languageSwitcher')}
       />
 
       <IndexOverlay
@@ -229,6 +235,9 @@ interface TopCornerChromeProps {
    *  keep the brand mark off-screen until the Loader has fully lifted
    *  away. */
   visible: boolean;
+  currentLocale: 'fr' | 'en';
+  onLocaleChange: (next: 'fr' | 'en') => void;
+  langSwitcherLabel: string;
 }
 
 /** Top-corner chrome — BrandMark (cross-fades SAW↗NEXT ↔ S↗N on scroll)
@@ -244,6 +253,9 @@ const TopCornerChrome = ({
   title,
   indexLabel,
   visible,
+  currentLocale,
+  onLocaleChange,
+  langSwitcherLabel,
 }: TopCornerChromeProps) => {
   const text = 'text-white';
   const border = 'border-white';
@@ -289,24 +301,61 @@ const TopCornerChrome = ({
           <BrandMark variant="full" className="invisible text-base whitespace-nowrap md:text-lg" />
         </span>
       </a>
-      <button
-        type="button"
-        onClick={openIndex}
-        className={cn(
-          'pointer-events-auto inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs tracking-widest uppercase',
-          text,
-          border,
-        )}
-        aria-haspopup="dialog"
-        aria-expanded={indexOpen}
-      >
-        <span aria-hidden="true" className="flex flex-col gap-0.5">
-          <span className={cn('block h-px w-3.5', bar)} />
-          <span className={cn('block h-px w-3.5', bar)} />
-          <span className={cn('block h-px w-3.5', bar)} />
-        </span>
-        {indexLabel}
-      </button>
+      <div className="flex items-center gap-3 md:gap-4">
+        <div
+          role="group"
+          aria-label={langSwitcherLabel}
+          className={cn(
+            'pointer-events-auto inline-flex items-center gap-1.5 font-mono text-xs tracking-widest uppercase',
+            text,
+          )}
+        >
+          {SUPPORTED_LOCALES.map((lng, idx) => {
+            const isActive = currentLocale === lng;
+            return (
+              <span key={lng} className="inline-flex items-center gap-1.5">
+                {idx > 0 && (
+                  <span aria-hidden="true" className="opacity-40">
+                    /
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!isActive) onLocaleChange(lng);
+                  }}
+                  aria-pressed={isActive}
+                  aria-label={`${langSwitcherLabel} — ${lng.toUpperCase()}`}
+                  className={cn(
+                    'duration-base transition-opacity',
+                    isActive ? 'opacity-100' : 'opacity-50 hover:opacity-100',
+                  )}
+                >
+                  {lng}
+                </button>
+              </span>
+            );
+          })}
+        </div>
+        <button
+          type="button"
+          onClick={openIndex}
+          className={cn(
+            'pointer-events-auto inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs tracking-widest uppercase',
+            text,
+            border,
+          )}
+          aria-haspopup="dialog"
+          aria-expanded={indexOpen}
+        >
+          <span aria-hidden="true" className="flex flex-col gap-0.5">
+            <span className={cn('block h-px w-3.5', bar)} />
+            <span className={cn('block h-px w-3.5', bar)} />
+            <span className={cn('block h-px w-3.5', bar)} />
+          </span>
+          {indexLabel}
+        </button>
+      </div>
     </div>
   );
 };
