@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.2.0](https://github.com/mitambuch/sn/compare/v1.1.1...v1.2.0) (2026-05-29)
+
+Same-day minor — finishes the Sanity wire-up by surfacing SEO meta defaults from the singleton and populating the landing-singleton in prod.
+
+### ✨ Features
+
+* **seo:** SeoHead resolves description / siteName / seoTitle from Sanity `siteConfig-singleton` (LocaleField chain via `resolveField`) with prop > Sanity > local config defaults
+* **sanity:** surgical `push-landing.js` for landing-singleton-only writes (mirror of push-site-config.js)
+
+### 🛠 Chore
+
+* **sanity:** `landing-singleton` pushed to k2xrvftw/production with the 42 fields from `studio/fixtures/sawnext-seed.json` — the home page footer (LandingFooter wired in v1.1.1) now renders Sanity-driven content
+
+### 📝 Known limitation
+
+* Static prerender (`scripts/prerender-meta.js` postbuild) still emits local config defaults for the build-time HTML. Bots that execute JavaScript pick up the Sanity values within ~100ms after hydration. Build-time Sanity fetch deferred to v1.3.x.
+
 ## [1.1.1](https://github.com/mitambuch/sn/compare/v1.1.0...v1.1.1) (2026-05-29)
 
 Same-day patch — extends the Sanity wire-up to the home page footer
