@@ -82,10 +82,10 @@ dégradation utilisateur).
 ## Action follow-up
 
 - Owner décide quand ce refactor entre dans une release (probablement
-  v0.4.x ou v0.5.0).
+  v1.2.x ou plus tard).
 - Avant la release : remettre la liste exhaustive des spots
   `event.title` / `property.title` etc. via grep + checklist.
-- Le `useSiteConfig` câblé dans le Footer ce jour-ci sert d'exemple
+- Le `useSiteConfig` câblé dans le Footer le 2026-05-29 sert d'exemple
   du pattern `resolveFieldOrFallback` côté consumer — appliquer le
   même pattern à toutes les fiches.
 
