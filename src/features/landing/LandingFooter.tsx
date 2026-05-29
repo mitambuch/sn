@@ -8,16 +8,32 @@
 //       (no document-version metadata in the visible footer), ticker
 //       handled by TerminalBar.
 // WHEN: Last block of the landing, before the TerminalBar.
-// CHANGE COLUMNS: edit landing.footer.* in src/locales/{fr,en}.json.
+// CHANGE COLUMNS:
+//       - Seat city : edit via Sanity Studio (landing singleton →
+//         footerLocation field). Falls back to landing.footer.seatCity
+//         in src/locales/{fr,en}.json when Sanity is empty.
+//       - Nav / legal / canton / type : src/locales/{fr,en}.json under
+//         landing.footer.*
 // ═══════════════════════════════════════════════════
 
+import { useLocale } from '@app/LocaleProvider';
+import { useLandingContext } from '@context/LandingContentContext';
 import { AnimatedFooterMark } from '@features/landing/AnimatedFooterMark';
+import { resolveFieldOrFallback } from '@lib/i18nField';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
 /** Landing footer — compact 3-col block + infinite breathing wordmark. */
 export const LandingFooter = () => {
   const { t } = useTranslation();
+  const { locale } = useLocale();
+  const { data: landing } = useLandingContext();
+
+  const seatCity = resolveFieldOrFallback(
+    landing?.footerLocation,
+    locale,
+    t('landing.footer.seatCity'),
+  );
 
   return (
     <footer className="bg-bg relative overflow-hidden">
@@ -40,7 +56,7 @@ export const LandingFooter = () => {
 
         <FooterCol label={t('landing.footer.colSeatLabel')}>
           <span className="text-fg block py-0.5 text-[11px] tracking-normal normal-case">
-            {t('landing.footer.seatCity')}
+            {seatCity}
           </span>
           <span className="text-muted block py-0.5 text-[11px] tracking-normal normal-case">
             {t('landing.footer.seatCanton')}
