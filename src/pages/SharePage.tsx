@@ -227,16 +227,32 @@ export default function SharePage() {
       new Date(iso).toLocaleTimeString('fr-CH', { hour: '2-digit', minute: '2-digit' });
 
     switch (richMock._type) {
-      case 'event':
+      case 'event': {
+        // WHY: year-round / free-text events have no calendar date — show the
+        // label instead of "Invalid Date" from a missing startsAt.
+        const mode = richMock.dateMode ?? 'exact';
+        const dateRows =
+          mode === 'exact' && richMock.startsAt
+            ? [
+                { label: 'Date', value: fmtDate(richMock.startsAt) },
+                { label: 'Horaire', value: fmtTime(richMock.startsAt) },
+              ]
+            : [
+                {
+                  label: 'Date',
+                  value:
+                    mode === 'allYear' ? 'Toute l’année' : (richMock.dateLabel ?? 'Sur demande'),
+                },
+              ];
         return [
-          { label: 'Date', value: fmtDate(richMock.startsAt) },
-          { label: 'Horaire', value: fmtTime(richMock.startsAt) },
+          ...dateRows,
           { label: 'Lieu', value: richMock.venue ?? '—' },
           { label: 'Ville', value: `${richMock.city} · ${richMock.countryCode}` },
           { label: 'Capacité', value: String(richMock.capacity) },
           { label: 'Places SAW NEXT', value: String(richMock.allocatedSeats) },
           { label: 'Dress code', value: richMock.dressCode.replace(/-/g, ' ') },
         ];
+      }
       case 'property':
         return [
           { label: 'Type', value: richMock.kind.replace(/-/g, ' ') },

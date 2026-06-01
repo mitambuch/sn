@@ -645,6 +645,7 @@
   },
   "events": {
     "programme": "Programme",
+    "allYear": "All year",
     "gallery": "Gallery",
     "category": {
       "gala": "Gala",

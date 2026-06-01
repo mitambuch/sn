@@ -14,6 +14,7 @@ import { Card } from '@components/ui/Card';
 import { HeartButton } from '@components/ui/HeartButton';
 import { useTranslation } from 'react-i18next';
 
+import { resolveEventDate } from '@/features/events/eventDate';
 import type { Event } from '@/types/event';
 
 interface EventCardProps {
@@ -38,10 +39,7 @@ export const EventCard = ({
   countdownEndsAt,
 }: EventCardProps) => {
   const { t } = useTranslation();
-  const date = new Date(event.startsAt);
-  const day = date.toLocaleDateString(locale, { day: '2-digit' });
-  const month = date.toLocaleDateString(locale, { month: 'short' });
-  const time = date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+  const { badge, time } = resolveEventDate(event, locale, t);
 
   return (
     <Card href={href} padding="none" important={important} className={className}>
@@ -57,7 +55,7 @@ export const EventCard = ({
           className="top-3 left-3"
         />
       ) : (
-        <Card.Badge top={day} bottom={month} />
+        <Card.Badge top={badge.top} bottom={badge.bottom} />
       )}
       <Card.Overlay>
         <HeartButton
@@ -74,7 +72,7 @@ export const EventCard = ({
         <Card.Title>{event.title}</Card.Title>
         <Card.Stats>
           <Card.Stat label={t('events.meta.venue')} value={event.venue} />
-          <Card.Stat label={t('events.meta.time')} value={time} />
+          {time && <Card.Stat label={t('events.meta.time')} value={time} />}
         </Card.Stats>
       </Card.Body>
     </Card>
