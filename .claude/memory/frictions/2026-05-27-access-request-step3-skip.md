@@ -4,10 +4,20 @@ date: 2026-05-27
 type: friction
 tags: [#auth, #forms, #friction, #client-specific, #p1]
 scope: client-specific
-status: active
+status: resolved
 ---
 
 # AccessRequestModal — Step 3 (Message) saute, submit direct depuis Step 2
+
+> **RÉSOLU 2026-06-01** (re-signalé par le client). Diagnostic : le code
+> de navigation du wizard est **correct** — prouvé par un test de
+> régression (`src/features/access/__tests__/AccessRequestModal.test.tsx`)
+> qui rejoue le parcours et confirme que la step Message (textarea +
+> bouton Envoyer) n'apparaît qu'en dernier, jamais de submit avant. Les
+> steps 0/1 n'ont aucun bouton submit → Enter ne peut pas soumettre.
+> **Cause réelle du bug live = déploiement périmé** : le site tournait
+> une build d'avant le fix du formulaire. Résolution = redéployer `main`
+> (Netlify auto-build sur push). Le test sert désormais de garde-fou.
 
 ## Symptôme reporté (owner, 2026-05-27 ~16:45)
 
