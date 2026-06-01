@@ -5,17 +5,17 @@
 
 ## Recent sessions (top 3)
 
+- **2026-06-01** — [Session — Dates d'événement flexibles (après-midi)](sessions/2026-06-01-1633.md)
 - **2026-06-01** — [Session — Sync git + force dark Studio + bilingue catalogue (matin)](sessions/2026-06-01-1100.md)
 - **2026-05-29** — [Session — v1.2.1 patch : login submit blanc](sessions/2026-05-29-1615.md)
-- **2026-05-29** — [Session — v1.2.0 release : SEO + landing-singleton sur Sanity](sessions/2026-05-29-1449.md)
 
 ## Active decisions (top 5)
 
+- **2026-06-01** — [Dates d'événement flexibles — mode exact / toute l'année / texte libre](decisions/2026-06-01-event-flexible-dates.md) · #sanity #i18n #content #decision
 - **2026-05-14** — [Landing copy mirrored to a Sanity singleton with i18n fallback](decisions/2026-05-14-sanity-landing-singleton.md) · #sanity #i18n #content #decision
 - **2026-05-14** — [Atomic single-use invitation redemption via Postgres RPC](decisions/2026-05-14-atomic-redemption-rpc.md) · #auth #security #decision #client-specific
 - **2026-05-12** — [Brand identity — SAW↗NEXT logo system + fonts + arrow vocabulary](decisions/2026-05-12-brand-identity-saw-next.md) · #design #decision #client-specific #active
 - **2026-04-29** — [Run autonome 5h — protocole + checklist + stop conditions](decisions/2026-04-29-autonomous-5h-run-plan.md) · #workflow #decision #client-specific #p0
-- **2026-04-28** — [Modèle business — inquiry-based, pas e-commerce](decisions/2026-04-28-business-model-inquiry-not-ecommerce.md) · #workflow #decision #client-specific
 
 ## Open frictions
 
@@ -33,7 +33,7 @@
 
 ## Deep dive
 
-- Full catalogue (129 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (131 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
