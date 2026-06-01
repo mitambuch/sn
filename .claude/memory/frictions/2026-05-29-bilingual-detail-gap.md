@@ -4,10 +4,25 @@ date: 2026-05-29
 type: friction
 tags: [#i18n, #sanity, #content, #client-specific]
 scope: client-specific
-status: active
+status: resolved
 ---
 
 # Friction — Pages detail mono-FR malgré audience FR/EN
+
+## ✅ RÉSOLU le 2026-06-01 (commit f773c13)
+
+Approche retenue **différente** du plan proposé ci-dessous : au lieu du
+refactor de types (`LocaleField` partout + `resolveFieldOrFallback` dans
+~20 spots de pages + migration mocks), la locale est résolue **au niveau
+GROQ**. Helpers `L/LPT/LARR` dans `sanityQueries.ts` émettent
+`select($locale == "en" => coalesce(field.en, field.fr), field.fr)` ;
+`useSanityCollection` + `useSanityItem` lisent la locale depuis i18next
+(`hooks/` ne peut pas importer `app/`) et la passent en param `$locale`.
+
+Pourquoi mieux : la shape retournée reste mono-string → **zéro** changement
+de types, mocks ou pages. ~5× moins de surface, pas de gros PR risqué.
+Hors scope : `useTeamMembers` (query propre) + outil admin → restent FR.
+Le plan original est conservé ci-dessous pour mémoire historique.
 
 ## Ce qui bloque
 
