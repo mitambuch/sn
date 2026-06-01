@@ -8,6 +8,7 @@
 // ═══════════════════════════════════════════════════
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { hasSanity, sanityClient } from '@/lib/sanity';
 
@@ -28,6 +29,13 @@ export function useSanityItem<TResult, TFallback = TResult>(
   opts: UseSanityItemOpts<TResult, TFallback>,
 ): UseSanityItemResult<TResult, TFallback> {
   const { query, fallback, transform } = opts;
+  // WHY: detail queries project editorial fields via $locale (see
+  // sanityQueries.ts) — pass the active locale so the fiche renders in
+  // the visitor's language with a FR fallback. Switching locale refetches.
+  // Locale comes from i18next (kept in sync with the URL by LocaleProvider)
+  // — hooks/ may not import from app/, and this is the canonical signal.
+  const { i18n } = useTranslation();
+  const locale = i18n.language === 'en' ? 'en' : 'fr';
 
   const [data, setData] = useState<TResult | TFallback | null>(fallback);
   const [loading, setLoading] = useState<boolean>(hasSanity);
@@ -45,7 +53,7 @@ export function useSanityItem<TResult, TFallback = TResult>(
     let cancelled = false;
 
     sanityClient
-      .fetch<unknown>(query)
+      .fetch<unknown>(query, { locale })
       .then(row => {
         if (cancelled) return;
         if (!row) {
@@ -70,7 +78,7 @@ export function useSanityItem<TResult, TFallback = TResult>(
     return () => {
       cancelled = true;
     };
-  }, [query, fallback, transform]);
+  }, [query, fallback, transform, locale]);
 
   return { data, loading, error, usingFallback };
 }
