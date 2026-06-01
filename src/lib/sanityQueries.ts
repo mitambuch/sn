@@ -10,7 +10,15 @@
 //
 //       The transform functions in `sanityTransform.ts` adapt each
 //       Sanity doc to the internal TypeScript type.
-// WHEN: useSanityCollection() + useSanityItem() consume these.
+// WHEN: useSanityCollection() + useSanityItem() consume these. Both
+//       hooks inject a `$locale` param ('fr' | 'en') read from the
+//       active LocaleProvider, so every localised projection below
+//       resolves to the visitor's language with a FR fallback.
+// i18n: editorial fields are localeString/localeText/localeRichText in
+//       Sanity. We flatten them HERE (not in React) via the L/LPT/LARR
+//       helpers — the returned shape stays mono-string, so pages, types
+//       and mocks are untouched. Fixes the FR-only detail-page bug
+//       (friction 2026-05-29-bilingual-detail-gap).
 // ═══════════════════════════════════════════════════
 
 /**
@@ -20,12 +28,33 @@
  */
 const PUBLIC_VISIBILITY = `visibility in ["public", "shareCode"]`;
 
+// ─── Localised projection helpers ─────────────────────────────────
+// `$locale` is supplied by the consuming hook. `select` + `coalesce`
+// are core GROQ (no reliance on dynamic-key access). FR is the final
+// fallback so a half-translated doc never renders blank.
+
+/** Localised scalar (localeString / localeText) → active-locale string. */
+const L = (field: string) =>
+  `select($locale == "en" => coalesce(${field}.en, ${field}.fr), ${field}.fr)`;
+
+/** Localised portable text → plain string in the active locale. */
+const LPT = (field: string) =>
+  `pt::text(select($locale == "en" => coalesce(${field}.en, ${field}.fr), ${field}.fr))`;
+
+/** Localised array-of-localeString → array of active-locale strings. */
+const LARR = (field: string) => `${field}[]select($locale == "en" => coalesce(@.en, @.fr), @.fr)`;
+
+/** Localised `label` inside an array element (element has a `label` localeString). */
+const L_LABEL = `select($locale == "en" => coalesce(label.en, label.fr), label.fr)`;
+
+/** Localised value when the array element *is itself* the localeString. */
+const L_SELF = `select($locale == "en" => coalesce(en, fr), fr)`;
+
 // ─── Events ───────────────────────────────────────────────────────
 export const GROQ_EVENTS_LIST = `*[_type == "event" && ${PUBLIC_VISIBILITY}] | order(startsAt asc){
   "id": _id,
   "slug": slug.current,
-  "title": title.fr,
-  "titleEn": title.en,
+  "title": ${L('title')},
   category,
   startsAt,
   endsAt,
@@ -35,10 +64,9 @@ export const GROQ_EVENTS_LIST = `*[_type == "event" && ${PUBLIC_VISIBILITY}] | o
   capacity,
   allocatedSeats,
   dressCode,
-  "summary": summary.fr,
-  "summaryEn": summary.en,
-  "description": pt::text(description.fr),
-  programme[]{ time, "label": label.fr },
+  "summary": ${L('summary')},
+  "description": ${LPT('description')},
+  programme[]{ time, "label": ${L_LABEL} },
   "images": images[]{ "src": asset->url, "alt": alt }
 }`;
 
@@ -46,7 +74,7 @@ export const GROQ_EVENT_DETAIL = (slug: string) =>
   `*[_type == "event" && slug.current == "${slug}"][0]{
     "id": _id,
     "slug": slug.current,
-    "title": title.fr,
+    "title": ${L('title')},
     category,
     startsAt,
     endsAt,
@@ -56,9 +84,9 @@ export const GROQ_EVENT_DETAIL = (slug: string) =>
     capacity,
     allocatedSeats,
     dressCode,
-    "summary": summary.fr,
-    "description": pt::text(description.fr),
-    programme[]{ time, "label": label.fr },
+    "summary": ${L('summary')},
+    "description": ${LPT('description')},
+    programme[]{ time, "label": ${L_LABEL} },
     "images": images[]{ "src": asset->url, "alt": alt }
   }`;
 
@@ -66,10 +94,10 @@ export const GROQ_EVENT_DETAIL = (slug: string) =>
 export const GROQ_PROPERTIES_LIST = `*[_type == "property" && ${PUBLIC_VISIBILITY}] | order(_createdAt desc){
   "id": _id,
   "slug": slug.current,
-  "title": title.fr,
+  "title": ${L('title')},
   kind,
   transactionType,
-  "summary": summary.fr,
+  "summary": ${L('summary')},
   city,
   region,
   countryCode,
@@ -77,7 +105,7 @@ export const GROQ_PROPERTIES_LIST = `*[_type == "property" && ${PUBLIC_VISIBILIT
   bathrooms,
   livingArea,
   landArea,
-  amenities[]{ "label": fr },
+  amenities[]{ "label": ${L_SELF} },
   price,
   availability,
   "images": images[]{ "src": asset->url, "alt": alt }
@@ -87,7 +115,7 @@ export const GROQ_PROPERTIES_LIST = `*[_type == "property" && ${PUBLIC_VISIBILIT
 export const GROQ_TIMEPIECES_LIST = `*[_type == "timepiece" && ${PUBLIC_VISIBILITY}] | order(_createdAt desc){
   "id": _id,
   "slug": slug.current,
-  "title": title.fr,
+  "title": ${L('title')},
   brand,
   reference,
   caseDiameter,
@@ -96,7 +124,7 @@ export const GROQ_TIMEPIECES_LIST = `*[_type == "timepiece" && ${PUBLIC_VISIBILI
   productionYear,
   condition,
   papers,
-  "summary": summary.fr,
+  "summary": ${L('summary')},
   price,
   "images": images[]{ "src": asset->url, "alt": alt }
 }`;
@@ -105,15 +133,15 @@ export const GROQ_TIMEPIECES_LIST = `*[_type == "timepiece" && ${PUBLIC_VISIBILI
 export const GROQ_ARTWORKS_LIST = `*[_type == "artwork" && ${PUBLIC_VISIBILITY}] | order(_createdAt desc){
   "id": _id,
   "slug": slug.current,
-  "title": title.fr,
+  "title": ${L('title')},
   artistName,
   year,
   medium,
-  "technique": technique.fr,
+  "technique": ${L('technique')},
   dimensions,
   edition,
   certificate,
-  "summary": summary.fr,
+  "summary": ${L('summary')},
   price,
   "images": images[]{ "src": asset->url, "alt": alt }
 }`;
@@ -122,15 +150,15 @@ export const GROQ_ARTWORKS_LIST = `*[_type == "artwork" && ${PUBLIC_VISIBILITY}]
 export const GROQ_JOURNEYS_LIST = `*[_type == "journey" && ${PUBLIC_VISIBILITY}] | order(_createdAt desc){
   "id": _id,
   "slug": slug.current,
-  "title": title.fr,
+  "title": ${L('title')},
   destinations,
   duration,
   durationDays,
   partySize,
-  "summary": summary.fr,
-  itinerary[]{ time, "label": label.fr },
-  "transport": transport[].fr,
-  "accommodation": accommodation[].fr,
+  "summary": ${L('summary')},
+  itinerary[]{ time, "label": ${L_LABEL} },
+  "transport": ${LARR('transport')},
+  "accommodation": ${LARR('accommodation')},
   price,
   "images": images[]{ "src": asset->url, "alt": alt }
 }`;
@@ -139,12 +167,12 @@ export const GROQ_JOURNEYS_LIST = `*[_type == "journey" && ${PUBLIC_VISIBILITY}]
 export const GROQ_CONCIERGE_LIST = `*[_type == "conciergeService" && ${PUBLIC_VISIBILITY}] | order(_createdAt desc){
   "id": _id,
   "slug": slug.current,
-  "title": title.fr,
+  "title": ${L('title')},
   category,
-  "summary": summary.fr,
-  "leadTime": leadTime.fr,
-  "coverageArea": coverageArea.fr,
-  "capabilities": capabilities[].fr,
+  "summary": ${L('summary')},
+  "leadTime": ${L('leadTime')},
+  "coverageArea": ${L('coverageArea')},
+  "capabilities": ${LARR('capabilities')},
   price,
   "images": images[]{ "src": asset->url, "alt": alt }
 }`;
@@ -153,16 +181,18 @@ export const GROQ_CONCIERGE_LIST = `*[_type == "conciergeService" && ${PUBLIC_VI
 export const GROQ_ARTICLES_LIST = `*[_type == "article" && ${PUBLIC_VISIBILITY}] | order(publishedAt desc){
   "id": _id,
   "slug": slug.current,
-  "title": title.fr,
+  "title": ${L('title')},
   category,
   publishedAt,
   readTimeMinutes,
-  "summary": summary.fr,
+  "summary": ${L('summary')},
   "heroImage": { "src": heroImage.asset->url, "alt": heroImage.alt },
   "author": author->{ firstName, lastName, "photoUrl": photo.asset->url }
 }`;
 
 // ─── Team members ─────────────────────────────────────────────────
+// NOTE: not localised here — useTeamMembers fetches with its own query
+// and does not pass $locale. Left FR until team bilingual is in scope.
 export const GROQ_TEAM = `*[_type == "teamMember"] | order(order asc){
   "id": _id,
   firstName,
@@ -182,9 +212,9 @@ export const GROQ_TEAM = `*[_type == "teamMember"] | order(order asc){
 const detailFields = `
   "id": _id,
   "slug": slug.current,
-  "title": title.fr,
-  "summary": summary.fr,
-  "description": pt::text(description.fr),
+  "title": ${L('title')},
+  "summary": ${L('summary')},
+  "description": ${LPT('description')},
   "images": images[]{ "src": asset->url, "alt": alt }
 `;
 
@@ -200,7 +230,7 @@ export const GROQ_PROPERTY_DETAIL = (slug: string) =>
     bathrooms,
     livingArea,
     landArea,
-    amenities[]{ "label": fr },
+    amenities[]{ "label": ${L_SELF} },
     price,
     availability
   }`;
@@ -216,7 +246,7 @@ export const GROQ_TIMEPIECE_DETAIL = (slug: string) =>
     productionYear,
     condition,
     papers,
-    "provenanceNote": provenanceNote.fr,
+    "provenanceNote": ${L('provenanceNote')},
     price
   }`;
 
@@ -226,12 +256,12 @@ export const GROQ_ARTWORK_DETAIL = (slug: string) =>
     artistName,
     year,
     medium,
-    "technique": technique.fr,
+    "technique": ${L('technique')},
     dimensions,
     edition,
     certificate,
     catalogueRaisonne,
-    "provenanceNote": provenanceNote.fr,
+    "provenanceNote": ${L('provenanceNote')},
     price
   }`;
 
@@ -242,9 +272,9 @@ export const GROQ_JOURNEY_DETAIL = (slug: string) =>
     duration,
     durationDays,
     partySize,
-    itinerary[]{ time, "label": label.fr },
-    "transport": transport[].fr,
-    "accommodation": accommodation[].fr,
+    itinerary[]{ time, "label": ${L_LABEL} },
+    "transport": ${LARR('transport')},
+    "accommodation": ${LARR('accommodation')},
     price
   }`;
 
@@ -252,9 +282,9 @@ export const GROQ_CONCIERGE_DETAIL = (slug: string) =>
   `*[_type == "conciergeService" && slug.current == "${slug}"][0]{
     ${detailFields},
     category,
-    "leadTime": leadTime.fr,
-    "coverageArea": coverageArea.fr,
-    "capabilities": capabilities[].fr,
+    "leadTime": ${L('leadTime')},
+    "coverageArea": ${L('coverageArea')},
+    "capabilities": ${LARR('capabilities')},
     price
   }`;
 
@@ -262,12 +292,12 @@ export const GROQ_ARTICLE_DETAIL = (slug: string) =>
   `*[_type == "article" && slug.current == "${slug}"][0]{
     "id": _id,
     "slug": slug.current,
-    "title": title.fr,
+    "title": ${L('title')},
     category,
     publishedAt,
     readTimeMinutes,
-    "summary": summary.fr,
-    "body": pt::text(body.fr),
+    "summary": ${L('summary')},
+    "body": ${LPT('body')},
     "heroImage": { "src": heroImage.asset->url, "alt": heroImage.alt },
     "gallery": gallery[]{ "src": asset->url, "alt": alt },
     "author": author->{ firstName, lastName, "photoUrl": photo.asset->url }
@@ -279,9 +309,12 @@ export const GROQ_SHARED_FICHE = (type: string, id: string) =>
     _type,
     _id,
     "slug": slug.current,
-    "title": title.fr,
-    "summary": summary.fr,
-    "description": pt::text(coalesce(description.fr, body.fr, bio.fr)),
+    "title": ${L('title')},
+    "summary": ${L('summary')},
+    "description": pt::text(select(
+      $locale == "en" => coalesce(description.en, body.en, bio.en, description.fr, body.fr, bio.fr),
+      coalesce(description.fr, body.fr, bio.fr)
+    )),
     "images": images[]{ "src": asset->url, "alt": alt },
     "heroImage": { "src": heroImage.asset->url, "alt": heroImage.alt },
     ...

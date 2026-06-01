@@ -16,6 +16,7 @@
 // ═══════════════════════════════════════════════════
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { hasSanity, sanityClient } from '@/lib/sanity';
 
@@ -40,6 +41,13 @@ export function useSanityCollection<TResult, TFallback = TResult>(
   opts: UseSanityCollectionOpts<TResult, TFallback>,
 ): UseSanityCollectionResult<TResult, TFallback> {
   const { query, fallback, transform } = opts;
+  // WHY: GROQ queries below project editorial fields via $locale (see
+  // sanityQueries.ts). Passing the active locale resolves content to the
+  // visitor's language with a FR fallback. Switching locale refetches.
+  // Locale comes from i18next (kept in sync with the URL by LocaleProvider)
+  // — hooks/ may not import from app/, and this is the canonical signal.
+  const { i18n } = useTranslation();
+  const locale = i18n.language === 'en' ? 'en' : 'fr';
 
   const [data, setData] = useState<readonly TResult[] | readonly TFallback[]>(fallback);
   const [loading, setLoading] = useState<boolean>(hasSanity);
@@ -54,7 +62,7 @@ export function useSanityCollection<TResult, TFallback = TResult>(
     let cancelled = false;
 
     sanityClient
-      .fetch<unknown[]>(query)
+      .fetch<unknown[]>(query, { locale })
       .then(rows => {
         if (cancelled) return;
         if (!rows || rows.length === 0) {
@@ -79,7 +87,7 @@ export function useSanityCollection<TResult, TFallback = TResult>(
     return () => {
       cancelled = true;
     };
-  }, [query, fallback, transform]);
+  }, [query, fallback, transform, locale]);
 
   return { data, loading, error, usingFallback };
 }
