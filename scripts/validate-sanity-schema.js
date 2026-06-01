@@ -56,6 +56,7 @@ const ALLOWED_RAW = new Set([
   // do not translate per locale — keeping them as raw strings is the
   // right call.
   'category',       // radio-list value (event, conciergeService, article)
+  'dateMode',       // radio-list value (event: exact | allYear | free)
   'kind',           // property kind value
   'transactionType',// property transaction value
   'venue',          // proper noun (Palais des Nations stays Palais des Nations)

@@ -14,6 +14,7 @@ import { SectionHeader } from '@components/ui/SectionHeader';
 import { Timeline } from '@components/ui/Timeline';
 import { ROUTES } from '@constants/routes';
 import { SimilarItemsStrip } from '@features/catalogue/SimilarItemsStrip';
+import { resolveEventDate } from '@features/events/eventDate';
 import { InquiryDrawer } from '@features/inquiry/InquiryDrawer';
 import { useSanityItem } from '@hooks/useSanityItem';
 import { cn } from '@utils/cn';
@@ -38,21 +39,12 @@ export default function EventDetail() {
   });
   if (!event) return <Navigate to={localePath(ROUTES.ACCOUNT_EVENTS)} replace />;
 
-  const startsAt = new Date(event.startsAt);
-  const dateLabel = startsAt.toLocaleDateString(i18n.language, {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-  const timeLabel = startsAt.toLocaleTimeString(i18n.language, {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+  const { long: dateLabel, time: timeLabel } = resolveEventDate(event, i18n.language, t);
 
   const meta = [
     { label: t('events.meta.date'), value: dateLabel },
-    { label: t('events.meta.time'), value: timeLabel },
+    // WHY: no clock time for year-round / free-text dates — omit the row.
+    ...(timeLabel ? [{ label: t('events.meta.time'), value: timeLabel }] : []),
     { label: t('events.meta.venue'), value: event.venue },
     { label: t('events.meta.city'), value: `${event.city} · ${event.countryCode}` },
     { label: t('events.meta.capacity'), value: String(event.capacity) },

@@ -31,6 +31,15 @@ const DRESS_CODES = [
   { title: 'Aucun dress code', value: 'none' },
 ];
 
+// WHY: certains rendez-vous n'ont pas de date fixe (offre dispo toute
+// l'année, ou cadence libre type "chaque dimanche", "sur demande").
+// Le mode pilote quels champs date sont demandés — cf. dateMode field.
+const DATE_MODES = [
+  { title: 'Date précise', value: 'exact' },
+  { title: 'Toute l’année', value: 'allYear' },
+  { title: 'Texte libre (ex: « Sur demande », « Été 2026 »)', value: 'free' },
+];
+
 export const event = defineType({
   name: 'event',
   title: 'Évènement',
@@ -91,12 +100,31 @@ export const event = defineType({
       description: "Le récit complet de l'évènement, affiché sur la page détail.",
     }),
     defineField({
+      name: 'dateMode',
+      title: 'Mode de date',
+      type: 'string',
+      group: 'essentiel',
+      options: { list: DATE_MODES, layout: 'radio' },
+      initialValue: 'exact',
+      description:
+        '« Date précise » = début (et fin) calendaires. « Toute l’année » = dispo en permanence, aucune date à saisir. « Texte libre » = tu écris ce que tu veux.',
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
       name: 'startsAt',
       title: 'Début',
       type: 'datetime',
       group: 'essentiel',
       description: 'Date et heure de début. Ex: 14.06.2026 19:30.',
-      validation: Rule => Rule.required(),
+      // WHY: only relevant in "exact" mode — hidden + required conditionally
+      // so the operator isn't forced to invent a date for a year-round offer.
+      hidden: ({ document }) => document?.dateMode != null && document.dateMode !== 'exact',
+      validation: Rule =>
+        Rule.custom((value, context) => {
+          const mode = context.document?.dateMode ?? 'exact';
+          if (mode === 'exact' && !value) return 'Date de début requise en mode « Date précise ».';
+          return true;
+        }),
     }),
     defineField({
       name: 'endsAt',
@@ -104,6 +132,22 @@ export const event = defineType({
       type: 'datetime',
       group: 'essentiel',
       description: 'Date et heure de fin. Optionnel pour les évènements ouverts.',
+      hidden: ({ document }) => document?.dateMode != null && document.dateMode !== 'exact',
+    }),
+    defineField({
+      name: 'dateLabel',
+      title: 'Date — texte libre',
+      type: 'localeString',
+      group: 'essentiel',
+      description:
+        'Affiché à la place de la date. Ex: « Sur demande », « Été 2026 », « Chaque dimanche ». Garde-le court — il sert aussi de pastille sur la carte.',
+      hidden: ({ document }) => document?.dateMode !== 'free',
+      validation: Rule =>
+        Rule.custom((value: { fr?: string } | undefined, context) => {
+          if (context.document?.dateMode !== 'free') return true;
+          if (!value?.fr) return 'Texte requis en mode « Texte libre » (au moins le FR).';
+          return true;
+        }),
     }),
     // ─── Lieu ───
     defineField({
@@ -198,11 +242,20 @@ export const event = defineType({
       title: 'title.fr',
       city: 'city',
       startsAt: 'startsAt',
+      dateMode: 'dateMode',
+      dateLabel: 'dateLabel.fr',
       visibility: 'visibility',
       media: 'images.0',
     },
-    prepare: ({ title, city, startsAt, visibility, media }) => {
-      const date = startsAt ? new Date(startsAt as string).toLocaleDateString('fr-CH') : '—';
+    prepare: ({ title, city, startsAt, dateMode, dateLabel, visibility, media }) => {
+      const date =
+        dateMode === 'allYear'
+          ? 'Toute l’année'
+          : dateMode === 'free'
+            ? String(dateLabel ?? 'Texte libre')
+            : startsAt
+              ? new Date(startsAt as string).toLocaleDateString('fr-CH')
+              : '—';
       const visIcon = visibility === 'public' ? '🌐' : visibility === 'shareCode' ? '🔑' : '🔒';
       return {
         title: `${visIcon} ${String(title ?? 'Sans titre')}`,
