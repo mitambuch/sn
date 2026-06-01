@@ -1312,6 +1312,11 @@
           "messagePlaceholder": "Who introduced us, what you're looking for, and when you'd like to talk."
         },
         "legal": "Your information stays strictly between you and Valmont. No shared database, no newsletter, no commercial relay.",
+        "consent": "I agree that my information may be processed to handle my request.",
+        "errors": {
+          "email": "Invalid email address.",
+          "phone": "Invalid phone number (international format recommended, e.g. +41 79 123 45 67)."
+        },
         "steps": {
           "identity": "Identity",
           "profile": "Profile",

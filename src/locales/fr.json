@@ -1312,6 +1312,11 @@
           "messagePlaceholder": "Qui vous a parlé de nous, ce que vous cherchez, et quand vous aimeriez en parler."
         },
         "legal": "Vos informations restent strictement entre vous et Valmont. Aucune base partagée, aucune newsletter, aucun relais commercial.",
+        "consent": "J'accepte que mes informations soient traitées pour le suivi de ma demande.",
+        "errors": {
+          "email": "Adresse email invalide.",
+          "phone": "Numéro de téléphone invalide (format international recommandé, ex : +41 79 123 45 67)."
+        },
         "steps": {
           "identity": "Identité",
           "profile": "Profil",

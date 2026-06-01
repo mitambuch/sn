@@ -7,14 +7,8 @@ import { beforeAll, describe, expect, it, vi } from 'vitest';
 
 import { AccessRequestModal } from '../AccessRequestModal';
 
-// i18n.init() is async; ensure FR resources are loaded before we query
-// the modal by its (translated) labels.
-beforeAll(async () => {
-  await i18n.changeLanguage('fr');
-});
-
 // Isolate the modal from its provider deps — we only exercise the wizard
-// navigation logic here, not routing / toasts / Supabase.
+// navigation + validation logic here, not routing / toasts / Supabase.
 vi.mock('@app/LocaleProvider', () => ({
   useLocale: () => ({ localePath: (p: string) => p }),
 }));
@@ -27,50 +21,90 @@ vi.mock('react-router-dom', () => ({
 // No Supabase in test env → modal takes the simulator submit path.
 vi.mock('@/lib/supabase', () => ({ hasSupabase: false, supabase: null }));
 
+// i18n.init() is async; ensure FR resources are loaded before we query
+// the modal by its (translated) labels.
+beforeAll(async () => {
+  await i18n.changeLanguage('fr');
+});
+
+/** Drive the wizard from step 0 (Identité) to step 2 (Message). */
+async function advanceToMessageStep(user: ReturnType<typeof userEvent.setup>) {
+  await user.type(screen.getByLabelText('Prénom'), 'Jean');
+  await user.type(screen.getByLabelText('Nom'), 'Dupont');
+  await user.type(screen.getByLabelText('Email'), 'jean@example.com');
+  await user.click(screen.getByRole('button', { name: /Continuer/i }));
+
+  const phone = await screen.findByLabelText('Téléphone direct');
+  await user.type(phone, '+41 79 123 45 67');
+  await user.click(screen.getByRole('button', { name: /Continuer/i }));
+}
+
 describe('AccessRequestModal — request wizard navigation', () => {
   it('reaches the Message step (textarea) before any submit is possible', async () => {
     const user = userEvent.setup();
     render(<AccessRequestModal isOpen onClose={vi.fn()} />);
 
-    // ─── Step 0 — Identité ───
-    await user.type(screen.getByLabelText('Prénom'), 'Jean');
-    await user.type(screen.getByLabelText('Nom'), 'Dupont');
-    await user.type(screen.getByLabelText('Email'), 'jean@example.com');
-
-    // The submit button must NOT exist yet — only "Continuer".
+    // The submit button must NOT exist on step 0.
     expect(screen.queryByRole('button', { name: /Envoyer la demande/i })).not.toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: /Continuer/i }));
 
-    // ─── Step 1 — Profil ───
-    const phone = await screen.findByLabelText('Téléphone direct');
-    expect(phone).toBeInTheDocument();
-    await user.type(phone, '+41 79 000 00 00');
-    expect(screen.queryByRole('button', { name: /Envoyer la demande/i })).not.toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: /Continuer/i }));
+    await advanceToMessageStep(user);
 
-    // ─── Step 2 — Message ─── the step the client reports as skipped.
     const message = await screen.findByLabelText(/Message/i);
     expect(message.tagName).toBe('TEXTAREA');
-    // Only now does the submit button appear, and "Continuer" is gone.
-    expect(screen.getByRole('button', { name: /Envoyer la demande/i })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /Continuer/i })).not.toBeInTheDocument();
-
-    // The user can actually type a message.
     await user.type(message, 'Bonjour, je souhaite un accès.');
     expect(message).toHaveValue('Bonjour, je souhaite un accès.');
   });
 
-  it('gates "Continuer" until required fields of the current step are filled', async () => {
+  it('blocks submit until the legal consent box is checked', async () => {
+    const user = userEvent.setup();
+    render(<AccessRequestModal isOpen onClose={vi.fn()} />);
+    await advanceToMessageStep(user);
+
+    const submit = screen.getByRole('button', { name: /Envoyer la demande/i });
+    expect(submit).toBeDisabled();
+
+    await user.click(screen.getByRole('checkbox'));
+    expect(submit).toBeEnabled();
+  });
+});
+
+describe('AccessRequestModal — field validation', () => {
+  it('gates step 0 on a valid email, not just a filled one', async () => {
     const user = userEvent.setup();
     render(<AccessRequestModal isOpen onClose={vi.fn()} />);
 
-    // Step 0 — button disabled until firstName + lastName + email present.
     const next = screen.getByRole('button', { name: /Continuer/i });
-    expect(next).toBeDisabled();
     await user.type(screen.getByLabelText('Prénom'), 'Jean');
     await user.type(screen.getByLabelText('Nom'), 'Dupont');
+
+    await user.type(screen.getByLabelText('Email'), 'pas-un-email');
     expect(next).toBeDisabled();
+    expect(screen.getByText(/email invalide/i)).toBeInTheDocument();
+
+    await user.clear(screen.getByLabelText('Email'));
     await user.type(screen.getByLabelText('Email'), 'jean@example.com');
+    expect(next).toBeEnabled();
+  });
+
+  it('gates step 1 on a valid phone number', async () => {
+    const user = userEvent.setup();
+    render(<AccessRequestModal isOpen onClose={vi.fn()} />);
+
+    await user.type(screen.getByLabelText('Prénom'), 'Jean');
+    await user.type(screen.getByLabelText('Nom'), 'Dupont');
+    await user.type(screen.getByLabelText('Email'), 'jean@example.com');
+    await user.click(screen.getByRole('button', { name: /Continuer/i }));
+
+    await screen.findByLabelText('Téléphone direct');
+    const next = screen.getByRole('button', { name: /Continuer/i });
+
+    await user.type(screen.getByLabelText('Téléphone direct'), '123');
+    expect(next).toBeDisabled();
+    expect(screen.getByText(/téléphone invalide/i)).toBeInTheDocument();
+
+    await user.clear(screen.getByLabelText('Téléphone direct'));
+    await user.type(screen.getByLabelText('Téléphone direct'), '+41 79 123 45 67');
     expect(next).toBeEnabled();
   });
 });
