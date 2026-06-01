@@ -5,11 +5,13 @@
 //       duplicated in the breadcrumb, noisy "All fields" tab, tiny
 //       Publish button). This layout injects 5 surgical CSS overrides
 //       that widen + clean without touching core styles.
+//       It also FORCES the dark color scheme (see ForceDarkScheme below).
 // WHEN: Registered via `studio.components.layout` in sanity.config.ts.
 // RULE: .claude/rules/i18n-sanity.md lesson #12.
 // ═══════════════════════════════════════════════════
 
-import type { LayoutProps } from 'sanity';
+import { useEffect } from 'react';
+import { type LayoutProps, useColorSchemeSetValue } from 'sanity';
 
 const GLOBAL_CSS = `
 /* 1. The edit panel takes all available width */
@@ -77,10 +79,26 @@ aside:has([class*="upgrade" i]) {
 label[data-ui="Label"] { font-size: 0.82rem !important; font-weight: 500 !important; }
 `;
 
+// ForceDarkScheme — locks the Studio to dark mode.
+// WHY: the brand UI + injected CSS (e.g. field-groups bg #1a1a1a, light
+//      text) is authored for dark. In light mode the client reported
+//      near-invisible content. Forcing dark removes that failure mode.
+// HOW: useColorSchemeSetValue is provided by Sanity's ColorSchemeProvider,
+//      which sits ABOVE this layout — so the setter is available here.
+//      We re-assert 'dark' on mount; the toggle is intentionally overridden.
+function ForceDarkScheme() {
+  const setScheme = useColorSchemeSetValue();
+  useEffect(() => {
+    if (typeof setScheme === 'function') setScheme('dark');
+  }, [setScheme]);
+  return null;
+}
+
 export function StudioLayout(props: LayoutProps) {
   return (
     <>
       <style>{GLOBAL_CSS}</style>
+      <ForceDarkScheme />
       {props.renderDefault(props)}
     </>
   );
