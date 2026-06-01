@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-06-01** — [Session — Bugs client : emails opérateur + formulaire d'accès (après-midi)](sessions/2026-06-01-1656.md)
 - **2026-06-01** — [Session — Dates d'événement flexibles (après-midi)](sessions/2026-06-01-1633.md)
 - **2026-06-01** — [Session — Sync git + force dark Studio + bilingue catalogue (matin)](sessions/2026-06-01-1100.md)
-- **2026-05-29** — [Session — v1.2.1 patch : login submit blanc](sessions/2026-05-29-1615.md)
 
 ## Active decisions (top 5)
 
@@ -20,7 +20,6 @@
 ## Open frictions
 
 - **2026-05-29** — [Friction — Firewall Swatch Group bloque saw-next.ch en "high-risk"](frictions/2026-05-29-swatch-firewall-block.md)
-- **2026-05-27** — [AccessRequestModal — Step 3 (Message) saute, submit direct depuis Step 2](frictions/2026-05-27-access-request-step3-skip.md)
 - **2026-05-11** — [Friction — Supabase Vault secret naming mismatch](frictions/2026-05-11-supabase-vault-secret-naming.md)
 - **2026-05-11** — [Friction — Supabase "Automatically expose new tables" toggle au setup projet](frictions/2026-05-11-supabase-expose-new-tables-toggle.md)
 
@@ -33,7 +32,7 @@
 
 ## Deep dive
 
-- Full catalogue (131 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (132 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 

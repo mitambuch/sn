@@ -77,8 +77,29 @@ const REQUIRED_PER_STEP: Record<RequestStep, ReadonlyArray<keyof RequestFormStat
   2: [],
 };
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Loose but real email check — boundary validation, not RFC-perfect. */
+function isValidEmail(value: string): boolean {
+  return EMAIL_RE.test(value.trim());
+}
+
+/** International-friendly phone check: optional leading +, 8–15 digits,
+ *  separators (space . - ( )) allowed. Rejects letters / too-short input. */
+function isValidPhone(value: string): boolean {
+  const trimmed = value.trim();
+  const digits = trimmed.replace(/\D/g, '');
+  return /^\+?[\d\s().-]+$/.test(trimmed) && digits.length >= 8 && digits.length <= 15;
+}
+
 function isStepComplete(step: RequestStep, form: RequestFormState): boolean {
-  return REQUIRED_PER_STEP[step].every(key => form[key].trim() !== '');
+  const filled = REQUIRED_PER_STEP[step].every(key => form[key].trim() !== '');
+  if (!filled) return false;
+  // Beyond presence, the contact steps must hold a VALID value so the
+  // operator can actually reach the lead.
+  if (step === 0) return isValidEmail(form.email);
+  if (step === 1) return isValidPhone(form.phone);
+  return true;
 }
 
 export const AccessRequestModal = ({
@@ -96,6 +117,7 @@ export const AccessRequestModal = ({
   const [form, setForm] = useState<RequestFormState>(EMPTY_FORM);
   const [code, setCode] = useState('');
   const [codeError, setCodeError] = useState<string | null>(null);
+  const [consent, setConsent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   // Reset wizard step + error state on close so the next open always
@@ -104,6 +126,7 @@ export const AccessRequestModal = ({
   const handleClose = () => {
     setStep(0);
     setCodeError(null);
+    setConsent(false);
     onClose();
   };
 
@@ -129,6 +152,8 @@ export const AccessRequestModal = ({
       goNext();
       return;
     }
+    // Legal consent is mandatory before the request leaves the browser.
+    if (!consent) return;
     setSubmitting(true);
 
     if (hasSupabase && supabase) {
@@ -150,6 +175,7 @@ export const AccessRequestModal = ({
       }
       toast({ variant: 'success', message: t('landing.access.modal.requestSuccess') });
       setForm(EMPTY_FORM);
+      setConsent(false);
       handleClose();
       return;
     }
@@ -184,6 +210,17 @@ export const AccessRequestModal = ({
       void navigate(localePath(ROUTES.ONBOARDING), { state: { invitationCode: canonical } });
     }, 400);
   };
+
+  // Inline format errors — shown only once the user has typed something
+  // invalid, so the field doesn't scream before it's been touched.
+  const emailError =
+    form.email.trim() !== '' && !isValidEmail(form.email)
+      ? t('landing.access.modal.errors.email')
+      : null;
+  const phoneError =
+    form.phone.trim() !== '' && !isValidPhone(form.phone)
+      ? t('landing.access.modal.errors.phone')
+      : null;
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} className="max-w-2xl">
@@ -309,6 +346,7 @@ export const AccessRequestModal = ({
                     required
                     type="email"
                     autoComplete="email"
+                    {...(emailError ? { error: emailError } : {})}
                   />
                 </div>
               </div>
@@ -326,6 +364,7 @@ export const AccessRequestModal = ({
                   required
                   type="tel"
                   autoComplete="tel"
+                  {...(phoneError ? { error: phoneError } : {})}
                 />
                 <Input
                   label={t('landing.access.modal.fields.company')}
@@ -372,6 +411,27 @@ export const AccessRequestModal = ({
                 <p className="text-muted border-border border-t pt-4 text-xs leading-relaxed">
                   {t('landing.access.modal.legal')}
                 </p>
+
+                {/* Sibling label+input (not wrapped) — matches Input.tsx and
+                    sidesteps a jsx-a11y/label-has-associated-control crash on
+                    wrapping labels (plugin 6.10.2 + minimatch). */}
+                <div className="flex items-start gap-3">
+                  <input
+                    id="access-consent"
+                    type="checkbox"
+                    checked={consent}
+                    onChange={e => {
+                      setConsent(e.target.checked);
+                    }}
+                    className="accent-accent mt-0.5 h-4 w-4 shrink-0"
+                  />
+                  <label
+                    htmlFor="access-consent"
+                    className="text-muted cursor-pointer text-xs leading-relaxed"
+                  >
+                    {t('landing.access.modal.consent')}
+                  </label>
+                </div>
               </div>
             )}
 
@@ -412,7 +472,7 @@ export const AccessRequestModal = ({
                   type="submit"
                   variant="primary"
                   size="lg"
-                  disabled={submitting}
+                  disabled={submitting || !consent}
                   className="font-mono text-xs tracking-[0.3em] uppercase"
                 >
                   {submitting

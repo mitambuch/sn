@@ -2,8 +2,10 @@
 // programmeStep — single line of a timed programme (events, journeys)
 //
 // WHAT: time + label pair, repeatable. Used inside event.programme[] and
-//       journey.itinerary[]. Time is a free-form string (Salva sets
-//       "19:30" or "J1 matin" or "deuxième nuit").
+//       journey.itinerary[]. Both fields are localeString (FR/EN) — the
+//       "time" repère is free-form text that often needs translating
+//       ("J1 matin" → "D1 morning", "deuxième jour" → "second day"), not
+//       just a clock value.
 // ═══════════════════════════════════════════════════
 
 import { defineField, defineType } from 'sanity';
@@ -16,8 +18,8 @@ export const programmeStep = defineType({
     defineField({
       name: 'time',
       title: 'Horaire / repère',
-      type: 'string',
-      description: 'Libre. Ex: "19:30", "J1 matin", "21:00", "deuxième jour".',
+      type: 'localeString',
+      description: 'Libre, traduisible. Ex: "19:30", "J1 matin", "21:00", "deuxième jour".',
       validation: Rule => Rule.required(),
     }),
     defineField({
@@ -29,7 +31,7 @@ export const programmeStep = defineType({
     }),
   ],
   preview: {
-    select: { time: 'time', label: 'label.fr' },
+    select: { time: 'time.fr', label: 'label.fr' },
     prepare: ({ time, label }) => ({
       title: `${String(time ?? '')} — ${String(label ?? '')}`,
     }),
