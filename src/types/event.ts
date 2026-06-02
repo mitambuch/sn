@@ -55,8 +55,8 @@ export interface Event {
   /** Editorial 2-3 sentences. */
   summary: string;
   description: string;
-  /** Programme timeline as label/time pairs. */
-  programme: { time: string; label: string }[];
+  /** Programme timeline — hour, short title, optional longer description. */
+  programme: { time: string; label: string; description?: string }[];
   priceCHF?: number;
   images: EventImage[];
   createdAt: string;

@@ -68,7 +68,7 @@ export const GROQ_EVENTS_LIST = `*[_type == "event" && ${PUBLIC_VISIBILITY}] | o
   dressCode,
   "summary": ${L('summary')},
   "description": ${LPT('description')},
-  programme[]{ time, "label": ${L_LABEL} },
+  programme[]{ time, "label": ${L_LABEL}, "description": ${L('description')} },
   "images": images[]{ "src": asset->url, "alt": alt }
 }`;
 
@@ -90,7 +90,7 @@ export const GROQ_EVENT_DETAIL = (slug: string) =>
     dressCode,
     "summary": ${L('summary')},
     "description": ${LPT('description')},
-    programme[]{ time, "label": ${L_LABEL} },
+    programme[]{ time, "label": ${L_LABEL}, "description": ${L('description')} },
     "images": images[]{ "src": asset->url, "alt": alt }
   }`;
 
@@ -160,7 +160,7 @@ export const GROQ_JOURNEYS_LIST = `*[_type == "journey" && ${PUBLIC_VISIBILITY}]
   durationDays,
   partySize,
   "summary": ${L('summary')},
-  itinerary[]{ time, "label": ${L_LABEL} },
+  itinerary[]{ time, "label": ${L_LABEL}, "description": ${L('description')} },
   "transport": ${LARR('transport')},
   "accommodation": ${LARR('accommodation')},
   price,
@@ -276,7 +276,7 @@ export const GROQ_JOURNEY_DETAIL = (slug: string) =>
     duration,
     durationDays,
     partySize,
-    itinerary[]{ time, "label": ${L_LABEL} },
+    itinerary[]{ time, "label": ${L_LABEL}, "description": ${L('description')} },
     "transport": ${LARR('transport')},
     "accommodation": ${LARR('accommodation')},
     price
