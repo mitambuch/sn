@@ -21,7 +21,7 @@ import { cn } from '@utils/cn';
 import { X } from 'lucide-react';
 import { type FormEvent, type ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 type Mode = 'select' | 'email' | 'magic-link' | 'invitation' | 'magic-link-sent';
 type FormMode = 'email' | 'magic-link' | 'invitation';
@@ -232,6 +232,15 @@ export default function Login() {
   const { localePath } = useLocale();
   const { signIn, signInWithMagicLink, redeemInvitationCode } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // RequireAuth stores the gated destination in state.from — return there
+  // after a successful login (e.g. a shared fiche URL) instead of dumping
+  // the member on the dashboard. Fallback: the account home.
+  const fromState = location.state as { from?: { pathname?: string; search?: string } } | null;
+  const redirectTo = fromState?.from?.pathname
+    ? `${fromState.from.pathname}${fromState.from.search ?? ''}`
+    : localePath(ROUTES.ACCOUNT);
 
   const [mode, setMode] = useState<Mode>('select');
   const [email, setEmail] = useState('');
@@ -270,7 +279,7 @@ export default function Login() {
     setCode,
     setMode,
     navigateToAccount: () => {
-      void navigate(localePath(ROUTES.ACCOUNT), { replace: true });
+      void navigate(redirectTo, { replace: true });
     },
     runAuth,
     signIn,
