@@ -20,10 +20,6 @@ import { Card } from '@components/ui/Card';
 import { ExpiryCountdown } from '@components/ui/ExpiryCountdown';
 import { GalleryGrid } from '@components/ui/GalleryGrid';
 import { Image } from '@components/ui/Image';
-import { MetaList } from '@components/ui/MetaList';
-import { ShareActionRow } from '@components/ui/ShareActionRow';
-import { Timeline } from '@components/ui/Timeline';
-import { siteConfig } from '@config/site';
 import { AccessRequestModal } from '@features/access/AccessRequestModal';
 import { ShareCollection } from '@features/share/ShareCollection';
 import { useSanityItem } from '@hooks/useSanityItem';
@@ -32,7 +28,6 @@ import { Link, useParams } from 'react-router-dom';
 
 import { GROQ_SHARED_FICHE } from '@/lib/sanityQueries';
 import { consumeShareCode } from '@/lib/shareCode';
-import { buildShareMessage } from '@/lib/sharing';
 import {
   getArticle,
   getArtwork,
@@ -179,7 +174,7 @@ export default function SharePage() {
     };
   }, [consumed]);
 
-  const { data: fiche, loading: ficheLoading } = useSanityItem<SharedFiche>({
+  const { data: fiche } = useSanityItem<SharedFiche>({
     query: ficheQuery,
     fallback: mockFallback,
   });
@@ -395,16 +390,29 @@ export default function SharePage() {
   const ficheTitle = localeStr(fiche?.title);
   const ficheSummary = localeStr(fiche?.summary);
   const ficheDescription = localeStr(fiche?.description);
+
+  // Prominent date + place line (events), shown big above the description.
+  const isEvent = consumed?.sanityDocType === 'event';
+  const heroDate = (() => {
+    if (!isEvent) return '';
+    const mode = fiche?.dateMode ?? 'exact';
+    if (mode === 'exact' && fiche?.startsAt) {
+      return new Date(fiche.startsAt).toLocaleDateString('fr-CH', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      });
+    }
+    if (mode === 'allYear') return 'Toute l’année';
+    return localeStr(fiche?.dateLabel) || 'Sur demande';
+  })();
+  const heroVenue = isEvent
+    ? [localeStr(fiche?.venue), localeStr(fiche?.city)].filter(Boolean).join(' · ')
+    : '';
+
   const heroAlt =
     fiche?.heroImage?.alt ?? fiche?.images?.[0]?.alt ?? (ficheTitle || 'Fiche partagée');
-
-  const shareUrl =
-    typeof window !== 'undefined' ? window.location.href : `${siteConfig.url}/share/${displayCode}`;
-  const shareMessage = buildShareMessage({
-    docType: fiche?._type ?? consumed?.sanityDocType ?? null,
-    title: ficheTitle || null,
-    url: shareUrl,
-  });
 
   return (
     <main
@@ -424,7 +432,7 @@ export default function SharePage() {
       {heroSrc && <meta property="og:image" content={heroSrc} />}
       <meta property="og:type" content="website" />
 
-      <div className="mx-auto flex max-w-3xl flex-col gap-10">
+      <div className="mx-auto flex max-w-5xl flex-col gap-10">
         {/* ─── Loading state ─── */}
         {status === 'loading' && (
           <div className="text-muted py-12 text-center font-mono text-xs tracking-widest uppercase">
@@ -522,14 +530,17 @@ export default function SharePage() {
               />
             )}
 
-            {/* Hero image — flush to card edges, 16/9 */}
+            {/* Hero — image when present, else a branded placeholder so the
+                fiche always opens on a visual. */}
             {heroSrc ? (
               <div className="bg-surface relative overflow-hidden">
                 <Image src={heroSrc} alt={heroAlt} ratio="16/9" eager />
               </div>
-            ) : ficheLoading ? (
-              <div className="bg-surface relative aspect-video overflow-hidden" />
-            ) : null}
+            ) : (
+              <div className="bg-surface border-fg/10 flex aspect-video items-center justify-center overflow-hidden border-b">
+                <BrandMark variant="short" className="text-fg/10 text-6xl md:text-7xl" />
+              </div>
+            )}
 
             <div className="flex flex-col gap-8 px-6 py-8 md:px-10 md:py-10">
               {/* ─── Title block ─── */}
@@ -546,53 +557,84 @@ export default function SharePage() {
                 <h2 className="font-mono text-2xl leading-tight font-medium tracking-tight uppercase md:text-3xl">
                   {ficheTitle || 'Fiche partagée'}
                 </h2>
+                {(heroDate || heroVenue) && (
+                  <div className="flex flex-col gap-1 pt-1 font-sans normal-case">
+                    {heroDate && (
+                      <p className="text-fg text-xl leading-tight font-medium first-letter:uppercase">
+                        {heroDate}
+                      </p>
+                    )}
+                    {heroVenue && <p className="text-muted text-base">{heroVenue}</p>}
+                  </div>
+                )}
                 {ficheSummary && (
-                  <p className="text-fg/85 max-w-2xl pt-2 text-base leading-relaxed text-pretty">
+                  <p className="text-fg/85 max-w-2xl pt-2 font-sans text-base leading-relaxed text-pretty normal-case">
                     {ficheSummary}
                   </p>
                 )}
               </header>
 
-              {/* ─── Specs grid : description + MetaList ─── */}
-              {(ficheDescription || metaItems.length > 0) && (
-                <section className="grid gap-8 md:grid-cols-[1.4fr_1fr] md:gap-12">
-                  {ficheDescription && (
-                    <div className="flex flex-col gap-3">
-                      <span className="text-muted text-[10px] tracking-[0.3em] uppercase">
-                        Description
-                      </span>
-                      <p className="text-muted leading-relaxed whitespace-pre-line">
-                        {ficheDescription}
-                      </p>
-                    </div>
-                  )}
-                  {metaItems.length > 0 && (
-                    <aside className="flex flex-col gap-3">
-                      <span className="text-muted text-[10px] tracking-[0.3em] uppercase">
-                        Informations
-                      </span>
-                      <MetaList items={metaItems} />
-                    </aside>
-                  )}
+              {/* ─── Description (full width, readable sans) ─── */}
+              {ficheDescription && (
+                <section className="flex flex-col gap-3">
+                  <span className="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
+                    Description
+                  </span>
+                  <p className="text-muted max-w-3xl font-sans leading-relaxed whitespace-pre-line normal-case">
+                    {ficheDescription}
+                  </p>
                 </section>
               )}
 
-              {/* ─── Programme (events only) ─── */}
-              {programme && programme.length > 0 && (
+              {/* ─── Informations (full-width responsive grid) ─── */}
+              {metaItems.length > 0 && (
                 <section className="border-fg/10 flex flex-col gap-4 border-t pt-6">
-                  <span className="text-muted text-[10px] tracking-[0.3em] uppercase">
+                  <span className="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
+                    Informations
+                  </span>
+                  <dl className="grid grid-cols-1 gap-x-10 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {metaItems.map(m => (
+                      <div key={m.label} className="border-fg/10 flex flex-col gap-1 border-b pb-3">
+                        <dt className="text-muted font-mono text-[10px] tracking-[0.2em] uppercase">
+                          {m.label}
+                        </dt>
+                        <dd className="text-fg font-sans text-sm leading-snug normal-case">
+                          {m.value}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </section>
+              )}
+
+              {/* ─── Programme — light list (mono only for the hour) ─── */}
+              {programme && programme.length > 0 && (
+                <section className="border-fg/10 flex flex-col gap-5 border-t pt-6">
+                  <span className="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
                     Programme
                   </span>
-                  <Timeline
-                    items={programme.map(p => {
+                  <ol className="flex flex-col gap-5">
+                    {programme.map((p, i) => {
                       const desc = localeStr(p.description);
-                      return {
-                        title: localeStr(p.label),
-                        date: localeStr(p.time),
-                        ...(desc ? { description: desc } : {}),
-                      };
+                      return (
+                        <li key={i} className="flex gap-4">
+                          <span className="text-fg w-14 shrink-0 pt-0.5 font-mono text-xs tabular-nums">
+                            {localeStr(p.time)}
+                          </span>
+                          <div className="border-fg/10 flex flex-col gap-1 border-l pl-4">
+                            <p className="text-fg font-sans text-sm font-medium normal-case">
+                              {localeStr(p.label)}
+                            </p>
+                            {desc && (
+                              <p className="text-muted font-sans text-sm leading-relaxed normal-case">
+                                {desc}
+                              </p>
+                            )}
+                          </div>
+                        </li>
+                      );
                     })}
-                  />
+                  </ol>
                 </section>
               )}
 
@@ -606,33 +648,37 @@ export default function SharePage() {
                 </section>
               )}
 
-              {/* ─── Share row ─── */}
+              {/* ─── Interest CTA — a non-member can enter the sales tunnel
+                  (request access) straight from a shared fiche. ─── */}
               <section className="border-fg/10 flex flex-col gap-4 border-t pt-6">
-                <span className="text-muted text-[10px] tracking-[0.3em] uppercase">
-                  Partager cette fiche
-                </span>
-                <ShareActionRow url={shareUrl} message={shareMessage} variant="compact" />
-              </section>
-
-              {/* ─── CTA + view counter ─── */}
-              <section className="border-fg/10 flex flex-col gap-4 border-t pt-6 md:flex-row md:items-center md:justify-between">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setModalOpen(true);
-                  }}
-                  className="border-fg bg-fg text-bg hover:bg-fg/90 inline-flex w-fit items-center gap-2 rounded-full border px-6 py-3 font-mono text-xs tracking-[0.3em] uppercase transition-colors"
-                >
-                  Demander cette fiche
-                  <span aria-hidden="true">↗</span>
-                </button>
-                <p className="text-muted text-[11px] tracking-wider">
-                  Vue {String(consumed.viewCount)}
-                  {typeof consumed.maxViews === 'number' ? ` / ${String(consumed.maxViews)}` : ''}
-                  {consumed.expiresAt && (
-                    <> · expire le {new Date(consumed.expiresAt).toLocaleDateString('fr-CH')}</>
-                  )}
-                </p>
+                <div className="flex flex-col gap-1">
+                  <span className="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
+                    Cette fiche vous intéresse ?
+                  </span>
+                  <p className="text-muted max-w-xl font-sans text-sm leading-relaxed normal-case">
+                    Manifestez votre intérêt : nous vous recontactons et, si vous le souhaitez, vous
+                    ouvrons un accès privé — même sans compte.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setModalOpen(true);
+                    }}
+                    className="border-fg bg-fg text-bg hover:bg-fg/90 inline-flex w-fit items-center gap-2 rounded-full border px-6 py-3 font-mono text-xs tracking-[0.3em] uppercase transition-colors"
+                  >
+                    Manifester mon intérêt
+                    <span aria-hidden="true">↗</span>
+                  </button>
+                  <p className="text-muted font-mono text-[11px] tracking-wider">
+                    Vue {String(consumed.viewCount)}
+                    {typeof consumed.maxViews === 'number' ? ` / ${String(consumed.maxViews)}` : ''}
+                    {consumed.expiresAt && (
+                      <> · expire le {new Date(consumed.expiresAt).toLocaleDateString('fr-CH')}</>
+                    )}
+                  </p>
+                </div>
               </section>
             </div>
           </Card>
