@@ -34,6 +34,8 @@
     "sanity:seed:sawnext": "node studio/scripts/seed-sawnext.js",
     "sanity:seed:sawnext:dry": "node studio/scripts/seed-sawnext.js --dry-run",
     "sanity:seed:sawnext:wipe": "node studio/scripts/seed-sawnext.js --wipe",
+    "sanity:fix-team": "node studio/scripts/fix-team.js",
+    "sanity:fix-team:dry": "node studio/scripts/fix-team.js --dry-run",
     "sanity:push:site-config": "node studio/scripts/push-site-config.js",
     "sanity:push:site-config:dry": "node studio/scripts/push-site-config.js --dry-run",
     "sanity:push:landing": "node studio/scripts/push-landing.js",
