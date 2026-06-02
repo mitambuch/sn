@@ -3,14 +3,17 @@
 //
 // WHAT: two clearly separated fields, repeatable. Used inside
 //       event.programme[] and journey.itinerary[].
-//       - `time`  : the hour, plain text ("09h00", "19:30"). NOT
-//         translatable — a clock value reads the same in every language.
+//       - `time`  : the hour, picked via a clock selector (TimeInput),
+//         stored as "HH:MM" (e.g. "10:15"). NOT translatable — and not
+//         free text, so a title can't be typed into the hour field.
 //       - `label` : the short title, localeString (FR/EN) — this is the
-//         part that needs translating ("Arrivée à La Chaux-de-Fonds").
-//       Renders as "09h00 | Arrivée à La Chaux-de-Fonds".
+//         part that needs translating ("Les pièces historiques").
+//       Renders as "10:15 | Les pièces historiques".
 // ═══════════════════════════════════════════════════
 
 import { defineField, defineType } from 'sanity';
+
+import { TimeInput } from '../../components/TimeInput';
 
 export const programmeStep = defineType({
   name: 'programmeStep',
@@ -21,7 +24,8 @@ export const programmeStep = defineType({
       name: 'time',
       title: 'Heure',
       type: 'string',
-      description: 'L\'horaire de l\'étape. Ex: "09h00", "19:30".',
+      description: "Sélectionne l'heure de l'étape (ex: 10:15).",
+      components: { input: TimeInput },
       validation: Rule => Rule.required(),
     }),
     defineField({
