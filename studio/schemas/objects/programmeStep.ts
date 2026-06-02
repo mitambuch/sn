@@ -36,6 +36,13 @@ export const programmeStep = defineType({
         'Court titre traduisible (FR/EN). Ex: "Arrivée à La Chaux-de-Fonds", "Cocktail Salle des Pas-Perdus".',
       validation: Rule => Rule.required(),
     }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'localeText',
+      description:
+        'Détail optionnel traduisible (FR/EN), affiché sous le titre. Ex: "Visite guidée par le conservateur, accès aux ateliers."',
+    }),
   ],
   preview: {
     select: { time: 'time', label: 'label.fr' },

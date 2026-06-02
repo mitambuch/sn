@@ -484,7 +484,13 @@ export default function SharePage() {
                   <span className="text-muted text-[10px] tracking-[0.3em] uppercase">
                     Programme
                   </span>
-                  <Timeline items={programme.map(p => ({ title: p.label, date: p.time }))} />
+                  <Timeline
+                    items={programme.map(p => ({
+                      title: p.label,
+                      date: p.time,
+                      ...(p.description ? { description: p.description } : {}),
+                    }))}
+                  />
                 </section>
               )}
 

@@ -96,7 +96,13 @@ export default function EventDetail() {
             {event.programme.length > 0 && (
               <div className="space-y-4">
                 <SectionHeader title={t('events.programme')} size="sm" as="h2" />
-                <Timeline items={event.programme.map(p => ({ title: p.label, date: p.time }))} />
+                <Timeline
+                  items={event.programme.map(p => ({
+                    title: p.label,
+                    date: p.time,
+                    ...(p.description ? { description: p.description } : {}),
+                  }))}
+                />
               </div>
             )}
           </div>
