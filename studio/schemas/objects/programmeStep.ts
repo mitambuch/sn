@@ -1,11 +1,13 @@
 // ═══════════════════════════════════════════════════
 // programmeStep — single line of a timed programme (events, journeys)
 //
-// WHAT: time + label pair, repeatable. Used inside event.programme[] and
-//       journey.itinerary[]. Both fields are localeString (FR/EN) — the
-//       "time" repère is free-form text that often needs translating
-//       ("J1 matin" → "D1 morning", "deuxième jour" → "second day"), not
-//       just a clock value.
+// WHAT: two clearly separated fields, repeatable. Used inside
+//       event.programme[] and journey.itinerary[].
+//       - `time`  : the hour, plain text ("09h00", "19:30"). NOT
+//         translatable — a clock value reads the same in every language.
+//       - `label` : the short title, localeString (FR/EN) — this is the
+//         part that needs translating ("Arrivée à La Chaux-de-Fonds").
+//       Renders as "09h00 | Arrivée à La Chaux-de-Fonds".
 // ═══════════════════════════════════════════════════
 
 import { defineField, defineType } from 'sanity';
@@ -17,23 +19,24 @@ export const programmeStep = defineType({
   fields: [
     defineField({
       name: 'time',
-      title: 'Horaire / repère',
-      type: 'localeString',
-      description: 'Libre, traduisible. Ex: "19:30", "J1 matin", "21:00", "deuxième jour".',
+      title: 'Heure',
+      type: 'string',
+      description: 'L\'horaire de l\'étape. Ex: "09h00", "19:30".',
       validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'label',
-      title: 'Description',
+      title: 'Titre',
       type: 'localeString',
-      description: 'Ex: "Cocktail Salle des Pas-Perdus", "Visite guidée par Marc Spiegler".',
+      description:
+        'Court titre traduisible (FR/EN). Ex: "Arrivée à La Chaux-de-Fonds", "Cocktail Salle des Pas-Perdus".',
       validation: Rule => Rule.required(),
     }),
   ],
   preview: {
-    select: { time: 'time.fr', label: 'label.fr' },
+    select: { time: 'time', label: 'label.fr' },
     prepare: ({ time, label }) => ({
-      title: `${String(time ?? '')} — ${String(label ?? '')}`,
+      title: `${String(time ?? '')} | ${String(label ?? '')}`,
     }),
   },
 });
