@@ -20,11 +20,19 @@ export type ShareableDocType =
   | 'conciergeService'
   | 'article';
 
+/** A single Sanity doc reference inside a share code (type + id). */
+export interface ShareDocRef {
+  type: ShareableDocType;
+  id: string;
+}
+
 export interface ShareCode {
   id: string;
-  code: string; // canonical 8 chars
+  code: string; // canonical 6 chars
   sanityDocType: ShareableDocType;
   sanityDocId: string;
+  /** Full list of fiches behind this code (≥ 1). First = sanityDoc*. */
+  docs: ShareDocRef[];
   status: ShareCodeStatus;
   viewCount: number;
   maxViews: number | null;
@@ -38,6 +46,9 @@ export interface ShareCode {
 export interface ConsumedShareCode {
   sanityDocType: ShareableDocType | null;
   sanityDocId: string | null;
+  /** All fiches behind the code (≥ 1 when valid). Legacy single-doc
+   *  codes resolve to a one-element list. */
+  docs: ShareDocRef[];
   status: ShareCodeStatus | null;
   viewCount: number;
   maxViews: number | null;

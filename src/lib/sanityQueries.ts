@@ -323,3 +323,17 @@ export const GROQ_SHARED_FICHE = (type: string, id: string) =>
     "heroImage": { "src": heroImage.asset->url, "alt": heroImage.alt },
     ...
   }`;
+
+/** Compact projection for a SET of fiches by _id — used by the multi-doc
+ *  share page (one code → several fiches) to render a collection of cards. */
+export const GROQ_SHARED_FICHES = (ids: readonly string[]) => {
+  const idList = ids.map(id => `"${id}"`).join(', ');
+  return `*[_id in [${idList}]]{
+    _type,
+    _id,
+    "slug": slug.current,
+    "title": ${L('title')},
+    "summary": ${L('summary')},
+    "image": images[0].asset->url
+  }`;
+};

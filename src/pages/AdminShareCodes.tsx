@@ -12,9 +12,9 @@
 // ═══════════════════════════════════════════════════
 
 import { Container } from '@components/layout/Container';
+import { Checkbox } from '@components/ui/Checkbox';
 import { DataTable, type DataTableColumn } from '@components/ui/DataTable';
 import { SectionHeader } from '@components/ui/SectionHeader';
-import { Select } from '@components/ui/Select';
 import { Stepper } from '@components/ui/Stepper';
 import { useAdminCatalogue } from '@hooks/useAdminCatalogue';
 import { useToast } from '@hooks/useToast';
@@ -30,6 +30,7 @@ import {
   type ShareableDocType,
   type ShareCode,
   type ShareCodeStatus,
+  type ShareDocRef,
 } from '@/types/share';
 
 const DOC_TYPES: { value: ShareableDocType; label: string }[] = [
@@ -51,6 +52,7 @@ interface RawShareCodeRow {
   code: string;
   sanity_doc_type: string;
   sanity_doc_id: string;
+  sanity_docs: { type?: string; id?: string }[] | null;
   status: string;
   view_count: number;
   max_views: number | null;
@@ -60,19 +62,29 @@ interface RawShareCodeRow {
   note: string | null;
 }
 
-const mapRow = (r: RawShareCodeRow): ShareCode => ({
-  id: r.id,
-  code: r.code,
-  sanityDocType: r.sanity_doc_type as ShareableDocType,
-  sanityDocId: r.sanity_doc_id,
-  status: r.status as ShareCodeStatus,
-  viewCount: r.view_count,
-  maxViews: r.max_views,
-  expiresAt: r.expires_at,
-  createdAt: r.created_at,
-  createdBy: r.created_by,
-  note: r.note,
-});
+const mapRow = (r: RawShareCodeRow): ShareCode => {
+  const multi = Array.isArray(r.sanity_docs) ? r.sanity_docs : [];
+  const docs: ShareDocRef[] = multi
+    .filter((d): d is { type: string; id: string } => Boolean(d?.type) && Boolean(d?.id))
+    .map(d => ({ type: d.type as ShareableDocType, id: d.id }));
+  return {
+    id: r.id,
+    code: r.code,
+    sanityDocType: r.sanity_doc_type as ShareableDocType,
+    sanityDocId: r.sanity_doc_id,
+    docs:
+      docs.length > 0
+        ? docs
+        : [{ type: r.sanity_doc_type as ShareableDocType, id: r.sanity_doc_id }],
+    status: r.status as ShareCodeStatus,
+    viewCount: r.view_count,
+    maxViews: r.max_views,
+    expiresAt: r.expires_at,
+    createdAt: r.created_at,
+    createdBy: r.created_by,
+    note: r.note,
+  };
+};
 
 const SHARE_BASE_URL = typeof window !== 'undefined' ? window.location.origin : '';
 
@@ -102,30 +114,26 @@ export default function AdminShareCodes() {
   // Form state for "Generate new code" — initialized from URL query
   // params on mount. If Salva re-deeplinks from Studio to a different
   // doc, the new tab gets a fresh mount with the right initial values.
-  const [docType, setDocType] = useState<ShareableDocType>(initialDocType);
-  const [docId, setDocId] = useState(initialDocId);
+  /** Selected fiches behind the code (≥ 1). Deeplink prefills the first. */
+  const [selected, setSelected] = useState<ShareDocRef[]>(
+    initialDocId ? [{ type: initialDocType, id: initialDocId }] : [],
+  );
   /** Exact end date+time, from a datetime-local input (empty = never). */
   const [expiresAt, setExpiresAt] = useState<string>('');
   const [maxViews, setMaxViews] = useState<string>('');
   const [note, setNote] = useState('');
 
-  // Fiche picker — list every catalogue doc by title so the operator
-  // never has to copy a Sanity _id by hand. value = "type:id".
+  // Multi-select fiche list — every catalogue doc by title, so the operator
+  // never copies a Sanity _id by hand and can bundle several in one link.
   const { rows: catalogueRows, loading: catalogueLoading } = useAdminCatalogue();
-  const ficheOptions = useMemo(
-    () =>
-      catalogueRows.map(r => ({
-        value: `${r.type}:${r.id}`,
-        label: `${DOC_TYPE_LABEL[r.type] ?? r.type} · ${r.title}`,
-      })),
-    [catalogueRows],
-  );
-  const ficheValue = docId ? `${docType}:${docId}` : '';
-  const handlePickFiche = (value: string) => {
-    const sep = value.indexOf(':');
-    if (sep === -1) return;
-    setDocType(value.slice(0, sep) as ShareableDocType);
-    setDocId(value.slice(sep + 1));
+  const keyOf = (ref: ShareDocRef) => `${ref.type}:${ref.id}`;
+  const selectedKeys = new Set(selected.map(keyOf));
+  const toggleFiche = (ref: ShareDocRef) => {
+    setSelected(prev =>
+      prev.some(r => keyOf(r) === keyOf(ref))
+        ? prev.filter(r => keyOf(r) !== keyOf(ref))
+        : [...prev, ref],
+    );
   };
 
   useEffect(() => {
@@ -191,8 +199,9 @@ export default function AdminShareCodes() {
   const handleGenerate = async (e: FormEvent) => {
     e.preventDefault();
     if (submitting) return;
-    if (!docId.trim()) {
-      toast({ variant: 'error', message: 'Choisis une fiche à partager.' });
+    const firstRef = selected[0];
+    if (!firstRef) {
+      toast({ variant: 'error', message: 'Choisis au moins une fiche à partager.' });
       return;
     }
     setSubmitting(true);
@@ -200,7 +209,7 @@ export default function AdminShareCodes() {
       // datetime-local is in the operator's local time → ISO (UTC) for storage.
       const expiresIso = expiresAt ? new Date(expiresAt).toISOString() : undefined;
       const max = maxViews ? parseInt(maxViews, 10) : undefined;
-      const { canonical } = await generateAndInsertShareCode(docType, docId.trim(), {
+      const { canonical } = await generateAndInsertShareCode(selected, {
         ...(expiresIso ? { expiresAt: expiresIso } : {}),
         ...(typeof max === 'number' && !Number.isNaN(max) ? { maxViews: max } : {}),
         ...(note ? { note } : {}),
@@ -214,8 +223,9 @@ export default function AdminShareCodes() {
         {
           id: `local-${Date.now().toString()}`,
           code: canonical,
-          sanityDocType: docType,
-          sanityDocId: docId.trim(),
+          sanityDocType: firstRef.type,
+          sanityDocId: firstRef.id,
+          docs: selected,
           status: 'active',
           viewCount: 0,
           maxViews: max ?? null,
@@ -226,7 +236,7 @@ export default function AdminShareCodes() {
         },
         ...prev,
       ]);
-      setDocId('');
+      setSelected([]);
       setExpiresAt('');
       setMaxViews('');
       setNote('');
@@ -256,12 +266,15 @@ export default function AdminShareCodes() {
     },
     {
       key: 'doc',
-      label: 'Fiche',
-      render: r => (
-        <span className="text-muted font-mono text-xs">
-          {r.sanityDocType} · <code>{r.sanityDocId}</code>
-        </span>
-      ),
+      label: 'Fiche(s)',
+      render: r =>
+        r.docs.length > 1 ? (
+          <span className="text-fg font-mono text-xs">{r.docs.length} fiches</span>
+        ) : (
+          <span className="text-muted font-mono text-xs">
+            {r.sanityDocType} · <code>{r.sanityDocId}</code>
+          </span>
+        ),
     },
     {
       key: 'status',
@@ -345,7 +358,7 @@ export default function AdminShareCodes() {
         <SectionHeader
           eyebrow={t('admin.eyebrow', 'Administration')}
           title="Codes de partage"
-          lede="Génère un code à 8 caractères qui donne accès à UNE seule fiche sans authentification. Idéal pour partager rapidement un événement, une propriété ou un garde-temps avec un client de confiance qui ne souhaite pas s'inscrire."
+          lede="Génère un code qui donne accès à une OU plusieurs fiches sans authentification. Coche les fiches à inclure, fixe une date de fin et un nombre de vues si besoin, puis partage le lien avec un client de confiance qui ne souhaite pas s'inscrire."
           size="md"
           as="h1"
         />
@@ -355,47 +368,76 @@ export default function AdminShareCodes() {
           onSubmit={e => {
             void handleGenerate(e);
           }}
-          className="border-border bg-surface/40 grid grid-cols-1 items-end gap-4 rounded-lg border p-6 md:grid-cols-[2fr_1.4fr_160px_auto]"
+          className="border-border bg-surface/40 flex flex-col gap-5 rounded-lg border p-6"
         >
-          <Select
-            label="Fiche à partager"
-            options={ficheOptions}
-            value={ficheValue}
-            onChange={handlePickFiche}
-            placeholder={catalogueLoading ? 'Chargement…' : 'Choisir une fiche'}
-          />
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="sc-expires" className="text-fg text-sm font-medium">
-              Fin (date + heure)
-            </label>
-            <input
-              id="sc-expires"
-              type="datetime-local"
-              value={expiresAt}
-              onChange={e => {
-                setExpiresAt(e.target.value);
-              }}
-              className="bg-bg/80 border-border text-fg rounded-md border px-3 py-2 text-sm"
-            />
+          {/* Fiche multi-select */}
+          <div className="flex flex-col gap-2">
+            <span className="text-fg text-sm font-medium">
+              Fiches à partager
+              {selected.length > 0 && (
+                <span className="text-muted"> · {selected.length} sélectionnée(s)</span>
+              )}
+            </span>
+            <div className="border-border bg-bg/40 flex max-h-56 flex-col gap-1 overflow-y-auto rounded-lg border p-2">
+              {catalogueLoading ? (
+                <p className="text-muted p-2 text-sm">Chargement des fiches…</p>
+              ) : catalogueRows.length === 0 ? (
+                <p className="text-muted p-2 text-sm">Aucune fiche dans le catalogue.</p>
+              ) : (
+                catalogueRows.map(r => {
+                  const ref: ShareDocRef = { type: r.type, id: r.id };
+                  return (
+                    <Checkbox
+                      key={keyOf(ref)}
+                      checked={selectedKeys.has(keyOf(ref))}
+                      onChange={() => {
+                        toggleFiche(ref);
+                      }}
+                      label={`${DOC_TYPE_LABEL[r.type] ?? r.type} · ${r.title}`}
+                      className="hover:bg-surface/50 rounded px-2 py-1.5"
+                    />
+                  );
+                })
+              )}
+            </div>
           </div>
-          <Stepper
-            id="sc-max-views"
-            label="Vues max (0 = ∞)"
-            value={maxViews ? parseInt(maxViews, 10) : 0}
-            min={0}
-            max={999}
-            onChange={n => {
-              setMaxViews(n === 0 ? '' : String(n));
-            }}
-          />
-          <button
-            type="submit"
-            disabled={submitting || !hasSupabase}
-            className="border-border bg-fg text-bg hover:bg-fg/90 self-end rounded-full border px-5 py-2.5 font-mono text-xs tracking-widest uppercase disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {submitting ? '…' : 'Générer'}
-          </button>
-          <div className="flex flex-col gap-1.5 md:col-span-4">
+
+          {/* Options row */}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-[1.4fr_160px_auto] md:items-end">
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="sc-expires" className="text-fg text-sm font-medium">
+                Fin (date + heure)
+              </label>
+              <input
+                id="sc-expires"
+                type="datetime-local"
+                value={expiresAt}
+                onChange={e => {
+                  setExpiresAt(e.target.value);
+                }}
+                className="bg-bg/80 border-border text-fg rounded-md border px-3 py-2 text-sm"
+              />
+            </div>
+            <Stepper
+              id="sc-max-views"
+              label="Vues max (0 = ∞)"
+              value={maxViews ? parseInt(maxViews, 10) : 0}
+              min={0}
+              max={999}
+              onChange={n => {
+                setMaxViews(n === 0 ? '' : String(n));
+              }}
+            />
+            <button
+              type="submit"
+              disabled={submitting || !hasSupabase || selected.length === 0}
+              className="border-border bg-fg text-bg hover:bg-fg/90 h-12 self-end rounded-full border px-6 font-mono text-xs tracking-widest uppercase disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {submitting ? '…' : 'Générer'}
+            </button>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
             <label htmlFor="sc-note" className="text-fg text-sm font-medium">
               Note interne (optionnelle)
             </label>

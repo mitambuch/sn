@@ -17,17 +17,33 @@ import {
   generateShareCode,
   normalizeShareCode,
   type ShareableDocType,
+  type ShareDocRef,
 } from '@/types/share';
 
 type ConsumeRow = {
   sanity_doc_type: string | null;
   sanity_doc_id: string | null;
+  sanity_docs: { type?: string; id?: string }[] | null;
   status: string | null;
   view_count: number;
   max_views: number | null;
   expires_at: string | null;
   is_valid: boolean;
 };
+
+/** Build the docs[] list from a consume row: prefer the multi-doc JSONB,
+ *  fall back to the legacy single (type,id) for old codes. */
+function resolveDocs(row: ConsumeRow): ShareDocRef[] {
+  const multi = Array.isArray(row.sanity_docs) ? row.sanity_docs : [];
+  const fromMulti = multi
+    .filter((d): d is { type: string; id: string } => Boolean(d?.type) && Boolean(d?.id))
+    .map(d => ({ type: d.type as ShareableDocType, id: d.id }));
+  if (fromMulti.length > 0) return fromMulti;
+  if (row.sanity_doc_type && row.sanity_doc_id) {
+    return [{ type: row.sanity_doc_type as ShareableDocType, id: row.sanity_doc_id }];
+  }
+  return [];
+}
 
 /**
  * Validate a share code (display or canonical) and consume one view.
@@ -42,6 +58,7 @@ type ConsumeRow = {
 const DEMO_RESULT: ConsumedShareCode = {
   sanityDocType: 'event',
   sanityDocId: 'evt-01',
+  docs: [{ type: 'event', id: 'evt-01' }],
   status: 'active',
   viewCount: 1,
   maxViews: null,
@@ -74,9 +91,11 @@ export const consumeShareCode = async (rawCode: string): Promise<ConsumedShareCo
   const first = rows[0];
   if (!first) return null;
 
+  const docs = resolveDocs(first);
   return {
-    sanityDocType: first.sanity_doc_type as ShareableDocType | null,
-    sanityDocId: first.sanity_doc_id,
+    sanityDocType: (first.sanity_doc_type as ShareableDocType | null) ?? docs[0]?.type ?? null,
+    sanityDocId: first.sanity_doc_id ?? docs[0]?.id ?? null,
+    docs,
     status: first.status as ConsumedShareCode['status'],
     viewCount: first.view_count,
     maxViews: first.max_views,
@@ -100,12 +119,15 @@ interface GenerateOpts {
  * size — 30^6 ≈ 729M), retries once with a fresh code.
  */
 export const generateAndInsertShareCode = async (
-  docType: ShareableDocType,
-  docId: string,
+  docs: ShareDocRef[],
   opts: GenerateOpts = {},
 ): Promise<{ canonical: string }> => {
   if (!supabase) {
     throw new Error('Supabase non configuré — impossible de générer un code de partage.');
+  }
+  const first = docs[0];
+  if (!first) {
+    throw new Error('Aucune fiche sélectionnée pour le code de partage.');
   }
   const sb = supabase;
 
@@ -113,8 +135,11 @@ export const generateAndInsertShareCode = async (
     const canonical = generateShareCode();
     const { error } = await sb.from('share_codes').insert({
       code: canonical,
-      sanity_doc_type: docType,
-      sanity_doc_id: docId,
+      // Legacy columns hold the first doc (NOT NULL + back-compat);
+      // sanity_docs holds the whole selection.
+      sanity_doc_type: first.type,
+      sanity_doc_id: first.id,
+      sanity_docs: docs,
       ...(opts.expiresAt ? { expires_at: opts.expiresAt } : {}),
       ...(typeof opts.maxViews === 'number' ? { max_views: opts.maxViews } : {}),
       ...(opts.note ? { note: opts.note } : {}),
