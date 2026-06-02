@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-06-02** — [Session — Formulaires pro + UX partage de fiche (matin, suite)](sessions/2026-06-02-0940.md)
 - **2026-06-02** — [Session — Fix équipe écrasée par Sanity prod (matin)](sessions/2026-06-02-0846.md)
 - **2026-06-02** — [Session — CORS admin, partage de fiche, programme step (matin)](sessions/2026-06-02-0812.md)
-- **2026-06-01** — [Session — Déploiement emails opérateur + formulaire pro + programme i18n (fin aprem)](sessions/2026-06-01-1757.md)
 
 ## Active decisions (top 5)
 
@@ -33,7 +33,7 @@
 
 ## Deep dive
 
-- Full catalogue (137 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (139 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
