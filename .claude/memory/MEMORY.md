@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-06-02** — [Session — Fix équipe écrasée par Sanity prod (matin)](sessions/2026-06-02-0846.md)
 - **2026-06-02** — [Session — CORS admin, partage de fiche, programme step (matin)](sessions/2026-06-02-0812.md)
 - **2026-06-01** — [Session — Déploiement emails opérateur + formulaire pro + programme i18n (fin aprem)](sessions/2026-06-01-1757.md)
-- **2026-06-01** — [Session — Bugs client : emails opérateur + formulaire d'accès (après-midi)](sessions/2026-06-01-1656.md)
 
 ## Active decisions (top 5)
 
@@ -19,6 +19,7 @@
 
 ## Open frictions
 
+- **2026-06-02** — [Friction — données Sanity prod périmées écrasent le bon fallback code](frictions/2026-06-02-sanity-stale-data-overrides-code.md)
 - **2026-05-29** — [Friction — Firewall Swatch Group bloque saw-next.ch en "high-risk"](frictions/2026-05-29-swatch-firewall-block.md)
 - **2026-05-11** — [Friction — Supabase Vault secret naming mismatch](frictions/2026-05-11-supabase-vault-secret-naming.md)
 - **2026-05-11** — [Friction — Supabase "Automatically expose new tables" toggle au setup projet](frictions/2026-05-11-supabase-expose-new-tables-toggle.md)
@@ -32,7 +33,7 @@
 
 ## Deep dive
 
-- Full catalogue (135 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (137 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
