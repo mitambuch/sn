@@ -24,13 +24,16 @@
 
 import { useLocale } from '@app/LocaleProvider';
 import { Button } from '@components/ui/Button';
+import { Checkbox } from '@components/ui/Checkbox';
 import { Input } from '@components/ui/Input';
 import { Modal } from '@components/ui/Modal';
+import { PhoneField } from '@components/ui/PhoneField';
 import { ROUTES } from '@constants/routes';
 import { useToast } from '@hooks/useToast';
 import { cn } from '@utils/cn';
 import { type FormEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { isValidPhoneNumber } from 'react-phone-number-input';
 import { useNavigate } from 'react-router-dom';
 
 import { hasSupabase, supabase } from '@/lib/supabase';
@@ -84,12 +87,10 @@ function isValidEmail(value: string): boolean {
   return EMAIL_RE.test(value.trim());
 }
 
-/** International-friendly phone check: optional leading +, 8–15 digits,
- *  separators (space . - ( )) allowed. Rejects letters / too-short input. */
+/** Real phone validation via libphonenumber (E.164 from PhoneField). */
 function isValidPhone(value: string): boolean {
   const trimmed = value.trim();
-  const digits = trimmed.replace(/\D/g, '');
-  return /^\+?[\d\s().-]+$/.test(trimmed) && digits.length >= 8 && digits.length <= 15;
+  return trimmed !== '' && isValidPhoneNumber(trimmed);
 }
 
 function isStepComplete(step: RequestStep, form: RequestFormState): boolean {
@@ -355,15 +356,10 @@ export const AccessRequestModal = ({
             {/* ─── Step 1 — Profil ─── */}
             {step === 1 && (
               <div className="grid grid-cols-1 gap-4">
-                <Input
+                <PhoneField
                   label={t('landing.access.modal.fields.phone')}
                   value={form.phone}
-                  onChange={e => {
-                    setField('phone')(e.target.value);
-                  }}
-                  required
-                  type="tel"
-                  autoComplete="tel"
+                  onChange={setField('phone')}
                   {...(phoneError ? { error: phoneError } : {})}
                 />
                 <Input
@@ -412,26 +408,14 @@ export const AccessRequestModal = ({
                   {t('landing.access.modal.legal')}
                 </p>
 
-                {/* Sibling label+input (not wrapped) — matches Input.tsx and
-                    sidesteps a jsx-a11y/label-has-associated-control crash on
-                    wrapping labels (plugin 6.10.2 + minimatch). */}
-                <div className="flex items-start gap-3">
-                  <input
-                    id="access-consent"
-                    type="checkbox"
-                    checked={consent}
-                    onChange={e => {
-                      setConsent(e.target.checked);
-                    }}
-                    className="accent-accent mt-0.5 h-4 w-4 shrink-0"
-                  />
-                  <label
-                    htmlFor="access-consent"
-                    className="text-muted cursor-pointer text-xs leading-relaxed"
-                  >
-                    {t('landing.access.modal.consent')}
-                  </label>
-                </div>
+                <Checkbox
+                  id="access-consent"
+                  checked={consent}
+                  onChange={e => {
+                    setConsent(e.target.checked);
+                  }}
+                  label={t('landing.access.modal.consent')}
+                />
               </div>
             )}
 

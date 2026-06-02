@@ -396,3 +396,58 @@ body::before {
   backdrop-filter: blur(var(--blur-glass-lg));
   -webkit-backdrop-filter: blur(var(--blur-glass-lg));
 }
+
+/* ─── Phone field — react-phone-number-input themed to site tokens ──── */
+/* Used by the PhoneField atom (.sn-phone wraps the .PhoneInput root). */
+.sn-phone {
+  --PhoneInputCountryFlag-borderColor: transparent;
+  --PhoneInputCountrySelectArrow-color: var(--color-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  backdrop-filter: blur(var(--blur-glass-sm));
+  transition:
+    border-color var(--duration-base),
+    box-shadow var(--duration-base);
+}
+.sn-phone:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 1px var(--color-accent);
+}
+.sn-phone--error {
+  border-color: var(--color-danger);
+}
+.sn-phone .PhoneInputInput {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--color-fg);
+  font: inherit;
+}
+.sn-phone .PhoneInputInput::placeholder {
+  color: color-mix(in srgb, var(--color-muted) 60%, transparent);
+}
+.sn-phone .PhoneInputCountrySelect {
+  color: var(--color-fg);
+}
+.sn-phone .PhoneInputCountrySelect option {
+  background-color: var(--color-surface);
+  color: var(--color-fg);
+}
+.sn-phone .PhoneInputCountryIcon {
+  box-shadow: none;
+}
+
+/* ─── Native <select> fallback theming — dropdown list isn't fully
+   styleable cross-browser, but force the surface/fg tokens so any
+   remaining native select doesn't render as a white rectangle. ──────── */
+select option {
+  background-color: var(--color-surface);
+  color: var(--color-fg);
+}
