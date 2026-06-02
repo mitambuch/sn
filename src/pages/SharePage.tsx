@@ -592,9 +592,12 @@ export default function SharePage() {
                   <span className="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
                     Informations
                   </span>
-                  <dl className="grid grid-cols-1 gap-x-10 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
+                  <dl className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {metaItems.map(m => (
-                      <div key={m.label} className="border-fg/10 flex flex-col gap-1 border-b pb-3">
+                      <div
+                        key={m.label}
+                        className="border-fg/10 bg-surface/40 flex flex-col gap-1.5 rounded-lg border p-4"
+                      >
                         <dt className="text-muted font-mono text-[10px] tracking-[0.2em] uppercase">
                           {m.label}
                         </dt>
@@ -613,24 +616,27 @@ export default function SharePage() {
                   <span className="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
                     Programme
                   </span>
-                  <ol className="flex flex-col gap-5">
+                  <ol className="flex flex-col gap-6">
                     {programme.map((p, i) => {
                       const desc = localeStr(p.description);
                       return (
-                        <li key={i} className="flex gap-4">
-                          <span className="text-fg w-14 shrink-0 pt-0.5 font-mono text-xs tabular-nums">
-                            {localeStr(p.time)}
-                          </span>
-                          <div className="border-fg/10 flex flex-col gap-1 border-l pl-4">
-                            <p className="text-fg font-sans text-sm font-medium normal-case">
+                        <li
+                          key={i}
+                          className="border-fg/15 flex flex-col gap-1.5 border-l-2 pl-4 sm:pl-5"
+                        >
+                          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                            <span className="text-fg font-mono text-xs tracking-wider tabular-nums">
+                              {localeStr(p.time)}
+                            </span>
+                            <span className="text-fg font-sans text-sm font-medium normal-case">
                               {localeStr(p.label)}
-                            </p>
-                            {desc && (
-                              <p className="text-muted font-sans text-sm leading-relaxed normal-case">
-                                {desc}
-                              </p>
-                            )}
+                            </span>
                           </div>
+                          {desc && (
+                            <p className="text-muted max-w-2xl font-sans text-sm leading-relaxed normal-case">
+                              {desc}
+                            </p>
+                          )}
                         </li>
                       );
                     })}
