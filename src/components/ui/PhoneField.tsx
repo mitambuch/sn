@@ -15,6 +15,9 @@ import 'react-phone-number-input/style.css';
 import { cn } from '@utils/cn';
 import { useId } from 'react';
 import PhoneInput from 'react-phone-number-input';
+// Bundled SVG flags — without this the lib fetches flag images from a CDN,
+// which renders as broken-image icons when that CDN is blocked/offline.
+import flags from 'react-phone-number-input/flags';
 
 interface PhoneFieldProps {
   label: string;
@@ -38,6 +41,7 @@ export const PhoneField = ({ label, value, onChange, error, id }: PhoneFieldProp
         id={fieldId}
         international
         defaultCountry="CH"
+        flags={flags}
         value={value}
         onChange={next => onChange(next ?? '')}
         className={cn('sn-phone', error && 'sn-phone--error')}
