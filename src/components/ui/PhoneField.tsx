@@ -38,7 +38,7 @@ export const PhoneField = ({ label, value, onChange, error, id }: PhoneFieldProp
         id={fieldId}
         international
         defaultCountry="CH"
-        value={value || undefined}
+        value={value}
         onChange={next => onChange(next ?? '')}
         className={cn('sn-phone', error && 'sn-phone--error')}
       />

@@ -12,6 +12,7 @@
 
 import { BrandMark } from '@components/brand/BrandMark';
 import { Card } from '@components/ui/Card';
+import { ExpiryCountdown } from '@components/ui/ExpiryCountdown';
 import { Image } from '@components/ui/Image';
 import { MetaList } from '@components/ui/MetaList';
 import { ShareActionRow } from '@components/ui/ShareActionRow';
@@ -422,6 +423,18 @@ export default function SharePage() {
                 Partage privé · Code {displayCode}
               </span>
             </div>
+
+            {/* Live countdown — when the code has an end date+time, show
+                j-h-m-s remaining; flip to "expired" at zero so the fiche
+                disappears without a reload. */}
+            {consumed.expiresAt && (
+              <ExpiryCountdown
+                expiresAt={consumed.expiresAt}
+                onExpire={() => {
+                  setStatus('expired');
+                }}
+              />
+            )}
 
             {/* Hero image — flush to card edges, 16/9 */}
             {heroSrc ? (

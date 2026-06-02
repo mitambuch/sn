@@ -14,6 +14,8 @@
 import { Container } from '@components/layout/Container';
 import { DataTable, type DataTableColumn } from '@components/ui/DataTable';
 import { SectionHeader } from '@components/ui/SectionHeader';
+import { Select } from '@components/ui/Select';
+import { useAdminCatalogue } from '@hooks/useAdminCatalogue';
 import { useToast } from '@hooks/useToast';
 import { type FormEvent, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -38,6 +40,10 @@ const DOC_TYPES: { value: ShareableDocType; label: string }[] = [
   { value: 'conciergeService', label: 'Conciergerie' },
   { value: 'article', label: 'Actualité' },
 ];
+
+const DOC_TYPE_LABEL: Record<ShareableDocType, string> = Object.fromEntries(
+  DOC_TYPES.map(d => [d.value, d.label]),
+) as Record<ShareableDocType, string>;
 
 interface RawShareCodeRow {
   id: string;
@@ -97,9 +103,29 @@ export default function AdminShareCodes() {
   // doc, the new tab gets a fresh mount with the right initial values.
   const [docType, setDocType] = useState<ShareableDocType>(initialDocType);
   const [docId, setDocId] = useState(initialDocId);
-  const [expiresDays, setExpiresDays] = useState<string>('');
+  /** Exact end date+time, from a datetime-local input (empty = never). */
+  const [expiresAt, setExpiresAt] = useState<string>('');
   const [maxViews, setMaxViews] = useState<string>('');
   const [note, setNote] = useState('');
+
+  // Fiche picker — list every catalogue doc by title so the operator
+  // never has to copy a Sanity _id by hand. value = "type:id".
+  const { rows: catalogueRows, loading: catalogueLoading } = useAdminCatalogue();
+  const ficheOptions = useMemo(
+    () =>
+      catalogueRows.map(r => ({
+        value: `${r.type}:${r.id}`,
+        label: `${DOC_TYPE_LABEL[r.type] ?? r.type} · ${r.title}`,
+      })),
+    [catalogueRows],
+  );
+  const ficheValue = docId ? `${docType}:${docId}` : '';
+  const handlePickFiche = (value: string) => {
+    const sep = value.indexOf(':');
+    if (sep === -1) return;
+    setDocType(value.slice(0, sep) as ShareableDocType);
+    setDocId(value.slice(sep + 1));
+  };
 
   useEffect(() => {
     if (!supabase) return;
@@ -165,17 +191,16 @@ export default function AdminShareCodes() {
     e.preventDefault();
     if (submitting) return;
     if (!docId.trim()) {
-      toast({ variant: 'error', message: 'ID de la fiche Sanity requis.' });
+      toast({ variant: 'error', message: 'Choisis une fiche à partager.' });
       return;
     }
     setSubmitting(true);
     try {
-      const expiresAt = expiresDays
-        ? new Date(Date.now() + parseInt(expiresDays, 10) * 24 * 60 * 60 * 1000).toISOString()
-        : undefined;
+      // datetime-local is in the operator's local time → ISO (UTC) for storage.
+      const expiresIso = expiresAt ? new Date(expiresAt).toISOString() : undefined;
       const max = maxViews ? parseInt(maxViews, 10) : undefined;
       const { canonical } = await generateAndInsertShareCode(docType, docId.trim(), {
-        ...(expiresAt ? { expiresAt } : {}),
+        ...(expiresIso ? { expiresAt: expiresIso } : {}),
         ...(typeof max === 'number' && !Number.isNaN(max) ? { maxViews: max } : {}),
         ...(note ? { note } : {}),
       });
@@ -193,7 +218,7 @@ export default function AdminShareCodes() {
           status: 'active',
           viewCount: 0,
           maxViews: max ?? null,
-          expiresAt: expiresAt ?? null,
+          expiresAt: expiresIso ?? null,
           createdAt: new Date().toISOString(),
           createdBy: null,
           note: note || null,
@@ -201,7 +226,7 @@ export default function AdminShareCodes() {
         ...prev,
       ]);
       setDocId('');
-      setExpiresDays('');
+      setExpiresAt('');
       setMaxViews('');
       setNote('');
     } catch (err) {
@@ -329,56 +354,26 @@ export default function AdminShareCodes() {
           onSubmit={e => {
             void handleGenerate(e);
           }}
-          className="border-border bg-surface/40 grid grid-cols-1 gap-4 rounded-lg border p-6 md:grid-cols-[1fr_1fr_120px_120px_auto]"
+          className="border-border bg-surface/40 grid grid-cols-1 gap-4 rounded-lg border p-6 md:grid-cols-[2fr_1.4fr_110px_auto]"
         >
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="sc-doc-type" className="text-fg text-sm font-medium">
-              Type de fiche
-            </label>
-            <select
-              id="sc-doc-type"
-              value={docType}
-              onChange={e => {
-                setDocType(e.target.value as ShareableDocType);
-              }}
-              className="bg-bg/80 border-border text-fg rounded-md border px-3 py-2 text-sm"
-            >
-              {DOC_TYPES.map(opt => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="sc-doc-id" className="text-fg text-sm font-medium">
-              ID Sanity *
-            </label>
-            <input
-              id="sc-doc-id"
-              type="text"
-              value={docId}
-              onChange={e => {
-                setDocId(e.target.value);
-              }}
-              placeholder="ex: evt-01"
-              required
-              className="bg-bg/80 border-border text-fg rounded-md border px-3 py-2 font-mono text-sm"
-            />
-          </div>
+          <Select
+            label="Fiche à partager"
+            options={ficheOptions}
+            value={ficheValue}
+            onChange={handlePickFiche}
+            placeholder={catalogueLoading ? 'Chargement…' : 'Choisir une fiche'}
+          />
           <div className="flex flex-col gap-1.5">
             <label htmlFor="sc-expires" className="text-fg text-sm font-medium">
-              Expire (j)
+              Fin (date + heure)
             </label>
             <input
               id="sc-expires"
-              type="number"
-              min={1}
-              value={expiresDays}
+              type="datetime-local"
+              value={expiresAt}
               onChange={e => {
-                setExpiresDays(e.target.value);
+                setExpiresAt(e.target.value);
               }}
-              placeholder="∞"
               className="bg-bg/80 border-border text-fg rounded-md border px-3 py-2 text-sm"
             />
           </div>
@@ -405,7 +400,7 @@ export default function AdminShareCodes() {
           >
             {submitting ? '…' : 'Générer'}
           </button>
-          <div className="flex flex-col gap-1.5 md:col-span-5">
+          <div className="flex flex-col gap-1.5 md:col-span-4">
             <label htmlFor="sc-note" className="text-fg text-sm font-medium">
               Note interne (optionnelle)
             </label>
