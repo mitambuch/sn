@@ -254,6 +254,13 @@ export default function SharePage() {
       (fiche.venue || fiche.startsAt || fiche.dateMode)
     ) {
       const mode = fiche.dateMode ?? 'exact';
+      // Coerce every field defensively — a query that didn't flatten a
+      // localeString must never reach render as an object (React #31).
+      const venue = localeStr(fiche.venue);
+      const city = localeStr(fiche.city);
+      const countryCode = localeStr(fiche.countryCode);
+      const dressCode = localeStr(fiche.dressCode);
+      const dateLabel = localeStr(fiche.dateLabel);
       const dateRows =
         mode === 'exact' && fiche.startsAt
           ? [
@@ -263,19 +270,14 @@ export default function SharePage() {
           : [
               {
                 label: 'Date',
-                value: mode === 'allYear' ? 'Toute l’année' : (fiche.dateLabel ?? 'Sur demande'),
+                value: mode === 'allYear' ? 'Toute l’année' : dateLabel || 'Sur demande',
               },
             ];
       return [
         ...dateRows,
-        ...(fiche.venue ? [{ label: 'Lieu', value: fiche.venue }] : []),
-        ...(fiche.city
-          ? [
-              {
-                label: 'Ville',
-                value: `${fiche.city}${fiche.countryCode ? ` · ${fiche.countryCode}` : ''}`,
-              },
-            ]
+        ...(venue ? [{ label: 'Lieu', value: venue }] : []),
+        ...(city
+          ? [{ label: 'Ville', value: `${city}${countryCode ? ` · ${countryCode}` : ''}` }]
           : []),
         ...(typeof fiche.capacity === 'number'
           ? [{ label: 'Capacité', value: String(fiche.capacity) }]
@@ -283,9 +285,7 @@ export default function SharePage() {
         ...(typeof fiche.allocatedSeats === 'number'
           ? [{ label: 'Places SAW NEXT', value: String(fiche.allocatedSeats) }]
           : []),
-        ...(fiche.dressCode
-          ? [{ label: 'Dress code', value: fiche.dressCode.replace(/-/g, ' ') }]
-          : []),
+        ...(dressCode ? [{ label: 'Dress code', value: dressCode.replace(/-/g, ' ') }] : []),
       ];
     }
 
@@ -584,11 +584,14 @@ export default function SharePage() {
                     Programme
                   </span>
                   <Timeline
-                    items={programme.map(p => ({
-                      title: p.label,
-                      date: p.time,
-                      ...(p.description ? { description: p.description } : {}),
-                    }))}
+                    items={programme.map(p => {
+                      const desc = localeStr(p.description);
+                      return {
+                        title: localeStr(p.label),
+                        date: localeStr(p.time),
+                        ...(desc ? { description: desc } : {}),
+                      };
+                    })}
                   />
                 </section>
               )}
@@ -598,7 +601,7 @@ export default function SharePage() {
                 <section className="border-fg/10 flex flex-col gap-4 border-t pt-6">
                   <span className="text-muted text-[10px] tracking-[0.3em] uppercase">Galerie</span>
                   <GalleryGrid
-                    images={fiche.images.slice(1).map(i => ({ src: i.src, alt: i.alt ?? '' }))}
+                    images={fiche.images.slice(1).map(i => ({ src: i.src, alt: localeStr(i.alt) }))}
                   />
                 </section>
               )}
