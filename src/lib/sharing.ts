@@ -62,7 +62,9 @@ export const buildShareMessage = (opts: BuildMessageOpts): string => {
   const locale = opts.locale ?? 'fr';
   const labels = locale === 'fr' ? TYPE_LABELS_FR : TYPE_LABELS_EN;
   const noun = opts.docType ? labels[opts.docType] : locale === 'fr' ? 'fiche' : 'item';
-  const title = opts.title?.trim();
+  // Defensive: tolerate a non-string title (e.g. an unflattened localeString
+  // object) instead of throwing on .trim() — the share page must never 500.
+  const title = typeof opts.title === 'string' ? opts.title.trim() : undefined;
 
   if (locale === 'en') {
     const head = title

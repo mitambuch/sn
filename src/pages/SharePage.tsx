@@ -10,6 +10,11 @@
 // WHEN: /share/:code (outside locale tree, no PublicLayout chrome).
 // ═══════════════════════════════════════════════════
 
+/* eslint-disable max-lines -- public share page: 7-state machine
+   (loading/invalid/not-found/expired/revoked/valid-single/valid-multi) +
+   Sanity fetch + mock fallback + share actions. Extracting the single-fiche
+   render into its own component is tracked as tech-debt. */
+
 import { BrandMark } from '@components/brand/BrandMark';
 import { Card } from '@components/ui/Card';
 import { ExpiryCountdown } from '@components/ui/ExpiryCountdown';
@@ -50,6 +55,7 @@ import {
   type ShareableDocType,
 } from '@/types/share';
 import type { Timepiece } from '@/types/timepiece';
+import { localeStr } from '@/utils/localeString';
 
 type Status = 'loading' | 'valid' | 'invalid-format' | 'not-found' | 'expired' | 'revoked';
 
@@ -322,14 +328,19 @@ export default function SharePage() {
 
   const displayCode = rawCode ? formatShareCode(normalizeShareCode(rawCode)) : '—';
   const heroSrc = fiche?.heroImage?.src ?? fiche?.images?.[0]?.src ?? undefined;
+  // Defensive: a fiche field may arrive as a localeString object {fr,en}
+  // if a query didn't flatten it — coerce to a plain string everywhere.
+  const ficheTitle = localeStr(fiche?.title);
+  const ficheSummary = localeStr(fiche?.summary);
+  const ficheDescription = localeStr(fiche?.description);
   const heroAlt =
-    fiche?.heroImage?.alt ?? fiche?.images?.[0]?.alt ?? fiche?.title ?? 'Fiche partagée';
+    fiche?.heroImage?.alt ?? fiche?.images?.[0]?.alt ?? (ficheTitle || 'Fiche partagée');
 
   const shareUrl =
     typeof window !== 'undefined' ? window.location.href : `${siteConfig.url}/share/${displayCode}`;
   const shareMessage = buildShareMessage({
     docType: fiche?._type ?? consumed?.sanityDocType ?? null,
-    title: fiche?.title ?? null,
+    title: ficheTitle || null,
     url: shareUrl,
   });
 
@@ -340,14 +351,14 @@ export default function SharePage() {
       className="bg-bg text-fg relative min-h-screen overflow-hidden px-5 py-16 md:px-12 md:py-24"
     >
       {/* Minimal OG metadata — React 19 hoists these into <head> */}
-      <title>{fiche?.title ? `${fiche.title} — Sawnext` : 'Sawnext — Partage privé'}</title>
-      {fiche?.summary && <meta name="description" content={fiche.summary} />}
+      <title>{ficheTitle ? `${ficheTitle} — Sawnext` : 'Sawnext — Partage privé'}</title>
+      {ficheSummary && <meta name="description" content={ficheSummary} />}
       <meta name="robots" content="noindex, nofollow" />
       <meta
         property="og:title"
-        content={fiche?.title ? `${fiche.title} — Sawnext` : 'Sawnext — Partage privé'}
+        content={ficheTitle ? `${ficheTitle} — Sawnext` : 'Sawnext — Partage privé'}
       />
-      {fiche?.summary && <meta property="og:description" content={fiche.summary} />}
+      {ficheSummary && <meta property="og:description" content={ficheSummary} />}
       {heroSrc && <meta property="og:image" content={heroSrc} />}
       <meta property="og:type" content="website" />
 
@@ -471,25 +482,25 @@ export default function SharePage() {
                   {consumed.sanityDocType === 'article' && 'Actualité'}
                 </span>
                 <h2 className="font-mono text-2xl leading-tight font-medium tracking-tight uppercase md:text-3xl">
-                  {fiche?.title ?? 'Fiche partagée'}
+                  {ficheTitle || 'Fiche partagée'}
                 </h2>
-                {fiche?.summary && (
+                {ficheSummary && (
                   <p className="text-fg/85 max-w-2xl pt-2 text-base leading-relaxed text-pretty">
-                    {fiche.summary}
+                    {ficheSummary}
                   </p>
                 )}
               </header>
 
               {/* ─── Specs grid : description + MetaList ─── */}
-              {(fiche?.description || metaItems.length > 0) && (
+              {(ficheDescription || metaItems.length > 0) && (
                 <section className="grid gap-8 md:grid-cols-[1.4fr_1fr] md:gap-12">
-                  {fiche?.description && (
+                  {ficheDescription && (
                     <div className="flex flex-col gap-3">
                       <span className="text-muted text-[10px] tracking-[0.3em] uppercase">
                         Description
                       </span>
                       <p className="text-muted leading-relaxed whitespace-pre-line">
-                        {fiche.description}
+                        {ficheDescription}
                       </p>
                     </div>
                   )}
