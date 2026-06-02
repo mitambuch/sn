@@ -20,6 +20,33 @@ vi.mock('react-router-dom', () => ({
 }));
 // No Supabase in test env → modal takes the simulator submit path.
 vi.mock('@/lib/supabase', () => ({ hasSupabase: false, supabase: null }));
+// Stub the phone widget with a plain input — we test the modal's logic
+// (validation via isValidPhoneNumber still runs on the real value), not
+// react-phone-number-input's controlled formatting (flaky under jsdom).
+vi.mock('@components/ui/PhoneField', () => ({
+  PhoneField: ({
+    label,
+    value,
+    onChange,
+    error,
+  }: {
+    label: string;
+    value: string;
+    onChange: (v: string) => void;
+    error?: string;
+  }) => (
+    <>
+      <input
+        aria-label={label}
+        value={value}
+        onChange={e => {
+          onChange(e.currentTarget.value);
+        }}
+      />
+      {error ? <p role="alert">{error}</p> : null}
+    </>
+  ),
+}));
 
 // i18n.init() is async; ensure FR resources are loaded before we query
 // the modal by its (translated) labels.
@@ -35,7 +62,7 @@ async function advanceToMessageStep(user: ReturnType<typeof userEvent.setup>) {
   await user.click(screen.getByRole('button', { name: /Continuer/i }));
 
   const phone = await screen.findByLabelText('Téléphone direct');
-  await user.type(phone, '+41 79 123 45 67');
+  await user.type(phone, '+41791234567');
   await user.click(screen.getByRole('button', { name: /Continuer/i }));
 }
 
@@ -104,7 +131,7 @@ describe('AccessRequestModal — field validation', () => {
     expect(screen.getByText(/téléphone invalide/i)).toBeInTheDocument();
 
     await user.clear(screen.getByLabelText('Téléphone direct'));
-    await user.type(screen.getByLabelText('Téléphone direct'), '+41 79 123 45 67');
+    await user.type(screen.getByLabelText('Téléphone direct'), '+41791234567');
     expect(next).toBeEnabled();
   });
 });
