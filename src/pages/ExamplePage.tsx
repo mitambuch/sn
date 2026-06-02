@@ -19,10 +19,9 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
-import { consumeShareCode } from '@/lib/shareCode';
 import { normalizeShareCode, SHARE_CODE_CANONICAL_PATTERN, SHARE_CODE_LENGTH } from '@/types/share';
 
-type Status = 'idle' | 'checking' | 'invalid' | 'unknown';
+type Status = 'idle' | 'invalid';
 
 const DEMO_CODE = 'APERCU';
 
@@ -34,22 +33,21 @@ export default function ExamplePage() {
   const [status, setStatus] = useState<Status>('idle');
   const [current, setCurrent] = useState<string>(presetCode);
 
-  const handleComplete = async (raw: string) => {
+  // Validate the FORMAT only, then hand off to /share/:code — which is the
+  // single place that consumes the code (one view bump) and renders every
+  // outcome (single fiche · selection · expired · revoked · not-found).
+  // Consuming here too would double-count views (a 1-view code would burn
+  // before the recipient ever sees the fiche).
+  const handleComplete = (raw: string) => {
     const code = normalizeShareCode(raw);
     if (!SHARE_CODE_CANONICAL_PATTERN.test(code)) {
       setStatus('invalid');
       return;
     }
-    setStatus('checking');
-    const result = await consumeShareCode(code);
-    if (result?.isValid) {
-      void navigate(`/share/${code}`);
-      return;
-    }
-    setStatus('unknown');
+    void navigate(`/share/${code}`);
   };
 
-  const canSubmit = current.length === SHARE_CODE_LENGTH && status !== 'checking';
+  const canSubmit = current.length === SHARE_CODE_LENGTH;
 
   // One-click "test with the demo code" — bypasses the OTP entirely for
   // owner-driven walkthroughs. Pushes straight to /share/APERCU.
@@ -59,9 +57,7 @@ export default function ExamplePage() {
 
   const statusLabel: Record<Status, string> = {
     idle: 'Tapez ou collez le code à 6 caractères transmis par Valmont.',
-    checking: 'Vérification du code…',
     invalid: '6 caractères attendus, sans préfixe ni espace.',
-    unknown: "Ce code n'est pas reconnu. Vérifiez la saisie ou contactez Valmont.",
   };
 
   return (
@@ -111,12 +107,12 @@ export default function ExamplePage() {
             >
               Un code,
               <br />
-              une fiche.
+              votre accès.
             </h1>
 
             <p className="text-muted max-w-sm text-sm leading-relaxed">
               Entrez les 6 caractères transmis par Valmont. Aucun compte, aucune trace — le code
-              donne accès à <em>une seule</em> fiche, pour vous.
+              donne accès à <em>une ou plusieurs</em> fiches, pour vous.
             </p>
 
             <div className="flex w-full flex-col items-center gap-4 pt-2">
@@ -125,19 +121,18 @@ export default function ExamplePage() {
                 initialValue={presetCode}
                 pattern={/^[A-HJ-NP-Z2-9]$/i}
                 onComplete={value => {
-                  void handleComplete(value);
+                  handleComplete(value);
                 }}
                 onChange={value => {
                   setCurrent(value);
                   if (status !== 'idle') setStatus('idle');
                 }}
-                disabled={status === 'checking'}
-                variant={status === 'invalid' || status === 'unknown' ? 'danger' : 'default'}
+                variant={status === 'invalid' ? 'danger' : 'default'}
               />
               <p
                 aria-live="polite"
                 className={
-                  status === 'invalid' || status === 'unknown'
+                  status === 'invalid'
                     ? 'text-accent text-xs leading-relaxed'
                     : 'text-muted text-xs leading-relaxed'
                 }
@@ -150,7 +145,7 @@ export default function ExamplePage() {
               <button
                 type="button"
                 onClick={() => {
-                  void handleComplete(current);
+                  handleComplete(current);
                 }}
                 disabled={!canSubmit}
                 className="border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-fg/30 mt-2 inline-flex items-center gap-3 rounded-full border px-7 py-3 font-mono text-xs tracking-[0.4em] uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-40"

@@ -96,7 +96,8 @@ export default function SharePage() {
       }
       setConsumed(result);
       if (result.isValid) {
-        setStatus('valid');
+        // Valid but no resolvable fiche = misconfig → not-found, not a blank page.
+        setStatus(result.docs.length > 0 || result.sanityDocId ? 'valid' : 'not-found');
       } else if (result.status === 'revoked') {
         setStatus('revoked');
       } else {

@@ -11,8 +11,9 @@
 import { BrandMark } from '@components/brand/BrandMark';
 import { Card } from '@components/ui/Card';
 import { ExpiryCountdown } from '@components/ui/ExpiryCountdown';
+import { Image } from '@components/ui/Image';
 import { useSanityCollection } from '@hooks/useSanityCollection';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { GROQ_SHARED_FICHES } from '@/lib/sanityQueries';
@@ -97,6 +98,10 @@ export const ShareCollection = ({ docs, code, expiresAt, onExpire }: ShareCollec
     fallback,
   });
 
+  // "Petit sas" — click a card to focus a fiche, ← to return to the grid.
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const active = activeId !== null ? (fiches.find(f => f._id === activeId) ?? null) : null;
+
   return (
     <Card padding="none" className="overflow-hidden">
       <div className="border-fg/10 flex items-center justify-between gap-4 border-b px-6 py-4 md:px-10">
@@ -111,34 +116,77 @@ export const ShareCollection = ({ docs, code, expiresAt, onExpire }: ShareCollec
       {expiresAt && <ExpiryCountdown expiresAt={expiresAt} onExpire={onExpire} />}
 
       <div className="flex flex-col gap-8 px-6 py-8 md:px-10 md:py-10">
-        <header className="border-fg/10 flex flex-col gap-3 border-b pb-6">
-          <span className="text-muted font-mono text-[10px] tracking-[0.4em] uppercase">
-            {fiches.length} pièce{fiches.length > 1 ? 's' : ''} sélectionnée
-            {fiches.length > 1 ? 's' : ''}
-          </span>
-          <h2 className="font-mono text-2xl leading-tight font-medium tracking-tight uppercase md:text-3xl">
-            Une sélection pour vous
-          </h2>
-        </header>
+        {active ? (
+          // ─── Focused fiche ───
+          <div className="flex flex-col gap-6">
+            <button
+              type="button"
+              onClick={() => {
+                setActiveId(null);
+              }}
+              className="text-muted hover:text-fg duration-base inline-flex items-center gap-2 self-start font-mono text-[11px] tracking-[0.2em] uppercase transition-colors"
+            >
+              <span aria-hidden="true">←</span> Retour à la sélection
+            </button>
+            {active.image && (
+              <div className="bg-surface overflow-hidden rounded-lg">
+                <Image src={active.image} alt={active.title ?? ''} ratio="16/9" eager />
+              </div>
+            )}
+            <div className="flex flex-col gap-3">
+              <span className="text-muted font-mono text-[10px] tracking-[0.4em] uppercase">
+                {TYPE_LABEL[active._type]}
+              </span>
+              <h3 className="font-mono text-2xl leading-tight font-medium tracking-tight uppercase">
+                {active.title ?? 'Fiche'}
+              </h3>
+              {active.summary && <p className="text-muted leading-relaxed">{active.summary}</p>}
+            </div>
+          </div>
+        ) : (
+          // ─── Selection grid ───
+          <>
+            <header className="border-fg/10 flex flex-col gap-3 border-b pb-6">
+              <span className="text-muted font-mono text-[10px] tracking-[0.4em] uppercase">
+                {fiches.length} pièce{fiches.length > 1 ? 's' : ''} sélectionnée
+                {fiches.length > 1 ? 's' : ''}
+              </span>
+              <h2 className="font-mono text-2xl leading-tight font-medium tracking-tight uppercase md:text-3xl">
+                Une sélection pour vous
+              </h2>
+            </header>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          {fiches.map(f => (
-            <Card key={f._id} padding="none" className="overflow-hidden">
-              {f.image ? (
-                <Card.Media src={f.image} alt={f.title ?? ''} ratio="4/3" />
-              ) : (
-                <div className="bg-surface aspect-[4/3]" />
-              )}
-              <Card.Body>
-                <Card.Eyebrow>{TYPE_LABEL[f._type]}</Card.Eyebrow>
-                <Card.Title>{f.title ?? 'Fiche'}</Card.Title>
-                {f.summary && (
-                  <p className="text-muted mt-2 text-sm leading-relaxed">{f.summary}</p>
-                )}
-              </Card.Body>
-            </Card>
-          ))}
-        </div>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              {fiches.map(f => (
+                <button
+                  key={f._id}
+                  type="button"
+                  onClick={() => {
+                    setActiveId(f._id);
+                  }}
+                  className="focus-visible:ring-accent rounded-card text-left transition-transform duration-200 hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:outline-none"
+                >
+                  <Card padding="none" className="overflow-hidden">
+                    {f.image ? (
+                      <Card.Media src={f.image} alt={f.title ?? ''} ratio="4/3" />
+                    ) : (
+                      <div className="bg-surface aspect-4/3" />
+                    )}
+                    <Card.Body>
+                      <Card.Eyebrow>{TYPE_LABEL[f._type]}</Card.Eyebrow>
+                      <Card.Title>{f.title ?? 'Fiche'}</Card.Title>
+                      {f.summary && (
+                        <p className="text-muted mt-2 line-clamp-2 text-sm leading-relaxed">
+                          {f.summary}
+                        </p>
+                      )}
+                    </Card.Body>
+                  </Card>
+                </button>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </Card>
   );
