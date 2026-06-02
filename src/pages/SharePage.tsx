@@ -19,6 +19,7 @@ import { ShareActionRow } from '@components/ui/ShareActionRow';
 import { Timeline } from '@components/ui/Timeline';
 import { siteConfig } from '@config/site';
 import { AccessRequestModal } from '@features/access/AccessRequestModal';
+import { ShareCollection } from '@features/share/ShareCollection';
 import { useSanityItem } from '@hooks/useSanityItem';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -409,7 +410,18 @@ export default function SharePage() {
           </Card>
         )}
 
-        {status === 'valid' && consumed && (
+        {status === 'valid' && consumed && consumed.docs.length > 1 && (
+          <ShareCollection
+            docs={consumed.docs}
+            code={displayCode}
+            expiresAt={consumed.expiresAt}
+            onExpire={() => {
+              setStatus('expired');
+            }}
+          />
+        )}
+
+        {status === 'valid' && consumed && consumed.docs.length <= 1 && (
           // Single bordered "box" — owner direction "je veux pas que ça flotte,
           // catégorise bien tout." Hero on top, then categorised body inside
           // the same card so the whole fiche reads as one premium artefact.
