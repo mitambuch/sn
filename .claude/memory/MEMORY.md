@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-06-02** — [Session — CORS admin, partage de fiche, programme step (matin)](sessions/2026-06-02-0812.md)
 - **2026-06-01** — [Session — Déploiement emails opérateur + formulaire pro + programme i18n (fin aprem)](sessions/2026-06-01-1757.md)
 - **2026-06-01** — [Session — Bugs client : emails opérateur + formulaire d'accès (après-midi)](sessions/2026-06-01-1656.md)
-- **2026-06-01** — [Session — Dates d'événement flexibles (après-midi)](sessions/2026-06-01-1633.md)
 
 ## Active decisions (top 5)
 
@@ -32,7 +32,7 @@
 
 ## Deep dive
 
-- Full catalogue (133 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (135 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
