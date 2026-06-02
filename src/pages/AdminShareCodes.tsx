@@ -15,6 +15,7 @@ import { Container } from '@components/layout/Container';
 import { DataTable, type DataTableColumn } from '@components/ui/DataTable';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { Select } from '@components/ui/Select';
+import { Stepper } from '@components/ui/Stepper';
 import { useAdminCatalogue } from '@hooks/useAdminCatalogue';
 import { useToast } from '@hooks/useToast';
 import { type FormEvent, useEffect, useMemo, useState } from 'react';
@@ -354,7 +355,7 @@ export default function AdminShareCodes() {
           onSubmit={e => {
             void handleGenerate(e);
           }}
-          className="border-border bg-surface/40 grid grid-cols-1 gap-4 rounded-lg border p-6 md:grid-cols-[2fr_1.4fr_110px_auto]"
+          className="border-border bg-surface/40 grid grid-cols-1 items-end gap-4 rounded-lg border p-6 md:grid-cols-[2fr_1.4fr_160px_auto]"
         >
           <Select
             label="Fiche à partager"
@@ -377,22 +378,16 @@ export default function AdminShareCodes() {
               className="bg-bg/80 border-border text-fg rounded-md border px-3 py-2 text-sm"
             />
           </div>
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="sc-max-views" className="text-fg text-sm font-medium">
-              Vues max
-            </label>
-            <input
-              id="sc-max-views"
-              type="number"
-              min={1}
-              value={maxViews}
-              onChange={e => {
-                setMaxViews(e.target.value);
-              }}
-              placeholder="∞"
-              className="bg-bg/80 border-border text-fg rounded-md border px-3 py-2 text-sm"
-            />
-          </div>
+          <Stepper
+            id="sc-max-views"
+            label="Vues max (0 = ∞)"
+            value={maxViews ? parseInt(maxViews, 10) : 0}
+            min={0}
+            max={999}
+            onChange={n => {
+              setMaxViews(n === 0 ? '' : String(n));
+            }}
+          />
           <button
             type="submit"
             disabled={submitting || !hasSupabase}

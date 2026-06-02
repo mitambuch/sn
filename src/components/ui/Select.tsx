@@ -196,6 +196,10 @@ export const Select = ({
                     ? 'bg-accent/10 text-fg'
                     : 'text-fg hover:bg-accent/10',
               )}
+              // Keep focus on the trigger so the container's onBlur doesn't
+              // close (and pointer-events:none) the list before this click
+              // lands — otherwise mouse selection silently does nothing.
+              onMouseDown={e => e.preventDefault()}
               onClick={() => pick(opt)}
               onMouseEnter={() => setHighlighted(i)}
             >
