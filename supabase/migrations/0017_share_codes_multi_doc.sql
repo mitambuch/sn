@@ -48,7 +48,10 @@ begin
      and (v_record.max_views is null or v_record.view_count < v_record.max_views) then
     v_valid := true;
     update public.share_codes
-      set view_count = view_count + 1
+      -- qualified with v_record to avoid the "view_count is ambiguous"
+      -- (42702) clash with the RETURNS TABLE out-column of the same name,
+      -- which made consume_share_code() throw on every valid code.
+      set view_count = v_record.view_count + 1
       where id = v_record.id;
     v_record.view_count := v_record.view_count + 1;
   end if;
