@@ -321,6 +321,18 @@ export const GROQ_SHARED_FICHE = (type: string, id: string) =>
     )),
     "images": images[]{ "src": asset->url, "alt": alt },
     "heroImage": { "src": heroImage.asset->url, "alt": heroImage.alt },
+    // Event specsheet + programme (null on other types) so the public
+    // share page renders the full fiche from Sanity, not just the generics.
+    dateMode,
+    startsAt,
+    "dateLabel": ${L('dateLabel')},
+    venue,
+    city,
+    countryCode,
+    capacity,
+    allocatedSeats,
+    dressCode,
+    programme[]{ time, "label": ${L_LABEL}, "description": ${L('description')} },
     ...
   }`;
 
