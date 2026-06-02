@@ -69,7 +69,7 @@ export const GROQ_EVENTS_LIST = `*[_type == "event" && ${PUBLIC_VISIBILITY}] | o
   "summary": ${L('summary')},
   "description": ${LPT('description')},
   programme[]{ time, "label": ${L_LABEL}, "description": ${L('description')} },
-  "images": images[]{ "src": asset->url, "alt": alt }
+  "images": coalesce(images[]{ "src": asset->url, "alt": alt }, [])
 }`;
 
 export const GROQ_EVENT_DETAIL = (slug: string) =>
@@ -91,7 +91,7 @@ export const GROQ_EVENT_DETAIL = (slug: string) =>
     "summary": ${L('summary')},
     "description": ${LPT('description')},
     programme[]{ time, "label": ${L_LABEL}, "description": ${L('description')} },
-    "images": images[]{ "src": asset->url, "alt": alt }
+    "images": coalesce(images[]{ "src": asset->url, "alt": alt }, [])
   }`;
 
 // ─── Properties ───────────────────────────────────────────────────
@@ -112,7 +112,7 @@ export const GROQ_PROPERTIES_LIST = `*[_type == "property" && ${PUBLIC_VISIBILIT
   amenities[]{ "label": ${L_SELF} },
   price,
   availability,
-  "images": images[]{ "src": asset->url, "alt": alt }
+  "images": coalesce(images[]{ "src": asset->url, "alt": alt }, [])
 }`;
 
 // ─── Timepieces ───────────────────────────────────────────────────
@@ -130,7 +130,7 @@ export const GROQ_TIMEPIECES_LIST = `*[_type == "timepiece" && ${PUBLIC_VISIBILI
   papers,
   "summary": ${L('summary')},
   price,
-  "images": images[]{ "src": asset->url, "alt": alt }
+  "images": coalesce(images[]{ "src": asset->url, "alt": alt }, [])
 }`;
 
 // ─── Artworks ─────────────────────────────────────────────────────
@@ -147,7 +147,7 @@ export const GROQ_ARTWORKS_LIST = `*[_type == "artwork" && ${PUBLIC_VISIBILITY}]
   certificate,
   "summary": ${L('summary')},
   price,
-  "images": images[]{ "src": asset->url, "alt": alt }
+  "images": coalesce(images[]{ "src": asset->url, "alt": alt }, [])
 }`;
 
 // ─── Journeys ─────────────────────────────────────────────────────
@@ -164,7 +164,7 @@ export const GROQ_JOURNEYS_LIST = `*[_type == "journey" && ${PUBLIC_VISIBILITY}]
   "transport": ${LARR('transport')},
   "accommodation": ${LARR('accommodation')},
   price,
-  "images": images[]{ "src": asset->url, "alt": alt }
+  "images": coalesce(images[]{ "src": asset->url, "alt": alt }, [])
 }`;
 
 // ─── Concierge services ──────────────────────────────────────────
@@ -178,7 +178,7 @@ export const GROQ_CONCIERGE_LIST = `*[_type == "conciergeService" && ${PUBLIC_VI
   "coverageArea": ${L('coverageArea')},
   "capabilities": ${LARR('capabilities')},
   price,
-  "images": images[]{ "src": asset->url, "alt": alt }
+  "images": coalesce(images[]{ "src": asset->url, "alt": alt }, [])
 }`;
 
 // ─── Articles / News ──────────────────────────────────────────────
@@ -219,7 +219,7 @@ const detailFields = `
   "title": ${L('title')},
   "summary": ${L('summary')},
   "description": ${LPT('description')},
-  "images": images[]{ "src": asset->url, "alt": alt }
+  "images": coalesce(images[]{ "src": asset->url, "alt": alt }, [])
 `;
 
 export const GROQ_PROPERTY_DETAIL = (slug: string) =>
@@ -319,7 +319,7 @@ export const GROQ_SHARED_FICHE = (type: string, id: string) =>
       $locale == "en" => coalesce(description.en, body.en, bio.en, description.fr, body.fr, bio.fr),
       coalesce(description.fr, body.fr, bio.fr)
     )),
-    "images": images[]{ "src": asset->url, "alt": alt },
+    "images": coalesce(images[]{ "src": asset->url, "alt": alt }, []),
     "heroImage": { "src": heroImage.asset->url, "alt": heroImage.alt },
     // Event specsheet + programme (null on other types) so the public
     // share page renders the full fiche from Sanity, not just the generics.
