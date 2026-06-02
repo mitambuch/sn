@@ -18,6 +18,7 @@
 import { BrandMark } from '@components/brand/BrandMark';
 import { Card } from '@components/ui/Card';
 import { ExpiryCountdown } from '@components/ui/ExpiryCountdown';
+import { GalleryGrid } from '@components/ui/GalleryGrid';
 import { Image } from '@components/ui/Image';
 import { MetaList } from '@components/ui/MetaList';
 import { ShareActionRow } from '@components/ui/ShareActionRow';
@@ -68,6 +69,17 @@ interface SharedFiche {
   description?: string;
   images?: { src: string; alt?: string }[];
   heroImage?: { src?: string; alt?: string };
+  // Event specsheet + programme (from Sanity), so the full fiche renders.
+  dateMode?: string;
+  startsAt?: string;
+  dateLabel?: string;
+  venue?: string;
+  city?: string;
+  countryCode?: string;
+  capacity?: number;
+  allocatedSeats?: number;
+  dressCode?: string;
+  programme?: { time: string; label: string; description?: string }[];
 }
 
 // eslint-disable-next-line max-lines-per-function -- public share page with multi-state machine + Sanity fetch + share actions
@@ -224,7 +236,6 @@ export default function SharePage() {
   // Type-aware specsheet — feeds the MetaList. Each entry is a label/
   // value pair displayed in a clean 2-column table on desktop.
   const metaItems = useMemo<{ label: string; value: string }[]>(() => {
-    if (!richMock) return [];
     const fmtDate = (iso: string) =>
       new Date(iso).toLocaleDateString('fr-CH', {
         weekday: 'long',
@@ -234,6 +245,51 @@ export default function SharePage() {
       });
     const fmtTime = (iso: string) =>
       new Date(iso).toLocaleTimeString('fr-CH', { hour: '2-digit', minute: '2-digit' });
+
+    // Real Sanity event → build the specsheet from the fetched fiche
+    // (richMock only covers the seeded demo data, never live fiches).
+    if (
+      consumed?.sanityDocType === 'event' &&
+      fiche &&
+      (fiche.venue || fiche.startsAt || fiche.dateMode)
+    ) {
+      const mode = fiche.dateMode ?? 'exact';
+      const dateRows =
+        mode === 'exact' && fiche.startsAt
+          ? [
+              { label: 'Date', value: fmtDate(fiche.startsAt) },
+              { label: 'Horaire', value: fmtTime(fiche.startsAt) },
+            ]
+          : [
+              {
+                label: 'Date',
+                value: mode === 'allYear' ? 'Toute l’année' : (fiche.dateLabel ?? 'Sur demande'),
+              },
+            ];
+      return [
+        ...dateRows,
+        ...(fiche.venue ? [{ label: 'Lieu', value: fiche.venue }] : []),
+        ...(fiche.city
+          ? [
+              {
+                label: 'Ville',
+                value: `${fiche.city}${fiche.countryCode ? ` · ${fiche.countryCode}` : ''}`,
+              },
+            ]
+          : []),
+        ...(typeof fiche.capacity === 'number'
+          ? [{ label: 'Capacité', value: String(fiche.capacity) }]
+          : []),
+        ...(typeof fiche.allocatedSeats === 'number'
+          ? [{ label: 'Places SAW NEXT', value: String(fiche.allocatedSeats) }]
+          : []),
+        ...(fiche.dressCode
+          ? [{ label: 'Dress code', value: fiche.dressCode.replace(/-/g, ' ') }]
+          : []),
+      ];
+    }
+
+    if (!richMock) return [];
 
     switch (richMock._type) {
       case 'event': {
@@ -322,9 +378,15 @@ export default function SharePage() {
       default:
         return [];
     }
-  }, [richMock]);
+  }, [fiche, richMock, consumed]);
 
-  const programme = richMock?._type === 'event' ? richMock.programme : null;
+  // Programme : real Sanity fiche first, then the seeded demo mock.
+  const programme =
+    consumed?.sanityDocType === 'event' && fiche?.programme && fiche.programme.length > 0
+      ? fiche.programme
+      : richMock?._type === 'event'
+        ? richMock.programme
+        : null;
 
   const displayCode = rawCode ? formatShareCode(normalizeShareCode(rawCode)) : '—';
   const heroSrc = fiche?.heroImage?.src ?? fiche?.images?.[0]?.src ?? undefined;
@@ -527,6 +589,16 @@ export default function SharePage() {
                       date: p.time,
                       ...(p.description ? { description: p.description } : {}),
                     }))}
+                  />
+                </section>
+              )}
+
+              {/* ─── Gallery (photos beyond the hero) ─── */}
+              {fiche?.images && fiche.images.length > 1 && (
+                <section className="border-fg/10 flex flex-col gap-4 border-t pt-6">
+                  <span className="text-muted text-[10px] tracking-[0.3em] uppercase">Galerie</span>
+                  <GalleryGrid
+                    images={fiche.images.slice(1).map(i => ({ src: i.src, alt: i.alt ?? '' }))}
                   />
                 </section>
               )}
