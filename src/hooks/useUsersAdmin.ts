@@ -24,6 +24,7 @@ interface ProfileRow {
   avatar_url: string | null;
   concierge_name: string;
   phone: string | null;
+  segments: string[] | null;
   created_at: string;
 }
 
@@ -36,6 +37,7 @@ function rowToDomain(row: ProfileRow): User {
     locale: row.locale,
     contactPreference: row.contact_preference,
     conciergeName: row.concierge_name,
+    segments: row.segments ?? [],
     createdAt: row.created_at,
   };
   if (row.avatar_url) user.avatarUrl = row.avatar_url;
@@ -51,6 +53,9 @@ export interface UseUsersAdminResult {
   /** Optimistic role swap. Updates Supabase under the "profiles: admin
    *  update all" RLS policy. Rolls back on remote failure. */
   updateRole: (id: string, next: Role) => Promise<{ ok: boolean; error?: string }>;
+  /** Optimistic segment-tag swap for a member (profiles.segments).
+   *  Same RLS policy as updateRole. Rolls back on remote failure. */
+  updateSegments: (id: string, next: readonly string[]) => Promise<{ ok: boolean; error?: string }>;
 }
 
 export function useUsersAdmin(): UseUsersAdminResult {
@@ -66,7 +71,7 @@ export function useUsersAdmin(): UseUsersAdminResult {
       const { data, error: fetchErr } = await supabase
         .from('profiles')
         .select(
-          'id, email, full_name, role, locale, contact_preference, avatar_url, concierge_name, phone, created_at',
+          'id, email, full_name, role, locale, contact_preference, avatar_url, concierge_name, phone, segments, created_at',
         )
         .order('created_at', { ascending: false });
       if (cancelled) return;
@@ -103,5 +108,23 @@ export function useUsersAdmin(): UseUsersAdminResult {
     [rows],
   );
 
-  return { rows, loading, error, usingFallback, updateRole };
+  const updateSegments = useCallback(
+    async (id: string, next: readonly string[]): Promise<{ ok: boolean; error?: string }> => {
+      const prevRows = rows;
+      setRows(rows.map(r => (r.id === id ? { ...r, segments: next } : r)));
+      if (!hasSupabase || !supabase) return { ok: true };
+      const { error: updateErr } = await supabase
+        .from('profiles')
+        .update({ segments: next })
+        .eq('id', id);
+      if (updateErr) {
+        setRows(prevRows);
+        return { ok: false, error: updateErr.message };
+      }
+      return { ok: true };
+    },
+    [rows],
+  );
+
+  return { rows, loading, error, usingFallback, updateRole, updateSegments };
 }

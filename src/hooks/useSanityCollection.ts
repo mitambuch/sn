@@ -19,6 +19,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { hasSanity, sanityClient } from '@/lib/sanity';
+import { gateEnabled, gateList } from '@/lib/sanityGate';
 
 interface UseSanityCollectionOpts<TResult, TFallback> {
   /** GROQ query string. */
@@ -27,6 +28,10 @@ interface UseSanityCollectionOpts<TResult, TFallback> {
   fallback: readonly TFallback[];
   /** Optional mapper Sanity row → TResult. Default = identity (no map). */
   transform?: (row: unknown) => TResult;
+  /** Catalogue module key. When set AND the gate is enabled, the list is
+   *  fetched through the audience server gate (private dataset) instead of
+   *  Sanity directly — restricted fiches are filtered out server-side. */
+  gateModule?: string | undefined;
 }
 
 interface UseSanityCollectionResult<TResult, TFallback> {
@@ -40,7 +45,7 @@ interface UseSanityCollectionResult<TResult, TFallback> {
 export function useSanityCollection<TResult, TFallback = TResult>(
   opts: UseSanityCollectionOpts<TResult, TFallback>,
 ): UseSanityCollectionResult<TResult, TFallback> {
-  const { query, fallback, transform } = opts;
+  const { query, fallback, transform, gateModule } = opts;
   // WHY: GROQ queries below project editorial fields via $locale (see
   // sanityQueries.ts). Passing the active locale resolves content to the
   // visitor's language with a FR fallback. Switching locale refetches.
@@ -55,14 +60,23 @@ export function useSanityCollection<TResult, TFallback = TResult>(
   const [usingFallback, setUsingFallback] = useState<boolean>(!hasSanity);
 
   useEffect(() => {
-    // No-op when Sanity isn't configured. Initial state already reflects
-    // !hasSanity (loading=false, usingFallback=true) so no setState here.
-    if (!sanityClient) return;
+    // When the gate is on for this module, read through the server (private
+    // dataset) — restricted fiches are filtered out before they reach us.
+    const useGate = gateEnabled && Boolean(gateModule);
+    // No-op when neither the gate nor a direct client is available. Initial
+    // state already reflects !hasSanity (loading=false, usingFallback=true).
+    if (!useGate && !sanityClient) return;
 
     let cancelled = false;
 
-    sanityClient
-      .fetch<unknown[]>(query, { locale })
+    const source = useGate
+      ? gateList<unknown>('list', {
+          ...(gateModule !== undefined && { module: gateModule }),
+          locale,
+        })
+      : sanityClient!.fetch<unknown[]>(query, { locale });
+
+    source
       .then(rows => {
         if (cancelled) return;
         if (!rows || rows.length === 0) {
@@ -87,7 +101,7 @@ export function useSanityCollection<TResult, TFallback = TResult>(
     return () => {
       cancelled = true;
     };
-  }, [query, fallback, transform, locale]);
+  }, [query, fallback, transform, locale, gateModule]);
 
   return { data, loading, error, usingFallback };
 }

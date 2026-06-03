@@ -102,8 +102,17 @@ async function pushToSupabase(
 ): Promise<void> {
   if (!hasSupabase || !supabase) return;
   if (action === 'add') {
-    // upsert so a re-add after a stale local cache doesn't 409 on PK conflict.
-    await supabase.from('saved_items').upsert({ user_id: userId, module, slug });
+    // Re-adding an already-saved item (stale local cache) must be a no-op,
+    // not a PK-conflict error. ignoreDuplicates → INSERT ... ON CONFLICT DO
+    // NOTHING, which needs only the INSERT grant. A plain upsert would issue
+    // ON CONFLICT DO UPDATE and fail: saved_items grants insert/delete only,
+    // never update (migration 0011 — a saved item is present or absent).
+    await supabase
+      .from('saved_items')
+      .upsert(
+        { user_id: userId, module, slug },
+        { onConflict: 'user_id,module,slug', ignoreDuplicates: true },
+      );
   } else {
     await supabase.from('saved_items').delete().match({ user_id: userId, module, slug });
   }

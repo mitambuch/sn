@@ -32,6 +32,8 @@ export default function ConciergeDetail() {
   const mockService = slug ? getConciergeService(slug) : null;
   const { data: service } = useSanityItem<ConciergeService>({
     query: slug ? GROQ_CONCIERGE_DETAIL(slug) : '',
+    gateModule: 'conciergeService',
+    gateSlug: slug,
     fallback: mockService ?? null,
   });
   if (!service) return <Navigate to={localePath(ROUTES.ACCOUNT_CONCIERGE)} replace />;

@@ -216,7 +216,7 @@ const buildMeta = (input: MetaInput): Record<FormMode, FormMeta> => {
             label={t('auth.code')}
             type="text"
             required
-            placeholder="SAW-XXXX-XXXX"
+            placeholder="XXXXXXXX"
             value={code}
             onChange={e => setCode(e.target.value.toUpperCase())}
           />

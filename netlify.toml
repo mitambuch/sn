@@ -2,6 +2,14 @@
   command = "pnpm build"
   publish = "dist"
 
+# Serverless functions — the audience server gate lives here. esbuild bundles
+# each function (it imports a couple of alias-free modules from src/ via
+# relative paths, which esbuild inlines). /.netlify/functions/* is routed by
+# Netlify BEFORE the SPA catch-all below, so the redirect never swallows it.
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
 # SPA routing — redirect all paths to index.html
 [[redirects]]
   from = "/*"

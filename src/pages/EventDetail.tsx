@@ -35,6 +35,8 @@ export default function EventDetail() {
   const mockEvent = slug ? getEvent(slug) : null;
   const { data: event } = useSanityItem<Event>({
     query: slug ? GROQ_EVENT_DETAIL(slug) : '',
+    gateModule: 'event',
+    gateSlug: slug,
     fallback: mockEvent ?? null,
   });
   if (!event) return <Navigate to={localePath(ROUTES.ACCOUNT_EVENTS)} replace />;

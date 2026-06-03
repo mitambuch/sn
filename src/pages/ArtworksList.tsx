@@ -37,6 +37,7 @@ export default function ArtworksList() {
   const fallback = useMemo(() => listArtworks(), []);
   const { data: all } = useSanityCollection<Artwork>({
     query: GROQ_ARTWORKS_LIST,
+    gateModule: 'artwork',
     fallback,
   });
 

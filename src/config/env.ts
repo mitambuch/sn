@@ -53,6 +53,13 @@ export const env = {
   RESEND_FROM_EMAIL: import.meta.env.VITE_RESEND_FROM_EMAIL || '',
   DEFAULT_LOCALE: import.meta.env.VITE_DEFAULT_LOCALE || 'fr',
   LAUNCH_MODE: parseLaunchMode(import.meta.env.VITE_LAUNCH_MODE),
+  // Audience server gate (Phase 2). When 'true', every Sanity read routes
+  // through the Netlify function /.netlify/functions/catalogue, which holds
+  // the read token and enforces per-fiche audience server-side. Flip to true
+  // ONLY together with making the Sanity dataset private (cutover). Default
+  // off → the app reads Sanity directly, exactly as before (reversible).
+  CATALOGUE_GATE: import.meta.env.VITE_CATALOGUE_GATE === 'true',
+  CATALOGUE_GATE_URL: import.meta.env.VITE_CATALOGUE_GATE_URL || '/.netlify/functions/catalogue',
   IS_DEV: import.meta.env.DEV,
   IS_PROD: import.meta.env.PROD,
 } as const;

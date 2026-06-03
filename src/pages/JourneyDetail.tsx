@@ -35,6 +35,8 @@ export default function JourneyDetail() {
   const mockJourney = slug ? getJourney(slug) : null;
   const { data: journey } = useSanityItem<Journey>({
     query: slug ? GROQ_JOURNEY_DETAIL(slug) : '',
+    gateModule: 'journey',
+    gateSlug: slug,
     fallback: mockJourney ?? null,
   });
   if (!journey) return <Navigate to={localePath(ROUTES.ACCOUNT_JOURNEYS)} replace />;

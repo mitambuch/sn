@@ -26,13 +26,22 @@ const ALL_STATUSES: InquiryStatus[] = ['new', 'in_review', 'contacted', 'closed'
 
 export default function AdminInquiries() {
   const { t, i18n } = useTranslation();
-  const { toast } = useToast();
+  const { toast, dismiss } = useToast();
   const { rows: all, loading, updateStatus } = useInquiriesAdmin();
   const { rows: users } = useUsersAdmin();
   const userById = (id: string) => users.find(u => u.id === id)?.fullName ?? '—';
 
   const handleStatusChange = async (id: string, next: InquiryStatus) => {
+    // Bottom-right loading box (spinner) while the status write is in flight —
+    // duration 0 = stays until we dismiss it on completion.
+    const loadingId = toast({
+      variant: 'info',
+      message: t(next === 'cancelled' ? 'admin.inquiries.cancelling' : 'admin.inquiries.updating'),
+      duration: 0,
+      icon: <Spinner size="sm" aria-hidden="true" />,
+    });
     const result = await updateStatus(id, next);
+    dismiss(loadingId);
     if (!result.ok) {
       toast({ variant: 'error', message: result.error ?? t('common.error') });
     }

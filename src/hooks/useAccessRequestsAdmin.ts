@@ -47,6 +47,9 @@ export interface UseAccessRequestsAdminResult {
   error: string | null;
   usingFallback: boolean;
   updateStatus: (id: string, next: AccessRequestStatus) => Promise<{ ok: boolean; error?: string }>;
+  /** Permanently delete a request (declutter the board once handled).
+   *  Optimistic; rolls back on remote failure. */
+  remove: (id: string) => Promise<{ ok: boolean; error?: string }>;
 }
 
 export function useAccessRequestsAdmin(): UseAccessRequestsAdminResult {
@@ -101,5 +104,20 @@ export function useAccessRequestsAdmin(): UseAccessRequestsAdminResult {
     [rows],
   );
 
-  return { rows, loading, error, usingFallback, updateStatus };
+  const remove = useCallback(
+    async (id: string): Promise<{ ok: boolean; error?: string }> => {
+      const prevRows = rows;
+      setRows(rows.filter(r => r.id !== id));
+      if (!hasSupabase || !supabase) return { ok: true };
+      const { error: deleteErr } = await supabase.from('access_requests').delete().eq('id', id);
+      if (deleteErr) {
+        setRows(prevRows);
+        return { ok: false, error: deleteErr.message };
+      }
+      return { ok: true };
+    },
+    [rows],
+  );
+
+  return { rows, loading, error, usingFallback, updateStatus, remove };
 }

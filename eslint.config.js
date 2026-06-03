@@ -23,6 +23,10 @@ export default defineConfig([
     // WHY: studio/ is a standalone @steaksoap/studio package with its own tsconfig and
     // lint rules — the root ESLint config is for the React app only.
     'studio',
+    // WHY: netlify/functions are server-side (Node runtime, web Request/Response
+    // globals, service-role secrets) — typed + linted via tsconfig.functions.json,
+    // not the browser-oriented root config. See `pnpm typecheck:functions`.
+    'netlify',
   ]),
 
   {

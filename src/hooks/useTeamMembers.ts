@@ -18,6 +18,8 @@
 import { useEffect, useState } from 'react';
 
 import { hasSanity, sanityClient } from '@/lib/sanity';
+import { gateEnabled, gateList } from '@/lib/sanityGate';
+import { GROQ_TEAM } from '@/lib/sanityQueries';
 
 export interface TeamMember {
   id: string;
@@ -49,10 +51,7 @@ interface TeamMemberRaw {
   linkedin: string | null;
 }
 
-const QUERY = `*[_type == "teamMember"] | order(order asc) {
-  _id, firstName, lastName, slug, isFocal, order, tag, bio,
-  phone, email, whatsapp, linkedin
-}`;
+const QUERY = GROQ_TEAM;
 
 function rowToMember(raw: TeamMemberRaw): TeamMember {
   return {
@@ -88,13 +87,16 @@ export function useTeamMembers(): UseTeamMembersResult {
   useEffect(() => {
     let cancelled = false;
     void (async () => {
-      if (!hasSanity || !sanityClient) {
+      const useGate = gateEnabled;
+      if (!useGate && (!hasSanity || !sanityClient)) {
         setUsingFallback(true);
         setLoading(false);
         return;
       }
       try {
-        const data = await sanityClient.fetch<TeamMemberRaw[]>(QUERY);
+        const data = useGate
+          ? await gateList<TeamMemberRaw>('team')
+          : await sanityClient!.fetch<TeamMemberRaw[]>(QUERY);
         if (cancelled) return;
         if (data.length === 0) {
           setUsingFallback(true);

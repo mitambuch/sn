@@ -26,6 +26,7 @@ export default function ConciergeList() {
   const fallback = useMemo(() => listConciergeServices(), []);
   const { data: all } = useSanityCollection<ConciergeService>({
     query: GROQ_CONCIERGE_LIST,
+    gateModule: 'conciergeService',
     fallback,
   });
 

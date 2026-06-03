@@ -39,6 +39,7 @@ export default function PropertiesList() {
   const fallback = useMemo(() => listProperties(), []);
   const { data: all } = useSanityCollection<Property>({
     query: GROQ_PROPERTIES_LIST,
+    gateModule: 'property',
     fallback,
   });
 

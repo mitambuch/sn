@@ -49,6 +49,7 @@ export const ROUTES = {
   ADMIN_ACCESS_REQUESTS: '/admin/access-requests',
   ADMIN_INQUIRIES: '/admin/inquiries',
   ADMIN_USERS: '/admin/users',
+  ADMIN_SEGMENTS: '/admin/segments',
 
   NOT_FOUND: '*',
 } as const;

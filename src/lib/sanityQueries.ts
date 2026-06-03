@@ -200,19 +200,12 @@ export const GROQ_ARTICLES_LIST = `*[_type == "article" && ${PUBLIC_VISIBILITY}]
 // ─── Team members ─────────────────────────────────────────────────
 // NOTE: not localised here — useTeamMembers fetches with its own query
 // and does not pass $locale. Left FR until team bilingual is in scope.
-export const GROQ_TEAM = `*[_type == "teamMember"] | order(order asc){
-  "id": _id,
-  firstName,
-  lastName,
-  role,
-  isFocal,
-  "tag": tag.fr,
-  phone,
-  email,
-  whatsapp,
-  linkedin,
-  "bio": bio.fr,
-  "photoUrl": photo.asset->url
+// Canonical team query — matches useTeamMembers' TeamMemberRaw shape (tag +
+// bio kept as {fr,en} objects, resolved in React). Shared with the gate so
+// the server returns the exact shape the hook maps.
+export const GROQ_TEAM = `*[_type == "teamMember"] | order(order asc) {
+  _id, firstName, lastName, slug, isFocal, order, tag, bio,
+  phone, email, whatsapp, linkedin
 }`;
 
 // ─── Domain detail queries by slug ────────────────────────────────
@@ -355,4 +348,83 @@ export const GROQ_SHARED_FICHES = (ids: readonly string[]) => {
     "summary": ${L('summary')},
     "image": images[0].asset->url
   }`;
+};
+
+// ─── Public singletons (marketing — no audience gate) ─────────────
+// Centralised here (single source of truth) so both the React hooks and
+// the server gate (netlify/functions/catalogue) run the exact same GROQ.
+
+export const GROQ_LANDING = `*[_id == "landing-singleton"][0]{
+  _id, _updatedAt,
+  terminalStatus, terminalTz,
+  ctaRequestAccess, ctaPrivateArea, ctaCallDirect,
+  heroMetaStructure,
+  heroMetaType, heroMetaTypeValue,
+  heroMetaStatus, heroMetaStatusValue,
+  heroMetaModel, heroMetaModelValue,
+  heroMetaEstablished, heroMetaEstablishedValue,
+  heroFieldLabel, heroFieldText,
+  heroGpsLabel, heroGpsValue,
+  presentationEyebrow, presentationHeadline, presentationLede,
+  principlesEyebrow, principlesHeadline,
+  principles[]{ _key, title, body },
+  domainsEyebrow, domainsHeadline, domainsLede,
+  domainTiles[]{ _key, key, title, lead },
+  accessEyebrow, accessTitleA, accessTitleB, accessLede,
+  accessEventsEyebrow, accessLockedEyebrow,
+  interlocutorEyebrow, interlocutorHeadlineA, interlocutorHeadlineB,
+  interlocutorCircleTag, interlocutorRole,
+  footerNote, footerLocation, footerEdition
+}`;
+
+export const GROQ_SITE_CONFIG = `*[_id == "siteConfig-singleton"][0]{
+  _id, _updatedAt,
+  siteName, tagline, logo,
+  primaryNav, footerTagline, copyright,
+  contactEmail, contactPhone, contactAddress, socials,
+  seoTitle, seoDescription, ogImage
+}`;
+
+/** Admin monitoring list — every catalogue doc, raw (no $locale flatten;
+ *  the admin UI picks fr/en itself). Shared with the server gate. */
+export const GROQ_ADMIN_CATALOGUE = `*[_type in ["event", "property", "timepiece", "artwork", "journey", "conciergeService", "article"]] | order(_updatedAt desc){
+  _id, _type, _updatedAt,
+  slug,
+  title,
+  visibility,
+  "thumb": images[0].asset->url
+}`;
+
+// ─── Catalogue module registry ────────────────────────────────────
+// Maps a catalogue module to its list query, detail-by-slug builder, and
+// Sanity _type. The server gate uses this to run the SAME queries the
+// client would, then post-filters list/detail results by audience.
+
+export type CatalogueModuleKey =
+  | 'event'
+  | 'property'
+  | 'timepiece'
+  | 'artwork'
+  | 'journey'
+  | 'conciergeService'
+  | 'article';
+
+export interface ModuleQuerySet {
+  type: CatalogueModuleKey;
+  list: string;
+  detail: (slug: string) => string;
+}
+
+export const CATALOGUE_MODULE_QUERIES: Record<CatalogueModuleKey, ModuleQuerySet> = {
+  event: { type: 'event', list: GROQ_EVENTS_LIST, detail: GROQ_EVENT_DETAIL },
+  property: { type: 'property', list: GROQ_PROPERTIES_LIST, detail: GROQ_PROPERTY_DETAIL },
+  timepiece: { type: 'timepiece', list: GROQ_TIMEPIECES_LIST, detail: GROQ_TIMEPIECE_DETAIL },
+  artwork: { type: 'artwork', list: GROQ_ARTWORKS_LIST, detail: GROQ_ARTWORK_DETAIL },
+  journey: { type: 'journey', list: GROQ_JOURNEYS_LIST, detail: GROQ_JOURNEY_DETAIL },
+  conciergeService: {
+    type: 'conciergeService',
+    list: GROQ_CONCIERGE_LIST,
+    detail: GROQ_CONCIERGE_DETAIL,
+  },
+  article: { type: 'article', list: GROQ_ARTICLES_LIST, detail: GROQ_ARTICLE_DETAIL },
 };

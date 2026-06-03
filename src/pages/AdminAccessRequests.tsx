@@ -15,6 +15,7 @@ import { Spinner } from '@components/ui/Spinner';
 import { useAccessRequestsAdmin } from '@hooks/useAccessRequestsAdmin';
 import { useToast } from '@hooks/useToast';
 import { cn } from '@utils/cn';
+import { Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import type { AccessRequest, AccessRequestStatus } from '@/types/accessRequest';
@@ -32,9 +33,10 @@ interface RequestCardProps {
   request: AccessRequest;
   dateFmt: (iso: string) => string;
   onStatusChange: (id: string, next: AccessRequestStatus) => void;
+  onDelete: (id: string, name: string) => void;
 }
 
-function RequestCard({ request, dateFmt, onStatusChange }: RequestCardProps) {
+function RequestCard({ request, dateFmt, onStatusChange, onDelete }: RequestCardProps) {
   const { t } = useTranslation();
   const fullName = `${request.firstName} ${request.lastName}`.trim();
   return (
@@ -84,9 +86,22 @@ function RequestCard({ request, dateFmt, onStatusChange }: RequestCardProps) {
       )}
 
       <div className="border-border flex items-center justify-between gap-2 border-t pt-2">
-        <span className="text-muted text-[10px] tracking-wider uppercase">
-          {dateFmt(request.createdAt)}
-        </span>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              onDelete(request.id, fullName || request.email);
+            }}
+            title={t('admin.accessRequests.delete')}
+            aria-label={t('admin.accessRequests.delete')}
+            className="text-muted hover:text-danger-text focus-visible:ring-accent rounded-md p-1 focus-visible:ring-2 focus-visible:outline-none"
+          >
+            <Trash2 size={14} strokeWidth={1.5} aria-hidden="true" />
+          </button>
+          <span className="text-muted text-[10px] tracking-wider uppercase">
+            {dateFmt(request.createdAt)}
+          </span>
+        </div>
         <div className="flex items-center gap-2">
           <label htmlFor={`ar-status-${request.id}`} className="sr-only">
             {t('admin.accessRequests.moveTo')}
@@ -118,12 +133,32 @@ function RequestCard({ request, dateFmt, onStatusChange }: RequestCardProps) {
 export default function AdminAccessRequests() {
   const { t, i18n } = useTranslation();
   const { toast } = useToast();
-  const { rows, loading, error, usingFallback, updateStatus } = useAccessRequestsAdmin();
+  const { rows, loading, error, usingFallback, updateStatus, remove } = useAccessRequestsAdmin();
+
+  const handleDelete = (id: string, name: string) => {
+    if (!window.confirm(t('admin.accessRequests.confirmDelete', { name }))) return;
+    void remove(id).then(result => {
+      if (!result.ok) {
+        toast({ variant: 'error', message: result.error ?? t('common.error') });
+        return;
+      }
+      toast({ variant: 'success', message: t('admin.accessRequests.deleted') });
+    });
+  };
 
   const handleStatusChange = (id: string, next: AccessRequestStatus) => {
+    // Accepting issues a single-use invitation code AND emails it to the
+    // requester (trigger notify_access_accepted) — confirm before sending.
+    if (next === 'accepted' && !window.confirm(t('admin.accessRequests.confirmAccept'))) {
+      return;
+    }
     void updateStatus(id, next).then(result => {
       if (!result.ok) {
         toast({ variant: 'error', message: result.error ?? t('common.error') });
+        return;
+      }
+      if (next === 'accepted') {
+        toast({ variant: 'success', message: t('admin.accessRequests.acceptedSent') });
       }
     });
   };
@@ -196,6 +231,7 @@ export default function AdminAccessRequests() {
                         request={req}
                         dateFmt={dateFmt}
                         onStatusChange={handleStatusChange}
+                        onDelete={handleDelete}
                       />
                     ))}
                     {items.length === 0 && (
