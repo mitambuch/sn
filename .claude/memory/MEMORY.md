@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-06-03** — [Session — Tunnel d'accès, audit écritures DB, déploiement audience](sessions/2026-06-03-1308.md)
 - **2026-06-03** — [Session — Feature audience segmentation, 4 phases complètes](sessions/2026-06-03-1000.md)
 - **2026-06-02** — [Session — Formulaires pro + UX partage de fiche (matin, suite)](sessions/2026-06-02-0940.md)
-- **2026-06-02** — [Session — Fix équipe écrasée par Sanity prod (matin)](sessions/2026-06-02-0846.md)
 
 ## Active decisions (top 5)
 
@@ -19,6 +19,7 @@
 
 ## Open frictions
 
+- **2026-06-03** — [Piège — `.upsert()` client contre un grant volontairement sans UPDATE](frictions/2026-06-03-saved-items-upsert-no-update-grant.md)
 - **2026-06-03** — [Piège — GRANT colonne sur profiles bloque toute nouvelle colonne writable](frictions/2026-06-03-profiles-column-grant-trap.md)
 - **2026-06-02** — [Friction — données Sanity prod périmées écrasent le bon fallback code](frictions/2026-06-02-sanity-stale-data-overrides-code.md)
 - **2026-05-29** — [Friction — Firewall Swatch Group bloque saw-next.ch en "high-risk"](frictions/2026-05-29-swatch-firewall-block.md)
@@ -34,7 +35,7 @@
 
 ## Deep dive
 
-- Full catalogue (142 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (144 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
