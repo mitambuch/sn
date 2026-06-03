@@ -556,7 +556,9 @@
       "shareCodes": "Codes de partage",
       "inquiries": "Demandes",
       "users": "Utilisateurs",
-      "segments": "Segments"
+      "segments": "Segments",
+      "pendingCount": "{{count}} demande en attente",
+      "pendingCount_other": "{{count}} demandes en attente"
     },
     "accessRequests": {
       "title": "Demandes d'accès",

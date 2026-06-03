@@ -539,7 +539,9 @@
       "shareCodes": "Share codes",
       "inquiries": "Inquiries",
       "users": "Users",
-      "segments": "Segments"
+      "segments": "Segments",
+      "pendingCount": "{{count}} pending request",
+      "pendingCount_other": "{{count}} pending requests"
     },
     "accessRequests": {
       "title": "Access requests",
