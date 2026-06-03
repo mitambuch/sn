@@ -77,24 +77,42 @@ interface AudienceRow {
   excluded_member_ids: string[];
 }
 
+interface Caller {
+  id: string;
+  segments: string[];
+  isAdmin: boolean;
+  /** Diagnostic only — the role the gate read (or null if no profile). */
+  role: string | null;
+}
+
 /** Identity + segments of the bearer, or null when the token is invalid. */
-async function resolveCaller(
-  req: Request,
-): Promise<{ id: string; segments: string[]; isAdmin: boolean } | null> {
+async function resolveCaller(req: Request): Promise<Caller | null> {
   const header = req.headers.get('authorization') ?? '';
   const token = header.replace(/^Bearer\s+/i, '').trim();
-  if (!token) return null;
+  if (!token) {
+    console.error('[catalogue] resolveCaller: no bearer token');
+    return null;
+  }
   const { data, error } = await admin.auth.getUser(token);
-  if (error || !data.user) return null;
-  const { data: profile } = await admin
+  if (error || !data.user) {
+    console.error('[catalogue] resolveCaller: getUser failed', error?.message);
+    return null;
+  }
+  const { data: profile, error: pErr } = await admin
     .from('profiles')
     .select('role, segments')
     .eq('id', data.user.id)
     .single();
+  if (pErr) {
+    // RLS/key problem most likely: the service key must bypass RLS to read
+    // this row. Surfaced so the 403 reason is unambiguous.
+    console.error('[catalogue] resolveCaller: profile read failed', pErr.message, pErr.code);
+  }
   return {
     id: data.user.id,
     segments: (profile?.segments as string[] | null) ?? [],
     isAdmin: profile?.role === 'admin',
+    role: (profile?.role as string | null) ?? null,
   };
 }
 
@@ -200,10 +218,12 @@ export default async function handler(req: Request): Promise<Response> {
 
     // ── everything below needs a valid member ─────────────────────
     const caller = await resolveCaller(req);
-    if (!caller) return json(401, { error: 'unauthorized' });
+    if (!caller) return json(401, { error: 'unauthorized', reason: 'no-valid-session' });
 
     if (action === 'adminList') {
-      if (!caller.isAdmin) return json(403, { error: 'forbidden' });
+      // role in the body is a diagnostic: null = profile unreadable (key/RLS),
+      // 'client' = not an operator, 'admin' = should have passed.
+      if (!caller.isAdmin) return json(403, { error: 'forbidden', role: caller.role });
       return json(200, { data: await sanity.fetch(GROQ_ADMIN_CATALOGUE) });
     }
 

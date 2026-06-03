@@ -41,7 +41,12 @@ async function callGate<T>(body: GateBody): Promise<T> {
     headers,
     body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error(`[gate] ${body.action} → HTTP ${res.status}`);
+  if (!res.ok) {
+    // Surface the server's reason (e.g. { role: null } = profile unreadable)
+    // so a failing gate call is diagnosable straight from the browser console.
+    const detail = await res.text().catch(() => '');
+    throw new Error(`[gate] ${body.action} → HTTP ${res.status} ${detail}`);
+  }
   return (await res.json()) as T;
 }
 
