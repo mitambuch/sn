@@ -9,7 +9,12 @@ import { gateItem, gateList, gateShared } from '../sanityGate';
 const okJson = (body: unknown) =>
   Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve(body) } as Response);
 const errJson = (status: number) =>
-  Promise.resolve({ ok: false, status, json: () => Promise.resolve({}) } as Response);
+  Promise.resolve({
+    ok: false,
+    status,
+    json: () => Promise.resolve({}),
+    text: () => Promise.resolve(''),
+  } as Response);
 
 describe('sanityGate', () => {
   beforeEach(() => {
