@@ -13,33 +13,11 @@
 //       redirect decision.
 // ═══════════════════════════════════════════════════
 
+import { GROQ_LANDING } from '@/lib/sanityQueries';
 import type { SanityLanding } from '@/types/landing';
 
 import { useSanityDoc } from './useSanityDoc';
 
-const QUERY = `*[_id == "landing-singleton"][0]{
-  _id, _updatedAt,
-  terminalStatus, terminalTz,
-  ctaRequestAccess, ctaPrivateArea, ctaCallDirect,
-  heroMetaStructure,
-  heroMetaType, heroMetaTypeValue,
-  heroMetaStatus, heroMetaStatusValue,
-  heroMetaModel, heroMetaModelValue,
-  heroMetaEstablished, heroMetaEstablishedValue,
-  heroFieldLabel, heroFieldText,
-  heroGpsLabel, heroGpsValue,
-  presentationEyebrow, presentationHeadline, presentationLede,
-  principlesEyebrow, principlesHeadline,
-  principles[]{ _key, title, body },
-  domainsEyebrow, domainsHeadline, domainsLede,
-  domainTiles[]{ _key, key, title, lead },
-  accessEyebrow, accessTitleA, accessTitleB, accessLede,
-  accessEventsEyebrow, accessLockedEyebrow,
-  interlocutorEyebrow, interlocutorHeadlineA, interlocutorHeadlineB,
-  interlocutorCircleTag, interlocutorRole,
-  footerNote, footerLocation, footerEdition
-}`;
-
 export function useLandingContent() {
-  return useSanityDoc<SanityLanding>(QUERY);
+  return useSanityDoc<SanityLanding>(GROQ_LANDING, undefined, 'landing');
 }

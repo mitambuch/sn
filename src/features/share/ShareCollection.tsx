@@ -28,7 +28,7 @@ import {
 } from '@/mocks';
 import type { ShareableDocType, ShareDocRef } from '@/types/share';
 
-interface CollectionFiche {
+export interface CollectionFiche {
   _id: string;
   _type: ShareableDocType;
   slug?: string;
@@ -66,10 +66,19 @@ interface ShareCollectionProps {
   code: string;
   expiresAt: string | null;
   onExpire: () => void;
+  /** Pre-fetched fiches from the server gate (private dataset). When set,
+   *  these are rendered as-is and no direct Sanity fetch is used. */
+  items?: CollectionFiche[] | null;
 }
 
 /** Grid of fiche cards for a one-link-many-fiches share code. */
-export const ShareCollection = ({ docs, code, expiresAt, onExpire }: ShareCollectionProps) => {
+export const ShareCollection = ({
+  docs,
+  code,
+  expiresAt,
+  onExpire,
+  items,
+}: ShareCollectionProps) => {
   const ids = useMemo(() => docs.map(d => d.id), [docs]);
 
   // Mock fallback — map each ref to its seeded item so the page still
@@ -93,10 +102,12 @@ export const ShareCollection = ({ docs, code, expiresAt, onExpire }: ShareCollec
     [docs],
   );
 
-  const { data: fiches } = useSanityCollection<CollectionFiche>({
+  const { data: fetched } = useSanityCollection<CollectionFiche>({
     query: GROQ_SHARED_FICHES(ids),
     fallback,
   });
+  // Gate mode passes pre-fetched fiches; otherwise use the direct fetch.
+  const fiches = items ?? fetched;
 
   // "Petit sas" — click a card to focus a fiche, ← to return to the grid.
   const [activeId, setActiveId] = useState<string | null>(null);

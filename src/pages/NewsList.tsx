@@ -27,6 +27,7 @@ export default function NewsList() {
   const fallback = useMemo(() => listArticles(), []);
   const { data: all } = useSanityCollection<Article>({
     query: GROQ_ARTICLES_LIST,
+    gateModule: 'article',
     fallback,
   });
   const loading = useFakeLoading(450);

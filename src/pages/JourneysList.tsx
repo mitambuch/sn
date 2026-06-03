@@ -25,6 +25,7 @@ export default function JourneysList() {
   const fallback = useMemo(() => listJourneys(), []);
   const { data: all } = useSanityCollection<Journey>({
     query: GROQ_JOURNEYS_LIST,
+    gateModule: 'journey',
     fallback,
   });
 

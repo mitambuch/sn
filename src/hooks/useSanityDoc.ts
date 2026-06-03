@@ -13,6 +13,7 @@
 // ═══════════════════════════════════════════════════
 
 import { hasSanity, sanityClient } from '@lib/sanity';
+import { gateEnabled, gateItem } from '@lib/sanityGate';
 import { useCallback, useEffect, useState } from 'react';
 
 export interface SanityDocState<T> {
@@ -25,6 +26,10 @@ export interface SanityDocState<T> {
 export function useSanityDoc<T>(
   query: string,
   params?: Record<string, unknown>,
+  /** When set AND the gate is enabled, the singleton is read through the
+   *  server gate (public action — no audience filter) so the marketing site
+   *  keeps working against a private dataset. */
+  gateAction?: 'landing' | 'siteConfig',
 ): SanityDocState<T> {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(hasSanity);
@@ -32,15 +37,18 @@ export function useSanityDoc<T>(
   const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
+    const useGate = gateEnabled && Boolean(gateAction);
     // WHY: initial `loading` already reflects `hasSanity`, so we never need to
     // setState when Sanity is disabled — the early return avoids the
     // react-hooks/set-state-in-effect lint.
-    if (!hasSanity || !sanityClient) return;
+    if (!useGate && (!hasSanity || !sanityClient)) return;
 
     let cancelled = false;
 
-    sanityClient
-      .fetch<T>(query, params ?? {})
+    const source =
+      useGate && gateAction ? gateItem<T>(gateAction) : sanityClient!.fetch<T>(query, params ?? {});
+
+    source
       .then(result => {
         if (!cancelled) {
           setData(result);
@@ -57,7 +65,7 @@ export function useSanityDoc<T>(
     return () => {
       cancelled = true;
     };
-  }, [query, params, attempt]);
+  }, [query, params, attempt, gateAction]);
 
   const retry = useCallback(() => setAttempt(n => n + 1), []);
 

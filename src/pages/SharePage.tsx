@@ -21,11 +21,13 @@ import { ExpiryCountdown } from '@components/ui/ExpiryCountdown';
 import { GalleryGrid } from '@components/ui/GalleryGrid';
 import { Image } from '@components/ui/Image';
 import { AccessRequestModal } from '@features/access/AccessRequestModal';
-import { ShareCollection } from '@features/share/ShareCollection';
+import { type CollectionFiche, ShareCollection } from '@features/share/ShareCollection';
 import { useSanityItem } from '@hooks/useSanityItem';
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 
+import { gateEnabled, gateShared } from '@/lib/sanityGate';
 import { GROQ_SHARED_FICHE } from '@/lib/sanityQueries';
 import { consumeShareCode } from '@/lib/shareCode';
 import {
@@ -80,9 +82,15 @@ interface SharedFiche {
 // eslint-disable-next-line max-lines-per-function -- public share page with multi-state machine + Sanity fetch + share actions
 export default function SharePage() {
   const { code: rawCode } = useParams<{ code: string }>();
+  const { i18n } = useTranslation();
+  const locale = i18n.language === 'en' ? 'en' : 'fr';
   const [status, setStatus] = useState<Status>('loading');
   const [consumed, setConsumed] = useState<ConsumedShareCode | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  // Gate mode: the fiche content is fetched server-side (private dataset)
+  // via the validated share code, never directly from Sanity in the browser.
+  const [gateFiche, setGateFiche] = useState<SharedFiche | null>(null);
+  const [gateCollection, setGateCollection] = useState<CollectionFiche[] | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -129,10 +137,25 @@ export default function SharePage() {
   // empty or unconfigured — keeps the demo flow working even before the
   // owner has run `pnpm sanity:seed:sawnext`.
   const ficheQuery = useMemo(() => {
+    if (gateEnabled) return ''; // gate mode resolves the fiche server-side
     if (status !== 'valid') return '';
     if (!consumed?.sanityDocType || !consumed.sanityDocId) return '';
     return GROQ_SHARED_FICHE(consumed.sanityDocType, consumed.sanityDocId);
   }, [status, consumed]);
+
+  // Gate mode: once the code is valid, resolve the fiche(s) server-side.
+  useEffect(() => {
+    if (!gateEnabled || status !== 'valid' || !rawCode) return;
+    let cancelled = false;
+    void gateShared<SharedFiche, CollectionFiche>(normalizeShareCode(rawCode), locale).then(res => {
+      if (cancelled || !res) return;
+      setGateFiche(res.single);
+      setGateCollection(res.collection);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [status, rawCode, locale]);
 
   // Adapt a matching mock item to the SharedFiche shape so the existing
   // render logic stays unchanged. Lookup is by id OR slug (getX helpers
@@ -174,10 +197,13 @@ export default function SharePage() {
     };
   }, [consumed]);
 
-  const { data: fiche } = useSanityItem<SharedFiche>({
+  const { data: sanityFiche } = useSanityItem<SharedFiche>({
     query: ficheQuery,
     fallback: mockFallback,
   });
+  // In gate mode the fiche comes from the server; otherwise from the direct
+  // Sanity fetch above (with mock fallback before the dataset is seeded).
+  const fiche = gateEnabled ? (gateFiche ?? mockFallback) : sanityFiche;
 
   // Full raw mock — preserves type-specific fields stripped from
   // SharedFiche (date, capacity, bedrooms, brand, programme, …). Used
@@ -497,6 +523,7 @@ export default function SharePage() {
             docs={consumed.docs}
             code={displayCode}
             expiresAt={consumed.expiresAt}
+            items={gateCollection}
             onExpire={() => {
               setStatus('expired');
             }}

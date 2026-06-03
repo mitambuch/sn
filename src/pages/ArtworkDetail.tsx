@@ -36,6 +36,8 @@ export default function ArtworkDetail() {
   const mockArtwork = slug ? getArtwork(slug) : null;
   const { data: artwork } = useSanityItem<Artwork>({
     query: slug ? GROQ_ARTWORK_DETAIL(slug) : '',
+    gateModule: 'artwork',
+    gateSlug: slug,
     fallback: mockArtwork ?? null,
   });
   if (!artwork) return <Navigate to={localePath(ROUTES.ACCOUNT_ARTWORKS)} replace />;

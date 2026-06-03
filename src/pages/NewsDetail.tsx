@@ -34,6 +34,8 @@ export default function NewsDetail() {
   const mockArticle = slug ? getArticle(slug) : null;
   const { data: article } = useSanityItem<Article>({
     query: slug ? GROQ_ARTICLE_DETAIL(slug) : '',
+    gateModule: 'article',
+    gateSlug: slug,
     fallback: mockArticle ?? null,
   });
   if (!article) return <Navigate to={localePath(ROUTES.ACCOUNT_NEWS)} replace />;

@@ -1,0 +1,21 @@
+{
+  // Standalone typecheck for the Netlify server functions. They run on Node
+  // with web-standard Request/Response — NOT part of the browser bundle, so
+  // they have their own libs/types instead of inheriting the app tsconfig.
+  // Run via `pnpm typecheck:functions`.
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2023", "DOM"],
+    "types": [],
+    "strict": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["netlify/functions/**/*.mts", "src/lib/sanityQueries.ts", "src/types/segment.ts"]
+}

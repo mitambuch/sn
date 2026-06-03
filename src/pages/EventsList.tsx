@@ -39,7 +39,11 @@ export default function EventsList() {
   const { t, i18n } = useTranslation();
   const { localePath } = useLocale();
   const fallback = useMemo(() => listEvents(), []);
-  const { data: all } = useSanityCollection<Event>({ query: GROQ_EVENTS_LIST, fallback });
+  const { data: all } = useSanityCollection<Event>({
+    query: GROQ_EVENTS_LIST,
+    gateModule: 'event',
+    fallback,
+  });
 
   const [activeCats, setActiveCats] = useState<Set<EventCategory>>(new Set());
 

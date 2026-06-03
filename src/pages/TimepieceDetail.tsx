@@ -41,6 +41,8 @@ export default function TimepieceDetail() {
   const mockTp = slug ? getTimepiece(slug) : null;
   const { data: tp } = useSanityItem<Timepiece>({
     query: slug ? GROQ_TIMEPIECE_DETAIL(slug) : '',
+    gateModule: 'timepiece',
+    gateSlug: slug,
     fallback: mockTp ?? null,
   });
   if (!tp) return <Navigate to={localePath(ROUTES.ACCOUNT_TIMEPIECES)} replace />;

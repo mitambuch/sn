@@ -46,6 +46,8 @@ export default function PropertyDetail() {
   const mockProperty = slug ? getProperty(slug) : null;
   const { data: property } = useSanityItem<Property>({
     query: slug ? GROQ_PROPERTY_DETAIL(slug) : '',
+    gateModule: 'property',
+    gateSlug: slug,
     fallback: mockProperty ?? null,
   });
   const [inquiryOpen, setInquiryOpen] = useState(false);

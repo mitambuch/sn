@@ -25,6 +25,7 @@ export default function TimepiecesList() {
   const fallback = useMemo(() => listTimepieces(), []);
   const { data: all } = useSanityCollection<Timepiece>({
     query: GROQ_TIMEPIECES_LIST,
+    gateModule: 'timepiece',
     fallback,
   });
 

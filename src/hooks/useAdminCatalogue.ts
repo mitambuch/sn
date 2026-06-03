@@ -15,6 +15,8 @@
 import { useEffect, useState } from 'react';
 
 import { hasSanity, sanityClient } from '@/lib/sanity';
+import { gateEnabled, gateList } from '@/lib/sanityGate';
+import { GROQ_ADMIN_CATALOGUE } from '@/lib/sanityQueries';
 
 export type CatalogueModule =
   | 'event'
@@ -45,13 +47,7 @@ interface CatalogueRawRow {
   thumb: string | null;
 }
 
-const QUERY = `*[_type in ["event", "property", "timepiece", "artwork", "journey", "conciergeService", "article"]] | order(_updatedAt desc){
-  _id, _type, _updatedAt,
-  slug,
-  title,
-  visibility,
-  "thumb": images[0].asset->url
-}`;
+const QUERY = GROQ_ADMIN_CATALOGUE;
 
 function rowFrom(raw: CatalogueRawRow): CatalogueRow {
   let title = 'Sans titre';
@@ -85,13 +81,16 @@ export function useAdminCatalogue(): UseAdminCatalogueResult {
   useEffect(() => {
     let cancelled = false;
     void (async () => {
-      if (!hasSanity || !sanityClient) {
+      const useGate = gateEnabled;
+      if (!useGate && (!hasSanity || !sanityClient)) {
         setUsingFallback(true);
         setLoading(false);
         return;
       }
       try {
-        const data = await sanityClient.fetch<CatalogueRawRow[]>(QUERY);
+        const data = useGate
+          ? await gateList<CatalogueRawRow>('adminList')
+          : await sanityClient!.fetch<CatalogueRawRow[]>(QUERY);
         if (cancelled) return;
         setRows(data.map(rowFrom));
         setUsingFallback(false);

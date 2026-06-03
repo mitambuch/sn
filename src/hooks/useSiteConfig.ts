@@ -9,18 +9,11 @@
 //       before making navigation/redirect decisions.
 // ═══════════════════════════════════════════════════
 
+import { GROQ_SITE_CONFIG } from '@/lib/sanityQueries';
 import type { SanitySiteConfig } from '@/types/siteConfig';
 
 import { useSanityDoc } from './useSanityDoc';
 
-const QUERY = `*[_id == "siteConfig-singleton"][0]{
-  _id, _updatedAt,
-  siteName, tagline, logo,
-  primaryNav, footerTagline, copyright,
-  contactEmail, contactPhone, contactAddress, socials,
-  seoTitle, seoDescription, ogImage
-}`;
-
 export function useSiteConfig() {
-  return useSanityDoc<SanitySiteConfig>(QUERY);
+  return useSanityDoc<SanitySiteConfig>(GROQ_SITE_CONFIG, undefined, 'siteConfig');
 }

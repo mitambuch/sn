@@ -11,11 +11,17 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { hasSanity, sanityClient } from '@/lib/sanity';
+import { gateEnabled, gateItem } from '@/lib/sanityGate';
 
 interface UseSanityItemOpts<TResult, TFallback> {
   query: string;
   fallback: TFallback | null;
   transform?: (row: unknown) => TResult;
+  /** Catalogue module + slug. When both are set AND the gate is enabled, the
+   *  fiche is fetched through the audience server gate — a forbidden fiche
+   *  comes back as null (treated as not-found), never leaked. */
+  gateModule?: string | undefined;
+  gateSlug?: string | undefined;
 }
 
 interface UseSanityItemResult<TResult, TFallback> {
@@ -28,7 +34,7 @@ interface UseSanityItemResult<TResult, TFallback> {
 export function useSanityItem<TResult, TFallback = TResult>(
   opts: UseSanityItemOpts<TResult, TFallback>,
 ): UseSanityItemResult<TResult, TFallback> {
-  const { query, fallback, transform } = opts;
+  const { query, fallback, transform, gateModule, gateSlug } = opts;
   // WHY: detail queries project editorial fields via $locale (see
   // sanityQueries.ts) — pass the active locale so the fiche renders in
   // the visitor's language with a FR fallback. Switching locale refetches.
@@ -43,17 +49,25 @@ export function useSanityItem<TResult, TFallback = TResult>(
   const [usingFallback, setUsingFallback] = useState<boolean>(!hasSanity);
 
   useEffect(() => {
-    // No-op when Sanity isn't configured. Initial state already reflects
-    // !hasSanity (loading=false, usingFallback=true) so no setState here.
-    if (!sanityClient) return;
+    const useGate = gateEnabled && Boolean(gateModule) && Boolean(gateSlug);
+    // No-op when Sanity isn't configured (and no gate). Initial state already
+    // reflects !hasSanity (loading=false, usingFallback=true).
+    if (!useGate && !sanityClient) return;
     // No-op when query is empty (e.g. slug undefined, caller already
     // redirects). Avoids firing a useless fetch.
-    if (!query) return;
+    if (!useGate && !query) return;
 
     let cancelled = false;
 
-    sanityClient
-      .fetch<unknown>(query, { locale })
+    const source = useGate
+      ? gateItem<unknown>('item', {
+          ...(gateModule !== undefined && { module: gateModule }),
+          ...(gateSlug !== undefined && { slug: gateSlug }),
+          locale,
+        })
+      : sanityClient!.fetch<unknown>(query, { locale });
+
+    source
       .then(row => {
         if (cancelled) return;
         if (!row) {
@@ -78,7 +92,7 @@ export function useSanityItem<TResult, TFallback = TResult>(
     return () => {
       cancelled = true;
     };
-  }, [query, fallback, transform, locale]);
+  }, [query, fallback, transform, locale, gateModule, gateSlug]);
 
   return { data, loading, error, usingFallback };
 }
