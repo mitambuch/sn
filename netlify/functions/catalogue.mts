@@ -127,6 +127,14 @@ function isModuleKey(v: unknown): v is CatalogueModuleKey {
   return typeof v === 'string' && v in CATALOGUE_MODULE_QUERIES;
 }
 
+// The detail/shared GROQ builders interpolate slug/id into the query string.
+// On this privileged (read-token) path that is a GROQ-injection surface: a
+// crafted slug like `x" || _type=="event" && "` could break out of the
+// audience-filtered query. Slugs are kebab-case and Sanity doc ids are a
+// known charset — anything outside these is rejected before it reaches GROQ.
+const SLUG_RE = /^[a-z0-9-]{1,128}$/;
+const DOC_ID_RE = /^[a-zA-Z0-9._-]{1,128}$/;
+
 // ── share helpers ────────────────────────────────────────────────
 interface PeekRow {
   sanity_doc_type: string | null;
@@ -174,7 +182,11 @@ export default async function handler(req: Request): Promise<Response> {
       const { data: rows } = await admin.rpc('peek_share_code', { p_code: code });
       const row = (rows as PeekRow[] | null)?.[0];
       if (!row || !row.is_valid) return json(404, { error: 'invalid-code' });
-      const docs = shareDocIds(row);
+      // type + id come from the DB (admin-set at code creation), but the GROQ
+      // builders interpolate them — validate defensively before they hit GROQ.
+      const docs = shareDocIds(row).filter(
+        d => isModuleKey(d.type) && DOC_ID_RE.test(d.id),
+      );
       if (docs.length === 0) return json(404, { error: 'no-docs' });
       if (docs.length === 1) {
         const d = docs[0]!;
@@ -209,6 +221,9 @@ export default async function handler(req: Request): Promise<Response> {
       if (!isModuleKey(body.module)) return json(400, { error: 'bad-module' });
       const slug = (body.slug ?? '').trim();
       if (!slug) return json(400, { error: 'missing-slug' });
+      // Reject anything that isn't a clean slug → blocks GROQ injection.
+      // 404 (not 400) so a probe can't distinguish "bad slug" from "absent".
+      if (!SLUG_RE.test(slug)) return json(404, { error: 'not-found' });
       const row = (await sanity.fetch(CATALOGUE_MODULE_QUERIES[body.module].detail(slug), {
         locale,
       })) as { id: string } | null;

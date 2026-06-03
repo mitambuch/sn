@@ -27,11 +27,16 @@ dataset en public) — retour immédiat à l'état actuel.
 
 ## Étapes (à faire par l'owner — ~10 min)
 
-### 1. Appliquer la migration 0019 (Supabase)
+### 1. Appliquer les migrations 0019 + 0020 (Supabase)
 
-Dashboard Supabase → SQL Editor → coller le contenu de
-`supabase/migrations/0019_peek_share_code.sql` → Run. (Même geste que pour les
-migrations précédentes.)
+Dashboard Supabase → SQL Editor → coller puis Run, **dans l'ordre** :
+
+1. `supabase/migrations/0019_peek_share_code.sql` — validation non-mutante
+   d'un code de partage (pour le gate de partage).
+2. `supabase/migrations/0020_segments_update_guard.sql` — **critique** :
+   rend `profiles.segments` modifiable par les admins **uniquement** (sans
+   elle, le tagging admin échoue ET un membre pourrait s'auto-assigner un
+   segment). Voir `AUDIENCE-SECURITY-REVIEW.md` finding F2.
 
 ### 2. Créer un token de lecture Sanity
 
