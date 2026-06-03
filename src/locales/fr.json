@@ -466,6 +466,8 @@
       "title": "Demandes",
       "lede": "Demandes d'intérêt envoyées par les membres depuis l'espace privé. Déplace les cartes entre les colonnes pour avancer le triage.",
       "moveTo": "Statut",
+      "cancelling": "Annulation en cours…",
+      "updating": "Mise à jour…",
       "statusFor": "Statut de la demande {{source}}",
       "statsTotal": "Total",
       "statsOpen": "Ouvertes",
@@ -563,6 +565,9 @@
       "moveTo": "Changer le statut",
       "confirmAccept": "Accepter cette demande ? Un code d'accès à usage unique sera généré et envoyé par email au demandeur.",
       "acceptedSent": "Demande acceptée — code d'accès envoyé par email.",
+      "delete": "Supprimer la demande",
+      "confirmDelete": "Supprimer définitivement la demande de {{name}} ? Cette action est irréversible.",
+      "deleted": "Demande supprimée.",
       "status": {
         "new": "Nouveau",
         "contacted": "Contacté",

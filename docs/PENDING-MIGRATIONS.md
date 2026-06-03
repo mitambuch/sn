@@ -13,6 +13,7 @@
 | 3 | `0021_notify_access_accepted.sql` | Quand Salva accepte une demande → génère un code + **email au demandeur**. | Maintenant |
 | 4 | `0022_fix_share_codes_revoke.sql` | **Corrige le bug de révocation des share codes** (contrainte de format + grant + policy). | **Maintenant** |
 | 5 | `0023_grant_role_update.sql` | Permet à un admin de **promouvoir/rétrograder** un opérateur (bug pré-existant F9). | Maintenant |
+| 6 | `0024_access_requests_delete.sql` | Permet à Salva de **supprimer** une demande d'accès traitée (nettoyer le tableau). | Maintenant |
 
 ## Vérifs rapides après application
 

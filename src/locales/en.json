@@ -449,6 +449,8 @@
       "title": "Inquiries",
       "lede": "Inquiries sent by members from their private space. Drag the status forward as you triage.",
       "moveTo": "Status",
+      "cancelling": "Cancelling…",
+      "updating": "Updating…",
       "statusFor": "Status for the {{source}} inquiry",
       "statsTotal": "Total",
       "statsOpen": "Open",
@@ -546,6 +548,9 @@
       "moveTo": "Change status",
       "confirmAccept": "Accept this request? A single-use access code will be generated and emailed to the requester.",
       "acceptedSent": "Request accepted — access code emailed.",
+      "delete": "Delete request",
+      "confirmDelete": "Permanently delete {{name}}'s request? This cannot be undone.",
+      "deleted": "Request deleted.",
       "status": {
         "new": "New",
         "contacted": "Contacted",
