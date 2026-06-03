@@ -121,9 +121,18 @@ export default function AdminAccessRequests() {
   const { rows, loading, error, usingFallback, updateStatus } = useAccessRequestsAdmin();
 
   const handleStatusChange = (id: string, next: AccessRequestStatus) => {
+    // Accepting issues a single-use invitation code AND emails it to the
+    // requester (trigger notify_access_accepted) — confirm before sending.
+    if (next === 'accepted' && !window.confirm(t('admin.accessRequests.confirmAccept'))) {
+      return;
+    }
     void updateStatus(id, next).then(result => {
       if (!result.ok) {
         toast({ variant: 'error', message: result.error ?? t('common.error') });
+        return;
+      }
+      if (next === 'accepted') {
+        toast({ variant: 'success', message: t('admin.accessRequests.acceptedSent') });
       }
     });
   };

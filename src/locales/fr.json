@@ -561,6 +561,8 @@
       "lede": "Les visiteurs anonymes qui ont rempli le formulaire « Demander un accès » sur le site. Triage : nouveau → contacté → accepté/refusé.",
       "fallbackNotice": "Supabase non configuré — vue désactivée.",
       "moveTo": "Changer le statut",
+      "confirmAccept": "Accepter cette demande ? Un code d'accès à usage unique sera généré et envoyé par email au demandeur.",
+      "acceptedSent": "Demande acceptée — code d'accès envoyé par email.",
       "status": {
         "new": "Nouveau",
         "contacted": "Contacté",

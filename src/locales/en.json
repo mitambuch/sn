@@ -544,6 +544,8 @@
       "lede": "Anonymous visitors who filled the landing \"Request access\" form. Triage: new → contacted → accepted/declined.",
       "fallbackNotice": "Supabase not configured — view disabled.",
       "moveTo": "Change status",
+      "confirmAccept": "Accept this request? A single-use access code will be generated and emailed to the requester.",
+      "acceptedSent": "Request accepted — access code emailed.",
       "status": {
         "new": "New",
         "contacted": "Contacted",
