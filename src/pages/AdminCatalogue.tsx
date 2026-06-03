@@ -20,11 +20,15 @@ import { Container } from '@components/layout/Container';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { Spinner } from '@components/ui/Spinner';
 import { Stat } from '@components/ui/Stat';
+import { type AudienceFicheRef, FicheAudienceModal } from '@features/admin/FicheAudienceModal';
 import {
   type CatalogueModule,
   type CatalogueRow,
   useAdminCatalogue,
 } from '@hooks/useAdminCatalogue';
+import { useSegments } from '@hooks/useSegments';
+import { useToast } from '@hooks/useToast';
+import { useUsersAdmin } from '@hooks/useUsersAdmin';
 import { cn } from '@utils/cn';
 import type { LucideIcon } from 'lucide-react';
 import {
@@ -37,6 +41,7 @@ import {
   Newspaper,
   Plus,
   Sparkles,
+  Users,
   Watch,
 } from 'lucide-react';
 import { useState } from 'react';
@@ -112,42 +117,116 @@ const VISIBILITY_LABEL: Record<string, string> = {
   private: 'Privé',
 };
 
-function CatalogueCard({ row, deskId }: { row: CatalogueRow; deskId: string }) {
+function CatalogueCard({
+  row,
+  deskId,
+  onAudience,
+}: {
+  row: CatalogueRow;
+  deskId: string;
+  onAudience: (row: CatalogueRow) => void;
+}) {
+  const { t } = useTranslation();
   const visLabel = row.visibility ? (VISIBILITY_LABEL[row.visibility] ?? row.visibility) : '—';
   return (
-    <a
-      href={studioEditUrl(deskId, row.id)}
-      target="_blank"
-      rel="noopener noreferrer"
+    <div
       className={cn(
-        'group border-border bg-surface/40 hover:border-fg/30 hover:bg-surface',
+        'group border-border bg-surface/40 hover:border-fg/30',
         'flex flex-col gap-3 rounded-lg border p-3 transition-[border-color,background-color] duration-200',
-        'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
       )}
     >
-      <div className="bg-bg/40 relative aspect-4/3 w-full overflow-hidden rounded-md">
-        {row.thumbnail ? (
-          <img src={row.thumbnail} alt="" loading="lazy" className="h-full w-full object-cover" />
-        ) : (
-          <div className="text-muted/40 flex h-full items-center justify-center font-mono text-[10px] tracking-widest uppercase">
-            Pas d'image
-          </div>
-        )}
-        <span className="bg-bg/80 absolute top-2 left-2 rounded-full px-2 py-0.5 font-mono text-[9px] tracking-widest uppercase backdrop-blur-sm">
-          {visLabel}
-        </span>
+      <a
+        href={studioEditUrl(deskId, row.id)}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="focus-visible:ring-accent flex flex-col gap-3 rounded-md focus-visible:ring-2 focus-visible:outline-none"
+      >
+        <div className="bg-bg/40 relative aspect-4/3 w-full overflow-hidden rounded-md">
+          {row.thumbnail ? (
+            <img src={row.thumbnail} alt="" loading="lazy" className="h-full w-full object-cover" />
+          ) : (
+            <div className="text-muted/40 flex h-full items-center justify-center font-mono text-[10px] tracking-widest uppercase">
+              Pas d'image
+            </div>
+          )}
+          <span className="bg-bg/80 absolute top-2 left-2 rounded-full px-2 py-0.5 font-mono text-[9px] tracking-widest uppercase backdrop-blur-sm">
+            {visLabel}
+          </span>
+        </div>
+        <div className="flex flex-1 flex-col gap-1">
+          <h3 className="text-fg line-clamp-2 text-sm leading-tight font-medium">{row.title}</h3>
+          <p className="text-muted truncate font-mono text-[10px] tracking-widest uppercase">
+            {row.slug || row.id}
+          </p>
+        </div>
+      </a>
+      <div className="border-border flex items-center justify-between gap-2 border-t pt-2.5">
+        <button
+          type="button"
+          onClick={() => {
+            onAudience(row);
+          }}
+          className="text-muted hover:text-fg focus-visible:ring-accent inline-flex items-center gap-1.5 rounded-full font-mono text-[10px] tracking-widest uppercase focus-visible:ring-2 focus-visible:outline-none"
+        >
+          <Users size={12} strokeWidth={1.5} aria-hidden="true" />
+          {t('admin.catalogue.audience.button')}
+        </button>
+        <a
+          href={studioEditUrl(deskId, row.id)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-muted hover:text-fg inline-flex items-center gap-1.5 font-mono text-[10px] tracking-widest uppercase"
+        >
+          Modifier
+          <ArrowUpRight size={12} strokeWidth={1.5} aria-hidden="true" />
+        </a>
       </div>
-      <div className="flex flex-1 flex-col gap-1">
-        <h3 className="text-fg line-clamp-2 text-sm leading-tight font-medium">{row.title}</h3>
-        <p className="text-muted truncate font-mono text-[10px] tracking-widest uppercase">
-          {row.slug || row.id}
-        </p>
-      </div>
-      <div className="text-muted group-hover:text-fg flex items-center justify-between font-mono text-[10px] tracking-widest uppercase transition-colors">
-        <span>Modifier</span>
-        <ArrowUpRight size={12} strokeWidth={1.5} aria-hidden="true" />
-      </div>
-    </a>
+    </div>
+  );
+}
+
+function ModuleTabs({
+  activeModule,
+  countsByModule,
+  onSelect,
+}: {
+  activeModule: CatalogueModule;
+  countsByModule: Record<CatalogueModule, number>;
+  onSelect: (module: CatalogueModule) => void;
+}) {
+  const { t } = useTranslation();
+  return (
+    <nav
+      aria-label="Modules du catalogue"
+      className="border-border -mx-4 flex gap-2 overflow-x-auto border-b px-4 pb-3 md:mx-0 md:flex-wrap md:px-0"
+    >
+      {TABS.map(tab => {
+        const Icon = tab.icon;
+        const active = tab.module === activeModule;
+        return (
+          <button
+            key={tab.module}
+            type="button"
+            onClick={() => {
+              onSelect(tab.module);
+            }}
+            aria-pressed={active}
+            className={cn(
+              'inline-flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 font-mono text-[11px] tracking-widest whitespace-nowrap uppercase',
+              'duration-base transition-[color,background-color,border-color]',
+              'focus-visible:ring-accent focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+              active
+                ? 'bg-fg text-bg border-fg'
+                : 'border-border text-muted hover:text-fg hover:border-fg/40',
+            )}
+          >
+            <Icon size={14} strokeWidth={1.5} aria-hidden="true" />
+            {t(tab.labelKey)}
+            <span className="text-[10px] opacity-60">({countsByModule[tab.module]})</span>
+          </button>
+        );
+      })}
+    </nav>
   );
 }
 
@@ -158,7 +237,11 @@ export default function AdminCatalogue() {
   const activeModule = TABS.some(t => t.module === moduleFromUrl) ? moduleFromUrl : 'event';
   const activeTab = TABS.find(t => t.module === activeModule) ?? TABS[0]!;
   const { rows, loading, error, usingFallback } = useAdminCatalogue();
+  const { segments } = useSegments();
+  const { rows: members } = useUsersAdmin();
+  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
+  const [audienceFiche, setAudienceFiche] = useState<AudienceFicheRef | null>(null);
 
   const filtered = rows.filter(r => {
     if (r.type !== activeModule) return false;
@@ -202,38 +285,14 @@ export default function AdminCatalogue() {
         </div>
 
         {/* Module tabs — scrollable on mobile */}
-        <nav
-          aria-label="Modules du catalogue"
-          className="border-border -mx-4 flex gap-2 overflow-x-auto border-b px-4 pb-3 md:mx-0 md:flex-wrap md:px-0"
-        >
-          {TABS.map(tab => {
-            const Icon = tab.icon;
-            const active = tab.module === activeModule;
-            return (
-              <button
-                key={tab.module}
-                type="button"
-                onClick={() => {
-                  setSearchParams({ module: tab.module });
-                  setSearchTerm('');
-                }}
-                aria-pressed={active}
-                className={cn(
-                  'inline-flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 font-mono text-[11px] tracking-widest whitespace-nowrap uppercase',
-                  'duration-base transition-[color,background-color,border-color]',
-                  'focus-visible:ring-accent focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
-                  active
-                    ? 'bg-fg text-bg border-fg'
-                    : 'border-border text-muted hover:text-fg hover:border-fg/40',
-                )}
-              >
-                <Icon size={14} strokeWidth={1.5} aria-hidden="true" />
-                {t(tab.labelKey)}
-                <span className="text-[10px] opacity-60">({countsByModule[tab.module]})</span>
-              </button>
-            );
-          })}
-        </nav>
+        <ModuleTabs
+          activeModule={activeModule}
+          countsByModule={countsByModule}
+          onSelect={module => {
+            setSearchParams({ module });
+            setSearchTerm('');
+          }}
+        />
 
         {usingFallback && (
           <p className="border-border bg-surface/40 text-muted rounded-md border px-3 py-2 font-mono text-[10px] tracking-widest uppercase">
@@ -301,11 +360,34 @@ export default function AdminCatalogue() {
         ) : (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {filtered.map(row => (
-              <CatalogueCard key={row.id} row={row} deskId={activeTab.deskId} />
+              <CatalogueCard
+                key={row.id}
+                row={row}
+                deskId={activeTab.deskId}
+                onAudience={r => {
+                  setAudienceFiche({ id: r.id, type: r.type, title: r.title });
+                }}
+              />
             ))}
           </div>
         )}
       </div>
+
+      <FicheAudienceModal
+        fiche={audienceFiche}
+        segments={segments}
+        members={members}
+        onClose={() => {
+          setAudienceFiche(null);
+        }}
+        onResult={result => {
+          if (!result.ok) {
+            toast({ variant: 'error', message: result.error ?? t('common.error') });
+            return;
+          }
+          toast({ variant: 'success', message: t('admin.catalogue.audience.saved') });
+        }}
+      />
     </Container>
   );
 }

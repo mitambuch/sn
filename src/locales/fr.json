@@ -587,7 +587,32 @@
       "statsPublic": "Public",
       "statsShareCode": "Sur code",
       "statsPrivate": "Privé",
-      "tabs": "Modules"
+      "tabs": "Modules",
+      "audience": {
+        "button": "Audience",
+        "title": "Audience — {{title}}",
+        "lede": "Choisis qui peut voir cette fiche dans l'espace membre. L'application est garantie côté serveur.",
+        "loadError": "Impossible de charger les règles d'audience.",
+        "modeAll": "Tous les membres",
+        "modeAllHint": "Visible par tout membre connecté (sauf exclusions ci-dessous).",
+        "modeSegments": "Segments choisis",
+        "modeSegmentsHint": "Visible seulement par les membres tagués d'au moins un segment coché.",
+        "noSegments": "Aucun segment n'existe encore. Crée-en dans l'onglet Segments.",
+        "exclusionsTitle": "Exclure des membres",
+        "exclusionsHint": "Ces membres ne verront jamais la fiche, quel que soit leur segment.",
+        "searchMembers": "Chercher un membre à exclure…",
+        "excludedNone": "Aucune exclusion.",
+        "remove": "Retirer",
+        "noteLabel": "Note interne",
+        "notePlaceholder": "Optionnel — pourquoi cette restriction.",
+        "save": "Enregistrer l'audience",
+        "saved": "Audience mise à jour.",
+        "badgeAll": "Tous",
+        "badgeSegments": "{{count}} segment",
+        "badgeSegments_other": "{{count}} segments",
+        "badgeExcluded": "· {{count}} exclu",
+        "badgeExcluded_other": "· {{count}} exclus"
+      }
     },
     "modules": {
       "property": "Propriété",
