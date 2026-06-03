@@ -605,6 +605,10 @@
       "audience": {
         "button": "Audience",
         "restricted": "Restricted",
+        "visibleToAll": "Visible to all members",
+        "reservedTo": "Reserved for: {{names}}",
+        "manage": "Manage who sees this",
+        "editContent": "Edit content (Sanity)",
         "title": "Audience — {{title}}",
         "lede": "Choose who can see this fiche in the member space. Enforcement is guaranteed server-side.",
         "loadError": "Could not load the audience rules.",

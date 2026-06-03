@@ -115,12 +115,6 @@ function studioCreateUrl(deskId: string): string {
   return `${STUDIO_BASE_URL}/structure/${deskId}`;
 }
 
-const VISIBILITY_LABEL: Record<string, string> = {
-  public: 'Public',
-  shareCode: 'Code partagé',
-  private: 'Privé',
-};
-
 /** A fiche is "restricted" when it targets segments or excludes anyone —
  *  i.e. not everybody sees it. mode 'all' + no exclusions = open. */
 function isRestricted(a: FicheAudience | undefined): boolean {
@@ -132,27 +126,26 @@ function CatalogueCard({
   row,
   deskId,
   restricted,
+  audienceSummary,
   onAudience,
 }: {
   row: CatalogueRow;
   deskId: string;
   restricted: boolean;
+  /** Segment names a restricted fiche is reserved to (already resolved). */
+  audienceSummary: string;
   onAudience: (row: CatalogueRow) => void;
 }) {
   const { t } = useTranslation();
-  const visLabel = row.visibility ? (VISIBILITY_LABEL[row.visibility] ?? row.visibility) : '—';
   return (
-    <div
-      className={cn(
-        'group border-border bg-surface/40 hover:border-fg/30',
-        'flex flex-col gap-3 rounded-lg border p-3 transition-[border-color,background-color] duration-200',
-      )}
-    >
-      <a
-        href={studioEditUrl(deskId, row.id)}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="focus-visible:ring-accent flex flex-col gap-3 rounded-md focus-visible:ring-2 focus-visible:outline-none"
+    <div className="border-border bg-surface/40 flex flex-col gap-3 rounded-lg border p-3">
+      {/* Whole top is one big button → manage who sees this fiche. */}
+      <button
+        type="button"
+        onClick={() => {
+          onAudience(row);
+        }}
+        className="focus-visible:ring-accent group flex flex-col gap-3 rounded-md text-left focus-visible:ring-2 focus-visible:outline-none"
       >
         <div className="bg-bg/40 relative aspect-4/3 w-full overflow-hidden rounded-md">
           {row.thumbnail ? (
@@ -162,47 +155,50 @@ function CatalogueCard({
               Pas d'image
             </div>
           )}
-          <span className="bg-bg/80 absolute top-2 left-2 rounded-full px-2 py-0.5 font-mono text-[9px] tracking-widest uppercase backdrop-blur-sm">
-            {visLabel}
-          </span>
+          {restricted && (
+            <span className="bg-fg text-bg absolute top-2 left-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-mono text-[9px] tracking-widest uppercase">
+              <Lock size={10} strokeWidth={2} aria-hidden="true" />
+              {t('admin.catalogue.audience.restricted')}
+            </span>
+          )}
         </div>
         <div className="flex flex-1 flex-col gap-1">
           <h3 className="text-fg line-clamp-2 text-sm leading-tight font-medium">{row.title}</h3>
-          <p className="text-muted truncate font-mono text-[10px] tracking-widest uppercase">
-            {row.slug || row.id}
+          {/* The key info: who sees this. */}
+          <p
+            className={cn(
+              'flex items-center gap-1.5 text-xs',
+              restricted ? 'text-fg' : 'text-muted',
+            )}
+          >
+            {restricted ? (
+              <Lock size={11} strokeWidth={1.5} aria-hidden="true" />
+            ) : (
+              <Users size={11} strokeWidth={1.5} aria-hidden="true" />
+            )}
+            <span className="truncate">
+              {restricted
+                ? t('admin.catalogue.audience.reservedTo', { names: audienceSummary })
+                : t('admin.catalogue.audience.visibleToAll')}
+            </span>
           </p>
         </div>
-      </a>
-      <div className="border-border flex items-center justify-between gap-2 border-t pt-2.5">
-        <button
-          type="button"
-          onClick={() => {
-            onAudience(row);
-          }}
-          className={cn(
-            'focus-visible:ring-accent inline-flex items-center gap-1.5 rounded-full font-mono text-[10px] tracking-widest uppercase focus-visible:ring-2 focus-visible:outline-none',
-            restricted ? 'text-fg' : 'text-muted hover:text-fg',
-          )}
-        >
-          {restricted ? (
-            <Lock size={12} strokeWidth={1.5} aria-hidden="true" />
-          ) : (
-            <Users size={12} strokeWidth={1.5} aria-hidden="true" />
-          )}
-          {restricted
-            ? t('admin.catalogue.audience.restricted')
-            : t('admin.catalogue.audience.button')}
-        </button>
-        <a
-          href={studioEditUrl(deskId, row.id)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-muted hover:text-fg inline-flex items-center gap-1.5 font-mono text-[10px] tracking-widest uppercase"
-        >
-          Modifier
+        <span className="text-muted group-hover:text-fg inline-flex items-center gap-1.5 font-mono text-[10px] tracking-widest uppercase transition-colors">
+          {t('admin.catalogue.audience.manage')}
           <ArrowUpRight size={12} strokeWidth={1.5} aria-hidden="true" />
-        </a>
-      </div>
+        </span>
+      </button>
+
+      {/* Content editing lives in Sanity — small, clearly secondary. */}
+      <a
+        href={studioEditUrl(deskId, row.id)}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-muted/70 hover:text-fg border-border inline-flex items-center gap-1.5 border-t pt-2.5 font-mono text-[10px] tracking-widest uppercase"
+      >
+        <ExternalLink size={11} strokeWidth={1.5} aria-hidden="true" />
+        {t('admin.catalogue.audience.editContent')}
+      </a>
     </div>
   );
 }
@@ -307,6 +303,7 @@ export default function AdminCatalogue() {
   const [audienceFiche, setAudienceFiche] = useState<AudienceFicheRef | null>(null);
   // sanity_doc_id → audience rule, to badge each card (Tous / Restreint).
   const { map: audienceById, reload: reloadAudiences } = useFicheAudienceMap();
+  const segLabel = (slug: string) => segments.find(s => s.slug === slug)?.label ?? slug;
 
   const filtered = rows.filter(r => {
     if (r.type !== activeModule) return false;
@@ -404,17 +401,23 @@ export default function AdminCatalogue() {
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-            {filtered.map(row => (
-              <CatalogueCard
-                key={row.id}
-                row={row}
-                deskId={activeTab.deskId}
-                restricted={isRestricted(audienceById.get(row.id))}
-                onAudience={r => {
-                  setAudienceFiche({ id: r.id, type: r.type, title: r.title });
-                }}
-              />
-            ))}
+            {filtered.map(row => {
+              const rule = audienceById.get(row.id);
+              const restricted = isRestricted(rule);
+              const summary = restricted && rule ? rule.segments.map(segLabel).join(', ') : '';
+              return (
+                <CatalogueCard
+                  key={row.id}
+                  row={row}
+                  deskId={activeTab.deskId}
+                  restricted={restricted}
+                  audienceSummary={summary}
+                  onAudience={r => {
+                    setAudienceFiche({ id: r.id, type: r.type, title: r.title });
+                  }}
+                />
+              );
+            })}
           </div>
         )}
       </div>
