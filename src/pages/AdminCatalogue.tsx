@@ -26,6 +26,7 @@ import {
   type CatalogueRow,
   useAdminCatalogue,
 } from '@hooks/useAdminCatalogue';
+import { useFicheAudienceMap } from '@hooks/useFicheAudienceMap';
 import { useSegments } from '@hooks/useSegments';
 import { useToast } from '@hooks/useToast';
 import { useUsersAdmin } from '@hooks/useUsersAdmin';
@@ -38,6 +39,7 @@ import {
   Compass,
   ExternalLink,
   Frame,
+  Lock,
   Newspaper,
   Plus,
   Sparkles,
@@ -47,6 +49,8 @@ import {
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
+
+import type { FicheAudience } from '@/types/segment';
 
 const STUDIO_BASE_URL = 'https://sawnext-studio.sanity.studio';
 
@@ -117,13 +121,22 @@ const VISIBILITY_LABEL: Record<string, string> = {
   private: 'Privé',
 };
 
+/** A fiche is "restricted" when it targets segments or excludes anyone —
+ *  i.e. not everybody sees it. mode 'all' + no exclusions = open. */
+function isRestricted(a: FicheAudience | undefined): boolean {
+  if (!a) return false;
+  return a.mode === 'segments' || a.excludedMemberIds.length > 0;
+}
+
 function CatalogueCard({
   row,
   deskId,
+  restricted,
   onAudience,
 }: {
   row: CatalogueRow;
   deskId: string;
+  restricted: boolean;
   onAudience: (row: CatalogueRow) => void;
 }) {
   const { t } = useTranslation();
@@ -166,10 +179,19 @@ function CatalogueCard({
           onClick={() => {
             onAudience(row);
           }}
-          className="text-muted hover:text-fg focus-visible:ring-accent inline-flex items-center gap-1.5 rounded-full font-mono text-[10px] tracking-widest uppercase focus-visible:ring-2 focus-visible:outline-none"
+          className={cn(
+            'focus-visible:ring-accent inline-flex items-center gap-1.5 rounded-full font-mono text-[10px] tracking-widest uppercase focus-visible:ring-2 focus-visible:outline-none',
+            restricted ? 'text-fg' : 'text-muted hover:text-fg',
+          )}
         >
-          <Users size={12} strokeWidth={1.5} aria-hidden="true" />
-          {t('admin.catalogue.audience.button')}
+          {restricted ? (
+            <Lock size={12} strokeWidth={1.5} aria-hidden="true" />
+          ) : (
+            <Users size={12} strokeWidth={1.5} aria-hidden="true" />
+          )}
+          {restricted
+            ? t('admin.catalogue.audience.restricted')
+            : t('admin.catalogue.audience.button')}
         </button>
         <a
           href={studioEditUrl(deskId, row.id)}
@@ -230,6 +252,47 @@ function ModuleTabs({
   );
 }
 
+function CatalogueToolbar({
+  searchTerm,
+  onSearch,
+  deskId,
+  placeholder,
+}: {
+  searchTerm: string;
+  onSearch: (v: string) => void;
+  deskId: string;
+  placeholder: string;
+}) {
+  return (
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <input
+        type="search"
+        value={searchTerm}
+        onChange={e => {
+          onSearch(e.target.value);
+        }}
+        placeholder={placeholder}
+        className="border-border bg-bg/60 text-fg placeholder:text-muted/60 focus:border-accent focus:ring-accent flex-1 rounded-md border px-3 py-2 text-sm focus:ring-1 focus:outline-none"
+      />
+      <a
+        href={studioCreateUrl(deskId)}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={cn(
+          'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
+          'inline-flex items-center gap-3 rounded-full border px-5 py-2.5 font-mono text-xs tracking-widest whitespace-nowrap uppercase',
+          'duration-base transition-[border-color,background-color]',
+          'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+        )}
+      >
+        <Plus size={14} strokeWidth={1.5} aria-hidden="true" />
+        Créer dans Sanity
+        <ExternalLink size={12} strokeWidth={1.5} aria-hidden="true" />
+      </a>
+    </div>
+  );
+}
+
 export default function AdminCatalogue() {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -242,6 +305,8 @@ export default function AdminCatalogue() {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const [audienceFiche, setAudienceFiche] = useState<AudienceFicheRef | null>(null);
+  // sanity_doc_id → audience rule, to badge each card (Tous / Restreint).
+  const { map: audienceById, reload: reloadAudiences } = useFicheAudienceMap();
 
   const filtered = rows.filter(r => {
     if (r.type !== activeModule) return false;
@@ -310,32 +375,12 @@ export default function AdminCatalogue() {
         )}
 
         {/* Search + Create CTA */}
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <input
-            type="search"
-            value={searchTerm}
-            onChange={e => {
-              setSearchTerm(e.target.value);
-            }}
-            placeholder={`Chercher dans ${t(activeTab.labelKey).toLowerCase()}…`}
-            className="border-border bg-bg/60 text-fg placeholder:text-muted/60 focus:border-accent focus:ring-accent flex-1 rounded-md border px-3 py-2 text-sm focus:ring-1 focus:outline-none"
-          />
-          <a
-            href={studioCreateUrl(activeTab.deskId)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(
-              'border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent',
-              'inline-flex items-center gap-3 rounded-full border px-5 py-2.5 font-mono text-xs tracking-widest whitespace-nowrap uppercase',
-              'duration-base transition-[border-color,background-color]',
-              'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
-            )}
-          >
-            <Plus size={14} strokeWidth={1.5} aria-hidden="true" />
-            Créer dans Sanity
-            <ExternalLink size={12} strokeWidth={1.5} aria-hidden="true" />
-          </a>
-        </div>
+        <CatalogueToolbar
+          searchTerm={searchTerm}
+          onSearch={setSearchTerm}
+          deskId={activeTab.deskId}
+          placeholder={`Chercher dans ${t(activeTab.labelKey).toLowerCase()}…`}
+        />
 
         {/* Grid */}
         {loading ? (
@@ -364,6 +409,7 @@ export default function AdminCatalogue() {
                 key={row.id}
                 row={row}
                 deskId={activeTab.deskId}
+                restricted={isRestricted(audienceById.get(row.id))}
                 onAudience={r => {
                   setAudienceFiche({ id: r.id, type: r.type, title: r.title });
                 }}
@@ -386,6 +432,7 @@ export default function AdminCatalogue() {
             return;
           }
           toast({ variant: 'success', message: t('admin.catalogue.audience.saved') });
+          reloadAudiences(); // refresh the Tous/Restreint badges
         }}
       />
     </Container>

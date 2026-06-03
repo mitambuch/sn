@@ -590,6 +590,7 @@
       "tabs": "Modules",
       "audience": {
         "button": "Audience",
+        "restricted": "Restreint",
         "title": "Audience — {{title}}",
         "lede": "Choisis qui peut voir cette fiche dans l'espace membre. L'application est garantie côté serveur.",
         "loadError": "Impossible de charger les règles d'audience.",

@@ -20,14 +20,16 @@ describe('sanityGate', () => {
   });
 
   it('gateList returns the data array and posts the action', async () => {
-    const fetchMock = vi.fn(() => okJson({ data: [{ id: 'a' }, { id: 'b' }] }));
+    const fetchMock = vi.fn((_url: string, _init?: RequestInit) =>
+      okJson({ data: [{ id: 'a' }, { id: 'b' }] }),
+    );
     vi.stubGlobal('fetch', fetchMock);
 
     const rows = await gateList<{ id: string }>('list', { module: 'event', locale: 'fr' });
 
     expect(rows).toHaveLength(2);
     expect(fetchMock).toHaveBeenCalledOnce();
-    const [, init] = fetchMock.mock.calls[0]!;
+    const init = fetchMock.mock.calls[0]![1];
     const body = JSON.parse((init as RequestInit).body as string) as Record<string, unknown>;
     expect(body.action).toBe('list');
     expect(body.module).toBe('event');

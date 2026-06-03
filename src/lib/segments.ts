@@ -86,6 +86,15 @@ const mapAudience = (r: AudienceRow): FicheAudience => ({
   note: r.note,
 });
 
+/** All fiche audience rules at once — used by the admin catalogue to badge
+ *  each card (Tous / Restreint) without a per-card round-trip. */
+export const listFicheAudiences = async (): Promise<FicheAudience[]> => {
+  if (!supabase) return [];
+  const { data, error } = await supabase.from('fiche_audience').select('*');
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as AudienceRow[]).map(mapAudience);
+};
+
 /** Audience rule for a fiche, or the default (visible to all) when unset. */
 export const getFicheAudience = async (
   sanityDocId: string,
