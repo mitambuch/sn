@@ -16,9 +16,8 @@ import { SectionHeader } from '@components/ui/SectionHeader';
 import { Spinner } from '@components/ui/Spinner';
 import { Stat } from '@components/ui/Stat';
 import { useAuth } from '@context/AuthContext';
-import { MemberSegmentsModal } from '@features/admin/MemberSegmentsModal';
+import { UserDetailDrawer } from '@features/admin/UserDetailDrawer';
 import { useSegments } from '@hooks/useSegments';
-import { useToast } from '@hooks/useToast';
 import { useUsersAdmin } from '@hooks/useUsersAdmin';
 import { cn } from '@utils/cn';
 import type { TFunction } from 'i18next';
@@ -26,7 +25,7 @@ import { Tags } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { Role, User } from '@/types/auth';
+import type { User } from '@/types/auth';
 
 type RoleFilter = 'all' | 'client' | 'admin';
 
@@ -39,27 +38,26 @@ const TABS: { key: RoleFilter; labelKey: string }[] = [
 interface ColumnsCtx {
   t: TFunction;
   lang: string;
-  currentUserId: string | undefined;
   segmentLabel: (slug: string) => string;
-  onRoleSwap: (target: User) => void;
-  onEditSegments: (target: User) => void;
 }
 
-function buildColumns({
-  t,
-  lang,
-  currentUserId,
-  segmentLabel,
-  onRoleSwap,
-  onEditSegments,
-}: ColumnsCtx): DataTableColumn<User>[] {
+// Read-only columns — clicking a row opens the management drawer (edit name/
+// phone, segments, suspend/delete/promote). No inline action buttons.
+function buildColumns({ t, lang, segmentLabel }: ColumnsCtx): DataTableColumn<User>[] {
   return [
     {
       key: 'fullName',
       label: t('common.fullName'),
       render: r => (
         <div className="flex flex-col gap-0.5">
-          <span className="text-fg">{r.fullName || '—'}</span>
+          <span className="text-fg flex items-center gap-2">
+            {r.fullName || '—'}
+            {r.blocked && (
+              <Badge variant="danger" size="sm">
+                {t('admin.users.suspendedBadge')}
+              </Badge>
+            )}
+          </span>
           <span className="text-muted text-xs">{r.email}</span>
         </div>
       ),
@@ -83,11 +81,6 @@ function buildColumns({
       ),
     },
     {
-      key: 'locale',
-      label: t('account.preferences.locale'),
-      render: r => <span className="text-muted text-xs tracking-widest uppercase">{r.locale}</span>,
-    },
-    {
       key: 'createdAt',
       label: t('admin.invitations.createdAt'),
       render: r => (
@@ -99,54 +92,19 @@ function buildColumns({
       label: t('admin.users.segmentsColumn'),
       render: r => {
         const slugs = r.segments ?? [];
-        return (
-          <button
-            type="button"
-            onClick={() => {
-              onEditSegments(r);
-            }}
-            title={t('admin.users.editSegments')}
-            className="focus-visible:ring-accent group flex flex-wrap items-center gap-1.5 rounded-md text-left focus-visible:ring-2 focus-visible:outline-none"
-          >
-            {slugs.length === 0 ? (
-              <span className="text-muted/60 inline-flex items-center gap-1.5 text-xs">
-                <Tags size={12} strokeWidth={1.5} aria-hidden="true" />
-                {t('admin.users.noSegments')}
-              </span>
-            ) : (
-              slugs.map(slug => (
-                <Badge key={slug} size="sm">
-                  {segmentLabel(slug)}
-                </Badge>
-              ))
-            )}
-          </button>
-        );
-      },
-    },
-    {
-      key: 'actions',
-      label: t('admin.users.actions'),
-      align: 'right',
-      render: r => {
-        const isSelf = currentUserId === r.id;
-        const label = r.role === 'admin' ? t('admin.users.demote') : t('admin.users.promote');
-        return (
-          <button
-            type="button"
-            disabled={isSelf}
-            onClick={() => {
-              onRoleSwap(r);
-            }}
-            title={isSelf ? t('admin.users.cannotChangeSelf') : label}
-            className={cn(
-              'border-border text-muted hover:text-fg hover:border-fg/40 rounded-full border px-3 py-1 font-mono text-[10px] tracking-widest uppercase',
-              'focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none',
-              'disabled:cursor-not-allowed disabled:opacity-40',
-            )}
-          >
-            {label}
-          </button>
+        return slugs.length === 0 ? (
+          <span className="text-muted/60 inline-flex items-center gap-1.5 text-xs">
+            <Tags size={12} strokeWidth={1.5} aria-hidden="true" />
+            {t('admin.users.noSegments')}
+          </span>
+        ) : (
+          <div className="flex flex-wrap items-center gap-1.5">
+            {slugs.map(slug => (
+              <Badge key={slug} size="sm">
+                {segmentLabel(slug)}
+              </Badge>
+            ))}
+          </div>
         );
       },
     },
@@ -155,13 +113,13 @@ function buildColumns({
 
 export default function AdminUsers() {
   const { t, i18n } = useTranslation();
-  const { toast } = useToast();
   const { user: currentUser } = useAuth();
-  const { rows, loading, updateRole, updateSegments } = useUsersAdmin();
+  const { rows, loading, updateRole, updateSegments, updateBlocked, updateProfile, removeUser } =
+    useUsersAdmin();
   const { segments } = useSegments();
   const [activeTab, setActiveTab] = useState<RoleFilter>('all');
   const [search, setSearch] = useState('');
-  // member whose segment editor is open (null = modal closed)
+  // member whose management drawer is open (null = closed)
   const [editing, setEditing] = useState<User | null>(null);
 
   const segmentLabel = useMemo(() => {
@@ -187,39 +145,7 @@ export default function AdminUsers() {
     });
   }, [rows, activeTab, search]);
 
-  const handleRoleSwap = async (target: User) => {
-    if (currentUser?.id === target.id) {
-      toast({ variant: 'error', message: t('admin.users.cannotChangeSelf') });
-      return;
-    }
-    const next: Role = target.role === 'admin' ? 'client' : 'admin';
-    const confirmKey =
-      next === 'admin' ? 'admin.users.confirmPromote' : 'admin.users.confirmDemote';
-    const confirmed = window.confirm(t(confirmKey, { name: target.fullName || target.email }));
-    if (!confirmed) return;
-    const result = await updateRole(target.id, next);
-    if (!result.ok) {
-      toast({ variant: 'error', message: result.error ?? t('common.error') });
-      return;
-    }
-    toast({
-      variant: 'success',
-      message: t(next === 'admin' ? 'admin.users.promoted' : 'admin.users.demoted', {
-        name: target.fullName || target.email,
-      }),
-    });
-  };
-
-  const columns = buildColumns({
-    t,
-    lang: i18n.language,
-    currentUserId: currentUser?.id,
-    segmentLabel,
-    onRoleSwap: target => {
-      void handleRoleSwap(target);
-    },
-    onEditSegments: setEditing,
-  });
+  const columns = buildColumns({ t, lang: i18n.language, segmentLabel });
 
   return (
     <Container size="xl">
@@ -288,27 +214,19 @@ export default function AdminUsers() {
             columns={columns}
             rowKey={r => r.id}
             emptyLabel={t('common.empty')}
+            onRowClick={setEditing}
           />
         )}
       </div>
 
-      <MemberSegmentsModal
+      <UserDetailDrawer
         member={editing}
         segments={segments}
+        currentUserId={currentUser?.id}
         onClose={() => {
           setEditing(null);
         }}
-        onSave={updateSegments}
-        onResult={(result, member) => {
-          if (!result.ok) {
-            toast({ variant: 'error', message: result.error ?? t('common.error') });
-            return;
-          }
-          toast({
-            variant: 'success',
-            message: t('admin.users.segmentsSaved', { name: member.fullName || member.email }),
-          });
-        }}
+        actions={{ updateProfile, updateSegments, updateBlocked, updateRole, removeUser }}
       />
     </Container>
   );

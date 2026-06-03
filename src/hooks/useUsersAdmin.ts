@@ -25,6 +25,7 @@ interface ProfileRow {
   concierge_name: string;
   phone: string | null;
   segments: string[] | null;
+  blocked: boolean | null;
   created_at: string;
 }
 
@@ -38,6 +39,7 @@ function rowToDomain(row: ProfileRow): User {
     contactPreference: row.contact_preference,
     conciergeName: row.concierge_name,
     segments: row.segments ?? [],
+    blocked: row.blocked ?? false,
     createdAt: row.created_at,
   };
   if (row.avatar_url) user.avatarUrl = row.avatar_url;
@@ -56,6 +58,15 @@ export interface UseUsersAdminResult {
   /** Optimistic segment-tag swap for a member (profiles.segments).
    *  Same RLS policy as updateRole. Rolls back on remote failure. */
   updateSegments: (id: string, next: readonly string[]) => Promise<{ ok: boolean; error?: string }>;
+  /** Suspend / reactivate a member (profiles.blocked, migration 0025). */
+  updateBlocked: (id: string, next: boolean) => Promise<{ ok: boolean; error?: string }>;
+  /** Edit a member's name + phone (admin update all policy). */
+  updateProfile: (
+    id: string,
+    patch: { fullName: string; phone: string | null },
+  ) => Promise<{ ok: boolean; error?: string }>;
+  /** Permanently delete a member via the admin_delete_user RPC (migration 0025). */
+  removeUser: (id: string) => Promise<{ ok: boolean; error?: string }>;
 }
 
 export function useUsersAdmin(): UseUsersAdminResult {
@@ -71,7 +82,7 @@ export function useUsersAdmin(): UseUsersAdminResult {
       const { data, error: fetchErr } = await supabase
         .from('profiles')
         .select(
-          'id, email, full_name, role, locale, contact_preference, avatar_url, concierge_name, phone, segments, created_at',
+          'id, email, full_name, role, locale, contact_preference, avatar_url, concierge_name, phone, segments, blocked, created_at',
         )
         .order('created_at', { ascending: false });
       if (cancelled) return;
@@ -126,5 +137,77 @@ export function useUsersAdmin(): UseUsersAdminResult {
     [rows],
   );
 
-  return { rows, loading, error, usingFallback, updateRole, updateSegments };
+  const updateBlocked = useCallback(
+    async (id: string, next: boolean): Promise<{ ok: boolean; error?: string }> => {
+      const prevRows = rows;
+      setRows(rows.map(r => (r.id === id ? { ...r, blocked: next } : r)));
+      if (!hasSupabase || !supabase) return { ok: true };
+      const { error: updateErr } = await supabase
+        .from('profiles')
+        .update({ blocked: next })
+        .eq('id', id);
+      if (updateErr) {
+        setRows(prevRows);
+        return { ok: false, error: updateErr.message };
+      }
+      return { ok: true };
+    },
+    [rows],
+  );
+
+  const updateProfile = useCallback(
+    async (
+      id: string,
+      patch: { fullName: string; phone: string | null },
+    ): Promise<{ ok: boolean; error?: string }> => {
+      const prevRows = rows;
+      setRows(
+        rows.map(r => {
+          if (r.id !== id) return r;
+          const next: User = { ...r, fullName: patch.fullName };
+          if (patch.phone) next.phone = patch.phone;
+          else delete next.phone;
+          return next;
+        }),
+      );
+      if (!hasSupabase || !supabase) return { ok: true };
+      const { error: updateErr } = await supabase
+        .from('profiles')
+        .update({ full_name: patch.fullName, phone: patch.phone })
+        .eq('id', id);
+      if (updateErr) {
+        setRows(prevRows);
+        return { ok: false, error: updateErr.message };
+      }
+      return { ok: true };
+    },
+    [rows],
+  );
+
+  const removeUser = useCallback(
+    async (id: string): Promise<{ ok: boolean; error?: string }> => {
+      const prevRows = rows;
+      setRows(rows.filter(r => r.id !== id));
+      if (!hasSupabase || !supabase) return { ok: true };
+      const { error: rpcErr } = await supabase.rpc('admin_delete_user', { p_user: id });
+      if (rpcErr) {
+        setRows(prevRows);
+        return { ok: false, error: rpcErr.message };
+      }
+      return { ok: true };
+    },
+    [rows],
+  );
+
+  return {
+    rows,
+    loading,
+    error,
+    usingFallback,
+    updateRole,
+    updateSegments,
+    updateBlocked,
+    updateProfile,
+    removeUser,
+  };
 }

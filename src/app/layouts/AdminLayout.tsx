@@ -14,6 +14,7 @@ import { useLocale } from '@app/LocaleProvider';
 import { AuthHeader } from '@components/layout/AuthHeader';
 import { ROUTES } from '@constants/routes';
 import { useAuth } from '@context/AuthContext';
+import { useAccessRequestsAdmin } from '@hooks/useAccessRequestsAdmin';
 import { useMediaQuery } from '@hooks/useMediaQuery';
 import { cn } from '@utils/cn';
 import type { LucideIcon } from 'lucide-react';
@@ -64,6 +65,9 @@ const AdminShell = () => {
   const { localePath } = useLocale();
   const { signOut } = useAuth();
   const navigate = useNavigate();
+  // Pending access requests → a small badge on the "Demandes d'accès" nav item.
+  const { rows: accessRequests } = useAccessRequestsAdmin();
+  const newRequests = accessRequests.filter(r => r.status === 'new').length;
 
   const handleSignOut = async () => {
     // Navigate FIRST so RequireRole/RequireAuth don't redirect to
@@ -94,6 +98,7 @@ const AdminShell = () => {
             const isActive = exact
               ? pathname === href
               : pathname === href || pathname.startsWith(`${href}/`);
+            const badge = to === ROUTES.ADMIN_ACCESS_REQUESTS ? newRequests : 0;
             return (
               <Link
                 key={to}
@@ -107,6 +112,14 @@ const AdminShell = () => {
               >
                 <Icon size={16} strokeWidth={1.5} aria-hidden="true" />
                 <span>{t(labelKey)}</span>
+                {badge > 0 && (
+                  <span
+                    aria-label={t('admin.nav.pendingCount', { count: badge })}
+                    className="bg-fg text-bg ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[11px] font-medium tabular-nums"
+                  >
+                    {badge}
+                  </span>
+                )}
               </Link>
             );
           })}

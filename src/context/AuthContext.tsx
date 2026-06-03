@@ -119,6 +119,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setState({ user: null, session: null, loading: false });
         return;
       }
+      if (user.blocked) {
+        // Suspended by an admin (migration 0025) — terminate the session.
+        await client.auth.signOut();
+        if (!cancelled) setState({ user: null, session: null, loading: false });
+        return;
+      }
       setState({ user, session: buildSession(supa, user), loading: false });
     };
 
@@ -146,6 +152,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     // back to /login.
     if (data.session) {
       const user = await fetchProfile(data.user.id);
+      if (user?.blocked) {
+        await supabase.auth.signOut();
+        setState({ user: null, session: null, loading: false });
+        return { ok: false, error: 'Votre compte est suspendu. Contactez votre conciergerie.' };
+      }
       if (user) {
         setState({ user, session: buildSession(data.session, user), loading: false });
       }

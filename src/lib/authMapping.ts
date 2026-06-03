@@ -23,6 +23,7 @@ interface ProfileRow {
   concierge_name: string;
   phone: string | null;
   segments: string[] | null;
+  blocked: boolean | null;
   created_at: string;
 }
 
@@ -37,7 +38,7 @@ export async function fetchProfile(userId: string): Promise<User | null> {
   const { data, error } = await supabase
     .from('profiles')
     .select(
-      'id, email, full_name, role, locale, contact_preference, avatar_url, concierge_name, phone, segments, created_at',
+      'id, email, full_name, role, locale, contact_preference, avatar_url, concierge_name, phone, segments, blocked, created_at',
     )
     .eq('id', userId)
     .maybeSingle<ProfileRow>();
@@ -51,6 +52,7 @@ export async function fetchProfile(userId: string): Promise<User | null> {
     contactPreference: data.contact_preference,
     conciergeName: data.concierge_name,
     segments: data.segments ?? [],
+    blocked: data.blocked ?? false,
     createdAt: data.created_at,
   };
   if (data.avatar_url) user.avatarUrl = data.avatar_url;

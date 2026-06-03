@@ -487,7 +487,29 @@
       "noSegments": "None",
       "noSegmentsAvailable": "No segment exists yet. Create one in the Segments tab.",
       "segmentsSaved": "Segments for {{name}} updated.",
-      "save": "Save"
+      "save": "Save",
+      "suspendedBadge": "Suspended",
+      "drawer": {
+        "eyebrow": "Member",
+        "infoSection": "Contact details",
+        "phoneLabel": "Phone",
+        "segmentsSection": "What they see (segments)",
+        "save": "Save changes",
+        "saved": "Changes saved.",
+        "suspend": "Suspend access",
+        "reactivate": "Reactivate access",
+        "suspended": "{{name}} is suspended — access cut.",
+        "reactivated": "{{name}} can access again.",
+        "confirmSuspend": "Suspend {{name}}'s access? They will no longer be able to sign in (reversible).",
+        "suspendedNotice": "This member is suspended: they cannot sign in until you reactivate them.",
+        "promote": "Promote to operator",
+        "demote": "Demote to member",
+        "confirmRole": "Change {{name}}'s role?",
+        "roleChanged": "{{name}}'s role updated.",
+        "delete": "Delete",
+        "confirmDelete": "Permanently delete {{name}}'s account? All their data will be erased. This cannot be undone.",
+        "deleted": "{{name}}'s account deleted."
+      }
     },
     "segments": {
       "title": "Segments",
@@ -539,7 +561,9 @@
       "shareCodes": "Share codes",
       "inquiries": "Inquiries",
       "users": "Users",
-      "segments": "Segments"
+      "segments": "Segments",
+      "pendingCount": "{{count}} pending request",
+      "pendingCount_other": "{{count}} pending requests"
     },
     "accessRequests": {
       "title": "Access requests",
