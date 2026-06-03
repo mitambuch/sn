@@ -15,6 +15,7 @@
 | 5 | `0023_grant_role_update.sql` | Permet à un admin de **promouvoir/rétrograder** un opérateur (bug pré-existant F9). | Maintenant |
 | 6 | `0024_access_requests_delete.sql` | Permet à Salva de **supprimer** une demande d'accès traitée (nettoyer le tableau). | Maintenant |
 | 7 | `0025_user_admin_controls.sql` | **Suspendre** (réversible) + **supprimer** (définitif) un membre depuis /admin/users. | Maintenant |
+| 8 | `0026_gate_hidden_doc_ids.sql` | Filtrage d'audience côté serveur **sans clé service_role** (le gate lit avec le jeton du membre). | **Maintenant** (gate) |
 
 ## Vérifs rapides après application
 

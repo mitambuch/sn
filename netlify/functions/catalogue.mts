@@ -4,9 +4,13 @@
 // WHY: with a PRIVATE Sanity dataset, the browser can no longer read fiche
 // content directly. Every read goes through this function, which holds the
 // Sanity read token (Netlify env) and — for member catalogue reads — returns
-// only the fiches the caller is allowed to see per the audience rules
-// (Supabase fiche_audience, migration 0018). This is the REAL barrier; the
-// client-side memberCanSeeFiche is a preview helper only.
+// only the fiches the caller is allowed to see.
+//
+// AUTH MODEL (no service key): the function reads Supabase AS THE CALLER,
+// using the member's own JWT (forwarded as the Authorization header) + the
+// public anon key. Audience filtering is done by the SECURITY DEFINER RPC
+// gate_hidden_doc_ids() (migration 0026), which returns the doc ids the
+// caller may NOT see. This removes the fragile service_role key entirely.
 //
 // ACTIONS (POST JSON { action, ... }):
 //   public  : landing | siteConfig | team            (no auth)
@@ -15,14 +19,15 @@
 //   share   : shared { code }                         (validated via peek RPC)
 //
 // ENV (Netlify): SANITY_PROJECT_ID, SANITY_DATASET, SANITY_API_VERSION,
-//   SANITY_READ_TOKEN, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY.
+//   SANITY_READ_TOKEN, SUPABASE_URL (or VITE_SUPABASE_URL),
+//   SUPABASE_ANON_KEY (or VITE_SUPABASE_ANON_KEY). No service_role key.
 //
 // Typed/checked via tsconfig.functions.json (`pnpm typecheck:functions`).
 // Not part of the browser bundle; uses web-standard Request/Response.
 // ═══════════════════════════════════════════════════════════════
 
 import { createClient as createSanity } from '@sanity/client';
-import { createClient as createSupabase } from '@supabase/supabase-js';
+import { createClient as createSupabase, type SupabaseClient } from '@supabase/supabase-js';
 
 import {
   CATALOGUE_MODULE_QUERIES,
@@ -34,7 +39,6 @@ import {
   GROQ_SITE_CONFIG,
   GROQ_TEAM,
 } from '../../src/lib/sanityQueries.ts';
-import { memberCanSeeFiche } from '../../src/types/segment.ts';
 
 // Minimal ambient for Node's process.env — avoids pulling @types/node just
 // to typecheck one env accessor (the runtime provides process on Netlify).
@@ -46,9 +50,21 @@ const env = (k: string): string => {
   if (!v) throw new Error(`[catalogue] missing env ${k}`);
   return v;
 };
+/** First defined of several env names (lets the function reuse the existing
+ *  VITE_SUPABASE_* vars without requiring duplicate non-prefixed copies). */
+const envAny = (...keys: string[]): string => {
+  for (const k of keys) {
+    const v = process.env[k];
+    if (v) return v;
+  }
+  throw new Error(`[catalogue] missing env (one of ${keys.join(', ')})`);
+};
+
+const SUPABASE_URL = envAny('SUPABASE_URL', 'VITE_SUPABASE_URL');
+const SUPABASE_ANON_KEY = envAny('SUPABASE_ANON_KEY', 'VITE_SUPABASE_ANON_KEY');
 
 const sanity = createSanity({
-  projectId: env('SANITY_PROJECT_ID'),
+  projectId: envAny('SANITY_PROJECT_ID', 'VITE_SANITY_PROJECT_ID'),
   dataset: process.env.SANITY_DATASET || 'production',
   apiVersion: process.env.SANITY_API_VERSION || '2024-06-01',
   token: env('SANITY_READ_TOKEN'),
@@ -57,7 +73,8 @@ const sanity = createSanity({
   perspective: 'published',
 });
 
-const admin = createSupabase(env('SUPABASE_URL'), env('SUPABASE_SERVICE_ROLE_KEY'), {
+/** Unauthenticated client (anon key) — for the public share-code peek RPC. */
+const anonSupabase = createSupabase(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: { persistSession: false, autoRefreshToken: false },
 });
 
@@ -70,22 +87,17 @@ const json = (status: number, data: unknown): Response =>
     headers: { 'content-type': 'application/json', 'cache-control': 'no-store' },
   });
 
-interface AudienceRow {
-  sanity_doc_id: string;
-  audience_mode: 'all' | 'segments';
-  segments: string[];
-  excluded_member_ids: string[];
-}
-
 interface Caller {
   id: string;
-  segments: string[];
   isAdmin: boolean;
+  /** Supabase client authenticated AS the caller (their JWT). */
+  client: SupabaseClient;
   /** Diagnostic only — the role the gate read (or null if no profile). */
   role: string | null;
 }
 
-/** Identity + segments of the bearer, or null when the token is invalid. */
+/** Resolve the bearer into a caller + a Supabase client scoped to their JWT,
+ *  or null when there is no valid session. No service key involved. */
 async function resolveCaller(req: Request): Promise<Caller | null> {
   const header = req.headers.get('authorization') ?? '';
   const token = header.replace(/^Bearer\s+/i, '').trim();
@@ -93,52 +105,40 @@ async function resolveCaller(req: Request): Promise<Caller | null> {
     console.error('[catalogue] resolveCaller: no bearer token');
     return null;
   }
-  const { data, error } = await admin.auth.getUser(token);
+  // Client runs every query as the caller → RLS self-read returns their row,
+  // and the authenticated role has the profiles SELECT grant.
+  const client = createSupabase(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    global: { headers: { Authorization: `Bearer ${token}` } },
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  const { data, error } = await client.auth.getUser(token);
   if (error || !data.user) {
     console.error('[catalogue] resolveCaller: getUser failed', error?.message);
     return null;
   }
-  const { data: profile, error: pErr } = await admin
+  const { data: profile, error: pErr } = await client
     .from('profiles')
-    .select('role, segments')
+    .select('role')
     .eq('id', data.user.id)
     .single();
-  if (pErr) {
-    // RLS/key problem most likely: the service key must bypass RLS to read
-    // this row. Surfaced so the 403 reason is unambiguous.
-    console.error('[catalogue] resolveCaller: profile read failed', pErr.message, pErr.code);
-  }
+  if (pErr) console.error('[catalogue] resolveCaller: profile read failed', pErr.message, pErr.code);
   return {
     id: data.user.id,
-    segments: (profile?.segments as string[] | null) ?? [],
     isAdmin: profile?.role === 'admin',
     role: (profile?.role as string | null) ?? null,
+    client,
   };
 }
 
-/** Map of sanity_doc_id → audience rule. Fiches with no row default to all. */
-async function loadAudienceMap(): Promise<Map<string, AudienceRow>> {
-  const { data } = await admin
-    .from('fiche_audience')
-    .select('sanity_doc_id, audience_mode, segments, excluded_member_ids');
-  const map = new Map<string, AudienceRow>();
-  for (const r of (data ?? []) as AudienceRow[]) map.set(r.sanity_doc_id, r);
-  return map;
-}
-
-function canSee(
-  ficheId: string,
-  caller: { id: string; segments: string[]; isAdmin: boolean },
-  audience: Map<string, AudienceRow>,
-): boolean {
-  if (caller.isAdmin) return true; // operators see everything
-  const rule = audience.get(ficheId);
-  if (!rule) return true; // no rule → visible to all members
-  return memberCanSeeFiche(caller.id, caller.segments, {
-    mode: rule.audience_mode,
-    segments: rule.segments,
-    excludedMemberIds: rule.excluded_member_ids,
-  });
+/** Doc ids the caller may NOT see (audience rules), via the SECURITY DEFINER
+ *  RPC. Throws on error so the caller fails CLOSED (500) rather than leaking. */
+async function hiddenDocIds(client: SupabaseClient): Promise<Set<string>> {
+  const { data, error } = await client.rpc('gate_hidden_doc_ids');
+  if (error) {
+    console.error('[catalogue] gate_hidden_doc_ids failed', error.message, error.code);
+    throw new Error('audience-rpc-failed');
+  }
+  return new Set((data ?? []).map((r: { sanity_doc_id: string }) => r.sanity_doc_id));
 }
 
 function isModuleKey(v: unknown): v is CatalogueModuleKey {
@@ -193,18 +193,16 @@ export default async function handler(req: Request): Promise<Response> {
     if (action === 'siteConfig') return json(200, { data: await sanity.fetch(GROQ_SITE_CONFIG) });
     if (action === 'team') return json(200, { data: await sanity.fetch(GROQ_TEAM) });
 
-    // ── share (validated by code possession) ──────────────────────
+    // ── share (validated by code possession, no auth) ─────────────
     if (action === 'shared') {
       const code = (body.code ?? '').trim();
       if (!code) return json(400, { error: 'missing-code' });
-      const { data: rows } = await admin.rpc('peek_share_code', { p_code: code });
+      const { data: rows } = await anonSupabase.rpc('peek_share_code', { p_code: code });
       const row = (rows as PeekRow[] | null)?.[0];
       if (!row || !row.is_valid) return json(404, { error: 'invalid-code' });
       // type + id come from the DB (admin-set at code creation), but the GROQ
       // builders interpolate them — validate defensively before they hit GROQ.
-      const docs = shareDocIds(row).filter(
-        d => isModuleKey(d.type) && DOC_ID_RE.test(d.id),
-      );
+      const docs = shareDocIds(row).filter(d => isModuleKey(d.type) && DOC_ID_RE.test(d.id));
       if (docs.length === 0) return json(404, { error: 'no-docs' });
       if (docs.length === 1) {
         const d = docs[0]!;
@@ -221,7 +219,7 @@ export default async function handler(req: Request): Promise<Response> {
     if (!caller) return json(401, { error: 'unauthorized', reason: 'no-valid-session' });
 
     if (action === 'adminList') {
-      // role in the body is a diagnostic: null = profile unreadable (key/RLS),
+      // role in the body is a diagnostic: null = profile unreadable,
       // 'client' = not an operator, 'admin' = should have passed.
       if (!caller.isAdmin) return json(403, { error: 'forbidden', role: caller.role });
       return json(200, { data: await sanity.fetch(GROQ_ADMIN_CATALOGUE) });
@@ -232,9 +230,9 @@ export default async function handler(req: Request): Promise<Response> {
       const rows = (await sanity.fetch(CATALOGUE_MODULE_QUERIES[body.module].list, {
         locale,
       })) as { id: string }[];
-      const audience = await loadAudienceMap();
-      const visible = (rows ?? []).filter(r => canSee(r.id, caller, audience));
-      return json(200, { data: visible });
+      if (caller.isAdmin) return json(200, { data: rows ?? [] });
+      const hidden = await hiddenDocIds(caller.client);
+      return json(200, { data: (rows ?? []).filter(r => !hidden.has(r.id)) });
     }
 
     if (action === 'item') {
@@ -248,9 +246,10 @@ export default async function handler(req: Request): Promise<Response> {
         locale,
       })) as { id: string } | null;
       if (!row) return json(404, { error: 'not-found' });
-      const audience = await loadAudienceMap();
+      if (caller.isAdmin) return json(200, { data: row });
+      const hidden = await hiddenDocIds(caller.client);
       // 404 (not 403) when forbidden: never reveal that a hidden fiche exists.
-      if (!canSee(row.id, caller, audience)) return json(404, { error: 'not-found' });
+      if (hidden.has(row.id)) return json(404, { error: 'not-found' });
       return json(200, { data: row });
     }
 
