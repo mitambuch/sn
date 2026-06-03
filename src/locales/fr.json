@@ -504,7 +504,29 @@
       "noSegments": "Aucun",
       "noSegmentsAvailable": "Aucun segment n'existe encore. Crée-en dans l'onglet Segments.",
       "segmentsSaved": "Segments de {{name}} mis à jour.",
-      "save": "Enregistrer"
+      "save": "Enregistrer",
+      "suspendedBadge": "Suspendu",
+      "drawer": {
+        "eyebrow": "Membre",
+        "infoSection": "Coordonnées",
+        "phoneLabel": "Téléphone",
+        "segmentsSection": "Ce qu'il voit (segments)",
+        "save": "Enregistrer les modifications",
+        "saved": "Modifications enregistrées.",
+        "suspend": "Suspendre l'accès",
+        "reactivate": "Réactiver l'accès",
+        "suspended": "{{name}} est suspendu — accès coupé.",
+        "reactivated": "{{name}} peut de nouveau accéder.",
+        "confirmSuspend": "Suspendre l'accès de {{name}} ? Cette personne ne pourra plus se connecter (réversible).",
+        "suspendedNotice": "Ce membre est suspendu : il ne peut pas se connecter tant que tu ne le réactives pas.",
+        "promote": "Promouvoir opérateur",
+        "demote": "Rétrograder membre",
+        "confirmRole": "Changer le rôle de {{name}} ?",
+        "roleChanged": "Rôle de {{name}} mis à jour.",
+        "delete": "Supprimer",
+        "confirmDelete": "Supprimer définitivement le compte de {{name}} ? Toutes ses données seront effacées. Irréversible.",
+        "deleted": "Compte de {{name}} supprimé."
+      }
     },
     "segments": {
       "title": "Segments",

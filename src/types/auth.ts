@@ -28,6 +28,9 @@ export interface User {
   /** Audience segment slugs this member belongs to (migration 0018).
    *  Optional — only the live profile paths populate it; mocks omit it. */
   segments?: readonly string[];
+  /** Suspended by an admin (migration 0025) — denied at login. Optional;
+   *  mocks omit it (treated as not blocked). */
+  blocked?: boolean;
   createdAt: string;
 }
 
