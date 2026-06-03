@@ -24,6 +24,7 @@ import {
   LogOut,
   MailQuestion,
   Share2,
+  Tags,
   Ticket,
   Users,
 } from 'lucide-react';
@@ -45,6 +46,7 @@ const ADMIN_NAV: NavItem[] = [
   { to: ROUTES.ADMIN_SHARE_CODES, labelKey: 'admin.nav.shareCodes', icon: Share2 },
   { to: ROUTES.ADMIN_INQUIRIES, labelKey: 'admin.nav.inquiries', icon: Inbox },
   { to: ROUTES.ADMIN_USERS, labelKey: 'admin.nav.users', icon: Users },
+  { to: ROUTES.ADMIN_SEGMENTS, labelKey: 'admin.nav.segments', icon: Tags },
 ];
 
 export const AdminLayout = () => {

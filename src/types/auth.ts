@@ -25,6 +25,9 @@ export interface User {
   avatarUrl?: string;
   /** Operator assigned as the member's dedicated concierge. */
   conciergeName: string;
+  /** Audience segment slugs this member belongs to (migration 0018).
+   *  Optional — only the live profile paths populate it; mocks omit it. */
+  segments?: readonly string[];
   createdAt: string;
 }
 

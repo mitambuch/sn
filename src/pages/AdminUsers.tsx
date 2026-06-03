@@ -10,15 +10,19 @@
 // ═══════════════════════════════════════════════════
 
 import { Container } from '@components/layout/Container';
+import { Badge } from '@components/ui/Badge';
 import { DataTable, type DataTableColumn } from '@components/ui/DataTable';
 import { SectionHeader } from '@components/ui/SectionHeader';
 import { Spinner } from '@components/ui/Spinner';
 import { Stat } from '@components/ui/Stat';
 import { useAuth } from '@context/AuthContext';
+import { MemberSegmentsModal } from '@features/admin/MemberSegmentsModal';
+import { useSegments } from '@hooks/useSegments';
 import { useToast } from '@hooks/useToast';
 import { useUsersAdmin } from '@hooks/useUsersAdmin';
 import { cn } from '@utils/cn';
 import type { TFunction } from 'i18next';
+import { Tags } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -36,10 +40,19 @@ interface ColumnsCtx {
   t: TFunction;
   lang: string;
   currentUserId: string | undefined;
+  segmentLabel: (slug: string) => string;
   onRoleSwap: (target: User) => void;
+  onEditSegments: (target: User) => void;
 }
 
-function buildColumns({ t, lang, currentUserId, onRoleSwap }: ColumnsCtx): DataTableColumn<User>[] {
+function buildColumns({
+  t,
+  lang,
+  currentUserId,
+  segmentLabel,
+  onRoleSwap,
+  onEditSegments,
+}: ColumnsCtx): DataTableColumn<User>[] {
   return [
     {
       key: 'fullName',
@@ -82,6 +95,36 @@ function buildColumns({ t, lang, currentUserId, onRoleSwap }: ColumnsCtx): DataT
       ),
     },
     {
+      key: 'segments',
+      label: t('admin.users.segmentsColumn'),
+      render: r => {
+        const slugs = r.segments ?? [];
+        return (
+          <button
+            type="button"
+            onClick={() => {
+              onEditSegments(r);
+            }}
+            title={t('admin.users.editSegments')}
+            className="focus-visible:ring-accent group flex flex-wrap items-center gap-1.5 rounded-md text-left focus-visible:ring-2 focus-visible:outline-none"
+          >
+            {slugs.length === 0 ? (
+              <span className="text-muted/60 inline-flex items-center gap-1.5 text-xs">
+                <Tags size={12} strokeWidth={1.5} aria-hidden="true" />
+                {t('admin.users.noSegments')}
+              </span>
+            ) : (
+              slugs.map(slug => (
+                <Badge key={slug} size="sm">
+                  {segmentLabel(slug)}
+                </Badge>
+              ))
+            )}
+          </button>
+        );
+      },
+    },
+    {
       key: 'actions',
       label: t('admin.users.actions'),
       align: 'right',
@@ -114,9 +157,17 @@ export default function AdminUsers() {
   const { t, i18n } = useTranslation();
   const { toast } = useToast();
   const { user: currentUser } = useAuth();
-  const { rows, loading, updateRole } = useUsersAdmin();
+  const { rows, loading, updateRole, updateSegments } = useUsersAdmin();
+  const { segments } = useSegments();
   const [activeTab, setActiveTab] = useState<RoleFilter>('all');
   const [search, setSearch] = useState('');
+  // member whose segment editor is open (null = modal closed)
+  const [editing, setEditing] = useState<User | null>(null);
+
+  const segmentLabel = useMemo(() => {
+    const map = new Map(segments.map(s => [s.slug, s.label]));
+    return (slug: string) => map.get(slug) ?? slug;
+  }, [segments]);
 
   const adminCount = rows.filter(u => u.role === 'admin').length;
   const memberCount = rows.filter(u => u.role === 'client').length;
@@ -163,9 +214,11 @@ export default function AdminUsers() {
     t,
     lang: i18n.language,
     currentUserId: currentUser?.id,
+    segmentLabel,
     onRoleSwap: target => {
       void handleRoleSwap(target);
     },
+    onEditSegments: setEditing,
   });
 
   return (
@@ -238,6 +291,25 @@ export default function AdminUsers() {
           />
         )}
       </div>
+
+      <MemberSegmentsModal
+        member={editing}
+        segments={segments}
+        onClose={() => {
+          setEditing(null);
+        }}
+        onSave={updateSegments}
+        onResult={(result, member) => {
+          if (!result.ok) {
+            toast({ variant: 'error', message: result.error ?? t('common.error') });
+            return;
+          }
+          toast({
+            variant: 'success',
+            message: t('admin.users.segmentsSaved', { name: member.fullName || member.email }),
+          });
+        }}
+      />
     </Container>
   );
 }

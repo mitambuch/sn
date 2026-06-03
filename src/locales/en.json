@@ -2,6 +2,7 @@
   "common": {
     "back": "Back",
     "close": "Close",
+    "cancel": "Cancel",
     "loading": "Loading…",
     "error": "Something went wrong.",
     "retry": "Try again",
@@ -476,7 +477,40 @@
         "all": "All",
         "members": "Members",
         "admins": "Operators"
-      }
+      },
+      "segmentsColumn": "Segments",
+      "editSegments": "Edit segments",
+      "segmentsModalTitle": "Segments — {{name}}",
+      "segmentsModalLede": "Tick the segments this member belongs to. They decide which fiches the member can see.",
+      "noSegments": "None",
+      "noSegmentsAvailable": "No segment exists yet. Create one in the Segments tab.",
+      "segmentsSaved": "Segments for {{name}} updated.",
+      "save": "Save"
+    },
+    "segments": {
+      "title": "Segments",
+      "lede": "Group members by category (e.g. clients referred by a bank). Each fiche can then be restricted to one or more segments.",
+      "createTitle": "New segment",
+      "slugLabel": "Identifier",
+      "slugHint": "lowercase, digits and dashes — e.g. piguet-galland",
+      "slugPlaceholder": "piguet-galland",
+      "nameLabel": "Display name",
+      "namePlaceholder": "Piguet Galland",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Optional — internal note about this segment.",
+      "create": "Create segment",
+      "created": "Segment “{{label}}” created.",
+      "deleted": "Segment deleted.",
+      "confirmDelete": "Delete segment “{{label}}”? Tagged members will lose it, and fiches restricted to it will become visible again per their other rules.",
+      "delete": "Delete",
+      "membersCount": "{{count}} member",
+      "membersCount_other": "{{count}} members",
+      "empty": "No segments yet. Create the first one above.",
+      "slugColumn": "Identifier",
+      "nameColumn": "Name",
+      "membersColumn": "Members",
+      "slugInvalid": "The identifier must be lowercase letters, digits and dashes (2 to 40 characters).",
+      "slugTaken": "That identifier already exists."
     },
     "stats": {
       "pendingInquiries": "Pending inquiries",
@@ -502,7 +536,8 @@
       "invitations": "Invitations",
       "shareCodes": "Share codes",
       "inquiries": "Inquiries",
-      "users": "Users"
+      "users": "Users",
+      "segments": "Segments"
     },
     "accessRequests": {
       "title": "Access requests",

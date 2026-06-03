@@ -19,6 +19,7 @@
   "common": {
     "back": "Retour",
     "close": "Fermer",
+    "cancel": "Annuler",
     "loading": "Chargement…",
     "error": "Une erreur est survenue.",
     "retry": "Réessayer",
@@ -493,7 +494,40 @@
         "all": "Tous",
         "members": "Membres",
         "admins": "Opérateurs"
-      }
+      },
+      "segmentsColumn": "Segments",
+      "editSegments": "Modifier les segments",
+      "segmentsModalTitle": "Segments — {{name}}",
+      "segmentsModalLede": "Coche les segments auxquels ce membre appartient. Ils déterminent quelles fiches il peut voir.",
+      "noSegments": "Aucun",
+      "noSegmentsAvailable": "Aucun segment n'existe encore. Crée-en dans l'onglet Segments.",
+      "segmentsSaved": "Segments de {{name}} mis à jour.",
+      "save": "Enregistrer"
+    },
+    "segments": {
+      "title": "Segments",
+      "lede": "Classe les membres par catégorie (par ex. les clients adressés par une banque). Chaque fiche peut ensuite être restreinte à un ou plusieurs segments.",
+      "createTitle": "Nouveau segment",
+      "slugLabel": "Identifiant",
+      "slugHint": "minuscules, chiffres et tirets — par ex. piguet-galland",
+      "slugPlaceholder": "piguet-galland",
+      "nameLabel": "Nom affiché",
+      "namePlaceholder": "Piguet Galland",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Optionnel — note interne sur ce segment.",
+      "create": "Créer le segment",
+      "created": "Segment « {{label}} » créé.",
+      "deleted": "Segment supprimé.",
+      "confirmDelete": "Supprimer le segment « {{label}} » ? Les membres tagués le perdront, et les fiches restreintes à ce segment redeviendront visibles selon leurs autres règles.",
+      "delete": "Supprimer",
+      "membersCount": "{{count}} membre",
+      "membersCount_other": "{{count}} membres",
+      "empty": "Aucun segment pour l'instant. Crée le premier ci-dessus.",
+      "slugColumn": "Identifiant",
+      "nameColumn": "Nom",
+      "membersColumn": "Membres",
+      "slugInvalid": "L'identifiant doit être en minuscules, chiffres et tirets (2 à 40 caractères).",
+      "slugTaken": "Cet identifiant existe déjà."
     },
     "stats": {
       "pendingInquiries": "Demandes en attente",
@@ -519,7 +553,8 @@
       "invitations": "Invitations",
       "shareCodes": "Codes de partage",
       "inquiries": "Demandes",
-      "users": "Utilisateurs"
+      "users": "Utilisateurs",
+      "segments": "Segments"
     },
     "accessRequests": {
       "title": "Demandes d'accès",

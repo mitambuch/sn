@@ -63,6 +63,7 @@ const AdminUsers = lazyWithRetry(() => import('@pages/AdminUsers'));
 const AdminCatalogue = lazyWithRetry(() => import('@pages/AdminCatalogue'));
 const AdminShareCodes = lazyWithRetry(() => import('@pages/AdminShareCodes'));
 const AdminAccessRequests = lazyWithRetry(() => import('@pages/AdminAccessRequests'));
+const AdminSegments = lazyWithRetry(() => import('@pages/AdminSegments'));
 const NewsList = lazyWithRetry(() => import('@pages/NewsList'));
 const NewsDetail = lazyWithRetry(() => import('@pages/NewsDetail'));
 const AccountSaved = lazyWithRetry(() => import('@pages/AccountSaved'));
@@ -172,6 +173,7 @@ export default function AppRoutes() {
             <Route path="access-requests" element={<AdminAccessRequests />} />
             <Route path="inquiries" element={<AdminInquiries />} />
             <Route path="users" element={<AdminUsers />} />
+            <Route path="segments" element={<AdminSegments />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
