@@ -20,6 +20,7 @@
 ## Open frictions
 
 - **2026-06-04** — [`pnpm validate` flake — timeout 5s trop court sous coverage v8](frictions/2026-06-04-vitest-coverage-testtimeout-flake.md)
+- **2026-06-04** — [« Voile noir » après déploiement = cache navigateur, pas un bug](frictions/2026-06-04-post-deploy-stale-cache.md)
 - **2026-06-03** — [Piège — `.upsert()` client contre un grant volontairement sans UPDATE](frictions/2026-06-03-saved-items-upsert-no-update-grant.md)
 - **2026-06-03** — [Piège — GRANT colonne sur profiles bloque toute nouvelle colonne writable](frictions/2026-06-03-profiles-column-grant-trap.md)
 - **2026-06-02** — [Friction — données Sanity prod périmées écrasent le bon fallback code](frictions/2026-06-02-sanity-stale-data-overrides-code.md)
@@ -37,7 +38,7 @@
 
 ## Deep dive
 
-- Full catalogue (148 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (149 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
