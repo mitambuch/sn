@@ -77,20 +77,12 @@
   "onboarding": {
     "skip": "Skip",
     "enter": "Enter my space",
-    "step1": {
-      "eyebrow": "Welcome",
-      "title": "Sawnext, your private concierge",
-      "lede": "A by-invitation selection, without noise. Activate your code to enter your space."
-    },
-    "step2": {
-      "eyebrow": "Let's meet",
-      "title": "How would you like to be addressed?",
-      "lede": "Valmont and the team will address every exchange to your name. No data transmitted to any third party."
-    },
-    "step3": {
+    "welcome": {
       "eyebrow": "Your dedicated concierge",
-      "title": "Valmont Seragone Mato will guide you",
-      "lede": "A single point of contact, reachable any time from your space. Reply within 30 working minutes, standard NDA activated."
+      "title": "Welcome to your space",
+      "titleNamed": "Welcome, {{name}}",
+      "lede": "Valmont Seragone Mato will guide you. A single point of contact, reachable any time from your space. Reply within 30 working minutes, standard NDA activated.",
+      "imageAlt": "Private jet cabin, leather interior"
     }
   },
   "auth": {
@@ -101,20 +93,38 @@
     "titleA": "Private area",
     "titleB": "Three doors, one key",
     "titleModal": "Sign in",
-    "ledeModal": "Pick your access mode.",
-    "lede": "You already have access. Pick the mode that suits you: your email + password pair, a single-use access link sent by email, or the invitation code Valmont gave you.",
-    "modeEmail": "Email and password",
-    "modeMagicLink": "Magic link",
-    "modeInvitation": "Invitation code",
-    "modeEmailHint": "For already-registered members. Direct sign-in to your space.",
-    "modeMagicLinkHint": "Receive a single-use access link. No password to remember.",
-    "modeInvitationHint": "Activate your invitation code for the first sign-in.",
+    "ledeModal": "You have an invitation code, or an account already.",
+    "lede": "You already have access. Sign in with your email and password, or activate your invitation code for a first connection.",
+    "modeFirst": "First connection",
+    "modeFirstHint": "You received an invitation code by email. Activate it and choose your password.",
+    "modeReturning": "Email and password",
+    "modeReturningHint": "You already have an account. Direct sign-in to your space.",
     "email": "Email address",
     "password": "Password",
+    "confirmPassword": "Confirm password",
+    "createPasswordHelper": "8 characters minimum.",
     "code": "Invitation code",
-    "magicLinkSent": "Access link sent. Please check your inbox in the coming minutes.",
-    "magicLinkSentTag": "Link sent",
+    "createAccount": "Create my account",
+    "codeInvalid": "Invalid invitation code. Check the characters you entered.",
+    "passwordTooShort": "The password must be at least 8 characters.",
+    "passwordMismatch": "The two passwords do not match.",
+    "forgotPassword": "Forgot password?",
+    "forgotTitle": "Reset your password",
+    "forgotLede": "Enter your email address. If an account is linked to it, you'll receive a link to choose a new password.",
+    "forgotCta": "Send the link",
+    "forgotSentTag": "Email sent",
+    "forgotSent": "If an account is linked to this address, a reset link has just been sent. Please check your inbox.",
+    "confirmEmailTag": "Check your email",
+    "confirmEmailSent": "Your account is created. Confirm your address via the email we just sent, then sign in.",
     "back": "Back to home"
+  },
+  "resetPassword": {
+    "tag": "New password",
+    "title": "Choose a new password",
+    "lede": "Enter your new password below.",
+    "submit": "Update",
+    "success": "Password updated. You are signed in.",
+    "noSession": "Link expired or invalid. Please request a new one from \"Forgot password\"."
   },
   "account": {
     "eyebrow": "Private area",

@@ -37,7 +37,7 @@ import { isValidPhoneNumber } from 'react-phone-number-input';
 import { useNavigate } from 'react-router-dom';
 
 import { hasSupabase, supabase } from '@/lib/supabase';
-import { INVITATION_CODE_DISPLAY_PATTERN, normalizeInvitationCode } from '@/types/invitation';
+import { INVITATION_CODE_CANONICAL_PATTERN, normalizeInvitationCode } from '@/types/invitation';
 
 type Mode = 'request' | 'code';
 
@@ -194,21 +194,25 @@ export const AccessRequestModal = ({
   const handleCodeSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (submitting) return;
-    const trimmed = code.trim();
-    if (!INVITATION_CODE_DISPLAY_PATTERN.test(trimmed)) {
+    // Accept both the raw 8-char code emailed by the system AND the pretty
+    // SAW-XXXX-XXXX form — normalize, then validate the canonical shape.
+    const canonical = normalizeInvitationCode(code);
+    if (!INVITATION_CODE_CANONICAL_PATTERN.test(canonical)) {
       setCodeError(t('landing.access.modal.codeInvalidFormat'));
       return;
     }
     setCodeError(null);
     setSubmitting(true);
-    const canonical = normalizeInvitationCode(trimmed);
-    // WHY: leave Supabase validation to /onboarding (it gates step1 → step2
-    // with the live check). The modal only enforces format here.
+    // WHY: hand off to /login → "Première connexion" with the code pre-filled.
+    // That form does the live Supabase check, creates the account with a
+    // password, and consumes the code. The modal only enforces format here.
     setTimeout(() => {
       toast({ variant: 'success', message: t('landing.access.modal.codeAccepted') });
       setSubmitting(false);
       handleClose();
-      void navigate(localePath(ROUTES.ONBOARDING), { state: { invitationCode: canonical } });
+      void navigate(localePath(ROUTES.LOGIN), {
+        state: { invitationCode: canonical, mode: 'first' },
+      });
     }, 400);
   };
 

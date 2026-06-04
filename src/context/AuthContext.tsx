@@ -2,19 +2,31 @@
 // AuthContext — Supabase-live session state + auth actions
 //
 // WHAT: Holds the current { user, session, loading } AuthState plus the
-//       four canonical auth actions. When VITE_SUPABASE_* env are set,
-//       methods route through `supabase.auth.*` + the `profiles` table.
-//       When env is empty (`hasSupabase === false`), methods fall back
-//       to a DEV stub so the site stays demoable without a backend.
+//       canonical auth actions for a PASSWORD-BASED tunnel:
+//         • signIn(email, password)          — returning members
+//         • registerWithCode({...})           — first connection: an
+//           invitation code unlocks account creation WITH a password.
+//         • requestPasswordReset(email)        — sends a reset email.
+//         • updatePassword(password)           — sets a new password while
+//           in a recovery session (the /reset-password page).
+//       When VITE_SUPABASE_* env are set, methods route through
+//       `supabase.auth.*` + the `profiles` table. When env is empty
+//       (`hasSupabase === false`), methods fall back to a DEV stub so the
+//       site stays demoable without a backend.
 // WHEN: Wrap the app once at the root, above the Router. Read via the
 //       useAuth() hook exported below.
 // DEV : a localStorage flag `__sn_dev_session` simulates any role
 //       locally. Gated by import.meta.env.DEV — the helper no-ops in
 //       prod builds.
+// EMAILS: every link Supabase emails (reset password, optional signup
+//       confirmation) is built from env.APP_URL — the CANONICAL prod
+//       domain (https://saw-next.ch) — never window.location.origin,
+//       which leaks the Vercel/Netlify preview host into the email.
 // RULE: see .claude/rules/security.md — anon key is public, RLS gates
 //       row-level access. service_role NEVER reaches the client.
 // ═══════════════════════════════════════════════════
 
+import { env } from '@config/env';
 import type { ReactNode } from 'react';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
@@ -26,32 +38,43 @@ import { INVITATION_CODE_CANONICAL_PATTERN, normalizeInvitationCode } from '@/ty
 const DEV_SESSION_KEY = '__sn_dev_session';
 const DEV_SESSION_TTL_MS = 24 * 60 * 60 * 1000;
 
+// WHY: email links MUST point to the canonical production domain, not the
+// host the browser happens to be on (a Vercel/Netlify preview would leak in).
+// env.APP_URL is enforced to https://saw-next.ch at build time.
+const SITE_URL = env.APP_URL.replace(/\/$/, '');
+const SITE_LOCALE = env.DEFAULT_LOCALE;
+
 interface AuthActionResult {
   ok: boolean;
   error?: string;
+  /** registerWithCode only: true when the Supabase project has "Confirm
+   *  email" ON, so the account exists but needs a click in a confirmation
+   *  email before the session is live. The seamless flow turns this OFF. */
+  needsEmailConfirm?: boolean;
+}
+
+interface RegisterWithCodeParams {
+  email: string;
+  code: string;
+  password: string;
+  fullName: string;
 }
 
 interface AuthContextValue extends AuthState {
   signIn: (email: string, password: string) => Promise<AuthActionResult>;
   signOut: () => Promise<void>;
-  signInWithMagicLink: (email: string) => Promise<AuthActionResult>;
-  redeemInvitationCode: (rawCode: string, email: string) => Promise<AuthActionResult>;
-  /** Atomic single-use redemption — called by Onboarding once the user is
-   *  authenticated (post-magic-link). Marks the code as `redeemed` in the
-   *  DB and refuses if it's already been used. */
-  confirmInvitationRedemption: (rawCode: string) => Promise<AuthActionResult>;
+  /** First connection — verify the invitation code, create the account with
+   *  a password, then atomically consume the code. */
+  registerWithCode: (params: RegisterWithCodeParams) => Promise<AuthActionResult>;
+  /** Send a password-reset email pointing at the canonical /reset-password. */
+  requestPasswordReset: (email: string) => Promise<AuthActionResult>;
+  /** Set a new password — called from /reset-password inside the recovery
+   *  session Supabase establishes from the email link. */
+  updatePassword: (password: string) => Promise<AuthActionResult>;
   /** DEV-only: simulate a logged-in session for local UI work. No-op in prod. */
   __setDevSession: (role: Role) => void;
   /** DEV-only: clear the simulated session. No-op in prod. */
   __clearDevSession: () => void;
-}
-
-interface RedeemRpcResult {
-  ok: boolean;
-  error?: string;
-  status?: string;
-  code_id?: string;
-  redeemed_by?: string;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -178,81 +201,82 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setState({ user: null, session: null, loading: false });
   }, []);
 
-  const signInWithMagicLink = useCallback<AuthContextValue['signInWithMagicLink']>(async email => {
-    if (!hasSupabase || !supabase) return { ok: true };
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: `${window.location.origin}/fr/account` },
-    });
-    if (error) return { ok: false, error: error.message };
-    return { ok: true };
-  }, []);
-
-  const redeemInvitationCode = useCallback<AuthContextValue['redeemInvitationCode']>(
-    async (rawCode, email) => {
+  const registerWithCode = useCallback<AuthContextValue['registerWithCode']>(
+    async ({ email, code, password, fullName }) => {
       if (!hasSupabase || !supabase) {
+        // DEV / no-backend mode : walk the demo straight into a client session.
         __setDevSessionImpl('client', setState);
         return { ok: true };
       }
-      const normalized = normalizeInvitationCode(rawCode);
+      const normalized = normalizeInvitationCode(code);
       if (!INVITATION_CODE_CANONICAL_PATTERN.test(normalized)) {
         return { ok: false, error: 'Format de code invalide.' };
       }
-      // Existence check via verify_invitation_code RPC — returns only a
-      // boolean so the anon role can't enumerate the whole pool of codes.
-      // The atomic mark-as-redeemed still happens AFTER auth via
-      // confirmInvitationRedemption(). See migration 0010 / audit P0-1.
+      // 1. Cheap existence/validity check BEFORE creating any account. The
+      //    RPC returns only a boolean so the anon role can't enumerate codes.
       const { data: codeExists, error: codeErr } = await supabase.rpc('verify_invitation_code', {
         p_code: normalized,
       });
       if (codeErr) return { ok: false, error: codeErr.message };
       if (codeExists !== true) return { ok: false, error: 'Code introuvable ou déjà utilisé.' };
 
-      const { error: otpErr } = await supabase.auth.signInWithOtp({
+      // 2. Create the account. full_name flows to the profiles row via the
+      //    handle_new_user() trigger (reads raw_user_meta_data->>'full_name').
+      const { data, error } = await supabase.auth.signUp({
         email,
+        password,
         options: {
-          emailRedirectTo: `${window.location.origin}/fr/onboarding`,
-          data: { invitation_code: normalized },
+          data: { full_name: fullName.trim() },
+          // Only used if "Confirm email" is ON (fallback path) — always the
+          // canonical domain, never the preview host.
+          emailRedirectTo: `${SITE_URL}/${SITE_LOCALE}/account`,
         },
       });
-      if (otpErr) return { ok: false, error: otpErr.message };
+      if (error) return { ok: false, error: error.message };
+
+      // 3. No session → "Confirm email" is ON in the project. The account
+      //    exists but isn't active yet; the code is left unused until the
+      //    person confirms. The seamless tunnel requires this toggle OFF.
+      if (!data.session || !data.user) {
+        return { ok: true, needsEmailConfirm: true };
+      }
+
+      // 4. Session live → consume the code now (atomic, single-use). A redeem
+      //    hiccup must not lock out a user who already has a valid account.
+      const { error: redeemErr } = await supabase.rpc('redeem_invitation_code', {
+        p_code: normalized,
+      });
+      if (redeemErr) {
+        console.warn('[auth] invitation redeem failed after signup:', redeemErr.message);
+      }
+
+      const user = await fetchProfile(data.user.id);
+      if (user) {
+        setState({ user, session: buildSession(data.session, user), loading: false });
+      }
       return { ok: true };
     },
     [],
   );
 
-  const confirmInvitationRedemption = useCallback<AuthContextValue['confirmInvitationRedemption']>(
-    async rawCode => {
-      if (!hasSupabase || !supabase) {
-        // DEV / no-backend mode : pretend it worked.
-        return { ok: true };
-      }
-      const normalized = normalizeInvitationCode(rawCode);
-      if (!INVITATION_CODE_CANONICAL_PATTERN.test(normalized)) {
-        return { ok: false, error: 'Format de code invalide.' };
-      }
-      const { data, error } = await supabase.rpc('redeem_invitation_code', {
-        p_code: normalized,
+  const requestPasswordReset = useCallback<AuthContextValue['requestPasswordReset']>(
+    async email => {
+      if (!hasSupabase || !supabase) return { ok: true };
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${SITE_URL}/${SITE_LOCALE}/reset-password`,
       });
       if (error) return { ok: false, error: error.message };
-      const result = data as RedeemRpcResult | null;
-      if (!result || typeof result !== 'object') {
-        return { ok: false, error: 'Réponse inattendue du serveur.' };
-      }
-      if (!result.ok) {
-        const code = result.error ?? 'unknown';
-        const map: Record<string, string> = {
-          not_authenticated: 'Session expirée. Reconnectez-vous.',
-          invalid_format: 'Format de code invalide.',
-          not_found: 'Code introuvable.',
-          already_used: 'Ce code a déjà été utilisé.',
-        };
-        return { ok: false, error: map[code] ?? `Échec (${code})` };
-      }
       return { ok: true };
     },
     [],
   );
+
+  const updatePassword = useCallback<AuthContextValue['updatePassword']>(async password => {
+    if (!hasSupabase || !supabase) return { ok: true };
+    const { error } = await supabase.auth.updateUser({ password });
+    if (error) return { ok: false, error: error.message };
+    return { ok: true };
+  }, []);
 
   const __setDevSession = useCallback<AuthContextValue['__setDevSession']>(role => {
     __setDevSessionImpl(role, setState);
@@ -275,9 +299,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       ...state,
       signIn,
       signOut,
-      signInWithMagicLink,
-      redeemInvitationCode,
-      confirmInvitationRedemption,
+      registerWithCode,
+      requestPasswordReset,
+      updatePassword,
       __setDevSession,
       __clearDevSession,
     }),
@@ -285,9 +309,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       state,
       signIn,
       signOut,
-      signInWithMagicLink,
-      redeemInvitationCode,
-      confirmInvitationRedemption,
+      registerWithCode,
+      requestPasswordReset,
+      updatePassword,
       __setDevSession,
       __clearDevSession,
     ],

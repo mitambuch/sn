@@ -94,20 +94,12 @@
   "onboarding": {
     "skip": "Passer",
     "enter": "Découvrir mon espace",
-    "step1": {
-      "eyebrow": "Bienvenue",
-      "title": "Sawnext, votre conciergerie privée",
-      "lede": "Une sélection sur invitation, sans bruit. Activez votre code pour entrer dans votre espace."
-    },
-    "step2": {
-      "eyebrow": "Faisons connaissance",
-      "title": "Comment souhaitez-vous être appelé ?",
-      "lede": "Valmont et son équipe vous adresseront chaque échange à votre nom. Aucune donnée transmise à un tiers."
-    },
-    "step3": {
+    "welcome": {
       "eyebrow": "Votre conciergerie dédiée",
-      "title": "Valmont Seragone Mato vous accompagne",
-      "lede": "Un seul interlocuteur, joignable à tout moment depuis votre espace. Réponse sous 30 minutes ouvrées, NDA standard activé."
+      "title": "Bienvenue dans votre espace",
+      "titleNamed": "Bienvenue, {{name}}",
+      "lede": "Valmont Seragone Mato vous accompagne. Un seul interlocuteur, joignable à tout moment depuis votre espace. Réponse sous 30 minutes ouvrées, NDA standard activé.",
+      "imageAlt": "Cabine de jet privé en cuir"
     }
   },
   "auth": {
@@ -118,20 +110,38 @@
     "titleA": "Espace privé",
     "titleB": "Trois portes, une seule clé",
     "titleModal": "Connexion",
-    "ledeModal": "Choisissez votre mode d’accès.",
-    "lede": "Vous avez déjà un accès. Choisissez le mode qui vous convient : votre couple email + mot de passe, un lien d’accès unique envoyé par email, ou le code d’invitation que Valmont vous a transmis.",
-    "modeEmail": "Email et mot de passe",
-    "modeMagicLink": "Lien magique",
-    "modeInvitation": "Code d’invitation",
-    "modeEmailHint": "Pour les membres déjà enregistrés. Connexion directe vers votre espace.",
-    "modeMagicLinkHint": "Recevez un lien d’accès à usage unique. Aucun mot de passe à mémoriser.",
-    "modeInvitationHint": "Activez votre code d’invitation pour la première connexion.",
+    "ledeModal": "Vous avez un code d’invitation, ou déjà un compte.",
+    "lede": "Vous avez déjà un accès. Connectez-vous avec votre email et votre mot de passe, ou activez votre code d’invitation pour une première connexion.",
+    "modeFirst": "Première connexion",
+    "modeFirstHint": "Vous avez reçu un code d’invitation par email. Activez-le et choisissez votre mot de passe.",
+    "modeReturning": "Email et mot de passe",
+    "modeReturningHint": "Vous avez déjà un compte. Connexion directe à votre espace.",
     "email": "Adresse e-mail",
     "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "createPasswordHelper": "8 caractères minimum.",
     "code": "Code d’invitation",
-    "magicLinkSent": "Lien d’accès envoyé. Vérifiez votre boîte e-mail dans les minutes qui viennent.",
-    "magicLinkSentTag": "Lien envoyé",
+    "createAccount": "Créer mon compte",
+    "codeInvalid": "Code d’invitation invalide. Vérifiez les caractères saisis.",
+    "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères.",
+    "passwordMismatch": "Les deux mots de passe ne correspondent pas.",
+    "forgotPassword": "Mot de passe oublié ?",
+    "forgotTitle": "Réinitialiser le mot de passe",
+    "forgotLede": "Saisissez votre adresse e-mail. Si un compte y est associé, vous recevrez un lien pour choisir un nouveau mot de passe.",
+    "forgotCta": "Envoyer le lien",
+    "forgotSentTag": "E-mail envoyé",
+    "forgotSent": "Si un compte est associé à cette adresse, un lien de réinitialisation vient d’être envoyé. Vérifiez votre boîte e-mail.",
+    "confirmEmailTag": "Vérifiez votre e-mail",
+    "confirmEmailSent": "Votre compte est créé. Confirmez votre adresse via l’e-mail que nous venons d’envoyer, puis connectez-vous.",
     "back": "Retour à l’accueil"
+  },
+  "resetPassword": {
+    "tag": "Nouveau mot de passe",
+    "title": "Choisissez un nouveau mot de passe",
+    "lede": "Saisissez votre nouveau mot de passe ci-dessous.",
+    "submit": "Mettre à jour",
+    "success": "Mot de passe mis à jour. Vous êtes connecté.",
+    "noSession": "Lien expiré ou invalide. Refaites une demande depuis « Mot de passe oublié »."
   },
   "account": {
     "eyebrow": "Espace privé",

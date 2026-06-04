@@ -26,7 +26,7 @@ describe('AuthContext', () => {
     const { result } = renderHook(() => useAuth(), { wrapper });
     await waitFor(() => expect(result.current.loading).toBe(false));
 
-    // signIn + redeemInvitationCode synthesize a client session when there's
+    // signIn + registerWithCode synthesize a client session when there's
     // no backend — the demo flow stays walkable without env vars.
     let signInResult: { ok: boolean; error?: string } | undefined;
     await act(async () => {
@@ -35,16 +35,23 @@ describe('AuthContext', () => {
     expect(signInResult?.ok).toBe(true);
     expect(result.current.user?.role).toBe('client');
 
-    // signInWithMagicLink resolves ok without creating a session — the user
-    // would normally complete via the email link.
+    // registerWithCode walks straight into a client session in demo mode.
     await act(async () => {
-      const magicResult = await result.current.signInWithMagicLink('a@b.test');
-      expect(magicResult.ok).toBe(true);
+      const registerResult = await result.current.registerWithCode({
+        email: 'a@b.test',
+        code: 'SAW-AB23-C7DE',
+        password: 'motdepasse1',
+        fullName: 'Hugo Méredith',
+      });
+      expect(registerResult.ok).toBe(true);
     });
 
+    // Password-reset + update both resolve ok without a backend (no-op).
     await act(async () => {
-      const redeemResult = await result.current.redeemInvitationCode('SAW-AB23-C7DE', 'a@b.test');
-      expect(redeemResult.ok).toBe(true);
+      const resetResult = await result.current.requestPasswordReset('a@b.test');
+      expect(resetResult.ok).toBe(true);
+      const updateResult = await result.current.updatePassword('nouveaupass1');
+      expect(updateResult.ok).toBe(true);
     });
   });
 
