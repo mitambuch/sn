@@ -18,6 +18,12 @@ export default mergeConfig(
       environment: 'jsdom',
       setupFiles: ['./src/test/setup.ts'],
       exclude: ['e2e/**', '**/node_modules/**'],
+      // WHY: the default 5s per-test ceiling is too tight for the multi-field
+      // userEvent.type() form tests (AccessRequestModal, AccountCatalogue) once
+      // v8 coverage instrumentation is layered on a loaded machine — they
+      // intermittently flaked the `pnpm validate` gate. 15s keeps a real-hang
+      // backstop while removing the false negatives. (2026-06-04)
+      testTimeout: 15000,
       coverage: {
         provider: 'v8',
         reporter: ['text', 'text-summary', 'html'],

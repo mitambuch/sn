@@ -15,6 +15,7 @@ export const ROUTES = {
   // ─── Public ──────────────────────────────────────────
   HOME: '/',
   LOGIN: '/login',
+  RESET_PASSWORD: '/reset-password',
   ONBOARDING: '/onboarding',
   PLAYGROUND: '/playground',
   LAB: '/lab',

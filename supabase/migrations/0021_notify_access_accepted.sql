@@ -92,9 +92,9 @@ begin
     || '<p>Voici votre code d''accès personnel, à usage unique :</p>'
     || '<p style="font-family:monospace;font-size:22px;letter-spacing:4px;'
     || 'font-weight:600;margin:16px 0">%s</p>'
-    || '<p>Rendez-vous sur <a href="https://sawnext.ch/fr/login">'
-    || 'sawnext.ch/fr/login</a>, choisissez « Code d''invitation » et '
-    || 'saisissez votre email + ce code pour créer votre compte. '
+    || '<p>Rendez-vous sur <a href="https://saw-next.ch/fr/login">'
+    || 'saw-next.ch/fr/login</a>, choisissez « Première connexion », '
+    || 'saisissez votre email + ce code, puis choisissez votre mot de passe. '
     || 'Le code est valable 90 jours.</p>'
     || '<p style="color:#888;font-size:12px">Si vous n''êtes pas à l''origine '
     || 'de cette demande, ignorez ce message.</p>',

@@ -38,6 +38,7 @@ const Playground = lazyWithRetry(() => import('@pages/Playground'));
 const Lab = lazyWithRetry(() => import('@pages/Lab'));
 const NotFound = lazyWithRetry(() => import('@pages/NotFound'));
 const Login = lazyWithRetry(() => import('@pages/Login'));
+const ResetPassword = lazyWithRetry(() => import('@pages/ResetPassword'));
 const Onboarding = lazyWithRetry(() => import('@pages/Onboarding'));
 const AccountDashboard = lazyWithRetry(() => import('@pages/AccountDashboard'));
 const AccountCatalogue = lazyWithRetry(() => import('@pages/AccountCatalogue'));
@@ -132,6 +133,7 @@ export default function AppRoutes() {
 
           {/* ─── Auth surface — popup-like, no public chrome ─── */}
           <Route path="login" element={<Login />} />
+          <Route path="reset-password" element={<ResetPassword />} />
           <Route path="onboarding" element={<Onboarding />} />
 
           {/* ─── Public surface (Header + Footer) ─── */}
