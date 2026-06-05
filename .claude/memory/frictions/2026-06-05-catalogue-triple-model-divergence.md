@@ -30,7 +30,7 @@ seuls les champs éditoriaux (title/summary/description) avaient été pontés
 matchaient pas → le contenu Sanity ne s'affichait pas, et `JourneyDetail`
 **crashait** sur une vraie fiche Sanity (`legs`/`inclusions` undefined).
 
-## Résolu cette session (commits 5964341 + 8ddfad9) — PARTIEL
+## Résolu cette session (commits 5964341 + 8ddfad9 + 45612fc)
 
 - **Layer 1** : schémas Studio corrigés (caseMaterial localeString, destinations
   array de localeString, nouvel objet `itineraryDay` sans heure).
@@ -39,11 +39,19 @@ matchaient pas → le contenu Sanity ne s'affichait pas, et `JourneyDetail`
   i18n-sinon-brut ; `JourneyDetailData` dédié + `toJourneyDetail()` qui ponte le
   mock ; `destinations` élargi `string | string[]` normalisé chez tous les
   lecteurs. Crash réglé.
+- **Layer 3** : **property, artwork, event, conciergeService, article** detail
+  pages rendues crash-safe + Sanity-bilingues. Helper `humanizeToken` =
+  fallback enum quand la clé i18n manque ; champs page-only rendus optionnels +
+  gardés ; `formatDimensions` (objet|string) ; `property.availability` résolu
+  via L(). **Les 7 detail pages sont maintenant crash-safe.**
 
 ## Reste à faire (dette explicite, pas cachée)
 
-- **Mêmes ponts pour les autres modules** : property, artwork, event,
-  conciergeService, article (leurs detail pages lisent encore enums/mock).
+- **Sections premium à AJOUTER dans Sanity** (sinon invisibles avec du contenu
+  Sanity, car page-only/mock) : provenance + exhibitions (artwork), highlights
+  (property), caseStudies (concierge), relatedItem (article), dimensions
+  structurées (artwork), coverageArea + capabilities (concierge — déjà projetés
+  par GROQ mais pas affichés). Décision owner : lesquelles rendre éditables.
 - **Listes + cards** : encore sur le modèle domaine (ex : JourneyCard montre
   kind/durationDays mock ; OK en résumé mais pas aligné Sanity).
 - **Admin in-app** (`features/admin/schemas.ts`) : toujours sur l'ancien modèle
