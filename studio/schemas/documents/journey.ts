@@ -56,9 +56,9 @@ export const journey = defineType({
       title: 'Destinations',
       type: 'array',
       group: 'essentiel',
-      of: [{ type: 'string' }],
-      options: { layout: 'tags' },
-      description: 'Ex: "Buenos Aires", "El Calafate", "Torres del Paine".',
+      of: [{ type: 'localeString' }],
+      description:
+        'Une ou plusieurs destinations, chacune traduisible (FR/EN). Ex: "Buenos Aires", "El Calafate", "Île de Pâques"/"Easter Island".',
     }),
     defineField({
       name: 'duration',
@@ -93,9 +93,9 @@ export const journey = defineType({
       title: 'Étapes',
       type: 'array',
       group: 'itineraire',
-      of: [{ type: 'programmeStep' }],
+      of: [{ type: 'itineraryDay' }],
       description:
-        'Ajoute chaque journée avec son repère. Ex: "J1" → "Arrivée privée à El Calafate, transfert estancia".',
+        'Ajoute chaque journée dans l\'ordre — numérotée automatiquement (Jour 1, Jour 2…). Pas d\'heure : juste le titre du jour + un détail optionnel. Ex: "Arrivée privée à El Calafate, transfert estancia".',
     }),
     // ─── Logistique ───
     defineField({
@@ -162,7 +162,11 @@ export const journey = defineType({
     prepare: ({ title, destinations, durationDays, visibility, media }) => {
       const visIcon = visibility === 'public' ? '🌐' : visibility === 'shareCode' ? '🔑' : '🔒';
       const destStr = Array.isArray(destinations)
-        ? (destinations as string[]).slice(0, 2).join(' · ')
+        ? (destinations as Array<{ fr?: string }>)
+            .slice(0, 2)
+            .map(d => d?.fr)
+            .filter(Boolean)
+            .join(' · ')
         : '';
       const durStr = typeof durationDays === 'number' ? `${String(durationDays)}j` : '';
       return {

@@ -22,6 +22,7 @@ import { siteConfig } from './documents/siteConfig';
 import { teamMember } from './documents/teamMember';
 import { timepiece } from './documents/timepiece';
 import { domainImage } from './objects/domainImage';
+import { itineraryDay } from './objects/itineraryDay';
 import { localeRichText } from './objects/localeRichText';
 import { localeString } from './objects/localeString';
 import { localeText } from './objects/localeText';
@@ -36,6 +37,7 @@ export const schemaTypes = [
   domainImage,
   priceBlock,
   programmeStep,
+  itineraryDay,
   // ─── Singletons ───
   siteConfig,
   landing,
