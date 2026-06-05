@@ -124,15 +124,16 @@ export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
         search: `${e.title} ${e.city} ${e.venue} ${e.category}`.toLowerCase(),
       }),
     );
-    listJourneys().forEach(j =>
+    listJourneys().forEach(j => {
+      const dest = Array.isArray(j.destinations) ? j.destinations.join(' · ') : j.destinations;
       entries.push({
         group: 'journey',
         title: j.title,
-        subtitle: j.destinations,
+        subtitle: dest,
         href: localePath(ROUTES.ACCOUNT_JOURNEYS + '/' + j.slug),
-        search: `${j.title} ${j.destinations} ${j.kind}`.toLowerCase(),
-      }),
-    );
+        search: `${j.title} ${dest} ${j.kind}`.toLowerCase(),
+      });
+    });
     listConciergeServices().forEach(c =>
       entries.push({
         group: 'concierge',

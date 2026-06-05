@@ -1,8 +1,13 @@
 // ═══════════════════════════════════════════════════
 // JourneyDetail — /:locale/account/journeys/:slug
 //
-// DetailHero, itinerary Timeline (legs with dates + locations),
-// inclusions vs exclusions 2-col, MetaList summary.
+// WHAT: Renders the Sanity journey model (what the operator edits in the
+//       Studio): summary + description, a meta cluster (duration ·
+//       destinations · party size), a DAY-based itinerary ("Jour 1, Jour
+//       2…" — no hours), then transport + accommodation lists, then gallery.
+// DATA: useSanityItem returns the Sanity shape (JourneyDetailData) directly;
+//       a mock Journey is bridged into the same shape via toJourneyDetail()
+//       so the dev/demo fallback matches. Sanity content takes precedence.
 // ═══════════════════════════════════════════════════
 
 import { useLocale } from '@app/LocaleProvider';
@@ -24,44 +29,66 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 
 import { GROQ_JOURNEY_DETAIL } from '@/lib/sanityQueries';
 import { getJourney } from '@/mocks';
-import type { Journey } from '@/types/journey';
+import type { Journey, JourneyDetailData } from '@/types/journey';
+
+/** Bridge a mock Journey (legs / guestCapacity / "·"-joined string) into the
+ *  Studio model the page renders, so the dev/demo fallback matches Sanity. */
+function toJourneyDetail(j: Journey): JourneyDetailData {
+  const destinations = Array.isArray(j.destinations)
+    ? j.destinations
+    : j.destinations
+        .split('·')
+        .map(s => s.trim())
+        .filter(Boolean);
+  return {
+    id: j.id,
+    slug: j.slug,
+    title: j.title,
+    summary: j.summary,
+    description: j.description,
+    images: j.images,
+    destinations,
+    durationDays: j.durationDays,
+    ...(j.guestCapacity ? { partySize: String(j.guestCapacity) } : {}),
+    ...(j.legs && j.legs.length > 0
+      ? { itinerary: j.legs.map(l => ({ label: l.location, description: l.highlight })) }
+      : {}),
+  };
+}
+
+const listItem = 'text-fg flex items-start gap-3 text-sm leading-relaxed';
+const bullet = <span className="bg-fg mt-2 inline-block h-1 w-2 shrink-0" aria-hidden="true" />;
 
 export default function JourneyDetail() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { localePath } = useLocale();
   const { slug } = useParams<{ slug: string }>();
   const [inquiryOpen, setInquiryOpen] = useState(false);
 
   const mockJourney = slug ? getJourney(slug) : null;
-  const { data: journey } = useSanityItem<Journey>({
+  const { data: journey } = useSanityItem<JourneyDetailData>({
     query: slug ? GROQ_JOURNEY_DETAIL(slug) : '',
     gateModule: 'journey',
     gateSlug: slug,
-    fallback: mockJourney ?? null,
+    fallback: mockJourney ? toJourneyDetail(mockJourney) : null,
   });
   if (!journey) return <Navigate to={localePath(ROUTES.ACCOUNT_JOURNEYS)} replace />;
 
-  const formatDate = (iso: string) =>
-    new Date(iso).toLocaleDateString(i18n.language, {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-    });
+  const destinationsLine = (journey.destinations ?? []).join(' · ');
+  const durationLabel = journey.durationDays
+    ? `${String(journey.durationDays)} ${t('journeys.days')}`
+    : '';
+  const transport = journey.transport ?? [];
+  const accommodation = journey.accommodation ?? [];
+  const itinerary = journey.itinerary ?? [];
 
   const meta = [
-    { label: t('journeys.meta.kind'), value: t(`journeys.kind.${journey.kind}`) },
-    {
-      label: t('journeys.meta.duration'),
-      value: `${String(journey.durationDays)} ${t('journeys.days')}`,
-    },
-    { label: t('journeys.meta.origin'), value: journey.origin },
-    { label: t('journeys.meta.destinations'), value: journey.destinations },
-    {
-      label: t('journeys.meta.guestCapacity'),
-      value: String(journey.guestCapacity),
-    },
-    ...(journey.earliestStart
-      ? [{ label: t('journeys.meta.earliestStart'), value: formatDate(journey.earliestStart) }]
+    ...(durationLabel ? [{ label: t('journeys.meta.duration'), value: durationLabel }] : []),
+    ...(destinationsLine
+      ? [{ label: t('journeys.meta.destinations'), value: destinationsLine }]
+      : []),
+    ...(journey.partySize
+      ? [{ label: t('journeys.meta.partySize'), value: journey.partySize }]
       : []),
   ];
 
@@ -70,9 +97,9 @@ export default function JourneyDetail() {
       <DetailHero
         imageSrc={journey.images[0]?.src ?? ''}
         imageAlt={journey.images[0]?.alt ?? journey.title}
-        eyebrow={t(`journeys.kind.${journey.kind}`)}
+        eyebrow={durationLabel || t('journeys.itinerary')}
         title={journey.title}
-        caption={journey.destinations}
+        caption={destinationsLine}
         height="full"
         actions={
           <button
@@ -114,46 +141,48 @@ export default function JourneyDetail() {
           </aside>
         </div>
 
-        {journey.legs.length > 0 && (
+        {itinerary.length > 0 && (
           <div className="space-y-6 pb-16">
             <SectionHeader title={t('journeys.itinerary')} size="sm" as="h2" />
             <Timeline
-              items={journey.legs.map(l => ({
-                title: l.location,
-                description: l.highlight,
-                date: formatDate(l.date),
+              items={itinerary.map((d, i) => ({
+                title: `${t('journeys.day')} ${String(i + 1)} · ${d.label}`,
+                ...(d.description ? { description: d.description } : {}),
               }))}
             />
           </div>
         )}
 
-        <div className="grid gap-12 pb-16 md:grid-cols-2">
-          <div className="space-y-4">
-            <SectionHeader title={t('journeys.inclusions')} size="sm" as="h3" />
-            <ul className="space-y-2">
-              {journey.inclusions.map(i => (
-                <li key={i} className="text-fg flex items-start gap-3 text-sm leading-relaxed">
-                  <span className="bg-fg mt-2 inline-block h-1 w-2 shrink-0" aria-hidden="true" />
-                  {i}
-                </li>
-              ))}
-            </ul>
+        {(transport.length > 0 || accommodation.length > 0) && (
+          <div className="grid gap-12 pb-16 md:grid-cols-2">
+            {transport.length > 0 && (
+              <div className="space-y-4">
+                <SectionHeader title={t('journeys.transport')} size="sm" as="h3" />
+                <ul className="space-y-2">
+                  {transport.map(item => (
+                    <li key={item} className={listItem}>
+                      {bullet}
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {accommodation.length > 0 && (
+              <div className="space-y-4">
+                <SectionHeader title={t('journeys.accommodation')} size="sm" as="h3" />
+                <ul className="space-y-2">
+                  {accommodation.map(item => (
+                    <li key={item} className={listItem}>
+                      {bullet}
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
-          <div className="space-y-4">
-            <SectionHeader title={t('journeys.exclusions')} size="sm" as="h3" />
-            <ul className="space-y-2">
-              {journey.exclusions.map(e => (
-                <li key={e} className="text-muted flex items-start gap-3 text-sm leading-relaxed">
-                  <span
-                    className="bg-muted mt-2 inline-block h-1 w-2 shrink-0"
-                    aria-hidden="true"
-                  />
-                  {e}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        )}
 
         {journey.images.length > 1 && (
           <div className="space-y-6 pb-16">

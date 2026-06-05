@@ -36,7 +36,12 @@ export const TimepieceCard = ({
   important,
   countdownEndsAt,
 }: TimepieceCardProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  // Material may come from the mock (an enum key like "steel" → i18n label)
+  // or from Sanity (free text like "Or jaune 18k"). Use the i18n label when
+  // the key exists, otherwise render the raw value as-is.
+  const materialKey = `timepieces.material.${timepiece.material}`;
+  const materialLabel = i18n.exists(materialKey) ? t(materialKey) : timepiece.material;
   return (
     <Card href={href} padding="none" important={important} className={className}>
       <Card.Media
@@ -67,10 +72,7 @@ export const TimepieceCard = ({
         <Card.Title>{timepiece.model}</Card.Title>
         <Card.Stats>
           <Card.Stat label={t('timepieces.meta.reference')} value={timepiece.reference} mono />
-          <Card.Stat
-            label={t('timepieces.meta.material')}
-            value={t(`timepieces.material.${timepiece.material}`)}
-          />
+          <Card.Stat label={t('timepieces.meta.material')} value={materialLabel} />
         </Card.Stats>
       </Card.Body>
       <Card.PriceBlock>

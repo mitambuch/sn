@@ -379,7 +379,12 @@ export default function SharePage() {
       case 'journey':
         return [
           { label: 'Type', value: richMock.kind.replace(/-/g, ' ') },
-          { label: 'Destinations', value: richMock.destinations },
+          {
+            label: 'Destinations',
+            value: Array.isArray(richMock.destinations)
+              ? richMock.destinations.join(' · ')
+              : richMock.destinations,
+          },
           { label: 'Durée', value: `${String(richMock.durationDays)} jours` },
           { label: 'Départ', value: richMock.origin },
         ];
