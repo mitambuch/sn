@@ -19,16 +19,17 @@ import { AudioNote } from '@features/concierge/AudioNote';
 import { InquiryDrawer } from '@features/inquiry/InquiryDrawer';
 import { useSanityItem } from '@hooks/useSanityItem';
 import { cn } from '@utils/cn';
+import { humanizeToken } from '@utils/humanizeToken';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate, useParams } from 'react-router-dom';
 
 import { GROQ_ARTWORK_DETAIL } from '@/lib/sanityQueries';
 import { getArtwork } from '@/mocks';
-import type { Artwork } from '@/types/artwork';
+import { type Artwork, formatDimensions } from '@/types/artwork';
 
 export default function ArtworkDetail() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { localePath } = useLocale();
   const { slug } = useParams<{ slug: string }>();
   const [inquiryOpen, setInquiryOpen] = useState(false);
@@ -42,16 +43,26 @@ export default function ArtworkDetail() {
   });
   if (!artwork) return <Navigate to={localePath(ROUTES.ACCOUNT_ARTWORKS)} replace />;
 
-  const dim = `${String(artwork.dimensions.heightCm)} × ${String(artwork.dimensions.widthCm)}${
-    artwork.dimensions.depthCm ? ` × ${String(artwork.dimensions.depthCm)}` : ''
-  } cm`;
+  // Dimensions: mock = structured object; Sanity = free text string.
+  const dim = formatDimensions(artwork.dimensions);
+
+  // Medium: mock enum → i18n label; Sanity value with no key → humanise.
+  const mediumKey = `artworks.medium.${artwork.medium}`;
+  const mediumLabel = i18n.exists(mediumKey) ? t(mediumKey) : humanizeToken(artwork.medium);
 
   const meta = [
     { label: t('artworks.meta.artist'), value: artwork.artistName },
     { label: t('artworks.meta.year'), value: String(artwork.year) },
-    { label: t('artworks.meta.medium'), value: t(`artworks.medium.${artwork.medium}`) },
+    { label: t('artworks.meta.medium'), value: mediumLabel },
     { label: t('artworks.meta.dimensions'), value: dim },
-    { label: t('artworks.meta.signed'), value: artwork.signed ? t('common.yes') : t('common.no') },
+    ...(typeof artwork.signed === 'boolean'
+      ? [
+          {
+            label: t('artworks.meta.signed'),
+            value: artwork.signed ? t('common.yes') : t('common.no'),
+          },
+        ]
+      : []),
     ...(artwork.edition ? [{ label: t('artworks.meta.edition'), value: artwork.edition }] : []),
   ];
 
@@ -81,12 +92,14 @@ export default function ArtworkDetail() {
             <p className="text-fg text-lg leading-relaxed text-pretty">{artwork.summary}</p>
             <p className="text-muted leading-relaxed">{artwork.description}</p>
 
-            <div className="border-border space-y-3 border-t pt-6">
-              <span className="text-muted text-xs tracking-widest uppercase">
-                {t('artworks.artist')}
-              </span>
-              <p className="text-fg leading-relaxed">{artwork.artistBio}</p>
-            </div>
+            {artwork.artistBio && (
+              <div className="border-border space-y-3 border-t pt-6">
+                <span className="text-muted text-xs tracking-widest uppercase">
+                  {t('artworks.artist')}
+                </span>
+                <p className="text-fg leading-relaxed">{artwork.artistBio}</p>
+              </div>
+            )}
 
             <button
               type="button"
@@ -115,14 +128,14 @@ export default function ArtworkDetail() {
           </aside>
         </div>
 
-        {artwork.provenance.length > 0 && (
+        {artwork.provenance && artwork.provenance.length > 0 && (
           <div className="space-y-6">
             <SectionHeader title={t('artworks.provenance')} size="sm" as="h2" />
             <Timeline items={artwork.provenance.map(p => ({ title: p }))} />
           </div>
         )}
 
-        {artwork.exhibitions.length > 0 && (
+        {artwork.exhibitions && artwork.exhibitions.length > 0 && (
           <div className="space-y-6">
             <SectionHeader title={t('artworks.exhibitions')} size="sm" as="h2" />
             <ul className="border-border divide-border divide-y border-t">

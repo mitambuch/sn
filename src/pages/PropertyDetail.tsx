@@ -22,6 +22,7 @@ import { AudioNote } from '@features/concierge/AudioNote';
 import { InquiryDrawer } from '@features/inquiry/InquiryDrawer';
 import { useSanityItem } from '@hooks/useSanityItem';
 import { cn } from '@utils/cn';
+import { humanizeToken } from '@utils/humanizeToken';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate, useParams } from 'react-router-dom';
@@ -30,16 +31,8 @@ import { GROQ_PROPERTY_DETAIL } from '@/lib/sanityQueries';
 import { getProperty } from '@/mocks';
 import type { Property } from '@/types/property';
 
-const KIND_LABEL_KEYS = {
-  chalet: 'properties.kind.chalet',
-  villa: 'properties.kind.villa',
-  penthouse: 'properties.kind.penthouse',
-  estate: 'properties.kind.estate',
-  townhouse: 'properties.kind.townhouse',
-} as const;
-
 export default function PropertyDetail() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { localePath } = useLocale();
   const { slug } = useParams<{ slug: string }>();
 
@@ -59,6 +52,14 @@ export default function PropertyDetail() {
   const heroImage = property.images[0]!;
   const restImages = property.images.slice(1);
 
+  // kind: mock enum → i18n label; Sanity may hold a value with no key → humanise.
+  const kindKey = `properties.kind.${property.kind}`;
+  const kindLabel = i18n.exists(kindKey) ? t(kindKey) : humanizeToken(property.kind);
+  // availability: mock enum (sale/rent/both) → i18n label; Sanity stores free
+  // localeString text (e.g. "Disponible dès juin") → render as-is.
+  const availKey = `properties.availability.${property.availability}`;
+  const availLabel = i18n.exists(availKey) ? t(availKey) : property.availability;
+
   const meta = [
     { label: t('properties.meta.surface'), value: `${String(property.surfaceSqm)} m²` },
     { label: t('properties.meta.bedrooms'), value: String(property.bedrooms) },
@@ -75,7 +76,7 @@ export default function PropertyDetail() {
     },
     {
       label: t('properties.meta.availability'),
-      value: t(`properties.availability.${property.availability}`),
+      value: availLabel,
     },
   ];
 
@@ -84,7 +85,7 @@ export default function PropertyDetail() {
       <DetailHero
         imageSrc={heroImage.src}
         imageAlt={heroImage.alt}
-        eyebrow={t(KIND_LABEL_KEYS[property.kind])}
+        eyebrow={kindLabel}
         title={property.title}
         caption={`${property.region} · ${String(property.surfaceSqm)} m²`}
         height="full"
@@ -123,7 +124,7 @@ export default function PropertyDetail() {
             <p className="text-fg text-lg leading-relaxed text-pretty">{property.summary}</p>
             <p className="text-muted leading-relaxed">{property.description}</p>
 
-            {property.highlights.length > 0 && (
+            {property.highlights && property.highlights.length > 0 && (
               <ul className="border-border grid grid-cols-1 gap-4 border-t pt-6 sm:grid-cols-2">
                 {property.highlights.map(h => (
                   <li key={h} className="text-fg flex items-start gap-3 text-sm leading-relaxed">

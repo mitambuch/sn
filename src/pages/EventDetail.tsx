@@ -18,6 +18,7 @@ import { resolveEventDate } from '@features/events/eventDate';
 import { InquiryDrawer } from '@features/inquiry/InquiryDrawer';
 import { useSanityItem } from '@hooks/useSanityItem';
 import { cn } from '@utils/cn';
+import { humanizeToken } from '@utils/humanizeToken';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate, useParams } from 'react-router-dom';
@@ -43,6 +44,12 @@ export default function EventDetail() {
 
   const { long: dateLabel, time: timeLabel } = resolveEventDate(event, i18n.language, t);
 
+  // category / dressCode: mock enum → i18n label; Sanity value with no key → humanise.
+  const catKey = `events.category.${event.category}`;
+  const catLabel = i18n.exists(catKey) ? t(catKey) : humanizeToken(event.category);
+  const dressKey = `events.dressCode.${event.dressCode}`;
+  const dressLabel = i18n.exists(dressKey) ? t(dressKey) : humanizeToken(event.dressCode);
+
   const meta = [
     { label: t('events.meta.date'), value: dateLabel },
     // WHY: no clock time for year-round / free-text dates — omit the row.
@@ -51,8 +58,8 @@ export default function EventDetail() {
     { label: t('events.meta.city'), value: `${event.city} · ${event.countryCode}` },
     { label: t('events.meta.capacity'), value: String(event.capacity) },
     { label: t('events.meta.allocatedSeats'), value: String(event.allocatedSeats) },
-    { label: t('events.meta.dressCode'), value: t(`events.dressCode.${event.dressCode}`) },
-    { label: t('events.meta.category'), value: t(`events.category.${event.category}`) },
+    { label: t('events.meta.dressCode'), value: dressLabel },
+    { label: t('events.meta.category'), value: catLabel },
   ];
 
   return (
@@ -60,7 +67,7 @@ export default function EventDetail() {
       <DetailHero
         imageSrc={event.images[0]?.src ?? ''}
         imageAlt={event.images[0]?.alt ?? event.title}
-        eyebrow={t(`events.category.${event.category}`)}
+        eyebrow={catLabel}
         title={event.title}
         caption={`${dateLabel} · ${event.city}`}
         height="full"

@@ -38,7 +38,8 @@ export interface Property {
   description: string;
   /** First image is the hero. Min 4 images recommended. */
   images: PropertyImage[];
-  /** Concierge-curated highlights (e.g. "Private ski room", "Panoramic Mont-Blanc view"). */
-  highlights: string[];
+  /** Concierge-curated highlights (e.g. "Private ski room", "Panoramic Mont-Blanc view").
+   *  Mock-only for now — not in the Sanity schema, so optional + guarded. */
+  highlights?: string[];
   createdAt: string;
 }

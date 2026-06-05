@@ -15,6 +15,7 @@ import { SimilarItemsStrip } from '@features/catalogue/SimilarItemsStrip';
 import { InquiryDrawer } from '@features/inquiry/InquiryDrawer';
 import { useSanityItem } from '@hooks/useSanityItem';
 import { cn } from '@utils/cn';
+import { humanizeToken } from '@utils/humanizeToken';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate, useParams } from 'react-router-dom';
@@ -24,7 +25,7 @@ import { getConciergeService } from '@/mocks';
 import type { ConciergeService } from '@/types/concierge';
 
 export default function ConciergeDetail() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { localePath } = useLocale();
   const { slug } = useParams<{ slug: string }>();
   const [inquiryOpen, setInquiryOpen] = useState(false);
@@ -38,11 +39,15 @@ export default function ConciergeDetail() {
   });
   if (!service) return <Navigate to={localePath(ROUTES.ACCOUNT_CONCIERGE)} replace />;
 
+  // category: mock enum → i18n label; Sanity value with no key → humanise.
+  const catKey = `concierge.category.${service.category}`;
+  const catLabel = i18n.exists(catKey) ? t(catKey) : humanizeToken(service.category);
+
   return (
     <Container size="xl">
       <div className="space-y-16 py-12">
         <SectionHeader
-          eyebrow={t(`concierge.category.${service.category}`)}
+          eyebrow={catLabel}
           title={service.title}
           lede={service.summary}
           size="md"
@@ -85,7 +90,7 @@ export default function ConciergeDetail() {
           </aside>
         </div>
 
-        {service.caseStudies.length > 0 && (
+        {service.caseStudies && service.caseStudies.length > 0 && (
           <div className="space-y-6">
             <SectionHeader title={t('concierge.caseStudies')} size="sm" as="h2" />
             <ul className="border-border divide-border divide-y rounded-lg border">

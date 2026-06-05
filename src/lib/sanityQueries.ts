@@ -232,7 +232,7 @@ export const GROQ_PROPERTY_DETAIL = (slug: string) =>
     "plotSqm": landArea,
     amenities[]{ "label": ${L_SELF} },
     price,
-    availability
+    "availability": ${L('availability')}
   }`;
 
 export const GROQ_TIMEPIECE_DETAIL = (slug: string) =>

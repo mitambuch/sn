@@ -10,6 +10,7 @@ import { SectionHeader } from '@components/ui/SectionHeader';
 import { ROUTES } from '@constants/routes';
 import { useSanityItem } from '@hooks/useSanityItem';
 import { cn } from '@utils/cn';
+import { humanizeToken } from '@utils/humanizeToken';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate, useParams } from 'react-router-dom';
 
@@ -47,6 +48,10 @@ export default function NewsDetail() {
     year: 'numeric',
   });
 
+  // kind: mock enum → i18n label; Sanity category value with no key → humanise.
+  const kindKey = `articles.kind.${article.kind}`;
+  const kindLabel = i18n.exists(kindKey) ? t(kindKey) : humanizeToken(article.kind);
+
   const relatedHref = article.relatedItem
     ? localePath(
         RELATED_ROUTE_BY_MODULE[article.relatedItem.module] + '/' + article.relatedItem.slug,
@@ -58,8 +63,7 @@ export default function NewsDetail() {
       <article className="space-y-12 py-12">
         <header className="space-y-4">
           <span className="text-muted text-xs tracking-widest uppercase">
-            {t(`articles.kind.${article.kind}`)} · {dateLabel} · {String(article.readMinutes)}{' '}
-            {t('articles.readMinutes')}
+            {kindLabel} · {dateLabel} · {String(article.readMinutes)} {t('articles.readMinutes')}
           </span>
           <SectionHeader title={article.title} lede={article.excerpt} size="lg" as="h1" />
         </header>

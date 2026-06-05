@@ -37,8 +37,9 @@ export interface ConciergeService {
   summary: string;
   /** Long-form description on the detail page. */
   description: string;
-  /** Examples of past fulfilment, anonymised. */
-  caseStudies: ConciergeCaseStudy[];
+  /** Examples of past fulfilment, anonymised. Mock-only — not in the Sanity
+   *  schema yet, so optional + guarded. */
+  caseStudies?: ConciergeCaseStudy[];
   /** Typical lead-time hint, e.g. "6h notice", "48h advance". */
   leadTime: string;
   images: ConciergeServiceImage[];
