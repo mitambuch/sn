@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-06-05** — [Session — Modèle de contenu catalogue (retour client Studio)](sessions/2026-06-05-1451.md)
 - **2026-06-04** — [Session — Refonte du tunnel d'accès (mot de passe, un seul flux)](sessions/2026-06-04-1119.md)
 - **2026-06-03** — [Session — Tunnel d'accès, audit écritures DB, déploiement audience](sessions/2026-06-03-1308.md)
-- **2026-06-03** — [Session — Feature audience segmentation, 4 phases complètes](sessions/2026-06-03-1000.md)
 
 ## Active decisions (top 5)
 
@@ -19,6 +19,7 @@
 
 ## Open frictions
 
+- **2026-06-05** — [Catalogue : trois modèles de données parallèles qui divergent](frictions/2026-06-05-catalogue-triple-model-divergence.md)
 - **2026-06-04** — [`pnpm validate` flake — timeout 5s trop court sous coverage v8](frictions/2026-06-04-vitest-coverage-testtimeout-flake.md)
 - **2026-06-04** — [« Voile noir » après déploiement = cache navigateur, pas un bug](frictions/2026-06-04-post-deploy-stale-cache.md)
 - **2026-06-03** — [Piège — `.upsert()` client contre un grant volontairement sans UPDATE](frictions/2026-06-03-saved-items-upsert-no-update-grant.md)
@@ -38,7 +39,7 @@
 
 ## Deep dive
 
-- Full catalogue (149 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (151 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
