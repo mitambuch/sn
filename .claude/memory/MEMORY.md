@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-06-08** — [Session — Consolidation + mise en ligne (2 branches → main)](sessions/2026-06-08-1635.md)
 - **2026-06-08** — [Session — Triage salve client « Voyages » + fix bug listes multilingues](sessions/2026-06-08-1537.md)
 - **2026-06-08** — [Session — Espace membre « en préparation » (un vrai client s'est inscrit)](sessions/2026-06-08-1137.md)
-- **2026-06-05** — [Session — Modèle de contenu catalogue (retour client Studio)](sessions/2026-06-05-1451.md)
 
 ## Active decisions (top 5)
 
@@ -40,7 +40,7 @@
 
 ## Deep dive
 
-- Full catalogue (155 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (156 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
