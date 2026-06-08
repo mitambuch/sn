@@ -275,6 +275,11 @@
     "exclusive": {
       "eyebrow": "Offres exclusives",
       "cta": "Découvrir vos opportunités du moment"
+    },
+    "preparing": {
+      "eyebrow": "Espace privé",
+      "title": "Votre sélection est en cours de préparation",
+      "body": "Votre concierge compose votre espace personnel et vous informera dès qu'il sera disponible. Toute demande peut déjà lui être adressée."
     }
   },
   "wizard": {

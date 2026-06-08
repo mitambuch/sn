@@ -1,7 +1,7 @@
 import { LocaleProvider } from '@app/LocaleProvider';
 import { AuthProvider } from '@context/AuthContext';
 import { ThemeProvider } from '@context/ThemeContext';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
@@ -69,15 +69,17 @@ describe('AppLayout', () => {
   it('renders sidebar nav + matched child page when authenticated', () => {
     seedClientSession();
     renderLayout();
-    expect(screen.getByRole('navigation', { name: /account modules/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Événements' })).toHaveAttribute(
+    const sidebar = screen.getByRole('navigation', { name: /account modules/i });
+    expect(sidebar).toBeInTheDocument();
+    // Holding state (FEATURES.catalogueLive false) : the dashboard link is
+    // present but the mock-backed module surfaces are stripped from the nav.
+    expect(within(sidebar).getByRole('link', { name: 'Accueil' })).toHaveAttribute(
       'href',
-      '/fr/account/events',
+      '/fr/account',
     );
-    expect(screen.getByRole('link', { name: 'Propriétés' })).toHaveAttribute(
-      'href',
-      '/fr/account/properties',
-    );
+    expect(within(sidebar).queryByRole('link', { name: 'Propriétés' })).not.toBeInTheDocument();
+    expect(within(sidebar).queryByRole('link', { name: 'Événements' })).not.toBeInTheDocument();
+    expect(within(sidebar).queryByRole('link', { name: 'Ma collection' })).not.toBeInTheDocument();
     expect(screen.getByTestId('account-page')).toBeInTheDocument();
   });
 

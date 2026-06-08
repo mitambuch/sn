@@ -258,6 +258,11 @@
     "exclusive": {
       "eyebrow": "Exclusive offers",
       "cta": "Discover today's opportunities"
+    },
+    "preparing": {
+      "eyebrow": "Private area",
+      "title": "Your selection is being prepared",
+      "body": "Your concierge is composing your personal space and will notify you as soon as it is available. Any request can already be sent."
     }
   },
   "wizard": {

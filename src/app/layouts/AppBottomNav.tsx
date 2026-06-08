@@ -20,6 +20,7 @@
 // ═══════════════════════════════════════════════════
 
 import { useLocale } from '@app/LocaleProvider';
+import { FEATURES } from '@config/features';
 import { ROUTES } from '@constants/routes';
 import { useAccountRequest } from '@context/useAccountRequest';
 import { cn } from '@utils/cn';
@@ -35,14 +36,32 @@ interface BottomTab {
   exact?: boolean;
 }
 
-// 4 tabs : 2 left of the FAB + 2 right. Stays symmetric.
-const TABS_LEFT: readonly BottomTab[] = [
-  { to: ROUTES.ACCOUNT, labelKey: 'account.nav.dashboard', icon: LayoutDashboard, exact: true },
-  { to: ROUTES.ACCOUNT_CATALOGUE, labelKey: 'account.nav.catalogue', icon: Grid3x3 },
-];
-const TABS_RIGHT: readonly BottomTab[] = [
-  { to: ROUTES.ACCOUNT_INQUIRIES, labelKey: 'account.nav.inquiries', icon: Inbox, exact: true },
-];
+const DASHBOARD_TAB: BottomTab = {
+  to: ROUTES.ACCOUNT,
+  labelKey: 'account.nav.dashboard',
+  icon: LayoutDashboard,
+  exact: true,
+};
+const CATALOGUE_TAB: BottomTab = {
+  to: ROUTES.ACCOUNT_CATALOGUE,
+  labelKey: 'account.nav.catalogue',
+  icon: Grid3x3,
+};
+const INQUIRIES_TAB: BottomTab = {
+  to: ROUTES.ACCOUNT_INQUIRIES,
+  labelKey: 'account.nav.inquiries',
+  icon: Inbox,
+  exact: true,
+};
+
+// Tabs flank the center FAB. Catalogue live : 2 left (Accueil · Tout) + 1
+// right (Demandes). While hidden (FEATURES.catalogueLive false) : Demandes
+// moves left next to Accueil, the right slot is empty and the grid is padded
+// so it stays 5-col — the FAB keeps its dead-center column either way.
+const TABS_LEFT: readonly BottomTab[] = FEATURES.catalogueLive
+  ? [DASHBOARD_TAB, CATALOGUE_TAB]
+  : [DASHBOARD_TAB, INQUIRIES_TAB];
+const TABS_RIGHT: readonly BottomTab[] = FEATURES.catalogueLive ? [INQUIRIES_TAB] : [];
 
 interface AppBottomNavProps {
   /** Click handler for the "Plus" tab — opens the sidebar drawer with
@@ -140,6 +159,10 @@ export const AppBottomNav = ({ onMoreClick, moreOpen }: AppBottomNavProps) => {
           <MoreHorizontal size={18} strokeWidth={1.5} aria-hidden="true" />
           <span className="font-mono">{t('account.nav.more')}</span>
         </button>
+
+        {/* Pad the 5-col grid when the right slot is empty (catalogue hidden)
+            so the FAB stays over the dead-center spacer column. */}
+        {TABS_RIGHT.length === 0 && <span aria-hidden="true" />}
       </div>
     </nav>
   );
