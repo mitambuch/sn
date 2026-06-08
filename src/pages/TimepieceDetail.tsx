@@ -33,7 +33,7 @@ import { getTimepiece } from '@/mocks';
 import type { Timepiece } from '@/types/timepiece';
 
 export default function TimepieceDetail() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { localePath } = useLocale();
   const { slug } = useParams<{ slug: string }>();
   const [inquiryOpen, setInquiryOpen] = useState(false);
@@ -47,6 +47,11 @@ export default function TimepieceDetail() {
   });
   if (!tp) return <Navigate to={localePath(ROUTES.ACCOUNT_TIMEPIECES)} replace />;
 
+  // Material: mock enum key ("steel") → i18n label; Sanity free text
+  // ("Or jaune 18k") → rendered as-is.
+  const materialKey = `timepieces.material.${tp.material}`;
+  const materialLabel = i18n.exists(materialKey) ? t(materialKey) : tp.material;
+
   const meta = [
     { label: t('timepieces.meta.brand'), value: tp.brand },
     { label: t('timepieces.meta.model'), value: tp.model },
@@ -56,7 +61,7 @@ export default function TimepieceDetail() {
     ...(tp.caseDiameterMm
       ? [{ label: t('timepieces.meta.diameter'), value: `${String(tp.caseDiameterMm)} mm` }]
       : []),
-    { label: t('timepieces.meta.material'), value: t(`timepieces.material.${tp.material}`) },
+    { label: t('timepieces.meta.material'), value: materialLabel },
     { label: t('timepieces.meta.condition'), value: t(`timepieces.condition.${tp.condition}`) },
     {
       label: t('timepieces.meta.fullSet'),

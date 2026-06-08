@@ -750,6 +750,9 @@
     "inclusions": "Inclus",
     "exclusions": "Non inclus",
     "gallery": "Galerie",
+    "day": "Jour",
+    "transport": "Transport",
+    "accommodation": "Hébergement",
     "kind": {
       "private-jet": "Jet privé",
       "yacht": "Yacht",
@@ -763,7 +766,8 @@
       "origin": "Départ",
       "destinations": "Destinations",
       "guestCapacity": "Capacité voyageurs",
-      "earliestStart": "Date au plus tôt"
+      "earliestStart": "Date au plus tôt",
+      "partySize": "Voyageurs"
     }
   },
   "events": {

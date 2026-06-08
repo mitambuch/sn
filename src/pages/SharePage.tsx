@@ -40,7 +40,7 @@ import {
   getTimepiece,
 } from '@/mocks';
 import type { Article } from '@/types/article';
-import type { Artwork } from '@/types/artwork';
+import { type Artwork, formatDimensions } from '@/types/artwork';
 import type { ConciergeService } from '@/types/concierge';
 import type { Event } from '@/types/event';
 import type { Journey } from '@/types/journey';
@@ -365,10 +365,7 @@ export default function SharePage() {
           { label: 'Full set', value: richMock.fullSet ? 'Oui' : 'Non' },
         ];
       case 'artwork': {
-        const dims = richMock.dimensions;
-        const dimStr = dims
-          ? `${String(dims.heightCm)} × ${String(dims.widthCm)}${dims.depthCm ? ` × ${String(dims.depthCm)}` : ''} cm`
-          : '';
+        const dimStr = formatDimensions(richMock.dimensions);
         return [
           { label: 'Artiste', value: richMock.artistName },
           { label: 'Année', value: String(richMock.year) },
@@ -379,7 +376,12 @@ export default function SharePage() {
       case 'journey':
         return [
           { label: 'Type', value: richMock.kind.replace(/-/g, ' ') },
-          { label: 'Destinations', value: richMock.destinations },
+          {
+            label: 'Destinations',
+            value: Array.isArray(richMock.destinations)
+              ? richMock.destinations.join(' · ')
+              : richMock.destinations,
+          },
           { label: 'Durée', value: `${String(richMock.durationDays)} jours` },
           { label: 'Départ', value: richMock.origin },
         ];

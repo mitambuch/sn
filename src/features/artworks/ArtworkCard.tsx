@@ -13,7 +13,7 @@ import { Card } from '@components/ui/Card';
 import { HeartButton } from '@components/ui/HeartButton';
 import { useTranslation } from 'react-i18next';
 
-import type { Artwork } from '@/types/artwork';
+import { type Artwork, formatDimensions } from '@/types/artwork';
 
 interface ArtworkCardProps {
   artwork: Artwork;
@@ -56,7 +56,7 @@ export const ArtworkCard = ({
           <Card.Stat label={t('artworks.meta.medium')} value={mediumLabel} />
           <Card.Stat
             label={t('artworks.meta.dimensions')}
-            value={`${artwork.dimensions.heightCm} × ${artwork.dimensions.widthCm} cm`}
+            value={formatDimensions(artwork.dimensions)}
           />
         </Card.Stats>
       </Card.Body>

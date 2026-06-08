@@ -33,6 +33,11 @@ export const JourneyCard = ({
   className,
 }: JourneyCardProps) => {
   const { t } = useTranslation();
+  // Sanity returns destinations as a string[]; mock/admin as a "·"-joined
+  // string. Normalise to a single line for the card stat.
+  const destinations = Array.isArray(journey.destinations)
+    ? journey.destinations.join(' · ')
+    : journey.destinations;
   return (
     <Card href={href} padding="none" className={className}>
       <Card.Media
@@ -53,11 +58,7 @@ export const JourneyCard = ({
         <Card.Eyebrow>{kindLabel}</Card.Eyebrow>
         <Card.Title>{journey.title}</Card.Title>
         <Card.Stats>
-          <Card.Stat
-            label={t('common.itinerary')}
-            value={journey.destinations}
-            className="col-span-2"
-          />
+          <Card.Stat label={t('common.itinerary')} value={destinations} className="col-span-2" />
         </Card.Stats>
       </Card.Body>
     </Card>

@@ -96,9 +96,9 @@ export const timepiece = defineType({
     defineField({
       name: 'caseMaterial',
       title: 'Matériau boîtier',
-      type: 'string',
+      type: 'localeString',
       group: 'specs',
-      description: 'Ex: "Acier", "Or jaune 18k", "Platine 950".',
+      description: 'Traduisible (FR/EN). Ex: "Acier"/"Steel", "Or jaune 18k"/"18k yellow gold".',
     }),
     defineField({
       name: 'movement',
