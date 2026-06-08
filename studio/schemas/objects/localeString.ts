@@ -29,4 +29,19 @@ export const localeString = defineType({
     }),
     defineField({ name: 'en', title: 'English', type: 'string' }),
   ],
+  // WHY: without a preview, every `localeString` inside an array renders as
+  // "Untitled" in the Studio list — the editor can't tell items apart nor see
+  // whether EN is filled, which reads as "the translation didn't save". Title
+  // shows FR (EN fallback) ; subtitle surfaces the EN value or a to-do marker.
+  preview: {
+    select: { fr: 'fr', en: 'en' },
+    prepare: ({ fr, en }) => {
+      const frText = String(fr ?? '').trim();
+      const enText = String(en ?? '').trim();
+      return {
+        title: frText || enText || '(vide)',
+        subtitle: enText ? `EN · ${enText}` : 'EN à compléter',
+      };
+    },
+  },
 });

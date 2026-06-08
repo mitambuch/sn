@@ -25,4 +25,18 @@ export const localeText = defineType({
     }),
     defineField({ name: 'en', title: 'English', type: 'text', rows: 4 }),
   ],
+  // WHY: same as localeString — inside an array (e.g. page intro paragraphs)
+  // an item without a preview shows as "Untitled". Title = FR (EN fallback) ;
+  // subtitle flags whether the EN translation is filled.
+  preview: {
+    select: { fr: 'fr', en: 'en' },
+    prepare: ({ fr, en }) => {
+      const frText = String(fr ?? '').trim();
+      const enText = String(en ?? '').trim();
+      return {
+        title: frText || enText || '(vide)',
+        subtitle: enText ? 'EN renseigné' : 'EN à compléter',
+      };
+    },
+  },
 });
