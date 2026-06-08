@@ -15,6 +15,7 @@ import { RequireAuth } from '@app/guards/RequireAuth';
 import { AppBottomNav } from '@app/layouts/AppBottomNav';
 import { useLocale } from '@app/LocaleProvider';
 import { AuthHeader } from '@components/layout/AuthHeader';
+import { FEATURES } from '@config/features';
 import { ROUTES } from '@constants/routes';
 import { AccountRequestModalProvider } from '@context/AccountRequestModalContext';
 import { useAuth } from '@context/AuthContext';
@@ -131,6 +132,19 @@ const AppShell = () => {
   const navigate = useNavigate();
   const palette = useCommandPalette();
 
+  // WHY: while the catalogue is backed by mock data (FEATURES.catalogueLive
+  // false), strip every product surface from the member nav — a real client
+  // only sees what actually works: dashboard, demandes, profil, préférences.
+  // "Ma collection" (saved) is dropped too : it only holds catalogue items.
+  const catalogueLive = FEATURES.catalogueLive;
+  const navTop = catalogueLive
+    ? ACCOUNT_NAV_TOP
+    : ACCOUNT_NAV_TOP.filter(item => item.to === ROUTES.ACCOUNT);
+  const navModules = catalogueLive ? ACCOUNT_NAV_MODULES : [];
+  const navUser = catalogueLive
+    ? ACCOUNT_NAV_USER
+    : ACCOUNT_NAV_USER.filter(item => item.to !== ROUTES.ACCOUNT_SAVED);
+
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [prevPathname, setPrevPathname] = useState(pathname);
 
@@ -211,7 +225,7 @@ const AppShell = () => {
             <X size={14} strokeWidth={1.5} aria-hidden="true" />
           </button>
 
-          {ACCOUNT_NAV_TOP.map(item => (
+          {navTop.map(item => (
             <NavLink
               key={item.to}
               item={item}
@@ -219,12 +233,16 @@ const AppShell = () => {
               exact={item.to === ROUTES.ACCOUNT}
             />
           ))}
+          {navModules.length > 0 && (
+            <>
+              <span className="bg-fg/15 my-3 block h-px w-full" aria-hidden="true" />
+              {navModules.map(item => (
+                <NavLink key={item.to} item={item} pathname={pathname} />
+              ))}
+            </>
+          )}
           <span className="bg-fg/15 my-3 block h-px w-full" aria-hidden="true" />
-          {ACCOUNT_NAV_MODULES.map(item => (
-            <NavLink key={item.to} item={item} pathname={pathname} />
-          ))}
-          <span className="bg-fg/15 my-3 block h-px w-full" aria-hidden="true" />
-          {ACCOUNT_NAV_USER.map(item => (
+          {navUser.map(item => (
             <NavLink key={item.to} item={item} pathname={pathname} exact />
           ))}
           {isAdmin && (
@@ -269,12 +287,15 @@ const AppShell = () => {
         moreOpen={drawerOpen}
       />
 
-      {/* CommandPalette stays mounted — accessible via Cmd+K shortcut from
-          useCommandPalette hook. Floating button removed per owner audit
-          (UI clutter without clear use). ConciergeDock removed entirely
-          2026-05-14 14:08 — owner direction : redondant avec le FAB
-          central du bottom nav + le ConciergeCard dans le dashboard. */}
-      <CommandPalette open={palette.open} onClose={() => palette.setOpen(false)} />
+      {/* CommandPalette — accessible via Cmd+K shortcut from useCommandPalette.
+          Mounted only when the catalogue is live : it indexes the catalogue
+          (mock products today), so while FEATURES.catalogueLive is false the
+          search would only surface fake entries — keep it off entirely.
+          Floating button removed per owner audit (UI clutter). ConciergeDock
+          removed 2026-05-14 14:08 — redondant avec le FAB central. */}
+      {catalogueLive && (
+        <CommandPalette open={palette.open} onClose={() => palette.setOpen(false)} />
+      )}
     </>
   );
 };

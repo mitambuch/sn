@@ -6,16 +6,16 @@
 ## Recent sessions (top 3)
 
 - **2026-06-08** — [Session — Triage salve client « Voyages » + fix bug listes multilingues](sessions/2026-06-08-1537.md)
+- **2026-06-08** — [Session — Espace membre « en préparation » (un vrai client s'est inscrit)](sessions/2026-06-08-1137.md)
 - **2026-06-05** — [Session — Modèle de contenu catalogue (retour client Studio)](sessions/2026-06-05-1451.md)
-- **2026-06-04** — [Session — Refonte du tunnel d'accès (mot de passe, un seul flux)](sessions/2026-06-04-1119.md)
 
 ## Active decisions (top 5)
 
+- **2026-06-08** — [Catalogue masqué derrière un flag « espace en préparation »](decisions/2026-06-08-catalogue-holding-state-flag.md) · #content #routing #decision #client-specific
 - **2026-06-04** — [Tunnel d'accès basé mot de passe (remplace le lien magique)](decisions/2026-06-04-password-access-tunnel.md) · #auth #security #decision #client-specific
 - **2026-06-03** — [Audience par segment — gate serveur Netlify + dataset Sanity privé](decisions/2026-06-03-audience-server-gate.md) · #security #sanity #auth #decision
 - **2026-06-01** — [Dates d'événement flexibles — mode exact / toute l'année / texte libre](decisions/2026-06-01-event-flexible-dates.md) · #sanity #i18n #content #decision
 - **2026-05-14** — [Landing copy mirrored to a Sanity singleton with i18n fallback](decisions/2026-05-14-sanity-landing-singleton.md) · #sanity #i18n #content #decision
-- **2026-05-14** — [Atomic single-use invitation redemption via Postgres RPC](decisions/2026-05-14-atomic-redemption-rpc.md) · #auth #security #decision #client-specific
 
 ## Open frictions
 
@@ -40,7 +40,7 @@
 
 ## Deep dive
 
-- Full catalogue (153 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (155 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 

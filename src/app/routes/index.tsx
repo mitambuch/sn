@@ -2,12 +2,13 @@ import { AdminLayout } from '@app/layouts/AdminLayout';
 import { AppLayout } from '@app/layouts/AppLayout';
 import { PublicLayout } from '@app/layouts/PublicLayout';
 import RootLayout from '@app/layouts/RootLayout';
-import { LocaleProvider } from '@app/LocaleProvider';
+import { LocaleProvider, useLocale } from '@app/LocaleProvider';
 import { LocaleRedirect } from '@app/LocaleRedirect';
 import { Spinner } from '@components/ui/Spinner';
+import { FEATURES } from '@config/features';
 import { getInitialLocale, isLocale } from '@config/i18n';
 import { ROUTES } from '@constants/routes';
-import type { ComponentType } from 'react';
+import type { ComponentType, ReactElement } from 'react';
 import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom';
 
@@ -82,6 +83,21 @@ function PageLoader() {
   );
 }
 
+/* ─── Catalogue gate ──────────────────────────────────────────
+   While FEATURES.catalogueLive is false the catalogue + module pages render
+   mock data, so a real client must never reach them — not via the nav (hidden
+   in AppLayout) nor a typed URL or stale link. Each gated route redirects to
+   the account home instead. The gated element is only created, never mounted,
+   so its lazy chunk isn't even fetched. Flip the flag → routes resolve live.
+   ──────────────────────────────────────────────────────────── */
+function ToAccountHome() {
+  const { localePath } = useLocale();
+  return <Navigate to={localePath(ROUTES.ACCOUNT)} replace />;
+}
+
+const gated = (node: ReactElement): ReactElement =>
+  FEATURES.catalogueLive ? node : <ToAccountHome />;
+
 /* ─── Locale-scoped layout ──────────────────────────────────── */
 function LocaleLayout() {
   const { locale: param } = useParams<{ locale?: string }>();
@@ -145,22 +161,25 @@ export default function AppRoutes() {
           {/* ─── Member surface (RequireAuth via AppLayout) ─── */}
           <Route path="account" element={<AppLayout />}>
             <Route index element={<AccountDashboard />} />
-            <Route path="catalogue" element={<AccountCatalogue />} />
-            <Route path="news" element={<NewsList />} />
-            <Route path="news/:slug" element={<NewsDetail />} />
-            <Route path="saved" element={<AccountSaved />} />
-            <Route path="events" element={<EventsList />} />
-            <Route path="events/:slug" element={<EventDetail />} />
-            <Route path="properties" element={<PropertiesList />} />
-            <Route path="properties/:slug" element={<PropertyDetail />} />
-            <Route path="timepieces" element={<TimepiecesList />} />
-            <Route path="timepieces/:slug" element={<TimepieceDetail />} />
-            <Route path="artworks" element={<ArtworksList />} />
-            <Route path="artworks/:slug" element={<ArtworkDetail />} />
-            <Route path="journeys" element={<JourneysList />} />
-            <Route path="journeys/:slug" element={<JourneyDetail />} />
-            <Route path="concierge" element={<ConciergeList />} />
-            <Route path="concierge/:slug" element={<ConciergeDetail />} />
+            {/* ─── Catalogue + module surfaces — gated behind FEATURES.catalogueLive
+                  (mock data today). Redirect to /account while hidden. ─── */}
+            <Route path="catalogue" element={gated(<AccountCatalogue />)} />
+            <Route path="news" element={gated(<NewsList />)} />
+            <Route path="news/:slug" element={gated(<NewsDetail />)} />
+            <Route path="saved" element={gated(<AccountSaved />)} />
+            <Route path="events" element={gated(<EventsList />)} />
+            <Route path="events/:slug" element={gated(<EventDetail />)} />
+            <Route path="properties" element={gated(<PropertiesList />)} />
+            <Route path="properties/:slug" element={gated(<PropertyDetail />)} />
+            <Route path="timepieces" element={gated(<TimepiecesList />)} />
+            <Route path="timepieces/:slug" element={gated(<TimepieceDetail />)} />
+            <Route path="artworks" element={gated(<ArtworksList />)} />
+            <Route path="artworks/:slug" element={gated(<ArtworkDetail />)} />
+            <Route path="journeys" element={gated(<JourneysList />)} />
+            <Route path="journeys/:slug" element={gated(<JourneyDetail />)} />
+            <Route path="concierge" element={gated(<ConciergeList />)} />
+            <Route path="concierge/:slug" element={gated(<ConciergeDetail />)} />
+            {/* ─── Always-on member surfaces (real data) ─── */}
             <Route path="profile" element={<AccountProfile />} />
             <Route path="inquiries" element={<AccountInquiries />} />
             <Route path="preferences" element={<AccountPreferences />} />

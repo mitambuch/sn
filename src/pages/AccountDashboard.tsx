@@ -16,6 +16,7 @@
 import { useLocale } from '@app/LocaleProvider';
 import { Skeleton } from '@components/ui/Skeleton';
 import { StatusPill } from '@components/ui/StatusPill';
+import { FEATURES } from '@config/features';
 import { ROUTES } from '@constants/routes';
 import { useAuth } from '@context/AuthContext';
 import { useAccountRequest } from '@context/useAccountRequest';
@@ -196,6 +197,33 @@ const ExclusiveSection = () => {
   );
 };
 
+/* ─── Section: catalogue-in-preparation notice ──────────────
+   Replaces the exclusive-offers + concierge blocks while
+   FEATURES.catalogueLive is false. Honest, retenue, zero fake PII — the
+   real channel to the concierge is the request CTA in the cell beside it. */
+const PreparingSection = () => {
+  const { t } = useTranslation();
+  return (
+    <section
+      aria-labelledby="preparing-heading"
+      className={cn(SECTION_PAD, 'flex h-full flex-col justify-center')}
+    >
+      <span className="text-muted font-mono text-[10px] tracking-widest uppercase">
+        {t('account.preparing.eyebrow')}
+      </span>
+      <h2
+        id="preparing-heading"
+        className="text-fg mt-3 text-lg leading-snug font-medium md:text-xl"
+      >
+        {t('account.preparing.title')}
+      </h2>
+      <p className="text-muted mt-3 max-w-md text-sm leading-relaxed">
+        {t('account.preparing.body')}
+      </p>
+    </section>
+  );
+};
+
 /* ─── Section: Concierge (light surface variant) ────── */
 // WHY: original draft used inverted palette (bg-fg text-bg). Owner direction
 // 2026-05-14 14:41 — "le noir est trop présent sur mobile, ça nique les yeux".
@@ -330,6 +358,32 @@ const RecentInquiriesSection = ({ loading }: { loading: boolean }) => {
 
 export default function AccountDashboard() {
   const loading = useFakeLoading(450);
+
+  // Holding state — while the catalogue is mock-backed (FEATURES.catalogueLive
+  // false), a real client sees only what works : greeting + the live request
+  // channel + a preparation notice + their own inquiries. The fake vitrine
+  // (ExclusiveSection) and the placeholder concierge contact (ConciergeSection)
+  // are dropped here ; flip the flag to restore the full dashboard below.
+  if (!FEATURES.catalogueLive) {
+    return (
+      <div className="w-full">
+        <div className="border-fg/10 border-b">
+          <GreetingSection />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12">
+          <div className="border-fg/10 border-b lg:col-span-7 lg:border-r lg:border-b-0">
+            <PersonalisedRequestSection />
+          </div>
+          <div className="lg:col-span-5">
+            <PreparingSection />
+          </div>
+        </div>
+        <div className="border-fg/10 border-t">
+          <RecentInquiriesSection loading={loading} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">
