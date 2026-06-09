@@ -19,6 +19,7 @@
 
 ## Open frictions
 
+- **2026-06-09** — [`pnpm --filter X deploy` runs pnpm's builtin, not the package's `deploy` script](frictions/2026-06-09-pnpm-deploy-builtin-shadows-script.md)
 - **2026-06-08** — [Piège — `localeString`/`localeText` sans `preview` = « Untitled » dans les listes](frictions/2026-06-08-locale-object-no-preview-in-arrays.md)
 - **2026-06-05** — [Catalogue : trois modèles de données parallèles qui divergent](frictions/2026-06-05-catalogue-triple-model-divergence.md)
 - **2026-06-04** — [`pnpm validate` flake — timeout 5s trop court sous coverage v8](frictions/2026-06-04-vitest-coverage-testtimeout-flake.md)
@@ -41,7 +42,7 @@
 
 ## Deep dive
 
-- Full catalogue (158 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (159 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
