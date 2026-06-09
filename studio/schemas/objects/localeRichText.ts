@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════
-// localeRichText — multilingual Portable Text (FR required, EN optional)
+// localeRichText — multilingual Portable Text (FR required, EN/ES optional)
 //
-// WHAT: Rich content (paragraphs, bold, italic, links, headings) in 2
+// WHAT: Rich content (paragraphs, bold, italic, links, headings) in 3
 //       languages, under the same compact language-tabs input as the
 //       other locale* types.
 // WHEN: Body copy, articles, long descriptions that need formatting.
@@ -51,5 +51,6 @@ export const localeRichText = defineType({
       validation: Rule => Rule.required().warning('Le contenu FR est recommandé.'),
     }),
     defineField({ name: 'en', title: 'English', ...richBlock }),
+    defineField({ name: 'es', title: 'Español', ...richBlock }),
   ],
 });

@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════════════
-// localeText — long multilingual text (FR required, EN optional)
+// localeText — long multilingual text (FR required, EN/ES optional)
 //
 // WHAT: Same as localeString but for paragraphs (multi-line), with the
-//       same compact language-tabs input (🇫🇷 FR · 🇬🇧 EN).
+//       same compact language-tabs input (🇫🇷 FR · 🇬🇧 EN · 🇪🇸 ES).
 // WHEN: Descriptions, leads, bios, intros, editorial paragraphs.
 // ═══════════════════════════════════════════════════
 
@@ -24,6 +24,7 @@ export const localeText = defineType({
       validation: Rule => Rule.required().warning('Le texte FR est recommandé.'),
     }),
     defineField({ name: 'en', title: 'English', type: 'text', rows: 4 }),
+    defineField({ name: 'es', title: 'Español', type: 'text', rows: 4 }),
   ],
   // WHY: same as localeString — inside an array (e.g. page intro paragraphs)
   // an item without a preview shows as "Untitled". Title = FR (EN fallback) ;

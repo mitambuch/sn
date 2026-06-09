@@ -23,6 +23,7 @@ import { useLocation } from 'react-router-dom';
 const OG_LOCALE_MAP: Record<string, string> = {
   fr: 'fr_FR',
   en: 'en_US',
+  es: 'es_ES',
 };
 
 interface SeoHeadProps {

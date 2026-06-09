@@ -1,10 +1,10 @@
 // ═══════════════════════════════════════════════════
-// localeString — short multilingual text (FR required, EN optional)
+// localeString — short multilingual text (FR required, EN/ES optional)
 //
-// WHAT: FR is the source of truth. EN shares the same compact input:
-//       2 language tabs (🇫🇷 FR · 🇬🇧 EN) with a fill indicator
+// WHAT: FR is the source of truth. EN + ES share the same compact input:
+//       3 language tabs (🇫🇷 FR · 🇬🇧 EN · 🇪🇸 ES) with a fill indicator
 //       dot per tab, one input visible at a time. No more stacked
-//       2-field rendering.
+//       multi-field rendering.
 // WHEN: Titles, labels, CTAs, eyebrow text ≤ 80 characters.
 // RULE: .claude/rules/i18n-sanity.md lesson #2 — FR is warning, never required.
 // ═══════════════════════════════════════════════════
@@ -28,6 +28,7 @@ export const localeString = defineType({
       validation: Rule => Rule.required().warning('Le texte FR est recommandé.'),
     }),
     defineField({ name: 'en', title: 'English', type: 'string' }),
+    defineField({ name: 'es', title: 'Español', type: 'string' }),
   ],
   // WHY: without a preview, every `localeString` inside an array renders as
   // "Untitled" in the Studio list — the editor can't tell items apart nor see

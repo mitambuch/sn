@@ -1,7 +1,8 @@
 // ═══════════════════════════════════════════════════
-// LanguageSwitcher — compact FR/DE/EN pill group
+// LanguageSwitcher — compact FR/EN/ES pill group
 //
-// WHAT: Three-segment pill with active highlight, switches i18n locale on click
+// WHAT: Segmented pill (one per SUPPORTED_LOCALES) with active highlight,
+//       switches i18n locale on click
 // WHEN: Place in header/menu to let visitors pick language
 // CHANGE LOCALES: edit SUPPORTED_LOCALES in src/config/i18n.ts
 // CHANGE STYLE: the active segment uses bg-accent + text-on-accent
@@ -20,7 +21,7 @@ interface LanguageSwitcherProps {
   onLocaleChange?: (locale: Locale) => void;
 }
 
-/** FR/DE/EN segmented control. Reads current locale from i18n, switches on click. */
+/** FR/EN/ES segmented control. Reads current locale from i18n, switches on click. */
 export const LanguageSwitcher = ({
   variant = 'pill',
   className,
