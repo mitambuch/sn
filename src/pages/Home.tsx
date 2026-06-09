@@ -17,7 +17,8 @@
 import { useLocale } from '@app/LocaleProvider';
 import { BrandMark } from '@components/brand/BrandMark';
 import { SeoHead } from '@components/features/SeoHead';
-import { type Locale, SUPPORTED_LOCALES } from '@config/i18n';
+import { LanguageSwitcher } from '@components/ui/LanguageSwitcher';
+import { type Locale } from '@config/i18n';
 import { AccessRequestModalProvider } from '@context/AccessRequestModalContext';
 import { LandingContentProvider, useLandingContext } from '@context/LandingContentContext';
 import { LoginModalProvider } from '@context/LoginModalContext';
@@ -126,7 +127,6 @@ function HomeContent() {
         visible={loaderDone}
         currentLocale={routeLocale}
         onLocaleChange={setLocale}
-        langSwitcherLabel={t('a11y.languageSwitcher')}
       />
 
       <IndexOverlay
@@ -237,7 +237,6 @@ interface TopCornerChromeProps {
   visible: boolean;
   currentLocale: Locale;
   onLocaleChange: (next: Locale) => void;
-  langSwitcherLabel: string;
 }
 
 /** Top-corner chrome — BrandMark (cross-fades SAW↗NEXT ↔ S↗N on scroll)
@@ -255,7 +254,6 @@ const TopCornerChrome = ({
   visible,
   currentLocale,
   onLocaleChange,
-  langSwitcherLabel,
 }: TopCornerChromeProps) => {
   const text = 'text-white';
   const border = 'border-white';
@@ -302,41 +300,12 @@ const TopCornerChrome = ({
         </span>
       </a>
       <div className="flex items-center gap-3 md:gap-4">
-        <div
-          role="group"
-          aria-label={langSwitcherLabel}
-          className={cn(
-            'pointer-events-auto inline-flex items-center gap-1.5 font-mono text-xs tracking-widest uppercase',
-            text,
-          )}
-        >
-          {SUPPORTED_LOCALES.map((lng, idx) => {
-            const isActive = currentLocale === lng;
-            return (
-              <span key={lng} className="inline-flex items-center gap-1.5">
-                {idx > 0 && (
-                  <span aria-hidden="true" className="opacity-40">
-                    /
-                  </span>
-                )}
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (!isActive) onLocaleChange(lng);
-                  }}
-                  aria-pressed={isActive}
-                  aria-label={`${langSwitcherLabel} — ${lng.toUpperCase()}`}
-                  className={cn(
-                    'duration-base transition-opacity',
-                    isActive ? 'opacity-100' : 'opacity-50 hover:opacity-100',
-                  )}
-                >
-                  {lng}
-                </button>
-              </span>
-            );
-          })}
-        </div>
+        <LanguageSwitcher
+          currentLocale={currentLocale}
+          onLocaleChange={onLocaleChange}
+          tone="inverted"
+          className={cn('pointer-events-auto', text)}
+        />
         <button
           type="button"
           onClick={openIndex}

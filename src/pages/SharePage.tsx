@@ -256,6 +256,7 @@ export default function SharePage() {
 
   // Type-aware specsheet — feeds the MetaList. Each entry is a label/
   // value pair displayed in a clean 2-column table on desktop.
+  // eslint-disable-next-line max-lines-per-function -- flat data mapping over 7 doc types (i18n labels); splitting would just scatter the spec across helpers
   const metaItems = useMemo<{ label: string; value: string }[]>(() => {
     const fmtDate = (iso: string) =>
       new Date(iso).toLocaleDateString(i18n.language, {
