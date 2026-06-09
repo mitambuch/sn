@@ -1093,6 +1093,86 @@
       }
     }
   },
+  "share": {
+    "spec": {
+      "date": "Date",
+      "time": "Time",
+      "place": "Venue",
+      "city": "City",
+      "capacity": "Capacity",
+      "sawnextSeats": "SAW NEXT seats",
+      "dressCode": "Dress code",
+      "type": "Type",
+      "mode": "Mode",
+      "surface": "Surface",
+      "bedrooms": "Bedrooms",
+      "bathrooms": "Baths",
+      "land": "Land",
+      "region": "Region",
+      "brand": "Brand",
+      "model": "Model",
+      "reference": "Reference",
+      "year": "Year",
+      "case": "Case",
+      "material": "Material",
+      "condition": "Condition",
+      "fullSet": "Full set",
+      "artist": "Artist",
+      "technique": "Technique",
+      "dimensions": "Dimensions",
+      "destinations": "Destinations",
+      "duration": "Duration",
+      "departure": "Departure",
+      "category": "Category",
+      "leadTime": "Lead time",
+      "publishedOn": "Published",
+      "readingTime": "Reading"
+    },
+    "value": {
+      "allYear": "All year",
+      "onRequest": "On request",
+      "durationDays": "{{count}} days"
+    },
+    "status": {
+      "invalidFormat": "Invalid code format.",
+      "expired": "This code is no longer valid.",
+      "notFound": "No item is associated with this code. The code may be wrong, or the item has been withdrawn.",
+      "notFoundTitle": "This code does not exist.",
+      "revokedTitle": "This code has been revoked.",
+      "invalidFormatBody": "The expected code is 6 characters, with no prefix or space. Check your entry or contact Valmont.",
+      "expiredBody": "This code has reached its expiry date or maximum number of views. Valmont can generate a new one.",
+      "revokedBody": "Valmont has revoked this code. No access is possible with this link."
+    },
+    "interest": {
+      "title": "Interested in this item?",
+      "cta": "Express my interest"
+    },
+    "meta": {
+      "views": "View",
+      "expiresOn": "expires on {{date}}"
+    },
+    "countdown": {
+      "available": "Available for",
+      "dayUnit": "d"
+    },
+    "privateShare": "Private share",
+    "fallbackTitle": "Shared item",
+    "docType": {
+      "event": "Event",
+      "property": "Property",
+      "timepiece": "Timepiece",
+      "artwork": "Artwork",
+      "journey": "Journey",
+      "conciergeService": "Service",
+      "article": "Article"
+    },
+    "collection": {
+      "selected_one": "{{count}} item selected",
+      "selected_other": "{{count}} items selected",
+      "heading": "A selection for you",
+      "back": "Back to selection"
+    }
+  },
   "public": {
     "tagline": "Swiss private concierge",
     "intro": "A by-invitation selection for a vetted clientele. Without noise, without excess.",
@@ -1267,6 +1347,15 @@
       "signature": "Boudry, March 2026"
     },
     "domains": {
+      "10": {
+        "name": "Sports careers",
+        "title": "Sports careers",
+        "desc": "Support for elite athletes. Image management, structuring.",
+        "feat1": "Image management",
+        "feat2": "Brand partnerships",
+        "feat3": "Entrepreneurial ventures",
+        "feat4": "Strategic counsel"
+      },
       "tag": "Domains",
       "h2line1": "Ten verticals.",
       "h2line2": "One logic.",
@@ -1353,15 +1442,6 @@
         "feat2": "Portfolio management",
         "feat3": "Wealth planning",
         "feat4": "Succession"
-      },
-      "10": {
-        "name": "Sports careers",
-        "title": "Sports careers",
-        "desc": "Support for elite athletes. Image management, structuring.",
-        "feat1": "Image management",
-        "feat2": "Brand partnerships",
-        "feat3": "Entrepreneurial ventures",
-        "feat4": "Strategic counsel"
       }
     },
     "access": {

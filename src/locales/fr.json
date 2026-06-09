@@ -1093,6 +1093,86 @@
       }
     }
   },
+  "share": {
+    "spec": {
+      "date": "Date",
+      "time": "Horaire",
+      "place": "Lieu",
+      "city": "Ville",
+      "capacity": "Capacité",
+      "sawnextSeats": "Places SAW NEXT",
+      "dressCode": "Dress code",
+      "type": "Type",
+      "mode": "Mode",
+      "surface": "Surface",
+      "bedrooms": "Chambres",
+      "bathrooms": "SDB",
+      "land": "Terrain",
+      "region": "Région",
+      "brand": "Marque",
+      "model": "Modèle",
+      "reference": "Référence",
+      "year": "Année",
+      "case": "Boîtier",
+      "material": "Matériau",
+      "condition": "État",
+      "fullSet": "Full set",
+      "artist": "Artiste",
+      "technique": "Technique",
+      "dimensions": "Dimensions",
+      "destinations": "Destinations",
+      "duration": "Durée",
+      "departure": "Départ",
+      "category": "Catégorie",
+      "leadTime": "Délai",
+      "publishedOn": "Publié le",
+      "readingTime": "Lecture"
+    },
+    "value": {
+      "allYear": "Toute l'année",
+      "onRequest": "Sur demande",
+      "durationDays": "{{count}} jours"
+    },
+    "status": {
+      "invalidFormat": "Format de code invalide.",
+      "expired": "Ce code n'est plus valide.",
+      "notFound": "Aucune fiche n'est associée à ce code. Le code est peut-être faux, ou la fiche a été retirée.",
+      "notFoundTitle": "Ce code n'existe pas.",
+      "revokedTitle": "Ce code a été révoqué.",
+      "invalidFormatBody": "Le code attendu fait 6 caractères, sans préfixe ni espace. Vérifiez la saisie ou contactez Valmont.",
+      "expiredBody": "Ce code a atteint sa date d'expiration ou son nombre de vues maximum. Valmont peut en générer un nouveau.",
+      "revokedBody": "Valmont a révoqué ce code. Aucun accès n'est possible avec ce lien."
+    },
+    "interest": {
+      "title": "Cette fiche vous intéresse ?",
+      "cta": "Manifester mon intérêt"
+    },
+    "meta": {
+      "views": "Vue",
+      "expiresOn": "expire le {{date}}"
+    },
+    "countdown": {
+      "available": "Disponible encore",
+      "dayUnit": "j"
+    },
+    "privateShare": "Partage privé",
+    "fallbackTitle": "Fiche partagée",
+    "docType": {
+      "event": "Évènement",
+      "property": "Propriété",
+      "timepiece": "Garde-temps",
+      "artwork": "Œuvre",
+      "journey": "Voyage",
+      "conciergeService": "Service",
+      "article": "Actualité"
+    },
+    "collection": {
+      "selected_one": "{{count}} pièce sélectionnée",
+      "selected_other": "{{count}} pièces sélectionnées",
+      "heading": "Une sélection pour vous",
+      "back": "Retour à la sélection"
+    }
+  },
   "public": {
     "tagline": "Conciergerie privée suisse",
     "intro": "Une sélection sur invitation pour une clientèle vetted. Sans bruit, sans excès.",
@@ -1267,6 +1347,15 @@
       "signature": "Boudry, mars 2026"
     },
     "domains": {
+      "10": {
+        "name": "Carrière sportive",
+        "title": "Carrière sportive",
+        "desc": "Accompagnement d’athlètes de haut niveau. Gestion d’image, structuration.",
+        "feat1": "Gestion d’image",
+        "feat2": "Partenariats de marque",
+        "feat3": "Projets entrepreneuriaux",
+        "feat4": "Conseil stratégique"
+      },
       "tag": "Domaines",
       "h2line1": "Dix verticales.",
       "h2line2": "Une logique.",
@@ -1353,15 +1442,6 @@
         "feat2": "Gestion de portefeuille",
         "feat3": "Planification patrimoniale",
         "feat4": "Transmission"
-      },
-      "10": {
-        "name": "Carrière sportive",
-        "title": "Carrière sportive",
-        "desc": "Accompagnement d’athlètes de haut niveau. Gestion d’image, structuration.",
-        "feat1": "Gestion d’image",
-        "feat2": "Partenariats de marque",
-        "feat3": "Projets entrepreneuriaux",
-        "feat4": "Conseil stratégique"
       }
     },
     "access": {
