@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-06-09** — [Session — Espagnol « partout » : contenu Sanity + flow partage + sélecteur popover](sessions/2026-06-09-1124.md)
 - **2026-06-09** — [Session — Espagnol comme 3ᵉ locale (infra complète, contenu data différé)](sessions/2026-06-09-0835.md)
 - **2026-06-08** — [Session — Consolidation + mise en ligne (2 branches → main)](sessions/2026-06-08-1635.md)
-- **2026-06-08** — [Session — Triage salve client « Voyages » + fix bug listes multilingues](sessions/2026-06-08-1537.md)
 
 ## Active decisions (top 5)
 
@@ -42,7 +42,7 @@
 
 ## Deep dive
 
-- Full catalogue (159 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (160 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
