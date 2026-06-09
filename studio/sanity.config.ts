@@ -73,6 +73,7 @@ export default defineConfig({
       supportedLanguages: [
         { id: 'fr', title: 'Français' },
         { id: 'en', title: 'English' },
+        { id: 'es', title: 'Español' },
       ],
       defaultLanguages: ['fr'],
       documentTypes: [
