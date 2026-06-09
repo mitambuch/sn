@@ -132,6 +132,7 @@ async function main() {
     '5. **User mobilization**: when help is needed, use the `🧑 ACTION HUMAINE REQUISE` block (QUOI/POURQUOI/COMMENT/LIVRABLE).',
     '6. **Commit body**: feat/fix require WHY/WHAT/IMPACT/TEST in body (commit-msg hook warns if missing).',
     '7. **Time awareness**: the [clock: ...] line at the top is the real wall-clock for this turn. Use it for timestamps, tone, and deadline reasoning. See `.claude/rules/time-awareness.md`.',
+    "8. **Output economy**: result first, no preamble/postamble, no narration of what you're about to do, refs as file:line, reasoning proportional to risk. EXCEPTION — never skip full detail when it touches architecture, is irreversible, or needs the owner's decision (critical.md §15).",
   ];
 
   const hint = dispatchHint(classification, promptText);

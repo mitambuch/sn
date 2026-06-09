@@ -133,23 +133,11 @@ Never dispatch silently. The user learns the taxonomy by reading your
 rationale over a few sessions — that's how they gain confidence to
 defer more R0/R1 to workers.
 
-## Cost & time report
+## Cost report — one line, not a table
 
-After every dispatch turn, append a block :
-
-```
-DISPATCH REPORT
-  Task 1 → worker-haiku   : 2.3k tokens,  18s
-  Task 2 → worker-sonnet  : 12k tokens,   52s
-  Task 3 → main (Opus)    : 28k tokens,   1m30
-  ──────────────────────────────────────────────
-  Total                   : 42k tokens,   ~1m30 wall-time
-  Serial-Opus equivalent  : ~110k tokens, ~4m30 wall-time
-  Speed-up                : ~3x
-  Cost vs all-Opus        : ~40%
-```
-
-This trains the user's intuition over time.
+The owner doesn't read token tables (they cost tokens too). After a *multi-task*
+dispatch turn, at most ONE line: `dispatched: 2×haiku + 1×sonnet · ~3× cheaper than
+all-Opus`. Skip it entirely on a single-task turn — no ceremony.
 
 ## Failure handling
 
@@ -168,7 +156,7 @@ If a worker returns `Verified : FAIL` :
 - Dispatching R0 without a worker when you could delegate to Haiku →
   burns Opus tokens on a rename.
 - Silent dispatch → the user can't learn the system.
-- Skipping the cost report → no feedback loop, no trust-building.
+- Verbose dispatch report (full table) → costs tokens the owner doesn't read; one line max on multi-task turns.
 - Dispatching tasks that touch the same file in parallel → merge
   conflicts in the working tree.
 
