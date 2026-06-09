@@ -25,7 +25,7 @@
     "test:e2e:ui": "playwright test --ui",
     "studio:dev": "pnpm --filter @steaksoap/studio dev",
     "studio:build": "pnpm --filter @steaksoap/studio build",
-    "studio:deploy": "pnpm --filter @steaksoap/studio deploy",
+    "studio:deploy": "pnpm --filter @steaksoap/studio run deploy",
     "studio:typecheck": "pnpm --filter @steaksoap/studio typecheck",
     "sanity:push": "node studio/scripts/push.js",
     "sanity:promote": "node studio/scripts/promote.js",
