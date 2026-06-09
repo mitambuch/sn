@@ -1,7 +1,10 @@
+import '@config/i18n';
+
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import i18n from 'i18next';
 import type { ReactNode } from 'react';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
 
 import { ShareCollection } from '../ShareCollection';
 
@@ -26,6 +29,12 @@ const DOCS = [
 ];
 
 describe('ShareCollection — multi-fiche share view', () => {
+  // Components render via i18n now; bind the instance to FR so the assertions
+  // below match the French copy (t() returns the raw key when i18n is unset).
+  beforeAll(async () => {
+    await i18n.changeLanguage('fr');
+  });
+
   it('renders one card per fiche in the selection', () => {
     render(<ShareCollection docs={DOCS} code="ABC234" expiresAt={null} onExpire={vi.fn()} />);
     expect(screen.getByText(/2 pièces sélectionnées/i)).toBeInTheDocument();

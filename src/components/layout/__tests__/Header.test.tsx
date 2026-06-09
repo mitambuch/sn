@@ -52,7 +52,7 @@ describe('Header', () => {
 
   it('shows the language switcher', () => {
     renderHeader();
-    expect(screen.getByRole('group', { name: /change language/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /change language/i })).toBeInTheDocument();
   });
 
   it('applies custom className', () => {

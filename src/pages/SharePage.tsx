@@ -82,7 +82,7 @@ interface SharedFiche {
 // eslint-disable-next-line max-lines-per-function -- public share page with multi-state machine + Sanity fetch + share actions
 export default function SharePage() {
   const { code: rawCode } = useParams<{ code: string }>();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const locale = i18n.language === 'en' ? 'en' : i18n.language === 'es' ? 'es' : 'fr';
   const [status, setStatus] = useState<Status>('loading');
   const [consumed, setConsumed] = useState<ConsumedShareCode | null>(null);
@@ -256,16 +256,17 @@ export default function SharePage() {
 
   // Type-aware specsheet — feeds the MetaList. Each entry is a label/
   // value pair displayed in a clean 2-column table on desktop.
+  // eslint-disable-next-line max-lines-per-function -- flat data mapping over 7 doc types (i18n labels); splitting would just scatter the spec across helpers
   const metaItems = useMemo<{ label: string; value: string }[]>(() => {
     const fmtDate = (iso: string) =>
-      new Date(iso).toLocaleDateString('fr-CH', {
+      new Date(iso).toLocaleDateString(i18n.language, {
         weekday: 'long',
         day: 'numeric',
         month: 'long',
         year: 'numeric',
       });
     const fmtTime = (iso: string) =>
-      new Date(iso).toLocaleTimeString('fr-CH', { hour: '2-digit', minute: '2-digit' });
+      new Date(iso).toLocaleTimeString(i18n.language, { hour: '2-digit', minute: '2-digit' });
 
     // Real Sanity event → build the specsheet from the fetched fiche
     // (richMock only covers the seeded demo data, never live fiches).
@@ -285,28 +286,38 @@ export default function SharePage() {
       const dateRows =
         mode === 'exact' && fiche.startsAt
           ? [
-              { label: 'Date', value: fmtDate(fiche.startsAt) },
-              { label: 'Horaire', value: fmtTime(fiche.startsAt) },
+              { label: t('share.spec.date'), value: fmtDate(fiche.startsAt) },
+              { label: t('share.spec.time'), value: fmtTime(fiche.startsAt) },
             ]
           : [
               {
-                label: 'Date',
-                value: mode === 'allYear' ? 'Toute l’année' : dateLabel || 'Sur demande',
+                label: t('share.spec.date'),
+                value:
+                  mode === 'allYear'
+                    ? t('share.value.allYear')
+                    : dateLabel || t('share.value.onRequest'),
               },
             ];
       return [
         ...dateRows,
-        ...(venue ? [{ label: 'Lieu', value: venue }] : []),
+        ...(venue ? [{ label: t('share.spec.place'), value: venue }] : []),
         ...(city
-          ? [{ label: 'Ville', value: `${city}${countryCode ? ` · ${countryCode}` : ''}` }]
+          ? [
+              {
+                label: t('share.spec.city'),
+                value: `${city}${countryCode ? ` · ${countryCode}` : ''}`,
+              },
+            ]
           : []),
         ...(typeof fiche.capacity === 'number'
-          ? [{ label: 'Capacité', value: String(fiche.capacity) }]
+          ? [{ label: t('share.spec.capacity'), value: String(fiche.capacity) }]
           : []),
         ...(typeof fiche.allocatedSeats === 'number'
-          ? [{ label: 'Places SAW NEXT', value: String(fiche.allocatedSeats) }]
+          ? [{ label: t('share.spec.sawnextSeats'), value: String(fiche.allocatedSeats) }]
           : []),
-        ...(dressCode ? [{ label: 'Dress code', value: dressCode.replace(/-/g, ' ') }] : []),
+        ...(dressCode
+          ? [{ label: t('share.spec.dressCode'), value: dressCode.replace(/-/g, ' ') }]
+          : []),
       ];
     }
 
@@ -320,88 +331,95 @@ export default function SharePage() {
         const dateRows =
           mode === 'exact' && richMock.startsAt
             ? [
-                { label: 'Date', value: fmtDate(richMock.startsAt) },
-                { label: 'Horaire', value: fmtTime(richMock.startsAt) },
+                { label: t('share.spec.date'), value: fmtDate(richMock.startsAt) },
+                { label: t('share.spec.time'), value: fmtTime(richMock.startsAt) },
               ]
             : [
                 {
-                  label: 'Date',
+                  label: t('share.spec.date'),
                   value:
-                    mode === 'allYear' ? 'Toute l’année' : (richMock.dateLabel ?? 'Sur demande'),
+                    mode === 'allYear'
+                      ? t('share.value.allYear')
+                      : (richMock.dateLabel ?? t('share.value.onRequest')),
                 },
               ];
         return [
           ...dateRows,
-          { label: 'Lieu', value: richMock.venue ?? '—' },
-          { label: 'Ville', value: `${richMock.city} · ${richMock.countryCode}` },
-          { label: 'Capacité', value: String(richMock.capacity) },
-          { label: 'Places SAW NEXT', value: String(richMock.allocatedSeats) },
-          { label: 'Dress code', value: richMock.dressCode.replace(/-/g, ' ') },
+          { label: t('share.spec.place'), value: richMock.venue ?? '—' },
+          { label: t('share.spec.city'), value: `${richMock.city} · ${richMock.countryCode}` },
+          { label: t('share.spec.capacity'), value: String(richMock.capacity) },
+          { label: t('share.spec.sawnextSeats'), value: String(richMock.allocatedSeats) },
+          { label: t('share.spec.dressCode'), value: richMock.dressCode.replace(/-/g, ' ') },
         ];
       }
       case 'property':
         return [
-          { label: 'Type', value: richMock.kind.replace(/-/g, ' ') },
-          { label: 'Mode', value: richMock.availability.replace(/-/g, ' ') },
-          { label: 'Surface', value: `${String(richMock.surfaceSqm)} m²` },
-          { label: 'Chambres', value: String(richMock.bedrooms) },
-          { label: 'SDB', value: String(richMock.bathrooms) },
+          { label: t('share.spec.type'), value: richMock.kind.replace(/-/g, ' ') },
+          { label: t('share.spec.mode'), value: richMock.availability.replace(/-/g, ' ') },
+          { label: t('share.spec.surface'), value: `${String(richMock.surfaceSqm)} m²` },
+          { label: t('share.spec.bedrooms'), value: String(richMock.bedrooms) },
+          { label: t('share.spec.bathrooms'), value: String(richMock.bathrooms) },
           ...(richMock.plotSqm
-            ? [{ label: 'Terrain', value: `${String(richMock.plotSqm)} m²` }]
+            ? [{ label: t('share.spec.land'), value: `${String(richMock.plotSqm)} m²` }]
             : []),
-          { label: 'Région', value: `${richMock.region} · ${richMock.countryCode}` },
+          { label: t('share.spec.region'), value: `${richMock.region} · ${richMock.countryCode}` },
         ];
       case 'timepiece':
         return [
-          { label: 'Marque', value: richMock.brand },
-          { label: 'Modèle', value: richMock.model },
-          { label: 'Référence', value: richMock.reference },
-          { label: 'Année', value: String(richMock.year) },
+          { label: t('share.spec.brand'), value: richMock.brand },
+          { label: t('share.spec.model'), value: richMock.model },
+          { label: t('share.spec.reference'), value: richMock.reference },
+          { label: t('share.spec.year'), value: String(richMock.year) },
           ...(richMock.caseDiameterMm
-            ? [{ label: 'Boîtier', value: `${String(richMock.caseDiameterMm)} mm` }]
+            ? [{ label: t('share.spec.case'), value: `${String(richMock.caseDiameterMm)} mm` }]
             : []),
-          { label: 'Matériau', value: richMock.material },
-          { label: 'État', value: richMock.condition },
-          { label: 'Full set', value: richMock.fullSet ? 'Oui' : 'Non' },
+          { label: t('share.spec.material'), value: richMock.material },
+          { label: t('share.spec.condition'), value: richMock.condition },
+          { label: t('share.spec.fullSet'), value: richMock.fullSet ? 'Oui' : 'Non' },
         ];
       case 'artwork': {
         const dimStr = formatDimensions(richMock.dimensions);
         return [
-          { label: 'Artiste', value: richMock.artistName },
-          { label: 'Année', value: String(richMock.year) },
-          { label: 'Technique', value: richMock.medium },
-          ...(dimStr ? [{ label: 'Dimensions', value: dimStr }] : []),
+          { label: t('share.spec.artist'), value: richMock.artistName },
+          { label: t('share.spec.year'), value: String(richMock.year) },
+          { label: t('share.spec.technique'), value: richMock.medium },
+          ...(dimStr ? [{ label: t('share.spec.dimensions'), value: dimStr }] : []),
         ];
       }
       case 'journey':
         return [
-          { label: 'Type', value: richMock.kind.replace(/-/g, ' ') },
+          { label: t('share.spec.type'), value: richMock.kind.replace(/-/g, ' ') },
           {
-            label: 'Destinations',
+            label: t('share.spec.destinations'),
             value: Array.isArray(richMock.destinations)
               ? richMock.destinations.join(' · ')
               : richMock.destinations,
           },
-          { label: 'Durée', value: `${String(richMock.durationDays)} jours` },
-          { label: 'Départ', value: richMock.origin },
+          {
+            label: t('share.spec.duration'),
+            value: t('share.value.durationDays', { count: richMock.durationDays }),
+          },
+          { label: t('share.spec.departure'), value: richMock.origin },
         ];
       case 'conciergeService':
         return [
-          { label: 'Catégorie', value: richMock.category.replace(/-/g, ' ') },
-          ...(richMock.leadTime ? [{ label: 'Délai', value: richMock.leadTime }] : []),
+          { label: t('share.spec.category'), value: richMock.category.replace(/-/g, ' ') },
+          ...(richMock.leadTime
+            ? [{ label: t('share.spec.leadTime'), value: richMock.leadTime }]
+            : []),
         ];
       case 'article':
         return [
-          { label: 'Type', value: richMock.kind.replace(/-/g, ' ') },
-          { label: 'Publié le', value: fmtDate(richMock.publishedAt) },
+          { label: t('share.spec.type'), value: richMock.kind.replace(/-/g, ' ') },
+          { label: t('share.spec.publishedOn'), value: fmtDate(richMock.publishedAt) },
           ...(richMock.readMinutes
-            ? [{ label: 'Lecture', value: `${String(richMock.readMinutes)} min` }]
+            ? [{ label: t('share.spec.readingTime'), value: `${String(richMock.readMinutes)} min` }]
             : []),
         ];
       default:
         return [];
     }
-  }, [fiche, richMock, consumed]);
+  }, [fiche, richMock, consumed, t, i18n.language]);
 
   // Programme : real Sanity fiche first, then the seeded demo mock.
   const programme =
@@ -425,22 +443,22 @@ export default function SharePage() {
     if (!isEvent) return '';
     const mode = fiche?.dateMode ?? 'exact';
     if (mode === 'exact' && fiche?.startsAt) {
-      return new Date(fiche.startsAt).toLocaleDateString('fr-CH', {
+      return new Date(fiche.startsAt).toLocaleDateString(i18n.language, {
         weekday: 'long',
         day: 'numeric',
         month: 'long',
         year: 'numeric',
       });
     }
-    if (mode === 'allYear') return 'Toute l’année';
-    return localeStr(fiche?.dateLabel) || 'Sur demande';
+    if (mode === 'allYear') return t('share.value.allYear');
+    return localeStr(fiche?.dateLabel) || t('share.value.onRequest');
   })();
   const heroVenue = isEvent
     ? [localeStr(fiche?.venue), localeStr(fiche?.city)].filter(Boolean).join(' · ')
     : '';
 
   const heroAlt =
-    fiche?.heroImage?.alt ?? fiche?.images?.[0]?.alt ?? (ficheTitle || 'Fiche partagée');
+    fiche?.heroImage?.alt ?? fiche?.images?.[0]?.alt ?? (ficheTitle || t('share.fallbackTitle'));
 
   return (
     <main
@@ -449,12 +467,14 @@ export default function SharePage() {
       className="bg-bg text-fg relative min-h-screen overflow-hidden px-5 py-16 md:px-12 md:py-24"
     >
       {/* Minimal OG metadata — React 19 hoists these into <head> */}
-      <title>{ficheTitle ? `${ficheTitle} — Sawnext` : 'Sawnext — Partage privé'}</title>
+      <title>
+        {ficheTitle ? `${ficheTitle} — Sawnext` : `Sawnext — ${t('share.privateShare')}`}
+      </title>
       {ficheSummary && <meta name="description" content={ficheSummary} />}
       <meta name="robots" content="noindex, nofollow" />
       <meta
         property="og:title"
-        content={ficheTitle ? `${ficheTitle} — Sawnext` : 'Sawnext — Partage privé'}
+        content={ficheTitle ? `${ficheTitle} — Sawnext` : `Sawnext — ${t('share.privateShare')}`}
       />
       {ficheSummary && <meta property="og:description" content={ficheSummary} />}
       {heroSrc && <meta property="og:image" content={heroSrc} />}
@@ -479,24 +499,20 @@ export default function SharePage() {
                 <BrandMark variant="short" className="text-fg text-base md:text-lg" />
               </Link>
               <span className="text-muted font-mono text-[10px] tracking-[0.4em] uppercase">
-                Partage privé · Code {displayCode}
+                {t('share.privateShare')} · Code {displayCode}
               </span>
             </div>
             <h1 className="font-mono text-2xl leading-tight font-medium tracking-tight uppercase md:text-3xl">
-              {status === 'invalid-format' && 'Format de code invalide.'}
-              {status === 'not-found' && "Ce code n'existe pas."}
-              {status === 'expired' && "Ce code n'est plus valide."}
-              {status === 'revoked' && 'Ce code a été révoqué.'}
+              {status === 'invalid-format' && t('share.status.invalidFormat')}
+              {status === 'not-found' && t('share.status.notFoundTitle')}
+              {status === 'expired' && t('share.status.expired')}
+              {status === 'revoked' && t('share.status.revokedTitle')}
             </h1>
             <p className="text-muted leading-relaxed">
-              {status === 'invalid-format' &&
-                'Le code attendu fait 6 caractères, sans préfixe ni espace. Vérifiez la saisie ou contactez Valmont.'}
-              {status === 'not-found' &&
-                "Aucune fiche n'est associée à ce code. Le code est peut-être faux, ou la fiche a été retirée."}
-              {status === 'expired' &&
-                "Ce code a atteint sa date d'expiration ou son nombre de vues maximum. Valmont peut en générer un nouveau."}
-              {status === 'revoked' &&
-                "Valmont a révoqué ce code. Aucun accès n'est possible avec ce lien."}
+              {status === 'invalid-format' && t('share.status.invalidFormatBody')}
+              {status === 'not-found' && t('share.status.notFound')}
+              {status === 'expired' && t('share.status.expiredBody')}
+              {status === 'revoked' && t('share.status.revokedBody')}
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
               <button
@@ -543,7 +559,7 @@ export default function SharePage() {
                 <BrandMark variant="short" className="text-fg text-base md:text-lg" />
               </Link>
               <span className="text-muted font-mono text-[10px] tracking-[0.4em] uppercase">
-                Partage privé · Code {displayCode}
+                {t('share.privateShare')} · Code {displayCode}
               </span>
             </div>
 
@@ -575,16 +591,17 @@ export default function SharePage() {
               {/* ─── Title block ─── */}
               <header className="border-fg/10 flex flex-col gap-3 border-b pb-6">
                 <span className="text-muted font-mono text-[10px] tracking-[0.4em] uppercase">
-                  {consumed.sanityDocType === 'event' && 'Évènement'}
-                  {consumed.sanityDocType === 'property' && 'Propriété'}
-                  {consumed.sanityDocType === 'timepiece' && 'Garde-temps'}
-                  {consumed.sanityDocType === 'artwork' && 'Œuvre'}
-                  {consumed.sanityDocType === 'journey' && 'Voyage'}
-                  {consumed.sanityDocType === 'conciergeService' && 'Service'}
-                  {consumed.sanityDocType === 'article' && 'Actualité'}
+                  {consumed.sanityDocType === 'event' && t('share.docType.event')}
+                  {consumed.sanityDocType === 'property' && t('share.docType.property')}
+                  {consumed.sanityDocType === 'timepiece' && t('share.docType.timepiece')}
+                  {consumed.sanityDocType === 'artwork' && t('share.docType.artwork')}
+                  {consumed.sanityDocType === 'journey' && t('share.docType.journey')}
+                  {consumed.sanityDocType === 'conciergeService' &&
+                    t('share.docType.conciergeService')}
+                  {consumed.sanityDocType === 'article' && t('share.docType.article')}
                 </span>
                 <h2 className="font-mono text-2xl leading-tight font-medium tracking-tight uppercase md:text-3xl">
-                  {ficheTitle || 'Fiche partagée'}
+                  {ficheTitle || t('share.fallbackTitle')}
                 </h2>
                 {(heroDate || heroVenue) && (
                   <div className="flex flex-col gap-1 pt-1 font-sans normal-case">
@@ -688,7 +705,7 @@ export default function SharePage() {
               <section className="border-fg/10 flex flex-col gap-4 border-t pt-6">
                 <div className="flex flex-col gap-1">
                   <span className="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
-                    Cette fiche vous intéresse ?
+                    {t('share.interest.title')}
                   </span>
                   <p className="text-muted max-w-xl font-sans text-sm leading-relaxed normal-case">
                     Manifestez votre intérêt : nous vous recontactons et, si vous le souhaitez, vous
@@ -703,14 +720,20 @@ export default function SharePage() {
                     }}
                     className="border-fg bg-fg text-bg hover:bg-fg/90 inline-flex w-fit items-center gap-2 rounded-full border px-6 py-3 font-mono text-xs tracking-[0.3em] uppercase transition-colors"
                   >
-                    Manifester mon intérêt
+                    {t('share.interest.cta')}
                     <span aria-hidden="true">↗</span>
                   </button>
                   <p className="text-muted font-mono text-[11px] tracking-wider">
-                    Vue {String(consumed.viewCount)}
+                    {t('share.meta.views')} {String(consumed.viewCount)}
                     {typeof consumed.maxViews === 'number' ? ` / ${String(consumed.maxViews)}` : ''}
                     {consumed.expiresAt && (
-                      <> · expire le {new Date(consumed.expiresAt).toLocaleDateString('fr-CH')}</>
+                      <>
+                        {' '}
+                        ·{' '}
+                        {t('share.meta.expiresOn', {
+                          date: new Date(consumed.expiresAt).toLocaleDateString(i18n.language),
+                        })}
+                      </>
                     )}
                   </p>
                 </div>

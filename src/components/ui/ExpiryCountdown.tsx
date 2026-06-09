@@ -9,6 +9,7 @@
 // ═══════════════════════════════════════════════════
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ExpiryCountdownProps {
   /** ISO date-time the content stops being available. */
@@ -21,6 +22,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 /** Live j-h-m-s countdown banner; calls onExpire() at zero. */
 export const ExpiryCountdown = ({ expiresAt, onExpire }: ExpiryCountdownProps) => {
+  const { t } = useTranslation();
   const target = new Date(expiresAt).getTime();
   const [remaining, setRemaining] = useState(() => target - Date.now());
 
@@ -44,9 +46,9 @@ export const ExpiryCountdown = ({ expiresAt, onExpire }: ExpiryCountdownProps) =
 
   return (
     <div className="border-fg/10 bg-surface/60 flex items-center justify-center gap-2 border-b px-6 py-3 text-center font-mono text-[11px] tracking-[0.2em] uppercase md:px-10">
-      <span className="text-muted">Disponible encore</span>
+      <span className="text-muted">{t('share.countdown.available')}</span>
       <span className="text-fg tabular-nums">
-        {days > 0 ? `${String(days)}j ` : ''}
+        {days > 0 ? `${String(days)}${t('share.countdown.dayUnit')} ` : ''}
         {pad(hours)}h {pad(mins)}m {pad(secs)}s
       </span>
     </div>

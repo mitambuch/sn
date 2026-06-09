@@ -1093,6 +1093,86 @@
       }
     }
   },
+  "share": {
+    "spec": {
+      "date": "Fecha",
+      "time": "Hora",
+      "place": "Lugar",
+      "city": "Ciudad",
+      "capacity": "Aforo",
+      "sawnextSeats": "Plazas SAW NEXT",
+      "dressCode": "Código de vestimenta",
+      "type": "Tipo",
+      "mode": "Modalidad",
+      "surface": "Superficie",
+      "bedrooms": "Habitaciones",
+      "bathrooms": "Baños",
+      "land": "Terreno",
+      "region": "Región",
+      "brand": "Marca",
+      "model": "Modelo",
+      "reference": "Referencia",
+      "year": "Año",
+      "case": "Caja",
+      "material": "Material",
+      "condition": "Estado",
+      "fullSet": "Full set",
+      "artist": "Artista",
+      "technique": "Técnica",
+      "dimensions": "Dimensiones",
+      "destinations": "Destinos",
+      "duration": "Duración",
+      "departure": "Salida",
+      "category": "Categoría",
+      "leadTime": "Plazo",
+      "publishedOn": "Publicado el",
+      "readingTime": "Lectura"
+    },
+    "value": {
+      "allYear": "Todo el año",
+      "onRequest": "Bajo solicitud",
+      "durationDays": "{{count}} días"
+    },
+    "status": {
+      "invalidFormat": "Formato de código no válido.",
+      "expired": "Este código ya no es válido.",
+      "notFound": "No hay ninguna ficha asociada a este código. Es posible que el código sea incorrecto o que la ficha haya sido retirada.",
+      "notFoundTitle": "Este código no existe.",
+      "revokedTitle": "Este código ha sido revocado.",
+      "invalidFormatBody": "El código esperado tiene 6 caracteres, sin prefijo ni espacio. Verifique la introducción o póngase en contacto con Valmont.",
+      "expiredBody": "Este código ha alcanzado su fecha de caducidad o su número máximo de visualizaciones. Valmont puede generar uno nuevo.",
+      "revokedBody": "Valmont ha revocado este código. No es posible acceder con este enlace."
+    },
+    "interest": {
+      "title": "¿Le interesa esta ficha?",
+      "cta": "Manifestar mi interés"
+    },
+    "meta": {
+      "views": "Vista",
+      "expiresOn": "caduca el {{date}}"
+    },
+    "countdown": {
+      "available": "Disponible aún",
+      "dayUnit": "d"
+    },
+    "privateShare": "Acceso privado",
+    "fallbackTitle": "Ficha compartida",
+    "docType": {
+      "event": "Evento",
+      "property": "Propiedad",
+      "timepiece": "Relojería",
+      "artwork": "Obra",
+      "journey": "Viaje",
+      "conciergeService": "Servicio",
+      "article": "Noticia"
+    },
+    "collection": {
+      "selected_one": "{{count}} ficha seleccionada",
+      "selected_other": "{{count}} fichas seleccionadas",
+      "heading": "Una selección para usted",
+      "back": "Volver a la selección"
+    }
+  },
   "public": {
     "tagline": "Conserjería privada suiza",
     "intro": "Una selección por invitación para una clientela seleccionada. Sin ruido, sin excesos.",
@@ -1267,6 +1347,15 @@
       "signature": "Boudry, marzo de 2026"
     },
     "domains": {
+      "10": {
+        "name": "Carrera deportiva",
+        "title": "Carrera deportiva",
+        "desc": "Acompañamiento de atletas de alto nivel. Gestión de imagen, estructuración.",
+        "feat1": "Gestión de imagen",
+        "feat2": "Asociaciones de marca",
+        "feat3": "Proyectos empresariales",
+        "feat4": "Asesoramiento estratégico"
+      },
       "tag": "Ámbitos",
       "h2line1": "Diez verticales.",
       "h2line2": "Una lógica.",
@@ -1353,15 +1442,6 @@
         "feat2": "Gestión de cartera",
         "feat3": "Planificación patrimonial",
         "feat4": "Transmisión"
-      },
-      "10": {
-        "name": "Carrera deportiva",
-        "title": "Carrera deportiva",
-        "desc": "Acompañamiento de atletas de alto nivel. Gestión de imagen, estructuración.",
-        "feat1": "Gestión de imagen",
-        "feat2": "Asociaciones de marca",
-        "feat3": "Proyectos empresariales",
-        "feat4": "Asesoramiento estratégico"
       }
     },
     "access": {
