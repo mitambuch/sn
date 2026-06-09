@@ -11,7 +11,7 @@
 //       The transform functions in `sanityTransform.ts` adapt each
 //       Sanity doc to the internal TypeScript type.
 // WHEN: useSanityCollection() + useSanityItem() consume these. Both
-//       hooks inject a `$locale` param ('fr' | 'en') read from the
+//       hooks inject a `$locale` param ('fr' | 'en' | 'es') read from the
 //       active LocaleProvider, so every localised projection below
 //       resolves to the visitor's language with a FR fallback.
 // i18n: editorial fields are localeString/localeText/localeRichText in
@@ -35,20 +35,21 @@ const PUBLIC_VISIBILITY = `visibility in ["public", "shareCode"]`;
 
 /** Localised scalar (localeString / localeText) → active-locale string. */
 const L = (field: string) =>
-  `select($locale == "en" => coalesce(${field}.en, ${field}.fr), ${field}.fr)`;
+  `select($locale == "en" => coalesce(${field}.en, ${field}.fr), $locale == "es" => coalesce(${field}.es, ${field}.fr), ${field}.fr)`;
 
 /** Localised portable text → plain string in the active locale. */
 const LPT = (field: string) =>
-  `pt::text(select($locale == "en" => coalesce(${field}.en, ${field}.fr), ${field}.fr))`;
+  `pt::text(select($locale == "en" => coalesce(${field}.en, ${field}.fr), $locale == "es" => coalesce(${field}.es, ${field}.fr), ${field}.fr))`;
 
 /** Localised array-of-localeString → array of active-locale strings. */
-const LARR = (field: string) => `${field}[]select($locale == "en" => coalesce(@.en, @.fr), @.fr)`;
+const LARR = (field: string) =>
+  `${field}[]select($locale == "en" => coalesce(@.en, @.fr), $locale == "es" => coalesce(@.es, @.fr), @.fr)`;
 
 /** Localised `label` inside an array element (element has a `label` localeString). */
-const L_LABEL = `select($locale == "en" => coalesce(label.en, label.fr), label.fr)`;
+const L_LABEL = `select($locale == "en" => coalesce(label.en, label.fr), $locale == "es" => coalesce(label.es, label.fr), label.fr)`;
 
 /** Localised value when the array element *is itself* the localeString. */
-const L_SELF = `select($locale == "en" => coalesce(en, fr), fr)`;
+const L_SELF = `select($locale == "en" => coalesce(en, fr), $locale == "es" => coalesce(es, fr), fr)`;
 
 // ─── Events ───────────────────────────────────────────────────────
 export const GROQ_EVENTS_LIST = `*[_type == "event" && ${PUBLIC_VISIBILITY}] | order(startsAt asc){
@@ -317,6 +318,7 @@ export const GROQ_SHARED_FICHE = (type: string, id: string) =>
     "summary": ${L('summary')},
     "description": pt::text(select(
       $locale == "en" => coalesce(description.en, body.en, bio.en, description.fr, body.fr, bio.fr),
+      $locale == "es" => coalesce(description.es, body.es, bio.es, description.fr, body.fr, bio.fr),
       coalesce(description.fr, body.fr, bio.fr)
     )),
     "images": coalesce(images[]{ "src": asset->url, "alt": alt }, []),

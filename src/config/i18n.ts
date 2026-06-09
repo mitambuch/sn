@@ -1,10 +1,10 @@
 // ═══════════════════════════════════════════════════
-// i18n — multilingual configuration (fr, en)
+// i18n — multilingual configuration (fr, en, es)
 //
 // WHAT: Bootstraps i18next with browser-language detection + localStorage
 //       persistence. FR is the source of truth and automatic fallback.
 // WHEN: Imported once in main.tsx to initialise.
-// CHANGE TRANSLATIONS: src/locales/{fr,en}.json
+// CHANGE TRANSLATIONS: src/locales/{fr,en,es}.json
 // RULE: see .claude/rules/i18n-sanity.md — never hardcode FR strings in JSX.
 // ═══════════════════════════════════════════════════
 
@@ -13,9 +13,10 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 
 import en from '../locales/en.json';
+import es from '../locales/es.json';
 import fr from '../locales/fr.json';
 
-export const SUPPORTED_LOCALES = ['fr', 'en'] as const;
+export const SUPPORTED_LOCALES = ['fr', 'en', 'es'] as const;
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = 'fr';
 
@@ -55,6 +56,7 @@ void i18n
     resources: {
       fr: { translation: fr },
       en: { translation: en },
+      es: { translation: es },
     },
     fallbackLng: DEFAULT_LOCALE,
     supportedLngs: SUPPORTED_LOCALES as unknown as string[],

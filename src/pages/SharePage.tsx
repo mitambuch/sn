@@ -83,7 +83,7 @@ interface SharedFiche {
 export default function SharePage() {
   const { code: rawCode } = useParams<{ code: string }>();
   const { i18n } = useTranslation();
-  const locale = i18n.language === 'en' ? 'en' : 'fr';
+  const locale = i18n.language === 'en' ? 'en' : i18n.language === 'es' ? 'es' : 'fr';
   const [status, setStatus] = useState<Status>('loading');
   const [consumed, setConsumed] = useState<ConsumedShareCode | null>(null);
   const [modalOpen, setModalOpen] = useState(false);

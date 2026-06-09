@@ -79,7 +79,7 @@ const anonSupabase = createSupabase(SUPABASE_URL, SUPABASE_ANON_KEY, {
 });
 
 // ── helpers ──────────────────────────────────────────────────────
-type Locale = 'fr' | 'en';
+type Locale = 'fr' | 'en' | 'es';
 
 const json = (status: number, data: unknown): Response =>
   new Response(JSON.stringify(data), {
@@ -184,7 +184,7 @@ export default async function handler(req: Request): Promise<Response> {
     return json(400, { error: 'bad-json' });
   }
 
-  const locale: Locale = body.locale === 'en' ? 'en' : 'fr';
+  const locale: Locale = body.locale === 'en' ? 'en' : body.locale === 'es' ? 'es' : 'fr';
   const action = body.action;
 
   try {

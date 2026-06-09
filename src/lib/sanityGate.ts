@@ -17,7 +17,7 @@ import { supabase } from '@/lib/supabase';
 
 export const gateEnabled: boolean = env.CATALOGUE_GATE;
 
-export type Locale = 'fr' | 'en';
+export type Locale = 'fr' | 'en' | 'es';
 
 interface GateBody {
   action: string;

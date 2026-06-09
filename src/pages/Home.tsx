@@ -17,7 +17,7 @@
 import { useLocale } from '@app/LocaleProvider';
 import { BrandMark } from '@components/brand/BrandMark';
 import { SeoHead } from '@components/features/SeoHead';
-import { SUPPORTED_LOCALES } from '@config/i18n';
+import { type Locale, SUPPORTED_LOCALES } from '@config/i18n';
 import { AccessRequestModalProvider } from '@context/AccessRequestModalContext';
 import { LandingContentProvider, useLandingContext } from '@context/LandingContentContext';
 import { LoginModalProvider } from '@context/LoginModalContext';
@@ -61,7 +61,7 @@ export default function Home() {
 function HomeContent() {
   const { t, i18n } = useTranslation();
   const { data: landing } = useLandingContext();
-  const locale = (i18n.language as 'fr' | 'en') ?? 'fr';
+  const locale = i18n.language === 'en' ? 'en' : i18n.language === 'es' ? 'es' : 'fr';
   const { locale: routeLocale, setLocale } = useLocale();
   const { openLogin } = useLoginModal();
   const { openAccessRequest } = useAccessRequestModal();
@@ -235,8 +235,8 @@ interface TopCornerChromeProps {
    *  keep the brand mark off-screen until the Loader has fully lifted
    *  away. */
   visible: boolean;
-  currentLocale: 'fr' | 'en';
-  onLocaleChange: (next: 'fr' | 'en') => void;
+  currentLocale: Locale;
+  onLocaleChange: (next: Locale) => void;
   langSwitcherLabel: string;
 }
 

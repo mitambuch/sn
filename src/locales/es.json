@@ -1,0 +1,1565 @@
+{
+  "search": {
+    "cta": "Buscar",
+    "label": "Búsqueda en su espacio",
+    "placeholder": "Buscar un reloj, una propiedad, un evento…",
+    "empty": "Sin resultados. Reformule o describa su necesidad a Valmont.",
+    "navigate": "Navegar",
+    "open": "Abrir"
+  },
+  "saved": {
+    "title": "Mi colección",
+    "lede": "Las piezas que ha guardado. Valmont ve su colección y puede anticiparse.",
+    "add": "Añadir a mi colección",
+    "remove": "Retirar de mi colección",
+    "emptyTitle": "Su colección está vacía.",
+    "emptyLede": "Haga clic en el ❤ de cualquier pieza que le interese — aparecerá aquí. Valmont lee la lista y propone en consecuencia.",
+    "emptyCta": "Descubrir el catálogo"
+  },
+  "common": {
+    "back": "Volver",
+    "close": "Cerrar",
+    "cancel": "Cancelar",
+    "loading": "Cargando…",
+    "error": "Se ha producido un error.",
+    "retry": "Reintentar",
+    "empty": "Sin contenido por el momento.",
+    "discover": "Descubrir",
+    "readMore": "Leer más",
+    "comingSoon": "Esta sección está en preparación. Estará disponible próximamente.",
+    "onRequest": "Bajo petición",
+    "price": "Precio",
+    "time": "Hora",
+    "itinerary": "Itinerario",
+    "availability": "Disponibilidad",
+    "reading": "Lectura",
+    "limitedOffer": "Oferta limitada",
+    "from": "A partir de",
+    "viewAll": "Ver todo",
+    "details": "Detalles",
+    "expressInterest": "Manifestar su interés",
+    "callConcierge": "Llamar a su conserjería",
+    "search": "Buscar",
+    "filters": "Filtros",
+    "reset": "Restablecer",
+    "category": "Categoría",
+    "kind": "Tipo",
+    "region": "Región",
+    "year": "Año",
+    "duration": "Duración",
+    "showing": "{{count}} resultados",
+    "continue": "Continuar",
+    "fullName": "Nombre completo",
+    "phone": "Teléfono",
+    "edit": "Editar",
+    "yes": "Sí",
+    "no": "No",
+    "similar": "También le podría interesar"
+  },
+  "a11y": {
+    "closeMenu": "Cerrar el menú",
+    "openMenu": "Abrir el menú",
+    "skipToContent": "Ir al contenido principal",
+    "languageSwitcher": "Cambiar de idioma",
+    "themeToDark": "Cambiar al modo oscuro",
+    "themeToLight": "Cambiar al modo claro",
+    "dismiss": "Ocultar",
+    "closeViewer": "Cerrar el visor",
+    "previousImage": "Imagen anterior",
+    "nextImage": "Imagen siguiente",
+    "openImageOfTotal": "Abrir la imagen {{i}} de {{total}}",
+    "removeFile": "Retirar {{name}}"
+  },
+  "nav": {
+    "home": "Inicio",
+    "playground": "Playground",
+    "lab": "Lab"
+  },
+  "playground": {
+    "menu": {
+      "work": "Proyectos",
+      "studio": "Studio",
+      "journal": "Journal",
+      "contact": "Contacto"
+    }
+  },
+  "form": {
+    "required": "Este campo es obligatorio.",
+    "invalidEmail": "Dirección de correo electrónico no válida.",
+    "submit": "Enviar",
+    "sending": "Enviando…",
+    "success": "Mensaje enviado.",
+    "failure": "El envío ha fallado. Inténtelo de nuevo en un momento."
+  },
+  "onboarding": {
+    "skip": "Omitir",
+    "enter": "Descubrir mi espacio",
+    "welcome": {
+      "eyebrow": "Su conserjería dedicada",
+      "title": "Bienvenido a su espacio",
+      "titleNamed": "Bienvenido, {{name}}",
+      "lede": "Valmont Seragone Mato le acompaña. Un único interlocutor, accesible en cualquier momento desde su espacio. Respuesta en 30 minutos hábiles, NDA estándar activado.",
+      "imageAlt": "Cabina de jet privado en cuero"
+    }
+  },
+  "auth": {
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión",
+    "tagline": "Acceso verificado, por invitación",
+    "tagEyebrow": "Espacio privado",
+    "titleA": "Espacio privado",
+    "titleB": "Tres puertas, una sola llave",
+    "titleModal": "Conexión",
+    "ledeModal": "Tiene un código de invitación, o ya dispone de una cuenta.",
+    "lede": "Ya tiene acceso. Inicie sesión con su correo electrónico y contraseña, o active su código de invitación para una primera conexión.",
+    "modeFirst": "Primera conexión",
+    "modeFirstHint": "Ha recibido un código de invitación por correo electrónico. Actívelo y elija su contraseña.",
+    "modeReturning": "Correo electrónico y contraseña",
+    "modeReturningHint": "Ya tiene una cuenta. Acceso directo a su espacio.",
+    "email": "Dirección de correo electrónico",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "createPasswordHelper": "8 caracteres mínimo.",
+    "code": "Código de invitación",
+    "createAccount": "Crear mi cuenta",
+    "codeInvalid": "Código de invitación no válido. Compruebe los caracteres introducidos.",
+    "passwordTooShort": "La contraseña debe contener al menos 8 caracteres.",
+    "passwordMismatch": "Las dos contraseñas no coinciden.",
+    "forgotPassword": "¿Contraseña olvidada?",
+    "forgotTitle": "Restablecer la contraseña",
+    "forgotLede": "Introduzca su dirección de correo electrónico. Si hay una cuenta asociada, recibirá un enlace para elegir una nueva contraseña.",
+    "forgotCta": "Enviar el enlace",
+    "forgotSentTag": "Correo enviado",
+    "forgotSent": "Si hay una cuenta asociada a esta dirección, acaba de enviarse un enlace de restablecimiento. Compruebe su bandeja de entrada.",
+    "confirmEmailTag": "Compruebe su correo",
+    "confirmEmailSent": "Su cuenta ha sido creada. Confirme su dirección mediante el correo electrónico que acabamos de enviarle, y luego inicie sesión.",
+    "back": "Volver al inicio"
+  },
+  "resetPassword": {
+    "tag": "Nueva contraseña",
+    "title": "Elija una nueva contraseña",
+    "lede": "Introduzca su nueva contraseña a continuación.",
+    "submit": "Actualizar",
+    "success": "Contraseña actualizada. Ha iniciado sesión.",
+    "noSession": "Enlace caducado o no válido. Realice una nueva solicitud desde «Contraseña olvidada»."
+  },
+  "account": {
+    "eyebrow": "Espacio privado",
+    "greeting": {
+      "morning": "Buenos días {{name}}.",
+      "afternoon": "Buenas tardes {{name}}.",
+      "evening": "Buenas noches {{name}}."
+    },
+    "dashboardTitle": "Su conserjería",
+    "dashboardLede": "Una selección preparada para usted, sus solicitudes en curso y el acceso directo a su conserjería.",
+    "yourInquiries": "Sus solicitudes",
+    "recentlyAdded": "Incorporado recientemente",
+    "recommendations": "Por descubrir",
+    "noInquiries": "Ninguna solicitud en curso.",
+    "shortcut": {
+      "travel": "Viaje"
+    },
+    "profileTitle": "Su perfil",
+    "profile": {
+      "editTitle": "Editar el perfil",
+      "editLede": "Su información permanece estrictamente entre usted y Valmont. Sin base de datos compartida, sin boletín informativo.",
+      "save": "Guardar",
+      "saved": "Perfil actualizado."
+    },
+    "preferencesTitle": "Sus preferencias",
+    "inquiriesTitle": "Historial de solicitudes",
+    "intent": {
+      "heading": "¿Qué puedo encontrarle hoy?",
+      "subheading": "Su conserjería responde en 30 minutos.",
+      "travel": {
+        "eyebrow": "Viaje",
+        "title": "Desearía viajar",
+        "hint": "Itinerario a medida, jet, yate, expedición.",
+        "drawerTitle": "Desearía viajar",
+        "drawerLede": "Describa el destino, las fechas, el número de viajeros y sus condicionantes — Valmont compone el itinerario.",
+        "placeholder": "Ej. Maldivas en noviembre, 4 personas, 10 días, jet incluido, hotel en atolón privado."
+      },
+      "object": {
+        "eyebrow": "Búsqueda",
+        "title": "Busco un objeto preciso",
+        "hint": "Relojería, obra, automóvil de colección — describa la pieza.",
+        "drawerTitle": "Busco un objeto preciso",
+        "drawerLede": "Sea preciso — referencia, años aceptables, estado esperado, documentación, horquilla de precio. Valmont activa su red.",
+        "placeholder": "Ej. Patek Philippe Nautilus 5711/1A esfera azul, 2018-2022, full set, buen estado mínimo."
+      },
+      "event": {
+        "eyebrow": "Evento",
+        "title": "Deseo organizar un evento",
+        "hint": "Boda, aniversario, cena privada, seminario — del briefing al último brindis.",
+        "drawerTitle": "Deseo organizar un evento",
+        "drawerLede": "Indique la naturaleza, la fecha aproximada, el número de invitados, el lugar si ya está elegido.",
+        "placeholder": "Ej. Boda 220 invitados en el lago de Como, verano 2027, Villa del Balbianello preferida."
+      },
+      "jet": {
+        "eyebrow": "Aviación privada",
+        "title": "Necesito un jet privado",
+        "hint": "Vuelo corto o largo, 6 horas de preaviso son suficientes."
+      }
+    },
+    "preferences": {
+      "contactPreference": "Preferencia de contacto",
+      "locale": "Idioma preferido",
+      "concierge": "Conserjería asignada",
+      "contactConcierge": "Para modificar su información, contacte con su conserjería.",
+      "contact": {
+        "email": "Correo electrónico",
+        "phone": "Teléfono",
+        "secure-message": "Mensajería segura"
+      },
+      "notifEmail": "Notificaciones por correo electrónico",
+      "notifEmailHint": "Recibir acuses de recibo y actualizaciones por correo electrónico.",
+      "notifSms": "Notificaciones SMS",
+      "notifSmsHint": "Notificaciones urgentes únicamente (cancelaciones, jets, seguridad).",
+      "notifPhone": "Llamada telefónica",
+      "notifPhoneHint": "Su conserjería puede contactarle directamente por teléfono.",
+      "recommendations": "Recomendaciones curadas",
+      "recommendationsHint": "Selección adaptada a sus intereses en el panel de control."
+    },
+    "events": {
+      "title": "Eventos privados",
+      "lede": "Galas, vernissages, veladas privadas, deporte — acceso mantenido fuera del público general."
+    },
+    "properties": {
+      "title": "Propiedades",
+      "lede": "Residencias seleccionadas en Suiza y Europa, bajo petición."
+    },
+    "modules": {
+      "filtersHint": "Filtrar por tipo"
+    },
+    "timepieces": {
+      "title": "Relojes",
+      "lede": "Piezas de relojería para coleccionistas, full set y procedencia documentada."
+    },
+    "artworks": {
+      "title": "Obras",
+      "lede": "Piezas únicas de artistas contemporáneos, certificados de autenticidad incluidos."
+    },
+    "journeys": {
+      "title": "Viajes",
+      "lede": "Itinerarios a medida, jet privado, yate, expediciones guiadas."
+    },
+    "concierge": {
+      "title": "Conserjería",
+      "lede": "Capacidades de servicio a medida — transporte, gastronomía, seguridad, medicina, cultura."
+    },
+    "nav": {
+      "dashboard": "Inicio",
+      "catalogue": "Todo",
+      "news": "Novedades",
+      "events": "Eventos",
+      "properties": "Propiedades",
+      "timepieces": "Relojes",
+      "artworks": "Obras",
+      "journeys": "Viajes",
+      "concierge": "Conserjería",
+      "saved": "Mi colección",
+      "profile": "Perfil",
+      "inquiries": "Solicitudes",
+      "preferences": "Preferencias",
+      "more": "Más",
+      "adminHome": "Admin",
+      "adminInvitations": "Códigos de invitación"
+    },
+    "fab": {
+      "request": "Nueva solicitud"
+    },
+    "catalogue": {
+      "title": "El catálogo",
+      "lede": "Todas las oportunidades curadas por su conserjería, de un solo vistazo."
+    },
+    "exclusive": {
+      "eyebrow": "Ofertas exclusivas",
+      "cta": "Descubrir sus oportunidades del momento"
+    },
+    "preparing": {
+      "eyebrow": "Espacio privado",
+      "title": "Su selección está en preparación",
+      "body": "Su conserje está componiendo su espacio personal y le informará en cuanto esté disponible. Ya puede dirigirle cualquier solicitud."
+    }
+  },
+  "wizard": {
+    "openCta": "Una solicitud personalizada",
+    "openHint": "Díganos lo que busca, nosotros nos encargamos.",
+    "shortcutsLabel": "O de forma rápida",
+    "title": "¿Qué puedo encontrarle?",
+    "step": {
+      "category": "Categoría",
+      "details": "Detalles",
+      "fields": "Criterios",
+      "extras": "Precisiones",
+      "review": "Resumen"
+    },
+    "category": {
+      "lede": "Elija el ámbito de su solicitud.",
+      "real-estate": {
+        "title": "Inmobiliario",
+        "hint": "Chalet, villa, ático"
+      },
+      "timepiece": {
+        "title": "Reloj",
+        "hint": "Relojes de colección"
+      },
+      "art": {
+        "title": "Obra de arte",
+        "hint": "Cuadro, escultura, certificado"
+      },
+      "experience": {
+        "title": "Experiencia privada",
+        "hint": "Cena, gala, acceso"
+      },
+      "travel": {
+        "title": "Viaje a medida",
+        "hint": "Itinerario, jet, yate"
+      },
+      "other": {
+        "title": "Otra necesidad",
+        "hint": "Descríbala libremente"
+      }
+    },
+    "details": {
+      "lede": "Describa su necesidad — marca, modelo, fechas, condicionantes, presupuesto aproximado. Cuanto más preciso sea, más tiempo ganaremos.",
+      "placeholder": "Sea tan preciso como sea posible…",
+      "photoLabel": "Fotos de referencia (opcional)",
+      "photoHint": "Útil para un reloj, una obra, un objeto preciso.",
+      "allOptional": "Todos los campos son opcionales. Deje en blanco lo que aún no sepa — Valmont se pondrá en contacto para precisar.",
+      "freeFormLabel": "Otras precisiones",
+      "freeFormPlaceholder": "Todo lo que pueda ayudarnos…"
+    },
+    "extras": {
+      "lede": "Añada fotos y precise todo lo que pueda ayudarnos a comprender mejor."
+    },
+    "fields": {
+      "travel": {
+        "departure": "Lugar de salida",
+        "departurePlaceholder": "Ginebra, París, Zúrich…",
+        "destination": "Destino",
+        "destinationPlaceholder": "Tokio, Patagonia, Capri…",
+        "dateStart": "Salida aproximada",
+        "dateEnd": "Regreso aproximado",
+        "passengers": "Viajeros",
+        "passengersPlaceholder": "ej. 4",
+        "budget": "Presupuesto aproximado",
+        "budgetPlaceholder": "ej. 50 000 — 100 000 CHF"
+      },
+      "timepiece": {
+        "brand": "Marca",
+        "brandPlaceholder": "Patek Philippe, Rolex…",
+        "model": "Modelo / Referencia",
+        "modelPlaceholder": "Nautilus 5711, Submariner…",
+        "year": "Año",
+        "yearMin": "Año mín.",
+        "yearMax": "Año máx.",
+        "condition": "Estado",
+        "conditionPlaceholder": "Aún por definir",
+        "conditionNew": "Nuevo / Sin uso",
+        "conditionExcellent": "Excelente",
+        "conditionGood": "Buen estado",
+        "conditionAny": "Indiferente",
+        "budget": "Presupuesto aproximado",
+        "budgetPlaceholder": "ej. 30 000 — 80 000 CHF"
+      },
+      "real-estate": {
+        "type": "Tipo de bien",
+        "typeChalet": "Chalet",
+        "typeVilla": "Villa",
+        "typePenthouse": "Ático",
+        "typeEstate": "Finca",
+        "typeTownhouse": "Casa urbana",
+        "region": "Región buscada",
+        "regionPlaceholder": "Megève, Cap-Ferrat, Lago Lemán…",
+        "surface": "Superficie (m²)",
+        "surfaceMin": "Superficie mín. (m²)",
+        "surfaceMax": "Superficie máx. (m²)",
+        "bedrooms": "Dormitorios mín.",
+        "availability": "Venta o alquiler",
+        "availabilitySale": "Venta",
+        "availabilityRent": "Alquiler",
+        "availabilityBoth": "Ambos",
+        "budget": "Presupuesto aproximado",
+        "budgetPlaceholder": "ej. 5 — 10 M CHF"
+      },
+      "art": {
+        "artist": "Artista (si lo tiene en mente)",
+        "artistPlaceholder": "Picasso, Basquiat, Soulages…",
+        "period": "Período",
+        "periodContemporary": "Contemporáneo (posterior a 2000)",
+        "periodModern": "Moderno (1900-2000)",
+        "periodClassic": "Clásico (anterior a 1900)",
+        "medium": "Técnica",
+        "mediumOil": "Óleo",
+        "mediumAcrylic": "Acrílico",
+        "mediumSculpture": "Escultura",
+        "mediumPhoto": "Fotografía",
+        "mediumPrint": "Grabado",
+        "mediumMixed": "Mixta",
+        "heightMax": "Altura máx.",
+        "widthMax": "Anchura máx.",
+        "dimensionsUnit": "cm",
+        "budget": "Presupuesto aproximado",
+        "budgetPlaceholder": "ej. 50 000 — 500 000 CHF"
+      },
+      "experience": {
+        "type": "Tipo de experiencia",
+        "typeDinner": "Cena privada",
+        "typeGala": "Gala",
+        "typeConcert": "Concierto / Ópera",
+        "typeSport": "Evento deportivo",
+        "typeShow": "Espectáculo",
+        "typeCultural": "Visita cultural",
+        "date": "Fecha aproximada",
+        "location": "Lugar / Región",
+        "locationPlaceholder": "París, Mónaco, Ginebra…",
+        "guests": "Número de invitados",
+        "guestsPlaceholder": "ej. 12",
+        "dressCode": "Código de vestimenta",
+        "dressCasual": "Libre",
+        "dressSmart": "Smart casual",
+        "dressBlackTie": "Black-tie",
+        "budget": "Presupuesto aproximado",
+        "budgetPlaceholder": "ej. 5 000 — 50 000 CHF"
+      }
+    },
+    "other": {
+      "lede": "Ningún catálogo lo abarca todo. Descríbanos su solicitud, aunque sea única — nuestra conserjería está acostumbrada a los casos particulares y encontrará una solución.",
+      "placeholder": "Cualquiera que sea su necesidad — acceso privado, búsqueda de objeto raro, gestión específica, urgencia médica — cuéntenoslo."
+    },
+    "callback": {
+      "cta": "Preferir una llamada directa",
+      "hint": "Sin formulario — él se pondrá en contacto en menos de 24h."
+    },
+    "review": {
+      "title": "Todo está listo",
+      "lede": "Su conserjería se pondrá en contacto en menos de 24 horas.",
+      "categoryLabel": "Categoría",
+      "descriptionLabel": "Su solicitud"
+    },
+    "actions": {
+      "back": "Anterior",
+      "next": "Siguiente",
+      "submit": "Enviar la solicitud",
+      "sending": "Enviando…",
+      "close": "Cerrar"
+    }
+  },
+  "admin": {
+    "eyebrow": "Operador",
+    "dashboardTitle": "Panel de control",
+    "dashboardLede": "Solicitudes en curso, códigos de invitación, registros recientes.",
+    "shareCodes": {
+      "notePlaceholder": "Ej.: WhatsApp a Pierre Dupont 13/05",
+      "empty": "Ningún código generado por el momento."
+    },
+    "invitations": {
+      "title": "Invitaciones",
+      "code": "Código",
+      "status": "Estado",
+      "createdAt": "Creado el",
+      "expiresAt": "Expira el",
+      "copy": "Copiar",
+      "copied": "Código copiado al portapapeles",
+      "generate": "Generar un código",
+      "generated": "Nuevo código generado",
+      "revoke": "Revocar",
+      "revoked": "Código revocado",
+      "mockBanner": "Modo demo — Supabase no configurado. Las acciones son únicamente locales.",
+      "filterAll": "Todos",
+      "emptyAll": "Ningún código generado por el momento. Cree el primero a continuación.",
+      "emptyFiltered": "Ningún código en este estado.",
+      "statusValues": {
+        "unused": "No utilizado",
+        "redeemed": "Utilizado",
+        "expired": "Expirado",
+        "revoked": "Revocado"
+      }
+    },
+    "inquiries": {
+      "title": "Solicitudes",
+      "lede": "Solicitudes de interés enviadas por los miembros desde el espacio privado. Mueva las tarjetas entre columnas para avanzar el triaje.",
+      "moveTo": "Estado",
+      "cancelling": "Cancelando…",
+      "updating": "Actualizando…",
+      "statusFor": "Estado de la solicitud {{source}}",
+      "statsTotal": "Total",
+      "statsOpen": "Abiertas",
+      "statsContacted": "Contactadas",
+      "statsClosed": "Cerradas"
+    },
+    "users": {
+      "title": "Usuarios",
+      "lede": "Gestión de cuentas — miembros y operadores. Promoción/degradación directa haciendo clic en la acción de cada fila.",
+      "roleLabel": "Rol",
+      "roles": {
+        "client": "Miembro",
+        "admin": "Operador"
+      },
+      "actions": "Acciones",
+      "promote": "Promover a operador",
+      "demote": "Degradar a miembro",
+      "promoted": "{{name}} es ahora operador.",
+      "demoted": "{{name}} es ahora miembro.",
+      "confirmPromote": "¿Promover a {{name}} al rol de operador? Esta persona podrá acceder al área de administración.",
+      "confirmDemote": "¿Degradar a {{name}} al rol de miembro? El acceso de administración será revocado.",
+      "cannotChangeSelf": "No puede cambiar su propio rol.",
+      "searchPlaceholder": "Buscar nombre o correo…",
+      "tabs": {
+        "label": "Filtrar por rol",
+        "all": "Todos",
+        "members": "Miembros",
+        "admins": "Operadores"
+      },
+      "segmentsColumn": "Segmentos",
+      "editSegments": "Editar segmentos",
+      "segmentsModalTitle": "Segmentos — {{name}}",
+      "segmentsModalLede": "Marque los segmentos a los que pertenece este miembro. Determinan qué fichas puede ver.",
+      "noSegments": "Ninguno",
+      "noSegmentsAvailable": "Aún no existe ningún segmento. Créelo en la pestaña Segmentos.",
+      "segmentsSaved": "Segmentos de {{name}} actualizados.",
+      "save": "Guardar",
+      "suspendedBadge": "Suspendido",
+      "drawer": {
+        "eyebrow": "Miembro",
+        "infoSection": "Datos de contacto",
+        "phoneLabel": "Teléfono",
+        "segmentsSection": "Lo que ve (segmentos)",
+        "save": "Guardar los cambios",
+        "saved": "Cambios guardados.",
+        "suspend": "Suspender el acceso",
+        "reactivate": "Reactivar el acceso",
+        "suspended": "{{name}} está suspendido — acceso cortado.",
+        "reactivated": "{{name}} puede acceder de nuevo.",
+        "confirmSuspend": "¿Suspender el acceso de {{name}}? Esta persona no podrá iniciar sesión (reversible).",
+        "suspendedNotice": "Este miembro está suspendido: no puede iniciar sesión hasta que lo reactive.",
+        "promote": "Promover a operador",
+        "demote": "Degradar a miembro",
+        "confirmRole": "¿Cambiar el rol de {{name}}?",
+        "roleChanged": "Rol de {{name}} actualizado.",
+        "delete": "Eliminar",
+        "confirmDelete": "¿Eliminar definitivamente la cuenta de {{name}}? Todos sus datos serán borrados. Irreversible.",
+        "deleted": "Cuenta de {{name}} eliminada."
+      }
+    },
+    "segments": {
+      "title": "Segmentos",
+      "lede": "Clasifique los miembros por categoría (p. ej. clientes referidos por un banco). Cada ficha puede restringirse a uno o varios segmentos.",
+      "createTitle": "Nuevo segmento",
+      "slugLabel": "Identificador",
+      "slugHint": "minúsculas, cifras y guiones — p. ej. piguet-galland",
+      "slugPlaceholder": "piguet-galland",
+      "nameLabel": "Nombre mostrado",
+      "namePlaceholder": "Piguet Galland",
+      "descriptionLabel": "Descripción",
+      "descriptionPlaceholder": "Opcional — nota interna sobre este segmento.",
+      "create": "Crear el segmento",
+      "created": "Segmento «{{label}}» creado.",
+      "deleted": "Segmento eliminado.",
+      "confirmDelete": "¿Eliminar el segmento «{{label}}»? Los miembros etiquetados lo perderán, y las fichas restringidas a este segmento volverán a ser visibles según sus otras reglas.",
+      "delete": "Eliminar",
+      "membersCount": "{{count}} miembro",
+      "membersCount_other": "{{count}} miembros",
+      "empty": "Ningún segmento por el momento. Cree el primero arriba.",
+      "slugColumn": "Identificador",
+      "nameColumn": "Nombre",
+      "membersColumn": "Miembros",
+      "slugInvalid": "El identificador debe estar en minúsculas, cifras y guiones (de 2 a 40 caracteres).",
+      "slugTaken": "Este identificador ya existe."
+    },
+    "stats": {
+      "pendingInquiries": "Solicitudes pendientes",
+      "unusedCodes": "Códigos disponibles",
+      "signupsLast7d": "Registros en 7 días"
+    },
+    "recentInquiries": "Solicitudes recientes",
+    "quickActions": "Añadir rápidamente",
+    "activity": {
+      "title": "Actividad reciente",
+      "empty": "Sin actividad aún. El flujo se activará con la primera interacción en el sitio.",
+      "accessRequest": "{{name}} ha solicitado un acceso",
+      "inquiry": "Nueva solicitud — {{source}}",
+      "noMessage": "(sin mensaje)",
+      "invitationRedeemed": "Código {{code}} utilizado",
+      "invitationRedeemedSub": "Un nuevo miembro acaba de registrarse con este código.",
+      "signup": "{{name}} ha creado su cuenta"
+    },
+    "nav": {
+      "dashboard": "Panel de control",
+      "catalogue": "Catálogo",
+      "accessRequests": "Solicitudes de acceso",
+      "invitations": "Invitaciones",
+      "shareCodes": "Códigos de acceso compartido",
+      "inquiries": "Solicitudes",
+      "users": "Usuarios",
+      "segments": "Segmentos",
+      "pendingCount": "{{count}} solicitud pendiente",
+      "pendingCount_other": "{{count}} solicitudes pendientes"
+    },
+    "accessRequests": {
+      "title": "Solicitudes de acceso",
+      "lede": "Visitantes anónimos que han rellenado el formulario «Solicitar acceso» en el sitio. Triaje: nuevo → contactado → aceptado/rechazado.",
+      "fallbackNotice": "Supabase no configurado — vista desactivada.",
+      "moveTo": "Cambiar el estado",
+      "confirmAccept": "¿Aceptar esta solicitud? Se generará un código de acceso de un solo uso y se enviará por correo al solicitante.",
+      "acceptedSent": "Solicitud aceptada — código de acceso enviado por correo.",
+      "delete": "Eliminar la solicitud",
+      "confirmDelete": "¿Eliminar definitivamente la solicitud de {{name}}? Esta acción es irreversible.",
+      "deleted": "Solicitud eliminada.",
+      "status": {
+        "new": "Nuevo",
+        "contacted": "Contactado",
+        "accepted": "Aceptado",
+        "declined": "Rechazado"
+      },
+      "field": {
+        "phone": "Tel.",
+        "company": "Empresa",
+        "activity": "Actividad"
+      }
+    },
+    "sanityNotice": {
+      "title": "Sanity Studio no configurado",
+      "body": "Para añadir o modificar noticias, productos y eventos, configure VITE_SANITY_PROJECT_ID en Netlify y redespliegue. Una vez conectado, estos enlaces abrirán el Studio externo.",
+      "openStudio": "Abrir Sanity Studio"
+    },
+    "catalogue": {
+      "title": "Catálogo",
+      "lede": "Añada, modifique o retire piezas, eventos, viajes, servicios y artículos. Cada cambio aparece inmediatamente en el espacio de los miembros.",
+      "ledeStudio": "Vista general del catálogo. La creación y edición de fichas se realizan en Sanity Studio — haga clic en «Crear en Sanity» para abrir el editor.",
+      "fallbackNotice": "Sanity no configurado — vista limitada. Añada VITE_SANITY_PROJECT_ID en Netlify y redespliegue para activar la edición.",
+      "statsTotal": "Total de fichas",
+      "statsPublic": "Público",
+      "statsShareCode": "Con código",
+      "statsPrivate": "Privado",
+      "tabs": "Módulos",
+      "audience": {
+        "button": "Audiencia",
+        "restricted": "Restringido",
+        "visibleToAll": "Visible por todos los miembros",
+        "reservedTo": "Reservado a: {{names}}",
+        "manage": "Gestionar quién lo ve",
+        "editContent": "Editar el contenido (Sanity)",
+        "title": "Audiencia — {{title}}",
+        "lede": "Elija quién puede ver esta ficha en el espacio de los miembros. La aplicación está garantizada del lado del servidor.",
+        "loadError": "No se han podido cargar las reglas de audiencia.",
+        "modeAll": "Todos los miembros",
+        "modeAllHint": "Visible para cualquier miembro conectado (excepto las exclusiones indicadas abajo).",
+        "modeSegments": "Segmentos seleccionados",
+        "modeSegmentsHint": "Visible únicamente para los miembros etiquetados con al menos un segmento marcado.",
+        "noSegments": "Aún no existe ningún segmento. Créelo en la pestaña Segmentos.",
+        "exclusionsTitle": "Excluir miembros",
+        "exclusionsHint": "Estos miembros nunca verán la ficha, independientemente de su segmento.",
+        "searchMembers": "Buscar un miembro a excluir…",
+        "excludedNone": "Sin exclusiones.",
+        "remove": "Retirar",
+        "noteLabel": "Nota interna",
+        "notePlaceholder": "Opcional — motivo de esta restricción.",
+        "save": "Guardar la audiencia",
+        "saved": "Audiencia actualizada.",
+        "badgeAll": "Todos",
+        "badgeSegments": "{{count}} segmento",
+        "badgeSegments_other": "{{count}} segmentos",
+        "badgeExcluded": "· {{count}} excluido",
+        "badgeExcluded_other": "· {{count}} excluidos"
+      }
+    },
+    "modules": {
+      "property": "Propiedad",
+      "timepiece": "Reloj",
+      "artwork": "Obra",
+      "event": "Evento",
+      "journey": "Viaje",
+      "concierge": "Servicio de conserjería",
+      "article": "Artículo"
+    },
+    "addItem": "+ Añadir {{module}}",
+    "newTitle": "Añadir una ficha",
+    "editTitle": "Editar la ficha",
+    "saveChanges": "Guardar",
+    "create": "Crear",
+    "deleteAction": "Eliminar esta ficha",
+    "editAction": "Editar",
+    "confirmDelete": "Confirmar la eliminación — esta acción es definitiva (lote B: se restablece con un restablecimiento de localStorage).",
+    "empty": "Ninguna ficha para este módulo. Haga clic en «+ Añadir» para crear la primera.",
+    "toasts": {
+      "created": "Ficha creada. Visible en el espacio de los miembros desde ahora.",
+      "updated": "Ficha actualizada.",
+      "removed": "Ficha eliminada."
+    },
+    "fields": {
+      "title": "Título",
+      "slug": "Slug (dejar vacío = automático)",
+      "kind": "Tipo",
+      "availability": "Disponibilidad",
+      "region": "Región",
+      "countryCode": "Código de país (CH, FR, GB…)",
+      "surfaceSqm": "Superficie (m²)",
+      "bedrooms": "Dormitorios",
+      "bathrooms": "Baños",
+      "summary": "Resumen editorial",
+      "description": "Descripción larga",
+      "imageSrc": "URL de la imagen principal",
+      "imageAlt": "Descripción de la imagen (a11y)",
+      "brand": "Marca",
+      "model": "Modelo",
+      "reference": "Referencia",
+      "year": "Año",
+      "material": "Material",
+      "condition": "Estado",
+      "caliber": "Calibre",
+      "caseDiameterMm": "Diámetro de caja (mm)",
+      "fullSet": "Set completo",
+      "artistName": "Nombre del artista",
+      "artistBio": "Biografía del artista",
+      "medium": "Técnica",
+      "heightCm": "Altura (cm)",
+      "widthCm": "Anchura (cm)",
+      "signed": "Firmada",
+      "category": "Categoría",
+      "startsAt": "Fecha y hora",
+      "city": "Ciudad",
+      "venue": "Lugar",
+      "capacity": "Capacidad total",
+      "allocatedSeats": "Plazas asignadas",
+      "dressCode": "Código de vestimenta",
+      "durationDays": "Duración (días)",
+      "origin": "Salida",
+      "destinations": "Destinos",
+      "guestCapacity": "Capacidad de viajeros",
+      "leadTime": "Plazo de entrega",
+      "publishedAt": "Fecha de publicación",
+      "readMinutes": "Tiempo de lectura (min)",
+      "excerpt": "Entradilla",
+      "body": "Cuerpo del artículo"
+    }
+  },
+  "concierge": {
+    "leadTime": "Plazo",
+    "caseStudies": "Ejemplos pasados",
+    "category": {
+      "transport": "Transporte",
+      "gastronomy": "Gastronomía",
+      "security": "Seguridad",
+      "medical": "Médico",
+      "cultural": "Cultural",
+      "wellness": "Bienestar",
+      "family": "Familia",
+      "logistics": "Logística"
+    }
+  },
+  "journeys": {
+    "days": "días",
+    "itinerary": "Itinerario",
+    "inclusions": "Incluido",
+    "exclusions": "No incluido",
+    "gallery": "Galería",
+    "day": "Día",
+    "transport": "Transporte",
+    "accommodation": "Alojamiento",
+    "kind": {
+      "private-jet": "Jet privado",
+      "yacht": "Yate",
+      "expedition": "Expedición",
+      "safari": "Safari",
+      "rail-luxury": "Tren de lujo"
+    },
+    "meta": {
+      "kind": "Tipo",
+      "duration": "Duración",
+      "origin": "Salida",
+      "destinations": "Destinos",
+      "guestCapacity": "Capacidad de viajeros",
+      "earliestStart": "Fecha más próxima",
+      "partySize": "Viajeros"
+    }
+  },
+  "events": {
+    "programme": "Programa",
+    "allYear": "Todo el año",
+    "gallery": "Galería",
+    "category": {
+      "gala": "Gala",
+      "opening": "Vernissage",
+      "concert": "Concierto",
+      "sport": "Deporte",
+      "private-dinner": "Cena privada",
+      "auction": "Subasta",
+      "cultural": "Cultural"
+    },
+    "dressCode": {
+      "black-tie": "Corbata negra",
+      "cocktail": "Cóctel",
+      "business": "Business",
+      "smart-casual": "Smart casual",
+      "tenue-d-hiver": "Atuendo de invierno",
+      "open": "Libre"
+    },
+    "meta": {
+      "date": "Fecha",
+      "time": "Hora",
+      "venue": "Lugar",
+      "city": "Ciudad",
+      "capacity": "Capacidad",
+      "allocatedSeats": "Plazas asignadas",
+      "dressCode": "Código de vestimenta",
+      "category": "Categoría"
+    }
+  },
+  "artworks": {
+    "artist": "Artista",
+    "provenance": "Procedencia",
+    "exhibitions": "Exposiciones",
+    "gallery": "Galería",
+    "meta": {
+      "artist": "Artista",
+      "year": "Año",
+      "medium": "Técnica",
+      "dimensions": "Dimensiones",
+      "signed": "Firmada",
+      "edition": "Edición"
+    },
+    "medium": {
+      "painting-oil": "Óleo",
+      "painting-acrylic": "Acrílico",
+      "painting-watercolor": "Acuarela",
+      "sculpture-bronze": "Escultura en bronce",
+      "sculpture-marble": "Escultura en mármol",
+      "sculpture-mixed": "Escultura mixta",
+      "photography": "Fotografía",
+      "works-on-paper": "Obra sobre papel",
+      "mixed-media": "Técnica mixta"
+    }
+  },
+  "timepieces": {
+    "fullSet": "Set completo",
+    "provenance": "Procedencia",
+    "gallery": "Galería",
+    "meta": {
+      "brand": "Marca",
+      "model": "Modelo",
+      "reference": "Referencia",
+      "year": "Año",
+      "caliber": "Calibre",
+      "diameter": "Diámetro de caja",
+      "material": "Material",
+      "condition": "Estado",
+      "fullSet": "Set completo"
+    },
+    "material": {
+      "steel": "Acero",
+      "gold-yellow": "Oro amarillo",
+      "gold-white": "Oro blanco",
+      "gold-rose": "Oro rosa",
+      "platinum": "Platino",
+      "titanium": "Titanio",
+      "two-tone": "Bicolor",
+      "ceramic": "Cerámica"
+    },
+    "condition": {
+      "mint": "Nuevo",
+      "unworn": "Sin uso",
+      "excellent": "Excelente",
+      "very-good": "Muy bueno",
+      "good": "Bueno",
+      "restored": "Restaurado"
+    }
+  },
+  "properties": {
+    "kind": {
+      "chalet": "Chalet",
+      "villa": "Villa",
+      "penthouse": "Ático",
+      "estate": "Finca",
+      "townhouse": "Casa urbana"
+    },
+    "availability": {
+      "sale": "Venta",
+      "rent": "Alquiler",
+      "both": "Venta o alquiler"
+    },
+    "meta": {
+      "surface": "Superficie",
+      "bedrooms": "Dormitorios",
+      "bathrooms": "Baños",
+      "plot": "Terreno",
+      "yearBuilt": "Año de construcción",
+      "region": "Región",
+      "availability": "Disponibilidad"
+    },
+    "gallery": "Galería"
+  },
+  "inquiry": {
+    "drawerTitle": "Manifestar su interés",
+    "drawerLede": "Su conserjería se pondrá en contacto en menos de 24 horas.",
+    "messagePlaceholder": "Indique sus condicionantes, fechas o preguntas.",
+    "submit": "Enviar la solicitud",
+    "sending": "Enviando…",
+    "success": "Solicitud transmitida. Valmont se pondrá en contacto en menos de 24 horas.",
+    "error": "El envío ha fallado. Inténtelo de nuevo en un momento o escriba a Valmont.",
+    "sourceLabel": {
+      "event": "Evento",
+      "property": "Propiedad",
+      "timepiece": "Reloj",
+      "artwork": "Obra",
+      "journey": "Viaje",
+      "concierge": "Conserjería",
+      "jet": "Jet privado",
+      "object-search": "Búsqueda de objeto",
+      "event-organize": "Organización de evento"
+    },
+    "status": {
+      "new": "Nueva",
+      "in_review": "En estudio",
+      "contacted": "Respuesta enviada",
+      "closed": "Cerrada",
+      "cancelled": "Cancelada"
+    }
+  },
+  "jet": {
+    "drawerTitle": "Fletar un jet privado",
+    "drawerLede": "Indique salida, llegada y pasajeros — Valmont confirma la disponibilidad en 30 minutos.",
+    "from": "Salida",
+    "fromPlaceholder": "Ej. Ginebra (LSGG)",
+    "to": "Llegada",
+    "toPlaceholder": "Ej. Tokio Haneda (RJTT)",
+    "departDate": "Fecha y hora de salida",
+    "withReturn": "Regreso previsto",
+    "withReturnHint": "Desmarque para un vuelo de solo ida",
+    "returnDate": "Fecha y hora de regreso",
+    "pax": "Número de pasajeros",
+    "notes": "Notas adicionales",
+    "notesPlaceholder": "Animales, equipamientos especiales, comidas, condicionantes diplomáticos…",
+    "submit": "Enviar la solicitud",
+    "success": "Solicitud de vuelo transmitida. Valmont confirma en 30 minutos.",
+    "error": "El envío ha fallado. Inténtelo de nuevo en un momento o llame a Valmont.",
+    "focalReassurance": "Valmont (su conserjería) recibe esta solicitud directamente y confirma en 30 minutos hábiles. En cualquier momento, puede llamarle desde el botón inferior derecho."
+  },
+  "dock": {
+    "title": "Su conserjería",
+    "eyebrow": "Conserjería dedicada",
+    "availability": "Disponible 7 días a la semana, de 6h a 23h Europa/Zúrich",
+    "cta": "Valmont",
+    "call": "Llamar ahora",
+    "callShort": "Llamar",
+    "schedule": "Reservar 30 min",
+    "write": "Escribir un mensaje",
+    "writeShort": "Mensaje",
+    "writeLede": "Escriba libremente — Valmont lee cada mensaje personalmente y responde en menos de 24 horas."
+  },
+  "audio": {
+    "label": "Nota de voz de Valmont",
+    "eyebrow": "Nota de voz",
+    "play": "Escuchar la nota de voz",
+    "pause": "Pausar",
+    "samples": {
+      "property": "Esta propiedad salió de una colección privada la semana pasada. La familia vivió allí veinte años, la historia está intacta. Tres clientes están en conversación paralela a este anuncio — llámeme antes de visitar, le diré cómo están las cosas.",
+      "timepiece": "El set está completo, sellos intactos. He verificado los documentos esta mañana con el distribuidor oficial. La pieza no pasará por sala de subastas — es una cesión privada, de propietario a propietario. Si está interesado, le pongo en contacto directo.",
+      "artwork": "Conocí esta tela en la galería Standard de Oslo en 2024. La galería nos la ha confiado en exclusividad antes de volver a la colección. El marco de roble ahumado está incluido. Puedo organizar una visita al estudio con el artista si desea realmente palpar la materia.",
+      "journey": "Es un itinerario que compusimos para dos familias este verano. El guía francófono que privatizamos durante los 8 días marca toda la diferencia — sin compartir grupo. En estas fechas, sabemos que tenemos la suite Mombo disponible. Puedo bloquearla 48 horas."
+    }
+  },
+  "schedule": {
+    "eyebrow": "Valmont Seragone Mato",
+    "title": "Reservar 30 minutos con Valmont",
+    "lede": "Elija un horario en los próximos 7 días. Recibirá la confirmación y la invitación iCal en menos de 30 minutos.",
+    "chooseDay": "Elegir un día",
+    "chooseSlot": "Elegir un horario",
+    "timezone": "Horario Europa/Zúrich. Si ninguna opción le conviene, escriba a Valmont — él se adapta.",
+    "notes": "Temas a tratar (opcional)",
+    "notesHint": "Ayuda a Valmont a preparar la conversación. Unas pocas palabras son suficientes.",
+    "notesPlaceholder": "Ej. revisión de la lista de deseos + pregunta sobre la estancia de julio.",
+    "calendarHint": "Una vez confirmado, la invitación iCal llega por correo electrónico. Añádalo a Google Calendar / Outlook con un solo clic.",
+    "submit": "Reservar el horario",
+    "success": "Solicitud enviada. Valmont confirma el {{day}} a las {{slot}} en 30 minutos.",
+    "error": "El envío ha fallado. Inténtelo de nuevo en un momento o escriba a Valmont."
+  },
+  "articles": {
+    "readMinutes": "min de lectura",
+    "related": "Sobre este tema",
+    "kind": {
+      "launch": "Nueva incorporación",
+      "opening": "Plaza obtenida",
+      "partnership": "Colaboración",
+      "editorial": "Editorial",
+      "story": "Relato"
+    }
+  },
+  "bespoke": {
+    "eyebrow": "Solicitud a medida",
+    "title": "Describa lo que busca, nos encargamos",
+    "lede": "Valmont y su red abren las puertas adecuadas. Cuanto más preciso sea (referencia, horquilla, fechas), más rápida llega la respuesta.",
+    "domain": "¿Qué busca?",
+    "domainHint": "Seleccione uno o varios ámbitos.",
+    "domainValues": {
+      "property": "Propiedad",
+      "timepiece": "Reloj",
+      "artwork": "Obra",
+      "event": "Evento",
+      "journey": "Viaje",
+      "concierge": "Servicio",
+      "other": "Otro"
+    },
+    "description": "Descripción",
+    "descriptionHint": "Sea lo más preciso posible — referencia, marca, época, dimensiones, condicionantes.",
+    "descriptionPlaceholder": "Ej. Patek Philippe Aquanaut 5167A acero esfera negra, 2018-2022, full set, documentación indispensable, horquilla 60-75K CHF.",
+    "budget": "Presupuesto",
+    "budgetHint": "Opcional pero recomendado — acelera el triaje de la red.",
+    "budgetMin": "Mínimo",
+    "budgetMax": "Máximo",
+    "currency": "Divisa",
+    "urgency": "Urgencia",
+    "urgencyValues": {
+      "this-week": "Esta semana",
+      "this-month": "Este mes",
+      "three-months": "En 3 meses",
+      "no-rush": "Sin urgencia"
+    },
+    "targetDate": "Fecha objetivo (opcional)",
+    "attachLabel": "Adjuntar fotos o documentos",
+    "attachHint": "Visuales de referencia, capturas de pantalla, certificados existentes, planos. Hasta 5 archivos.",
+    "confidential": "Confidencialidad absoluta",
+    "confidentialHint": "Su solicitud es gestionada únicamente por Valmont. NDA estándar activado, sin indexación, sin reventa.",
+    "submit": "Transmitir la solicitud",
+    "success": "Solicitud a medida transmitida. Valmont se pondrá en contacto en menos de 24 horas.",
+    "error": "El envío ha fallado. Inténtelo de nuevo en un momento o escriba a Valmont.",
+    "banner": {
+      "eyebrow": "¿No lo encuentra?",
+      "cta": "Hacer una solicitud a medida",
+      "generic": {
+        "title": "¿No encuentra lo que busca?",
+        "lede": "Descríbalo. Valmont activa su red — relojes raros, propiedades fuera de mercado, accesos a eventos, viajes compuestos a medida."
+      },
+      "property": {
+        "title": "¿La propiedad ideal no está aquí?",
+        "lede": "¿Un barrio preciso, una tipología particular, una vista específica? Nuestra red fuera de mercado cubre toda Europa."
+      },
+      "timepiece": {
+        "title": "¿La referencia que busca no está listada?",
+        "lede": "Indique la marca, la referencia, el año, el estado esperado. Valmont activa los distribuidores y coleccionistas asociados."
+      },
+      "artwork": {
+        "title": "¿La obra no está en el catálogo?",
+        "lede": "Artista, época, técnica, horquilla — activamos las galerías y casas de subastas con las que trabajamos."
+      },
+      "event": {
+        "title": "¿Le interesa un evento particular?",
+        "lede": "Gala cerrada, noche de apertura, concierto privado — descríbalo, verificamos las plazas y negociamos el acceso."
+      },
+      "journey": {
+        "title": "¿Su viaje de ensueño no está listado?",
+        "lede": "Destino, duración, nivel de acompañamiento, condicionantes — Valmont compone el itinerario de principio a fin."
+      },
+      "concierge": {
+        "title": "¿Falta algún servicio específico?",
+        "lede": "Describa la necesidad — seguridad, medicina, logística de eventos. Activamos el equipo asociado adecuado."
+      }
+    }
+  },
+  "trust": {
+    "badge": "Seguridad y confidencialidad",
+    "modalTitle": "Siete garantías premium",
+    "modalLede": "Sawnext Studio es una conserjería privada suiza. Cada solicitud, cada transacción, cada intercambio sigue el protocolo que se indica a continuación — sin excepción.",
+    "footerNote": "Para cualquier pregunta jurídica precisa, su abogado o notario está invitado a contactar directamente con nuestro departamento de cumplimiento normativo — Valmont les pondrá en contacto.",
+    "pillar": {
+      "nda": {
+        "title": "NDA estándar en cada solicitud",
+        "body": "Toda solicitud emitida desde su espacio activa automáticamente un acuerdo de confidencialidad firmado por ambas partes. Ningún tercero tiene acceso."
+      },
+      "encryption": {
+        "title": "Comunicaciones cifradas de extremo a extremo",
+        "body": "Correos salientes cifrados mediante Resend, datos almacenados en Supabase Frankfurt con cifrado en reposo. Contraseñas con hash Argon2id."
+      },
+      "residency": {
+        "title": "Residencia de datos — Unión Europea",
+        "body": "Datos personales alojados en Alemania (Supabase EU-Central-1, Frankfurt). Sin transferencia extra-UE sin cláusulas contractuales estándar."
+      },
+      "vetted": {
+        "title": "Círculo verificado — acceso únicamente por invitación",
+        "body": "El acceso al catálogo requiere un código de invitación de un solo uso entregado en persona. Sin proceso de registro público, sin referidos no validados."
+      },
+      "escrow": {
+        "title": "Depósito en garantía disponible para transacciones sensibles",
+        "body": "Para adquisiciones importantes (relojería, inmobiliario, obras), nuestra notaría asociada en Ginebra puede custodiar los fondos hasta la transferencia efectiva."
+      },
+      "compliance": {
+        "title": "Conformidad RGPD + LPD Suiza",
+        "body": "Sus derechos de acceso, rectificación, supresión y portabilidad son operativos en 7 días. Delegado de protección de datos accesible directamente."
+      },
+      "audit": {
+        "title": "Registro de auditoría accesible bajo petición",
+        "body": "Cada consulta, cada solicitud, cada modificación de su perfil queda registrada. Puede exportar su registro completo en cualquier momento a través de Valmont."
+      }
+    }
+  },
+  "public": {
+    "tagline": "Conserjería privada suiza",
+    "intro": "Una selección por invitación para una clientela seleccionada. Sin ruido, sin excesos.",
+    "loginCta": "Acceder a su espacio",
+    "footer": {
+      "rights": "© Sawnext Studio · Todos los derechos reservados",
+      "imprint": "Aviso legal",
+      "privacy": "Privacidad"
+    }
+  },
+  "example": {
+    "metaTitle": "Vista previa privada — SAW NEXT"
+  },
+  "landing": {
+    "sessionActive": "Sesión activa",
+    "indexButton": "Índice",
+    "hero": {
+      "topLeft": "Edición v0.6 / Disposición",
+      "topCenter": "SAW↗NEXT",
+      "topRightGps": "46.50° N, 6.83° E",
+      "topRightLoc": "Boudry / NE",
+      "sideMark": "01 / Introducción",
+      "cyclePhrases": {
+        "cp1": {
+          "before": "No es una agencia. No es una ",
+          "highlight": "conserjería",
+          "after": "."
+        },
+        "cp2": {
+          "before": "",
+          "highlight": "Bespoke",
+          "after": " por disciplina."
+        },
+        "cp3": {
+          "before": "Servicios privados. Suiza. Por ",
+          "highlight": "cooptación",
+          "after": "."
+        },
+        "cp4": {
+          "before": "Abrimos ",
+          "highlight": "puertas",
+          "after": " que otros no ven."
+        },
+        "cp5": {
+          "before": "Un solo interlocutor. Una red. Una ",
+          "highlight": "exigencia",
+          "after": "."
+        },
+        "cp6": {
+          "before": "Lo que no se encuentra en ",
+          "highlight": "escaparates",
+          "after": "."
+        },
+        "cp7": {
+          "before": "Estructura independiente. Círculo ",
+          "highlight": "restringido",
+          "after": "."
+        },
+        "cp8": {
+          "before": "Para quienes tienen la ",
+          "highlight": "paciencia",
+          "after": "."
+        }
+      },
+      "line1": "Ciertas puertas",
+      "line2": "solo se abren a",
+      "line3prefix": "voz",
+      "metaStructureLabel": "Estructura",
+      "metaType": "Tipo",
+      "metaTypeValue": "Independiente",
+      "metaStatus": "Estado",
+      "metaStatusValue": "Suiza",
+      "metaModel": "Modelo",
+      "metaModelValue": "Cooptación",
+      "metaEstablished": "Fundada",
+      "metaEstablishedValue": "2025",
+      "metaFieldLabel": "Campo de acción",
+      "metaFieldText": "Servicios privados, proyectos confidenciales, acceso fuera de mercado. Un único interlocutor. Sin agencia, sin plataforma."
+    },
+    "presentation": {
+      "tag": "Presentación",
+      "h2line1": "Estructura",
+      "h2line2": "& método.",
+      "lead": "Independientes por estructura. Discretos por disciplina. Selectivos por necesidad.",
+      "meta": {
+        "type": "Tipo",
+        "typeValue": "Independiente",
+        "jurisdiction": "Jurisdicción",
+        "jurisdictionValue": "Suiza",
+        "accessKey": "Acceso",
+        "accessValue": "Cooptación",
+        "verticals": "Verticales",
+        "verticalsValue": "10",
+        "confidentiality": "Confidencialidad",
+        "confidentialityValue": "Estricta"
+      },
+      "p1": "SAW↗NEXT acompaña a clientes privados y emprendedores en proyectos, oportunidades y experiencias que salen del marco estándar.",
+      "p2": "La red abarca los universos del deporte, la relojería, las finanzas, el inmobiliario y el arte. Se ha construido por cooptación, no por captación.",
+      "paragraph1": "SAW↗NEXT acompaña a clientes privados y emprendedores en proyectos, oportunidades y experiencias que salen del marco estándar. La red abarca los universos del deporte, la relojería, las finanzas, el inmobiliario y el arte. Se ha construido por cooptación, no por captación.",
+      "paragraph2": "Nuestro rol se resume en tres verbos: identificar, estructurar, facilitar. No reemplazamos a ningún experto. Abrimos puertas que otros no ven. Lo que pasa por nosotros no sale jamás por otros canales. Sin casos de clientes. Sin nombres. Sin anécdotas.",
+      "paragraph3": "Sin discurso comercial. Sin presentación. Una conversación, una calificación, y luego — si el proyecto entra en nuestras competencias — un compromiso escrito. El ritmo es el del expediente, no el de una plataforma. Cada colaboración comienza con un marco: perímetro, entregables, puntos de control, duración. Sin zonas grises."
+    },
+    "method": {
+      "tag": "Método",
+      "eyebrow": "Tres verbos, un compromiso",
+      "act": "Acto",
+      "identify": {
+        "title": "Identificar",
+        "desc": "Leer el brief, aislar la necesidad real, distinguir la solicitud del síntoma. Cinco preguntas, nunca más."
+      },
+      "structure": {
+        "title": "Estructurar",
+        "desc": "Enmarcar el perímetro, seleccionar los socios útiles, redactar el plan. Todo queda consignado, todo queda fechado."
+      },
+      "facilitate": {
+        "title": "Facilitar",
+        "desc": "Levantar los obstáculos silenciosamente, hasta la entrega. La discreción es un entregable como cualquier otro."
+      }
+    },
+    "manifesto": {
+      "eyebrow": "Manifiesto / 01",
+      "hint": "Continúe desplazando",
+      "p1": [
+        "Sin agencia.",
+        "Sin conserjería."
+      ],
+      "p2": [
+        "Una estructura.",
+        "Un interlocutor."
+      ],
+      "p3": [
+        "El lujo",
+        "no se mide",
+        "por lo que se posee."
+      ],
+      "p4": [
+        "El silencio es",
+        "nuestra única firma."
+      ],
+      "p5": [
+        "Lo que se dice aquí",
+        "no se dice",
+        "en ningún otro lugar."
+      ],
+      "p6": [
+        "No prometemos.",
+        "Actuamos."
+      ]
+    },
+    "principles": {
+      "tag": "Principios",
+      "eyebrow": "Documento de compromiso / Edición 2026",
+      "p1": {
+        "mark": "I.  Confianza",
+        "prefix": "La",
+        "keyword": "Confianza",
+        "body": "no es un argumento. Se construye en el tiempo, a través de los actos, y se verifica cuando las cosas se complican. No la pedimos. Trabajamos para merecerla."
+      },
+      "p2": {
+        "mark": "II. Confidencialidad",
+        "prefix": "La",
+        "keyword": "Confidencialidad",
+        "body": "no es una opción. Ningún nombre, ninguna anécdota, ningún caso de cliente saldrá de aquí. Nuestras referencias hablan por cooptación, o no hablan."
+      },
+      "p3": {
+        "mark": "III. Relaciones",
+        "prefix": "Y más allá de los proyectos, lo que realmente importa son las",
+        "keyword": "Relaciones humanas",
+        "body": ". Un único interlocutor. Sin plataforma, sin cadena donde cada uno deriva la responsabilidad."
+      },
+      "footer": "Aquello sobre lo que no transigimos.",
+      "signature": "Boudry, marzo de 2026"
+    },
+    "domains": {
+      "tag": "Ámbitos",
+      "h2line1": "Diez verticales.",
+      "h2line2": "Una lógica.",
+      "metaTop": "Pase el cursor por cada línea",
+      "metaBottom": "para explorar ↘",
+      "previewTag": "Ámbito seleccionado",
+      "01": {
+        "name": "Alta relojería",
+        "title": "Alta relojería",
+        "desc": "Acceso directo a las manufacturas. Más allá del acto de compra, creamos la relación entre el cliente y la maison.",
+        "feat1": "Visitas privadas",
+        "feat2": "Piezas raras",
+        "feat3": "Creaciones personalizadas",
+        "feat4": "Encuentros con los artesanos"
+      },
+      "02": {
+        "name": "Bienes fuera de mercado",
+        "title": "Bienes fuera de mercado",
+        "desc": "Propiedades y activos raros fuera del mercado público. Círculo restringido. Transacciones confidenciales.",
+        "feat1": "Propiedades de excepción",
+        "feat2": "Inversiones confidenciales",
+        "feat3": "Activos raros",
+        "feat4": "Oportunidades estratégicas"
+      },
+      "03": {
+        "name": "Inmobiliario a medida",
+        "title": "Inmobiliario a medida",
+        "desc": "Concepción y coordinación de propiedades de excepción. Arquitectos seleccionados.",
+        "feat1": "Comprensión de expectativas",
+        "feat2": "Selección de socios",
+        "feat3": "Coordinación",
+        "feat4": "Seguimiento a largo plazo"
+      },
+      "04": {
+        "name": "Arte y colección",
+        "title": "Arte y colección",
+        "desc": "Adquisición de obras y objetos raros. Puesta en contacto con galeristas y expertos.",
+        "feat1": "Grandes maestros",
+        "feat2": "Artistas contemporáneos",
+        "feat3": "Objetos de colección",
+        "feat4": "Peritaje"
+      },
+      "05": {
+        "name": "Viajes y experiencias",
+        "title": "Viajes y experiencias",
+        "desc": "Viajes enteramente a medida. Aviación privada, cruceros, estancias confidenciales.",
+        "feat1": "Aviación privada",
+        "feat2": "Yachting",
+        "feat3": "Villas privadas",
+        "feat4": "Eventos internacionales"
+      },
+      "06": {
+        "name": "Eventos VIP",
+        "title": "Eventos VIP",
+        "desc": "Accesos privilegiados a los grandes encuentros internacionales. Hospitalidad a medida.",
+        "feat1": "Deporte de alto nivel",
+        "feat2": "Festivales culturales",
+        "feat3": "Conciertos privados",
+        "feat4": "Cenas exclusivas"
+      },
+      "07": {
+        "name": "Lifestyle management",
+        "title": "Lifestyle management",
+        "desc": "Todo lo que no encaja en otro lugar. Investigación, organización, acompañamiento.",
+        "feat1": "Objetos raros",
+        "feat2": "Eventos privados",
+        "feat3": "Lugares exclusivos",
+        "feat4": "Proyectos personales"
+      },
+      "08": {
+        "name": "Puesta en contacto",
+        "title": "Puesta en contacto",
+        "desc": "Conexiones confidenciales entre clientes, inversores, emprendedores.",
+        "feat1": "Oportunidades de negocio",
+        "feat2": "Colaboraciones",
+        "feat3": "Co-inversiones",
+        "feat4": "Proyectos conjuntos"
+      },
+      "09": {
+        "name": "Gestión patrimonial",
+        "title": "Gestión patrimonial",
+        "desc": "Puente con los principales socios financieros suizos.",
+        "feat1": "Soluciones de inversión",
+        "feat2": "Gestión de cartera",
+        "feat3": "Planificación patrimonial",
+        "feat4": "Transmisión"
+      },
+      "10": {
+        "name": "Carrera deportiva",
+        "title": "Carrera deportiva",
+        "desc": "Acompañamiento de atletas de alto nivel. Gestión de imagen, estructuración.",
+        "feat1": "Gestión de imagen",
+        "feat2": "Asociaciones de marca",
+        "feat3": "Proyectos empresariales",
+        "feat4": "Asesoramiento estratégico"
+      }
+    },
+    "access": {
+      "tagPrimary": "Primera puerta",
+      "eyebrow": "08 · Vista previa del catálogo",
+      "heroTitleA": "El catálogo",
+      "heroTitleB": "en vista previa",
+      "heroLede": "Algunas exclusividades del momento, tal como aparecen en su espacio privado. Lo que ve aquí es solo un fragmento — los detalles, la disponibilidad y el resto solo son accesibles tras la cooptación.",
+      "eventsEyebrow": "↘ Algunos encuentros cerrados en curso",
+      "evt01": {
+        "tag": "Gala · 14 de junio",
+        "title": "Gala benéfica, ONU Ginebra",
+        "venue": "Palais des Nations · 220 plazas · 4 reservadas",
+        "teaser": "Cóctel Salle des Pas-Perdus, cena de siete servicios, Cuarteto de la OSR en clausura."
+      },
+      "evt02": {
+        "tag": "Art Basel · 16 de junio",
+        "title": "Collectors Preview — Art Basel",
+        "venue": "Messe Basel — Sala 2 · 180 invitados · 2 plazas",
+        "teaser": "First Choice a las 9h, desayuno Hauser & Wirth, visita guiada por Marc Spiegler."
+      },
+      "lockedEyebrow": "↘ Fuera de mercado — acceso por cooptación",
+      "lockedHint": "Bajo petición",
+      "locked1": {
+        "tag": "Propiedad · Engadina",
+        "title": "Chalet histórico, Sankt Moritz",
+        "stat": "12 dormitorios · 8 200 m²"
+      },
+      "locked2": {
+        "tag": "Relojes · Edición",
+        "title": "Tres piezas fuera del mercado público",
+        "stat": "Venta directa · sin procedencia pública"
+      },
+      "locked3": {
+        "tag": "Arte · Artista vivo",
+        "title": "Obra mayor, taller europeo",
+        "stat": "Adquisición directa · catálogo razonado en curso"
+      },
+      "locked4": {
+        "tag": "Viaje · 3 continentes",
+        "title": "Cuatro itinerarios curados",
+        "stat": "Jets privados · escala en yate · clausura viñedos"
+      },
+      "ctaRequest": "Solicitar un acceso",
+      "ctaCode": "Tengo un código de invitación",
+      "modal": {
+        "eyebrow": "08 · Acceso por cooptación",
+        "title": "Preséntese",
+        "lede": "Algunos datos para que nos entendamos antes de la conversación. Valmont le llama en menos de 24 horas.",
+        "modeToggleLabel": "Elija un modo de acceso",
+        "mode": {
+          "request": "Solicitar un acceso",
+          "code": "Tengo un código"
+        },
+        "fields": {
+          "firstName": "Nombre",
+          "lastName": "Apellidos",
+          "email": "Correo electrónico",
+          "phone": "Teléfono directo",
+          "company": "Empresa (opcional)",
+          "activity": "Actividad / sector (opcional)",
+          "message": "Mensaje (opcional)",
+          "messagePlaceholder": "Quién le habló de nosotros, lo que busca y cuándo le gustaría hablar."
+        },
+        "legal": "Su información permanece estrictamente entre usted y Valmont. Sin base de datos compartida, sin boletín informativo, sin intermediario comercial.",
+        "consent": "Acepto que mi información sea tratada para el seguimiento de mi solicitud.",
+        "errors": {
+          "email": "Dirección de correo electrónico no válida.",
+          "phone": "Número de teléfono no válido (formato internacional recomendado, ej.: +41 79 123 45 67)."
+        },
+        "steps": {
+          "identity": "Identidad",
+          "profile": "Perfil",
+          "message": "Mensaje",
+          "counter": "Paso {{current}} / {{total}}",
+          "next": "Continuar",
+          "back": "Volver"
+        },
+        "submitting": "Enviando…",
+        "submitRequest": "Enviar la solicitud",
+        "submitCode": "Validar mi código",
+        "requestSuccess": "Solicitud enviada. Valmont le llama en menos de 24 horas.",
+        "noCodeYet": "No tengo código — ir al formulario",
+        "code": {
+          "label": "Código de invitación",
+          "helper": "Formato SAW-XXXX-XXXX, transmitido por Valmont en persona.",
+          "legal": "El código es personal y de un solo uso. No requiere información previa."
+        },
+        "codeAccepted": "Código reconocido. Redirigiendo al onboarding…",
+        "codeInvalidFormat": "Formato esperado: SAW-XXXX-XXXX."
+      }
+    },
+    "interlocutor": {
+      "eyebrow": "Interlocutor",
+      "eyebrowTeam": "Equipo",
+      "countLabel": "Cinco presencias",
+      "headlineA": "Una voz",
+      "headlineB": "Una red detrás",
+      "header": "Su punto de contacto único",
+      "focalTag": "01 · Punto de contacto",
+      "role": "Fundador operacional",
+      "bio": "Cada intercambio comienza con una conversación. Un único interlocutor, desde el primer contacto hasta la realización.",
+      "circleTag": "Red",
+      "circleCount": "04 perfiles",
+      "viaFocal": "Contacto operacional · Valmont",
+      "seeFocal": "Ver a Valmont",
+      "promoteAria": "Destacar a {{name}}",
+      "tablistLabel": "Miembros del equipo",
+      "valmont": {
+        "tag": "Fundador operacional",
+        "bio": "A lo largo de los años, Valmont Seragone Mato ha desarrollado una sólida red internacional en los ámbitos del lujo, la relojería, los eventos privados, la aviación y los servicios a medida, con un enfoque basado en la discreción, la confianza y la calidad de las relaciones humanas. Su interlocutor directo, desde el primer intercambio hasta la concreción de cada proyecto."
+      },
+      "harvy": {
+        "tag": "Deporte y lifestyle premium",
+        "bio": "Evolucionando desde hace muchos años en el universo del deporte profesional y los entornos internacionales de alta exigencia, Harvy O'Rollin ha desarrollado una sólida red en los ámbitos del deporte, los eventos y el lifestyle premium. Involucrado en diferentes proyectos empresariales y de puesta en contacto, hoy acompaña a una clientela privada y profesional con un enfoque humano, discreto y orientado a las oportunidades."
+      },
+      "lucian": {
+        "tag": "Vida nocturna y showbiz",
+        "bio": "Presente desde hace muchos años en los universos de la noche, el entretenimiento y los entornos vinculados al showbiz internacional, Lucian Trial ha sabido desarrollar a lo largo del tiempo una sólida red y una relación de confianza con diferentes personalidades y su entorno. Acostumbrado a los entornos de alta exigencia y a la gestión de solicitudes sensibles, interviene hoy en el acompañamiento personalizado, la coordinación de necesidades específicas y la puesta en contacto."
+      },
+      "tavio": {
+        "tag": "Inmobiliario y arquitectura",
+        "bio": "Evolucionando desde varios años en universos vinculados al inmobiliario, la arquitectura y el desarrollo de proyectos, Tavio Modic posee una visión polivalente que combina sentido estético, enfoque de campo y comprensión global de las diferentes etapas de concepción y realización. Atraído por los proyectos de fuerte identidad y los entornos de alta gama, aporta un enfoque transversal atento a los detalles y a las conexiones humanas."
+      },
+      "sergio": {
+        "tag": "Deporte y círculos privados",
+        "bio": "Evolucionando desde hace muchos años en entornos internacionales vinculados al deporte de alto nivel y su ecosistema, Sergio Kubas ha desarrollado una sólida red dentro de los círculos privados y una exigente clientela internacional. Activo en la puesta en contacto, el acompañamiento y el desarrollo de oportunidades, interviene con un enfoque discreto orientado hacia conexiones de alto valor añadido."
+      },
+      "phone": "Teléfono directo",
+      "email": "Correo electrónico",
+      "whatsapp": "WhatsApp seguro",
+      "whatsappAction": "Abrir",
+      "linkedin": "LinkedIn",
+      "linkedinAction": "Perfil"
+    },
+    "footer": {
+      "colNavLabel": "Navegación",
+      "navIntro": "Intro",
+      "navPresentation": "Presentación",
+      "navAccess": "Acceso",
+      "navContact": "Contacto",
+      "colLegalLabel": "Legal",
+      "legalMentions": "Aviso legal",
+      "legalPrivacy": "Privacidad",
+      "legalTerms": "Condiciones de uso",
+      "colContactLabel": "Contacto",
+      "colSeatLabel": "Sede",
+      "seatCity": "Boudry, Suiza",
+      "seatCanton": "NE / Cantón de Neuchâtel",
+      "seatType": "Independiente",
+      "copyright": "© 2026 SAW Next",
+      "confidential": "Documento confidencial",
+      "version": "v0.6 / Edición mayo de 2026"
+    },
+    "index": {
+      "title": "SAW↗NEXT / Índice completo",
+      "footerLocation": "Boudry, Suiza",
+      "footerCount": "07 secciones",
+      "footerEdition": "Edición mayo de 2026",
+      "s01name": "Introducción",
+      "s01label": "Hero",
+      "s02name": "Manifiesto",
+      "s02label": "Statement",
+      "s03name": "Presentación",
+      "s03label": "Estructura",
+      "s04name": "Principios",
+      "s04label": "Documento",
+      "s05name": "Ámbitos",
+      "s05label": "Servicios",
+      "s08name": "Acceso",
+      "s08label": "Cooptación",
+      "s09name": "Interlocutor",
+      "s09label": "Contacto"
+    },
+    "marquee": {
+      "edition": "Edición mayo de 2026",
+      "coopOpen": "Cooptación abierta",
+      "experiencesActive": "03 experiencias activas",
+      "verticals": "10 verticales",
+      "verticalsCircle": "10 verticales / círculo restringido",
+      "circle": "Círculo restringido",
+      "location": "Boudry, Suiza",
+      "season": "Temporada en curso",
+      "monthlyUpdate": "Actualización mensual",
+      "brand": "SAW↗NEXT",
+      "copyright": "© 2026",
+      "rightsReserved": "Todos los derechos reservados",
+      "confidential": "Documento confidencial",
+      "cooptationOnly": "Solo por cooptación"
+    },
+    "terminal": {
+      "status": "Cooptación abierta",
+      "tz": "CH / CET"
+    },
+    "cta": {
+      "requestAccess": "Solicitar un acceso",
+      "privateArea": "Espacio privado",
+      "callDirect": "Llamar"
+    }
+  }
+}

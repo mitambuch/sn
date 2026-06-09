@@ -41,7 +41,7 @@ export function useSanityItem<TResult, TFallback = TResult>(
   // Locale comes from i18next (kept in sync with the URL by LocaleProvider)
   // — hooks/ may not import from app/, and this is the canonical signal.
   const { i18n } = useTranslation();
-  const locale = i18n.language === 'en' ? 'en' : 'fr';
+  const locale = i18n.language === 'en' ? 'en' : i18n.language === 'es' ? 'es' : 'fr';
 
   const [data, setData] = useState<TResult | TFallback | null>(fallback);
   const [loading, setLoading] = useState<boolean>(hasSanity);

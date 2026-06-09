@@ -47,6 +47,11 @@ if (!PROJECT_ID) {
 
 const CANONICAL_IDS = ['siteConfig-singleton', 'page-home', 'page-about', 'page-contact'];
 
+// WHY only fr/en: ES is a fully-wired locale (schema + i18n + GROQ) but the
+// Sanity dataset has no Spanish editorial content yet. Adding 'es' here would
+// turn `pnpm validate` red on every canonical singleton until that content is
+// authored. Add 'es' to this list only once Spanish content is seeded in prod
+// (see the ES content-migration step — needs SANITY_WRITE_TOKEN + brand review).
 const REQUIRED_LOCALES = ['fr', 'en'];
 
 function isLocaleField(value) {
