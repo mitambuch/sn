@@ -211,6 +211,17 @@ rotating-3d-words) ; libs are tools (GSAP, r3f, Motion). Libs live in
 Full rule : `.claude/rules/creative-ambition.md`. Enforcement script
 (v6.9+) : `scripts/validate-creative-ambition.js`.
 
+## 15. Output economy — terse by default
+
+The owner nearly hit the weekly token cap. Two always-on output rules:
+
+- **Result first.** No preamble ("Sure, let me…"), no postamble ("Let me know if…"), no
+  narration of what you're about to do — just do it. Refs as `file:line`; reasoning
+  proportional to risk (don't burn deep thinking on R0).
+- **EXCEPTION — never skip:** give full detail whenever the work touches **architecture**,
+  is **irreversible**, or needs the **owner's decision**. Saving tokens must never cost
+  the owner an important piece of information.
+
 ## Why this file exists
 Only `workflow.md` was always-loaded before; other rules were path-triggered.
 Under context fatigue, non-negotiables were forgotten. This file keeps them in context regardless of which files are touched.
