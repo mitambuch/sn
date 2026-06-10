@@ -2,114 +2,81 @@
 // Interlocutor — landing S09 (focal contact + extended network)
 //
 // WHAT: Two-column section with autoplay rotation through the team
-//       personas. The focal contact (operationally Valmont) always
-//       loads first, then advances every 8s through the network
-//       circle, then loops. Hovering the focal card freezes the
-//       timer ; leaving resumes. A segmented progress bar at the
-//       bottom shows the active member and the time remaining on
-//       the current segment.
+//       personas. The focal contact (Valmont) always loads first, then
+//       advances every 8s through the network circle, then loops.
+//       Hovering the focal card freezes the timer; leaving resumes. A
+//       segmented progress bar at the bottom shows the active member and
+//       the time remaining on the current segment.
 //
-// SOURCE: Sanity teamMember docs (ordered by `order` field, focal
-//       marked via `isFocal: true`) when configured ; otherwise
-//       falls back to the hardcoded 5-persona array + i18n strings.
-//       Operational contact channels (phone/email/wa/li) always
-//       come from FOCAL_CHANNELS — never blank, never overridable
-//       via CMS for security.
+// SOURCE: Every member-specific value (sector title, function, phone,
+//       email, WhatsApp, LinkedIn, CTA) comes from the TEAM_MEMBERS data
+//       structure in ./teamData — the single source of truth. No value is
+//       inherited from Valmont. Biographies still resolve from Sanity
+//       (editable in Studio) with an i18n fallback.
 //
-//       Owner directions :
+//       Owner directions:
 //       1. Always start with the focal member.
 //       2. 8s per slide, auto-advance.
 //       3. Hover on focal card → lock timer.
 //       4. Bottom progress bar visualises the rotation.
 //       5. Click on any segment or circle card → jump to that member.
-//       6. Channels shown only when the focal contact is up.
-//          Other members show a "Contact via [focal]" pill.
+//       6. Each member shows ITS OWN channels + a "Voir <name>" CTA.
 //
 // WHEN: Anchored at #s09 of the landing.
 // ═══════════════════════════════════════════════════
 
+import type { Locale } from '@config/i18n';
 import { useLandingContext } from '@context/LandingContentContext';
 import { useReveal } from '@hooks/useReveal';
 import { useTeamMembers } from '@hooks/useTeamMembers';
-import { resolveFieldOrFallback } from '@lib/i18nField';
+import { resolveField, resolveFieldOrFallback } from '@lib/i18nField';
 import { cn } from '@utils/cn';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const FOCAL_CHANNELS = {
-  phone: '+41 78 749 81 70',
-  phoneTel: '+41787498170',
-  email: 'info@saw-next.ch',
-  whatsapp: 'https://wa.me/41787498170',
-  linkedin: '#',
-} as const;
+import type { LocaleLabel, TeamMemberData } from './teamData';
+import { FOCAL_MEMBER, TEAM_MEMBERS, toTelHref, toWhatsAppHref } from './teamData';
 
-interface Member {
-  /** Stable identifier — Sanity-derived (firstName lowercased) or hardcoded. */
-  key: string;
-  firstName: string;
-  lastName: string;
-}
-
-const HARDCODED_MEMBERS: ReadonlyArray<Member> = [
-  { key: 'valmont', firstName: 'Valmont', lastName: 'Seragone Mato' },
-  { key: 'harvy', firstName: 'Harvy', lastName: "O'Rollin" },
-  { key: 'lucian', firstName: 'Lucian', lastName: 'Trial' },
-  { key: 'tavio', firstName: 'Tavio', lastName: 'Modic' },
-  { key: 'sergio', firstName: 'Sergio', lastName: 'Kubas' },
-] as const;
-
-const HARDCODED_FOCAL: string = 'valmont';
 const SLIDE_DURATION_MS = 8000;
 
-/** Derive a stable member key from a Sanity firstName. */
+/** Derive a stable member key from a Sanity firstName (matches teamData keys). */
 const keyOf = (firstName: string): string => firstName.toLowerCase().replace(/\s+/g, '');
 
 /** Landing S09 — autoplay focal interlocutor + supporting circle. */
 export const Interlocutor = () => {
   const { t, i18n } = useTranslation();
   const { data: landing } = useLandingContext();
-  const locale = (i18n.language as 'fr' | 'en') ?? 'fr';
+  const locale = (i18n.language as Locale) ?? 'fr';
   const ref = useReveal<HTMLDivElement>();
 
-  // ─── Team source : Sanity when configured + populated, hardcoded
-  //     fallback otherwise. The Sanity branch lets the client edit
-  //     names/tags/bios via Studio without redeploy.
-  const { members: sanityMembers, usingFallback: sanityFallback } = useTeamMembers();
-  const useSanity = !sanityFallback && sanityMembers.length > 0;
+  // ─── Team source ───
+  // Identity, sector title, function, contact channels and the CTA all
+  // come from the static TEAM_MEMBERS table (single source of truth).
+  // Biographies are the only field still sourced from Sanity (so the
+  // client can edit them in Studio) with an i18n fallback.
+  const members = TEAM_MEMBERS;
+  const { members: sanityMembers } = useTeamMembers();
+  const sanityByKey = useMemo(
+    () => new Map(sanityMembers.map(m => [keyOf(m.firstName), m])),
+    [sanityMembers],
+  );
 
-  const members: ReadonlyArray<Member> = useMemo(() => {
-    if (!useSanity) return HARDCODED_MEMBERS;
-    return sanityMembers.map(m => ({
-      key: keyOf(m.firstName),
-      firstName: m.firstName,
-      lastName: m.lastName,
-    }));
-  }, [useSanity, sanityMembers]);
-
-  const focalDefaultKey: string = useMemo(() => {
-    if (!useSanity) return HARDCODED_FOCAL;
-    const focalDoc = sanityMembers.find(m => m.isFocal) ?? sanityMembers[0];
-    return focalDoc ? keyOf(focalDoc.firstName) : HARDCODED_FOCAL;
-  }, [useSanity, sanityMembers]);
-
+  const focalDefaultKey: string = FOCAL_MEMBER.key;
   const sequence: ReadonlyArray<string> = useMemo(() => members.map(m => m.key), [members]);
 
   const [focalKey, setFocalKey] = useState<string>(focalDefaultKey);
   const [progress, setProgress] = useState(0); // 0..1 of current slide
 
-  // Derived focal — when the team source flips (Sanity loads after
-  // initial hardcoded render, or the member set changes), the user-
-  // selected focalKey may no longer exist. Compute the effective key
-  // each render rather than syncing via an effect.
+  // Derived focal — guards against a stale selected key. Compute the
+  // effective key each render rather than syncing via an effect.
   const effectiveFocalKey: string = members.some(m => m.key === focalKey)
     ? focalKey
     : focalDefaultKey;
 
-  // Refs drive the autoplay loop without forcing the effect to re-run
-  // on every frame. effectiveFocalKey drives the focal lookup ; the
-  // accumulator + paused flag live in refs so the rAF loop reads
-  // fresh values without re-subscribing.
+  // Refs drive the autoplay loop without forcing the effect to re-run on
+  // every frame. effectiveFocalKey drives the focal lookup; the
+  // accumulator + paused flag live in refs so the rAF loop reads fresh
+  // values without re-subscribing.
   const accumRef = useRef(0);
   const pausedRef = useRef(false);
   const focalRef = useRef<string>(focalDefaultKey);
@@ -124,7 +91,7 @@ export const Interlocutor = () => {
   }, [sequence]);
 
   useEffect(() => {
-    // Respect reduced-motion : skip the autoplay entirely.
+    // Respect reduced-motion: skip the autoplay entirely.
     if (
       typeof window !== 'undefined' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -166,35 +133,53 @@ export const Interlocutor = () => {
 
   const focal = members.find(m => m.key === effectiveFocalKey) ?? members[0]!;
   const circle = members.filter(m => m.key !== focal.key);
-  const isFocalContact = focal.key === focalDefaultKey;
 
-  // ─── Tag / bio resolution per member.
-  //     Sanity branch : prefer doc.tag[locale] → doc.tag.fr → i18n key fallback.
-  //     Hardcoded branch : focal uses focalTag, others use `${key}.tag`.
-  const sanityByKey = useMemo(() => {
-    if (!useSanity) return new Map<string, (typeof sanityMembers)[number]>();
-    return new Map(sanityMembers.map(m => [keyOf(m.firstName), m]));
-  }, [useSanity, sanityMembers]);
+  // ─── Per-member resolution ───
+  const pickLabel = (label: LocaleLabel): string => label[locale] ?? label.fr;
 
-  const resolveTag = (member: Member): string => {
+  const resolveBio = (member: TeamMemberData): string => {
     const doc = sanityByKey.get(member.key);
-    const i18nFallback =
-      member.key === focalDefaultKey
-        ? t('landing.interlocutor.focalTag')
-        : t(`landing.interlocutor.${member.key}.tag`);
-    if (doc?.tag) return doc.tag[locale] || doc.tag.fr || i18nFallback;
-    return i18nFallback;
+    const sanityBio = doc ? resolveField(doc.bio, locale) : undefined;
+    return sanityBio || t(`landing.interlocutor.${member.key}.bio`);
   };
 
-  const resolveBio = (member: Member): string => {
-    const doc = sanityByKey.get(member.key);
-    const i18nFallback = t(`landing.interlocutor.${member.key}.bio`);
-    if (doc?.bio) return doc.bio[locale] || doc.bio.fr || i18nFallback;
-    return i18nFallback;
-  };
+  // Contact channels for the active member. LinkedIn renders only when a
+  // real URL exists — never a "#" placeholder. WhatsApp is derived from
+  // the member's phone when no explicit wa.me link is set.
+  const channels = [
+    {
+      key: 'phone',
+      href: toTelHref(focal.phone),
+      label: t('landing.interlocutor.phone'),
+      value: focal.phone,
+    },
+    {
+      key: 'email',
+      href: `mailto:${focal.email}`,
+      label: t('landing.interlocutor.email'),
+      value: focal.email,
+    },
+    {
+      key: 'whatsapp',
+      href: toWhatsAppHref(focal),
+      label: t('landing.interlocutor.whatsapp'),
+      value: t('landing.interlocutor.whatsappAction'),
+    },
+    ...(focal.linkedin
+      ? [
+          {
+            key: 'linkedin',
+            href: focal.linkedin,
+            label: t('landing.interlocutor.linkedin'),
+            value: t('landing.interlocutor.linkedinAction'),
+          },
+        ]
+      : []),
+  ];
 
   const focalBio = resolveBio(focal);
-  const focalTag = resolveTag(focal);
+  const focalSector = pickLabel(focal.sectorTitle);
+  const focalFunction = pickLabel(focal.functionLabel);
 
   return (
     <section id="s09" ref={ref} className="border-border border-b">
@@ -229,13 +214,14 @@ export const Interlocutor = () => {
       </div>
 
       {/* ─── Main split : focal (full size) + circle (compact stack) ───
-           md:min-h-[680px] locks the row height so swapping focal (Salva
-           = 4 channels, Harry/Bokar = single 'Contact opérationnel' pill)
-           doesn't make the box jump. */}
+           md:min-h-170 locks the row height so swapping focal doesn't make
+           the box jump. */}
       <div className="grid grid-cols-1 md:min-h-170 md:grid-cols-[1.25fr_1fr]">
-        {/* ─── Focal card — hover-pauses the timer ─── */}
+        {/* ─── Focal card — hover-pauses the timer. id = active member slug
+             so the per-member CTA anchor resolves. ─── */}
         <article
-          className="bg-surface border-border duration-base flex flex-col gap-8 border-b p-8 transition-all md:border-r md:border-b-0 md:p-12"
+          id={focal.slug}
+          className="bg-surface border-border duration-base flex scroll-mt-24 flex-col gap-8 border-b p-8 transition-all md:border-r md:border-b-0 md:p-12"
           aria-live="polite"
           onMouseEnter={() => {
             pausedRef.current = true;
@@ -253,7 +239,7 @@ export const Interlocutor = () => {
           <div className="flex items-start justify-between gap-6">
             <div className="flex flex-col gap-2">
               <span className="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
-                {focalTag}
+                {focalSector}
               </span>
               <h3 className="font-mono text-[clamp(1.5rem,3.5vw,3rem)] leading-[0.92] font-medium tracking-tight uppercase">
                 {focal.firstName}
@@ -271,41 +257,17 @@ export const Interlocutor = () => {
             />
           </div>
 
-          <span className="font-mono text-[12px] tracking-[0.18em] uppercase">
-            {t('landing.interlocutor.role')}
-          </span>
+          {/* Function (bas à gauche) — per-member, was a shared static value. */}
+          <span className="font-mono text-[12px] tracking-[0.18em] uppercase">{focalFunction}</span>
           <p className="text-fg max-w-prose text-sm leading-relaxed md:text-base">{focalBio}</p>
 
-          {/* Channels — only when Valmont (focal contact) is shown.
-              Otherwise a single "via Valmont" link, since he is the
-              operational contact. `mt-auto` anchors both variants to
-              the bottom of the focal article so the contact block sits
-              at the same vertical position regardless of who is shown. */}
-          {isFocalContact ? (
-            <ul className="border-border mt-auto border-t">
-              {[
-                {
-                  href: `tel:${FOCAL_CHANNELS.phoneTel}`,
-                  label: t('landing.interlocutor.phone'),
-                  value: FOCAL_CHANNELS.phone,
-                },
-                {
-                  href: `mailto:${FOCAL_CHANNELS.email}`,
-                  label: t('landing.interlocutor.email'),
-                  value: FOCAL_CHANNELS.email,
-                },
-                {
-                  href: FOCAL_CHANNELS.whatsapp,
-                  label: t('landing.interlocutor.whatsapp'),
-                  value: t('landing.interlocutor.whatsappAction'),
-                },
-                {
-                  href: FOCAL_CHANNELS.linkedin,
-                  label: t('landing.interlocutor.linkedin'),
-                  value: t('landing.interlocutor.linkedinAction'),
-                },
-              ].map(channel => (
-                <li key={channel.label}>
+          {/* Contact block — every member shows its own channels, then a CTA
+              that reflects the active member (never hardcoded to Valmont).
+              mt-auto anchors the block to the bottom of the focal article. */}
+          <div className="mt-auto">
+            <ul className="border-border border-t">
+              {channels.map(channel => (
+                <li key={channel.key}>
                   <a
                     href={channel.href}
                     className="border-border text-fg flex items-center justify-between border-b py-3 font-mono text-[11px] tracking-wider uppercase transition-[padding] duration-200 hover:pl-2"
@@ -316,21 +278,16 @@ export const Interlocutor = () => {
                 </li>
               ))}
             </ul>
-          ) : (
-            <div className="border-border mt-auto flex items-center justify-between gap-4 border-t pt-4">
-              <span className="text-muted font-mono text-[11px] tracking-[0.18em] uppercase">
-                {t('landing.interlocutor.viaFocal')}
-              </span>
-              <button
-                type="button"
-                onClick={() => promote(focalDefaultKey)}
+            <div className="flex justify-end pt-4">
+              <a
+                href={`#${focal.slug}`}
                 className="border-fg text-fg hover:bg-fg hover:text-bg duration-base inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-[10px] tracking-[0.25em] uppercase transition-colors"
               >
-                {t('landing.interlocutor.seeFocal')}
+                {t('landing.interlocutor.seeMember', { name: focal.firstName })}
                 <span aria-hidden="true">↗</span>
-              </button>
+              </a>
             </div>
-          )}
+          </div>
         </article>
 
         {/* ─── Circle — promotable cards ─── */}
@@ -361,7 +318,7 @@ export const Interlocutor = () => {
                   />
                   <div className="flex min-w-0 flex-1 flex-col gap-1">
                     <span className="text-muted font-mono text-[9px] tracking-[0.3em] uppercase">
-                      {resolveTag(member)}
+                      {pickLabel(member.sectorTitle)}
                     </span>
                     <h3 className="truncate font-mono text-base leading-tight font-medium tracking-tight uppercase md:text-lg">
                       {member.firstName} {member.lastName}
@@ -380,10 +337,7 @@ export const Interlocutor = () => {
         </aside>
       </div>
 
-      {/* ─── Bottom progress bar : N segments, active fills 0 → 100%.
-           Consolidated layout : centered first name only, hairline
-           divider between cells, single underline bar per segment.
-           Column count adapts to the active members count. */}
+      {/* ─── Bottom progress bar : N segments, active fills 0 → 100%. ─── */}
       <div
         role="tablist"
         aria-label={t('landing.interlocutor.tablistLabel')}
