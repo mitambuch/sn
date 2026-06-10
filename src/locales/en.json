@@ -1542,32 +1542,24 @@
       "headlineB": "A network behind it",
       "header": "Your single point of contact",
       "focalTag": "01 · Point of contact",
-      "role": "Operating founder",
       "bio": "Every exchange begins with a conversation. One interlocutor, from first contact to delivery.",
       "circleTag": "Network",
       "circleCount": "04 profiles",
-      "viaFocal": "Operational contact · Valmont",
-      "seeFocal": "See Valmont",
       "promoteAria": "Promote {{name}}",
       "tablistLabel": "Team members",
       "valmont": {
-        "tag": "Operating founder",
         "bio": "Over the years, Valmont Seragone Mato has built a solid international network across luxury, watchmaking, private events, aviation and bespoke services, with an approach grounded in discretion, trust and the quality of human relationships. Your direct interlocutor, from first conversation to the delivery of each project."
       },
       "harvy": {
-        "tag": "Sport & premium lifestyle",
         "bio": "Active for many years in professional sport and demanding international environments, Harvy O'Rollin has developed a solid network across sport, events and premium lifestyle. Involved in various entrepreneurial and matchmaking ventures, he today supports a private and professional clientele with a human, discreet and opportunity-driven approach."
       },
       "lucian": {
-        "tag": "Nightlife & showbiz",
         "bio": "Present for many years in the worlds of nightlife, entertainment and international showbiz, Lucian Trial has built over time a solid network and a relationship of trust with various personalities and their entourage. Accustomed to high-stakes environments and the handling of sensitive requests, he today operates across personalised support, coordination of specific needs and connection-making."
       },
       "tavio": {
-        "tag": "Real estate & architecture",
         "bio": "Active for several years across real estate, architecture and project development, Tavio Modic has a versatile vision combining aesthetic sense, ground-level approach and an overall understanding of the different stages of design and execution. Drawn to projects with strong identity and high-end environments, he brings a transversal approach attentive to detail and to human connections."
       },
       "sergio": {
-        "tag": "Sport & private circles",
         "bio": "Active for many years in international environments linked to top-level sport and its ecosystem, Sergio Kubas has built a solid network within private circles and a demanding international clientele. Active in matchmaking, advisory and the development of opportunities, he operates with a discreet approach oriented toward high-value connections."
       },
       "phone": "Direct line",
@@ -1575,7 +1567,8 @@
       "whatsapp": "Secure WhatsApp",
       "whatsappAction": "Open",
       "linkedin": "LinkedIn",
-      "linkedinAction": "Profile"
+      "linkedinAction": "Profile",
+      "seeMember": "See {{name}}"
     },
     "footer": {
       "colNavLabel": "Navigation",

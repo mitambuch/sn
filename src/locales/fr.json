@@ -1542,32 +1542,24 @@
       "headlineB": "Un réseau derrière",
       "header": "Votre point de contact unique",
       "focalTag": "01 · Point de contact",
-      "role": "Fondateur opérationnel",
       "bio": "Chaque échange commence par une conversation. Un seul interlocuteur, du premier contact à la réalisation.",
       "circleTag": "Réseau",
       "circleCount": "04 profils",
-      "viaFocal": "Contact opérationnel · Valmont",
-      "seeFocal": "Voir Valmont",
       "promoteAria": "Mettre en avant {{name}}",
       "tablistLabel": "Membres de l'équipe",
       "valmont": {
-        "tag": "Fondateur opérationnel",
         "bio": "Au fil des années, Valmont Seragone Mato a développé un réseau international solide dans les domaines du luxe, de l'horlogerie, de l'événementiel privé, de l'aviation et des services sur mesure, avec une approche basée sur la discrétion, la confiance et la qualité des relations humaines. Votre interlocuteur direct, du premier échange jusqu'à la concrétisation de chaque projet."
       },
       "harvy": {
-        "tag": "Sport & lifestyle premium",
         "bio": "Évoluant depuis de nombreuses années dans l'univers du sport professionnel et des environnements internationaux à haute exigence, Harvy O'Rollin a développé un réseau solide dans les domaines du sport, de l'événementiel et du lifestyle premium. Impliqué dans différents projets entrepreneuriaux et de mise en relation, il accompagne aujourd'hui une clientèle privée et professionnelle avec une approche humaine, discrète et orientée opportunités."
       },
       "lucian": {
-        "tag": "Nuit & showbiz",
         "bio": "Présent depuis de nombreuses années dans les univers de la nuit, du divertissement et des environnements liés au showbiz international, Lucian Trial a su développer au fil du temps un réseau solide ainsi qu'une relation de confiance avec différentes personnalités et leur entourage. Habitué aux environnements à haute exigence et à la gestion de demandes sensibles, il intervient aujourd'hui dans l'accompagnement personnalisé, la coordination de besoins spécifiques et la mise en relation."
       },
       "tavio": {
-        "tag": "Immobilier & architecture",
         "bio": "Évoluant depuis plusieurs années dans des univers liés à l'immobilier, à l'architecture et au développement de projets, Tavio Modic possède une vision polyvalente mêlant sens esthétique, approche terrain et compréhension globale des différentes étapes de conception et de réalisation. Intéressé par les projets à forte identité et les environnements haut de gamme, il apporte une approche transversale attentive aux détails et aux connexions humaines."
       },
       "sergio": {
-        "tag": "Sport & cercles privés",
         "bio": "Évoluant depuis de nombreuses années dans des environnements internationaux liés au sport de haut niveau et à son écosystème, Sergio Kubas a développé un réseau solide au sein de cercles privés et d'une clientèle internationale exigeante. Actif dans la mise en relation, l'accompagnement et le développement d'opportunités, il intervient avec une approche discrète et orientée vers des connexions à forte valeur ajoutée."
       },
       "phone": "Téléphone direct",
@@ -1575,7 +1567,8 @@
       "whatsapp": "WhatsApp sécurisé",
       "whatsappAction": "Ouvrir",
       "linkedin": "LinkedIn",
-      "linkedinAction": "Profil"
+      "linkedinAction": "Profil",
+      "seeMember": "Voir {{name}}"
     },
     "footer": {
       "colNavLabel": "Navigation",
