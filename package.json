@@ -81,7 +81,11 @@
     "doctor:client:fix": "node scripts/doctor-client.js --fix",
     "friction:report": "node scripts/upstream-friction-report.js",
     "vscode:color": "node scripts/vscode-project-color.js",
-    "done": "node scripts/done.js"
+    "done": "node scripts/done.js",
+    "dispatch:verify": "node scripts/dispatch-verify.js",
+    "dispatch:report": "node scripts/dispatch-report.js",
+    "dispatch:context": "node scripts/build-worker-context.js",
+    "dispatch:codex": "node scripts/codex-delegate.js"
   },
   "dependencies": {
     "@sanity/client": "^7.21.0",

@@ -186,7 +186,7 @@ All in `.claude/commands/`.
 
 ---
 
-## AI Agents (6)
+## AI Agents (8)
 
 All in `.claude/agents/`.
 

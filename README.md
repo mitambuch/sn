@@ -38,7 +38,7 @@ Customize per project via `/init` or edit `src/index.css` directly.
 
 ## AI workflow
 
-39 slash commands, 6 specialized agents, 25 contextual rules — all in `.claude/`.
+39 slash commands, 8 specialized agents, 25 contextual rules — all in `.claude/`.
 
 | Category          | Commands                                                                        |
 | ----------------- | ------------------------------------------------------------------------------- |

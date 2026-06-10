@@ -15,3 +15,40 @@ case "$first_line" in
     fi
     ;;
 esac
+
+# ── Dispatch attribution (P12) ──────────────────────────────────────
+# A verified dispatch (dispatch-verify wrote .claude/dispatch/.verified-<id>)
+# must carry Model: + Dispatch: trailers so "who wrote what with which model"
+# lives in git forever, greppable, showable to a client. Symmetric anti-cheat:
+# a message that CLAIMS a dispatch without a verified marker is refused. The
+# obligation FOLLOWS the marker — normal commits carry nothing new (zero
+# friction; the day every trivial commit needs a trailer, you bypass it).
+# Autosquash + the RELEASE_IT/SETUP_BOOTSTRAP escapes (handled above) pass free.
+case "$first_line" in
+  fixup!* | squash!* | amend!*) exit 0 ;;
+esac
+
+marker=$(ls .claude/dispatch/.verified-* 2>/dev/null | head -n 1)
+if [ -n "$marker" ]; then
+  id=$(basename "$marker" | sed 's/^\.verified-//')
+  if ! grep -qE '^Model:[[:space:]]*[A-Za-z]' "$msg_file" || ! grep -qF "Dispatch: $id" "$msg_file"; then
+    echo ""
+    echo "  ✗ refuse: this commit delivers a verified dispatch ($id) but is"
+    echo "    missing its attribution trailers. Add to the commit body:"
+    echo "      Model: <haiku|sonnet|codex|steakcode|orchestrator>"
+    echo "      Dispatch: $id"
+    echo "    Proof of control = the dispatch-verify PASS + the ledger line."
+    echo "    Or, if THIS commit is not that dispatch, clear the stale marker:"
+    echo "      node scripts/dispatch-verify.js --clear $id"
+    echo ""
+    exit 1
+  fi
+  rm -f "$marker" # consume — a stale marker must not gate the next commit
+elif grep -qE '^Dispatch:' "$msg_file"; then
+  echo ""
+  echo "  ✗ refuse: the message declares 'Dispatch:' but no verified marker"
+  echo "    exists. You don't declare a dispatch that dispatch-verify didn't PASS."
+  echo "    Run: node scripts/dispatch-verify.js <id>  (and paste the PASS)."
+  echo ""
+  exit 1
+fi
