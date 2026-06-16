@@ -737,6 +737,7 @@
   },
   "concierge": {
     "leadTime": "Délai",
+    "programme": "Programme",
     "caseStudies": "Exemples passés",
     "category": {
       "transport": "Transport",
@@ -978,6 +979,8 @@
   "articles": {
     "readMinutes": "min de lecture",
     "related": "Sur ce sujet",
+    "media": "Galerie",
+    "videoLabel": "Vidéo",
     "kind": {
       "launch": "Nouvelle arrivée",
       "opening": "Place obtenue",

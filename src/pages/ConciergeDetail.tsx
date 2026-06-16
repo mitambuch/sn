@@ -10,6 +10,7 @@ import { useLocale } from '@app/LocaleProvider';
 import { Container } from '@components/layout/Container';
 import { Image } from '@components/ui/Image';
 import { SectionHeader } from '@components/ui/SectionHeader';
+import { Timeline } from '@components/ui/Timeline';
 import { ROUTES } from '@constants/routes';
 import { SimilarItemsStrip } from '@features/catalogue/SimilarItemsStrip';
 import { InquiryDrawer } from '@features/inquiry/InquiryDrawer';
@@ -65,8 +66,20 @@ export default function ConciergeDetail() {
         )}
 
         <div className="grid gap-12 lg:grid-cols-3">
-          <div className="space-y-6 lg:col-span-2">
+          <div className="space-y-8 lg:col-span-2">
             <p className="text-fg text-lg leading-relaxed text-pretty">{service.description}</p>
+
+            {service.programme && service.programme.length > 0 && (
+              <div className="space-y-4">
+                <SectionHeader title={t('concierge.programme')} size="sm" as="h2" />
+                <Timeline
+                  items={service.programme.map(step => ({
+                    title: step.label,
+                    ...(step.description ? { description: step.description } : {}),
+                  }))}
+                />
+              </div>
+            )}
           </div>
           <aside className="border-border bg-surface/40 space-y-4 rounded-lg border p-6">
             <span className="text-muted text-xs tracking-widest uppercase">

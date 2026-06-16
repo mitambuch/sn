@@ -28,6 +28,9 @@ import { localeString } from './objects/localeString';
 import { localeText } from './objects/localeText';
 import { priceBlock } from './objects/priceBlock';
 import { programmeStep } from './objects/programmeStep';
+import { serviceStep } from './objects/serviceStep';
+import { videoEmbed } from './objects/videoEmbed';
+import { videoFile } from './objects/videoFile';
 
 export const schemaTypes = [
   // ─── Reusable objects ───
@@ -38,6 +41,9 @@ export const schemaTypes = [
   priceBlock,
   programmeStep,
   itineraryDay,
+  serviceStep,
+  videoEmbed,
+  videoFile,
   // ─── Singletons ───
   siteConfig,
   landing,

@@ -737,6 +737,7 @@
   },
   "concierge": {
     "leadTime": "Plazo",
+    "programme": "Programa",
     "caseStudies": "Ejemplos pasados",
     "category": {
       "transport": "Transporte",
@@ -978,6 +979,8 @@
   "articles": {
     "readMinutes": "min de lectura",
     "related": "Sobre este tema",
+    "media": "Galería",
+    "videoLabel": "Vídeo",
     "kind": {
       "launch": "Nueva incorporación",
       "opening": "Plaza obtenida",

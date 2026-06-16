@@ -101,11 +101,13 @@ export const article = defineType({
     }),
     defineField({
       name: 'gallery',
-      title: 'Galerie additionnelle',
+      title: 'Galerie média (photos + vidéos)',
       type: 'array',
       group: 'medias',
-      of: [{ type: 'domainImage' }],
+      of: [{ type: 'domainImage' }, { type: 'videoEmbed' }, { type: 'videoFile' }],
       options: { layout: 'grid' },
+      description:
+        "Mélange librement photos, vidéos hébergées (Vimeo/YouTube) et vidéos importées, dans l'ordre voulu. Idéal pour raconter une expérience de façon immersive.",
     }),
     // ─── SEO ───
     defineField({

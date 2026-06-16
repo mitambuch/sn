@@ -32,6 +32,7 @@ export const conciergeService = defineType({
     visibilityGroup,
     { name: 'essentiel', title: '🎯 Essentiel', default: true },
     { name: 'details', title: '📋 Détails' },
+    { name: 'programme', title: '🗂️ Programme' },
     { name: 'tarif', title: '💰 Tarif' },
     { name: 'medias', title: '📸 Médias' },
     { name: 'seo', title: '🔍 SEO' },
@@ -97,6 +98,16 @@ export const conciergeService = defineType({
       of: [{ type: 'localeString' }],
       description:
         'Liste à puces de ce qui est inclus. Ex: "Menu sur mesure", "Service en salle", "Vins accordés".',
+    }),
+    // ─── Programme ───
+    defineField({
+      name: 'programme',
+      title: "Programme de l'expérience",
+      type: 'array',
+      group: 'programme',
+      of: [{ type: 'serviceStep' }],
+      description:
+        'Déroulé de la prestation, étape par étape, dans l\'ordre. Chaque étape : un titre + un détail optionnel, traduisibles FR/EN/ES. Ex: "Prise de contact", "Repérage", "Mise en place", "Présence le jour J".',
     }),
     // ─── Tarif ───
     defineField({

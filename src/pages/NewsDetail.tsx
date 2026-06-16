@@ -5,8 +5,10 @@
 
 import { useLocale } from '@app/LocaleProvider';
 import { Container } from '@components/layout/Container';
+import { GalleryGrid } from '@components/ui/GalleryGrid';
 import { Image } from '@components/ui/Image';
 import { SectionHeader } from '@components/ui/SectionHeader';
+import { VideoPlayer } from '@components/ui/VideoPlayer';
 import { ROUTES } from '@constants/routes';
 import { useSanityItem } from '@hooks/useSanityItem';
 import { cn } from '@utils/cn';
@@ -16,7 +18,7 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 
 import { GROQ_ARTICLE_DETAIL } from '@/lib/sanityQueries';
 import { getArticle } from '@/mocks';
-import type { Article } from '@/types/article';
+import type { Article, ArticleMedia } from '@/types/article';
 
 const RELATED_ROUTE_BY_MODULE = {
   property: ROUTES.ACCOUNT_PROPERTIES,
@@ -58,6 +60,14 @@ export default function NewsDetail() {
       )
     : null;
 
+  const media = article.gallery ?? [];
+  const galleryImages = media.flatMap(m =>
+    m.kind === 'image' ? [{ src: m.src, alt: m.alt }] : [],
+  );
+  const galleryVideos = media.filter(
+    (m): m is Extract<ArticleMedia, { kind: 'video' | 'embed' }> => m.kind !== 'image',
+  );
+
   return (
     <Container size="lg">
       <article className="space-y-12 py-12">
@@ -79,6 +89,20 @@ export default function NewsDetail() {
         <div className="prose-editorial mx-auto max-w-3xl">
           <p className="text-fg text-lg leading-relaxed text-pretty">{article.body}</p>
         </div>
+
+        {media.length > 0 && (
+          <section className="mx-auto max-w-3xl space-y-8">
+            <SectionHeader title={t('articles.media')} size="sm" as="h2" />
+            {galleryImages.length > 0 && <GalleryGrid images={galleryImages} />}
+            {galleryVideos.length > 0 && (
+              <div className="space-y-8">
+                {galleryVideos.map(v => (
+                  <VideoPlayer key={v.kind === 'embed' ? v.url : v.src} {...v} />
+                ))}
+              </div>
+            )}
+          </section>
+        )}
 
         {relatedHref && (
           <aside className="border-border bg-surface/40 mx-auto flex max-w-3xl flex-col gap-3 rounded-lg border p-8 md:flex-row md:items-center md:justify-between">

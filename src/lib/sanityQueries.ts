@@ -287,6 +287,7 @@ export const GROQ_CONCIERGE_DETAIL = (slug: string) =>
     "leadTime": ${L('leadTime')},
     "coverageArea": ${L('coverageArea')},
     "capabilities": ${LARR('capabilities')},
+    programme[]{ "label": ${L_LABEL}, "description": ${L('description')} },
     price
   }`;
 
@@ -304,7 +305,13 @@ export const GROQ_ARTICLE_DETAIL = (slug: string) =>
     "body": ${LPT('body')},
     "heroImage": { "src": heroImage.asset->url, "alt": heroImage.alt },
     "cover": { "src": heroImage.asset->url, "alt": heroImage.alt },
-    "gallery": coalesce(gallery[]{ "src": asset->url, "alt": alt }, []),
+    "gallery": coalesce(gallery[]{
+      "kind": select(_type == "videoEmbed" => "embed", _type == "videoFile" => "video", "image"),
+      _type == "domainImage" => { "src": asset->url, "alt": alt },
+      _type == "videoEmbed" => { "url": url },
+      _type == "videoFile" => { "src": file.asset->url, "poster": poster.asset->url, "alt": alt },
+      "caption": ${L('caption')}
+    }, []),
     "author": author->{ firstName, lastName, "photoUrl": photo.asset->url }
   }`;
 
