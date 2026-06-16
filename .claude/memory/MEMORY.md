@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-06-16** — [Session — Retours client : programme i18n des expériences + vidéos Actualités](sessions/2026-06-16-1605.md)
 - **2026-06-10** — [Session — Team cards: per-member data (no Valmont leak)](sessions/2026-06-10-1055.md)
 - **2026-06-09** — [Session — Espagnol « partout » : contenu Sanity + flow partage + sélecteur popover](sessions/2026-06-09-1124.md)
-- **2026-06-09** — [Session — Espagnol comme 3ᵉ locale (infra complète, contenu data différé)](sessions/2026-06-09-0835.md)
 
 ## Active decisions (top 5)
 
@@ -19,6 +19,7 @@
 
 ## Open frictions
 
+- **2026-06-16** — [Un retour client « le programme n'est pas traduisible » = champ manquant, pas un bug i18n](frictions/2026-06-16-cms-i18n-complaint-real-cause-missing-field.md)
 - **2026-06-10** — [`pnpm validate` fails on memory:index:check whenever the calendar day rolls over](frictions/2026-06-10-memory-index-check-date-drift.md)
 - **2026-06-09** — [`pnpm --filter X deploy` runs pnpm's builtin, not the package's `deploy` script](frictions/2026-06-09-pnpm-deploy-builtin-shadows-script.md)
 - **2026-06-08** — [Piège — `localeString`/`localeText` sans `preview` = « Untitled » dans les listes](frictions/2026-06-08-locale-object-no-preview-in-arrays.md)
@@ -43,7 +44,7 @@
 
 ## Deep dive
 
-- Full catalogue (163 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (165 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
