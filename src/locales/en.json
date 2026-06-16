@@ -720,6 +720,7 @@
   },
   "concierge": {
     "leadTime": "Lead time",
+    "programme": "Programme",
     "caseStudies": "Past examples",
     "category": {
       "transport": "Transport",
@@ -978,6 +979,8 @@
   "articles": {
     "readMinutes": "min read",
     "related": "On this topic",
+    "media": "Gallery",
+    "videoLabel": "Video",
     "kind": {
       "launch": "New arrival",
       "opening": "Seat secured",

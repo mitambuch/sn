@@ -28,6 +28,13 @@ export interface ConciergeCaseStudy {
   outcome: string;
 }
 
+/** One ordered step of an experience programme. No hour (unlike events) —
+ *  just a translatable title + optional detail. From Sanity serviceStep. */
+export interface ConciergeProgrammeStep {
+  label: string;
+  description?: string;
+}
+
 export interface ConciergeService {
   id: string;
   slug: string;
@@ -42,6 +49,9 @@ export interface ConciergeService {
   caseStudies?: ConciergeCaseStudy[];
   /** Typical lead-time hint, e.g. "6h notice", "48h advance". */
   leadTime: string;
+  /** Ordered programme of the experience, translatable. Sanity-only —
+   *  absent on mock services, so optional + guarded at render. */
+  programme?: ConciergeProgrammeStep[];
   images: ConciergeServiceImage[];
   createdAt: string;
 }
