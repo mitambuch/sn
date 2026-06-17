@@ -118,7 +118,10 @@ export const Modal = ({ isOpen, onClose, title, children, className }: ModalProp
         aria-labelledby={title ? titleId : undefined}
         tabIndex={-1}
         className={cn(
-          'border-border bg-bg/95 relative z-10 max-h-full w-full max-w-lg overflow-y-auto rounded-lg border p-6 backdrop-blur-md',
+          // overscroll-contain: when the dialog scrolls past its end, the scroll
+          // does NOT chain to the page behind it (paired with the body lock in
+          // the effect above) — the popup scrolls, the site stays put.
+          'border-border bg-bg/95 relative z-10 max-h-full w-full max-w-lg overflow-y-auto overscroll-contain rounded-lg border p-6 backdrop-blur-md',
           'duration-base shadow-lg transition-[transform,opacity]',
           className,
         )}

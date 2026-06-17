@@ -80,46 +80,50 @@ export const PublicFichePanel = ({ type, id, onRequestAccess }: PublicFichePanel
 
   return (
     <article className="flex flex-col gap-7">
-      {/* Hero — only an image when there is one; otherwise nothing (the eyebrow
-          + title carry the fiche). No broken-image silhouette, no empty box. */}
-      {heroSrc && (
-        <div className="bg-surface relative overflow-hidden rounded-lg">
-          <Image src={heroSrc} alt={heroAlt} ratio="16/9" eager />
-        </div>
-      )}
-
-      {/* Title block */}
-      <header className="flex flex-col gap-3">
-        <span className="text-muted font-mono text-[10px] tracking-[0.4em] uppercase">
-          {t(`share.docType.${fiche._type}`)}
-        </span>
-        <h2 className="font-mono text-2xl leading-tight font-medium tracking-tight uppercase md:text-3xl">
-          {title || t('share.fallbackTitle')}
-        </h2>
-        {(heroDate || heroVenue) && (
-          <div className="flex flex-col gap-1 pt-1 font-sans normal-case">
-            {heroDate && (
-              <p className="text-fg text-lg leading-tight font-medium first-letter:uppercase">
-                {heroDate}
-              </p>
-            )}
-            {heroVenue && <p className="text-muted text-base">{heroVenue}</p>}
+      {/* Top — hero + title side by side on desktop so the fiche reads WIDE and
+          SHORT instead of one tall column (owner: desktop, éviter un scroll trop
+          long). Mobile keeps the natural stacked order (md:flex-row collapses).
+          Hero only renders when there's an image — no broken-image, no empty box. */}
+      <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-8">
+        {heroSrc && (
+          <div className="bg-surface relative shrink-0 overflow-hidden rounded-lg md:w-1/2">
+            <Image src={heroSrc} alt={heroAlt} ratio="16/9" eager />
           </div>
         )}
-        {summary && (
-          <p className="text-fg/85 pt-2 font-sans text-base leading-relaxed text-pretty normal-case">
-            {summary}
-          </p>
-        )}
-      </header>
 
-      {/* Description — hidden when empty */}
+        <header className="flex flex-1 flex-col gap-3">
+          <span className="text-muted font-mono text-[10px] tracking-[0.4em] uppercase">
+            {t(`share.docType.${fiche._type}`)}
+          </span>
+          <h2 className="font-mono text-2xl leading-tight font-medium tracking-tight uppercase md:text-3xl">
+            {title || t('share.fallbackTitle')}
+          </h2>
+          {(heroDate || heroVenue) && (
+            <div className="flex flex-col gap-1 pt-1 font-sans normal-case">
+              {heroDate && (
+                <p className="text-fg text-lg leading-tight font-medium first-letter:uppercase">
+                  {heroDate}
+                </p>
+              )}
+              {heroVenue && <p className="text-muted text-base">{heroVenue}</p>}
+            </div>
+          )}
+          {summary && (
+            <p className="text-fg/85 pt-2 font-sans text-base leading-relaxed text-pretty normal-case">
+              {summary}
+            </p>
+          )}
+        </header>
+      </div>
+
+      {/* Description — hidden when empty. Capped width so lines stay readable
+          even in the wide desktop modal. */}
       {description && (
         <section className="border-fg/10 flex flex-col gap-3 border-t pt-6">
           <span className="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
             {t('share.section.description')}
           </span>
-          <p className="text-muted font-sans leading-relaxed whitespace-pre-line normal-case">
+          <p className="text-muted max-w-3xl font-sans leading-relaxed whitespace-pre-line normal-case">
             {description}
           </p>
         </section>
