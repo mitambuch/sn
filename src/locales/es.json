@@ -976,6 +976,82 @@
     "success": "Solicitud enviada. Valmont confirma el {{day}} a las {{slot}} en 30 minutos.",
     "error": "El envío ha fallado. Inténtelo de nuevo en un momento o escriba a Valmont."
   },
+  "qr": {
+    "seo": {
+      "title": "Presentación",
+      "description": "Conserjería privada suiza — acceso curado a lo excepcional, una plataforma a medida y discreción absoluta."
+    },
+    "brandHomeLabel": "Volver al inicio",
+    "hero": {
+      "eyebrow": "Conserjería privada · Suiza",
+      "title": "El acceso a lo excepcional,",
+      "word1": "orquestado",
+      "word2": "discreto",
+      "word3": "a medida",
+      "word4": "sin fricción",
+      "lede": "Una casa suiza que abre, para una clientela escogida, las puertas que no se abren. Bienes excepcionales, experiencias privadas, logística invisible.",
+      "scrollHint": "Descubrir"
+    },
+    "offer": {
+      "tag": "Lo que ofrecemos",
+      "heading": "Diez dominios, una exigencia",
+      "lede": "Del bien excepcional a la experiencia confidencial, cada solicitud se trata con el mismo rigor."
+    },
+    "quality": {
+      "tag": "La calidad del servicio",
+      "heading": "La discreción como método",
+      "item1Title": "Un único interlocutor",
+      "item1Body": "Un responsable dedicado coordina a cada interviniente, de la solicitud a la entrega.",
+      "item2Title": "Discreción absoluta",
+      "item2Body": "Confidencialidad contractual, ninguna exhibición. Lo privado sigue siendo privado.",
+      "item3Title": "Red verificada",
+      "item3Body": "Socios seleccionados y contrastados, en Suiza y a escala internacional.",
+      "item4Title": "Verdaderamente a medida",
+      "item4Body": "Ninguna oferta estándar. Cada expediente se construye en torno a una necesidad precisa."
+    },
+    "platform": {
+      "tag": "La plataforma",
+      "heading": "Un espacio de miembro privado",
+      "body": "Más allá de la conserjería, los miembros acceden a un espacio privado donde se presentan ofertas a medida, reservadas y renovadas con regularidad.",
+      "point1Title": "Ofertas reservadas",
+      "point1Body": "Bienes y experiencias ofrecidos solo a los miembros, fuera del mercado público.",
+      "point2Title": "Solicitud a medida",
+      "point2Body": "Exprese una necesidad; se cualifica y la gestiona un responsable en 24 horas.",
+      "point3Title": "Acceso por invitación",
+      "point3Body": "El acceso es por cooptación o solicitud estudiada. El círculo permanece reducido."
+    },
+    "form": {
+      "tag": "Solicitud a medida",
+      "heading": "Díganos lo que busca",
+      "lede": "Describa su necesidad. Un responsable le contactará con total discreción.",
+      "name": "Nombre",
+      "namePlaceholder": "Su nombre",
+      "email": "Email",
+      "emailPlaceholder": "usted@ejemplo.com",
+      "phone": "Teléfono (opcional)",
+      "phonePlaceholder": "+41 …",
+      "message": "Su solicitud",
+      "messagePlaceholder": "Lo que busca, para cuándo, para quién.",
+      "consent": "Acepto que me contacten en relación con mi solicitud.",
+      "submit": "Enviar la solicitud",
+      "sending": "Enviando…",
+      "success": "Solicitud recibida. Un responsable le contactará en breve.",
+      "error": "El envío ha fallado. Inténtelo de nuevo o escríbanos directamente."
+    },
+    "cta": {
+      "heading": "Unirse al círculo",
+      "body": "Hágase miembro para acceder al espacio privado, o descubra la casa.",
+      "becomeMember": "Hacerse miembro",
+      "seeSite": "Ver el sitio",
+      "share": "Compartir",
+      "shared": "Enlace copiado",
+      "shareText": "Conserjería privada suiza — acceso curado a lo excepcional."
+    },
+    "qrcode": {
+      "button": "Mostrar el código QR",
+      "scan": "Escanee con su teléfono"
+    }
+  },
   "articles": {
     "readMinutes": "min de lectura",
     "related": "Sobre este tema",

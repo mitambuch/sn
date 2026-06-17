@@ -976,6 +976,82 @@
     "success": "Demande envoyée. Valmont confirme {{day}} à {{slot}} dans 30 minutes.",
     "error": "L’envoi a échoué. Réessayez dans un instant ou écrivez à Valmont."
   },
+  "qr": {
+    "seo": {
+      "title": "Présentation",
+      "description": "Conciergerie privée suisse — accès curé à l'exceptionnel, plateforme sur-mesure et discrétion absolue."
+    },
+    "brandHomeLabel": "Retour à l'accueil",
+    "hero": {
+      "eyebrow": "Conciergerie privée · Suisse",
+      "title": "L'accès à l'exceptionnel,",
+      "word1": "orchestré",
+      "word2": "discret",
+      "word3": "sur-mesure",
+      "word4": "sans friction",
+      "lede": "Une maison suisse qui ouvre, pour une clientèle choisie, les portes que l'on n'ouvre pas. Biens rares, expériences fermées, logistique invisible.",
+      "scrollHint": "Découvrir"
+    },
+    "offer": {
+      "tag": "Ce que nous proposons",
+      "heading": "Dix domaines, une exigence",
+      "lede": "Du bien d'exception à l'expérience confidentielle, chaque demande est traitée avec la même rigueur."
+    },
+    "quality": {
+      "tag": "La qualité de service",
+      "heading": "La discrétion comme méthode",
+      "item1Title": "Un interlocuteur unique",
+      "item1Body": "Un référent dédié coordonne chaque intervenant, de la première demande à la livraison.",
+      "item2Title": "Discrétion absolue",
+      "item2Body": "Confidentialité contractuelle, aucune mise en avant. Ce qui est privé le reste.",
+      "item3Title": "Réseau vérifié",
+      "item3Body": "Des partenaires sélectionnés et éprouvés, en Suisse et à l'international.",
+      "item4Title": "Sur-mesure réel",
+      "item4Body": "Aucune offre standard. Chaque dossier est construit autour d'un besoin précis."
+    },
+    "platform": {
+      "tag": "La plateforme",
+      "heading": "Un espace membre privé",
+      "body": "Au-delà de la conciergerie, les membres accèdent à un espace privé où sont présentées des offres sur-mesure, réservées et renouvelées régulièrement.",
+      "point1Title": "Offres réservées",
+      "point1Body": "Biens et expériences proposés uniquement aux membres, hors marché public.",
+      "point2Title": "Demande sur-mesure",
+      "point2Body": "Exprimez un besoin ; il est qualifié et traité par un référent sous 24 h.",
+      "point3Title": "Accès sur invitation",
+      "point3Body": "L'entrée se fait par cooptation ou demande étudiée. Le cercle reste restreint."
+    },
+    "form": {
+      "tag": "Demande sur-mesure",
+      "heading": "Dites-nous ce que vous cherchez",
+      "lede": "Décrivez votre besoin. Un référent vous recontacte en toute discrétion.",
+      "name": "Nom",
+      "namePlaceholder": "Votre nom",
+      "email": "Email",
+      "emailPlaceholder": "vous@exemple.com",
+      "phone": "Téléphone (optionnel)",
+      "phonePlaceholder": "+41 …",
+      "message": "Votre demande",
+      "messagePlaceholder": "Ce que vous recherchez, pour quand, pour qui.",
+      "consent": "J'accepte d'être recontacté au sujet de ma demande.",
+      "submit": "Envoyer la demande",
+      "sending": "Envoi…",
+      "success": "Demande reçue. Un référent vous recontacte sous peu.",
+      "error": "L'envoi a échoué. Réessayez ou écrivez-nous directement."
+    },
+    "cta": {
+      "heading": "Rejoindre le cercle",
+      "body": "Devenez membre pour accéder à l'espace privé, ou découvrez la maison.",
+      "becomeMember": "Devenir membre",
+      "seeSite": "Voir le site",
+      "share": "Partager",
+      "shared": "Lien copié",
+      "shareText": "Conciergerie privée suisse — accès curé à l'exceptionnel."
+    },
+    "qrcode": {
+      "button": "Afficher le QR code",
+      "scan": "Scannez avec votre téléphone"
+    }
+  },
   "articles": {
     "readMinutes": "min de lecture",
     "related": "Sur ce sujet",

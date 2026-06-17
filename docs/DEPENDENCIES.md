@@ -45,6 +45,7 @@ Full visual reference: see `src/index.css` @theme block and `/playground`
 | react-i18next                    | React i18n bindings        | `useTranslation()` hooks and React integration               |
 | @sanity/client                   | CMS client                 | GROQ reads from Sanity when project env vars are configured  |
 | @sanity/image-url                | Sanity image URLs          | Builds CDN image URLs from Sanity image assets               |
+| qrcode.react                     | QR code generator (SVG)    | The /QR salon page shows a scannable QR pointing to itself   |
 
 ## Dev Dependencies
 

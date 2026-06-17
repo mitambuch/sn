@@ -976,6 +976,82 @@
     "navigate": "Navigate",
     "open": "Open"
   },
+  "qr": {
+    "seo": {
+      "title": "Presentation",
+      "description": "Swiss private concierge — curated access to the exceptional, a bespoke platform and absolute discretion."
+    },
+    "brandHomeLabel": "Back to home",
+    "hero": {
+      "eyebrow": "Private concierge · Switzerland",
+      "title": "Access to the exceptional,",
+      "word1": "orchestrated",
+      "word2": "discreet",
+      "word3": "bespoke",
+      "word4": "frictionless",
+      "lede": "A Swiss house that opens, for a chosen clientele, the doors that stay closed. Rare goods, private experiences, invisible logistics.",
+      "scrollHint": "Discover"
+    },
+    "offer": {
+      "tag": "What we offer",
+      "heading": "Ten domains, one standard",
+      "lede": "From exceptional assets to confidential experiences, every request is handled with the same rigour."
+    },
+    "quality": {
+      "tag": "Service quality",
+      "heading": "Discretion as a method",
+      "item1Title": "A single point of contact",
+      "item1Body": "A dedicated lead coordinates every party, from the first request to delivery.",
+      "item2Title": "Absolute discretion",
+      "item2Body": "Contractual confidentiality, no display. What is private stays private.",
+      "item3Title": "Vetted network",
+      "item3Body": "Partners selected and proven, in Switzerland and internationally.",
+      "item4Title": "Truly bespoke",
+      "item4Body": "No standard offer. Each case is built around a precise need."
+    },
+    "platform": {
+      "tag": "The platform",
+      "heading": "A private member area",
+      "body": "Beyond concierge, members access a private area presenting bespoke offers, reserved and renewed regularly.",
+      "point1Title": "Reserved offers",
+      "point1Body": "Goods and experiences offered to members only, off the public market.",
+      "point2Title": "Bespoke request",
+      "point2Body": "Express a need; it is qualified and handled by a lead within 24 hours.",
+      "point3Title": "By invitation",
+      "point3Body": "Entry is by referral or reviewed request. The circle stays small."
+    },
+    "form": {
+      "tag": "Bespoke request",
+      "heading": "Tell us what you are looking for",
+      "lede": "Describe your need. A dedicated lead will contact you discreetly.",
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "phone": "Phone (optional)",
+      "phonePlaceholder": "+41 …",
+      "message": "Your request",
+      "messagePlaceholder": "What you are looking for, by when, for whom.",
+      "consent": "I agree to be contacted about my request.",
+      "submit": "Send request",
+      "sending": "Sending…",
+      "success": "Request received. A dedicated lead will contact you shortly.",
+      "error": "Sending failed. Please try again or write to us directly."
+    },
+    "cta": {
+      "heading": "Join the circle",
+      "body": "Become a member to access the private area, or explore the house.",
+      "becomeMember": "Become a member",
+      "seeSite": "See the site",
+      "share": "Share",
+      "shared": "Link copied",
+      "shareText": "Swiss private concierge — curated access to the exceptional."
+    },
+    "qrcode": {
+      "button": "Show the QR code",
+      "scan": "Scan with your phone"
+    }
+  },
   "articles": {
     "readMinutes": "min read",
     "related": "On this topic",

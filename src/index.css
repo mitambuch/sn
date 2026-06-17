@@ -281,6 +281,18 @@ body::before {
   transform-origin: top;
 }
 
+/* Cycling hero word (QR presentation) — gated with motion-safe: in JSX. */
+@keyframes fadeInWord {
+  from {
+    opacity: 0;
+    transform: translateY(0.15em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   body::before {
     animation: none;
