@@ -5,17 +5,17 @@
 
 ## Recent sessions (top 3)
 
+- **2026-06-17** — [Session — 3 fix /presentation + fiche produit publique](sessions/2026-06-17-2058.md)
 - **2026-06-17** — [Session — Aperçu catalogue 08.A branché sur events publics + ship](sessions/2026-06-17-1736.md)
 - **2026-06-17** — [Session — Événements publics sur la home (vrais + fiches floutées)](sessions/2026-06-17-1700.md)
-- **2026-06-17** — [Session — /presentation immersive (vidéo + mise en page variée)](sessions/2026-06-17-1429.md)
 
 ## Active decisions (top 5)
 
+- **2026-06-17** — [Fiche produit publique `/c/:type/:id` pour les docs `visibility: public`](decisions/2026-06-17-public-catalogue-fiche-route.md) · #routing #sanity #security #content
 - **2026-06-10** — [Team cards: each profile drives its own data (reverses the focal-only funnel)](decisions/2026-06-10-team-cards-per-member-contacts.md) · #content #i18n #decision #client-specific
 - **2026-06-08** — [Catalogue masqué derrière un flag « espace en préparation »](decisions/2026-06-08-catalogue-holding-state-flag.md) · #content #routing #decision #client-specific
 - **2026-06-04** — [Tunnel d'accès basé mot de passe (remplace le lien magique)](decisions/2026-06-04-password-access-tunnel.md) · #auth #security #decision #client-specific
 - **2026-06-03** — [Audience par segment — gate serveur Netlify + dataset Sanity privé](decisions/2026-06-03-audience-server-gate.md) · #security #sanity #auth #decision
-- **2026-06-01** — [Dates d'événement flexibles — mode exact / toute l'année / texte libre](decisions/2026-06-01-event-flexible-dates.md) · #sanity #i18n #content #decision
 
 ## Open frictions
 
@@ -37,6 +37,7 @@
 ## Active patterns
 
 - **2026-06-17** — [Page publique autonome à URL fixe, hors LocaleProvider](patterns/2026-06-17-standalone-public-page-outside-localeprovider.md)
+- **2026-06-17** — [Une route publique lit une projection WHITELIST, jamais `...`](patterns/2026-06-17-public-route-whitelist-projection.md)
 - **2026-06-09** — [Adding a locale ≠ editing SUPPORTED_LOCALES — audit every binary collapse](patterns/2026-06-09-adding-a-locale-audit-binary-collapses.md)
 - **2026-06-04** — [Un panneau partagé, deux coques (page + modale)](patterns/2026-06-04-shared-panel-two-shells.md)
 - **2026-05-14** — [Sanity singleton + React context provider = one fetch, N consumers](patterns/2026-05-14-singleton-with-context-provider.md)
@@ -46,7 +47,7 @@
 
 ## Deep dive
 
-- Full catalogue (174 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (177 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
