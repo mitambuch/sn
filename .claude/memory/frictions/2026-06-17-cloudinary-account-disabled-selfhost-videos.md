@@ -2,7 +2,7 @@
 id: cloudinary-account-disabled-selfhost-videos
 date: 2026-06-17
 type: friction
-tags: [#performance, #friction, #client-specific, #p2]
+tags: [#perf, #friction, #client-specific, #p2]
 scope: client-specific
 status: active
 ---
