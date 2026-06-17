@@ -1677,7 +1677,7 @@
     "index": {
       "title": "SAW↗NEXT / Full index",
       "footerLocation": "Boudry, Switzerland",
-      "footerCount": "07 sections",
+      "footerCount": "08 sections",
       "footerEdition": "May 2026 edition",
       "s01name": "Introduction",
       "s01label": "Hero",
@@ -1689,6 +1689,8 @@
       "s04label": "Document",
       "s05name": "Domains",
       "s05label": "Services",
+      "s06name": "Events",
+      "s06label": "Agenda",
       "s08name": "Access",
       "s08label": "Cooptation",
       "s09name": "Contact",
@@ -1718,6 +1720,15 @@
       "requestAccess": "Request access",
       "privateArea": "Private area",
       "callDirect": "Call"
+    },
+    "events": {
+      "tag": "Events",
+      "headline": "Events open to the public.",
+      "lede": "A public glimpse. The rest is by cooptation.",
+      "locked": "Members only",
+      "lockedHint": "By cooptation",
+      "cardAria": "{{title}} — request access",
+      "lockedAria": "Members-only content — request access"
     }
   }
 }

@@ -73,6 +73,24 @@ export const GROQ_EVENTS_LIST = `*[_type == "event" && ${PUBLIC_VISIBILITY}] | o
   "images": coalesce(images[]{ "src": asset->url, "alt": alt }, [])
 }`;
 
+/** Public landing teaser — strictly `visibility == "public"` (excludes
+ *  shareCode, which is link-only), lean projection, capped at 8. Powers the
+ *  public home Events section + its server gate action `publicEvents`. */
+export const GROQ_PUBLIC_EVENTS = `*[_type == "event" && visibility == "public"] | order(startsAt asc)[0...8]{
+  "id": _id,
+  "slug": slug.current,
+  "title": ${L('title')},
+  category,
+  dateMode,
+  startsAt,
+  endsAt,
+  "dateLabel": ${L('dateLabel')},
+  city,
+  countryCode,
+  venue,
+  "images": coalesce(images[]{ "src": asset->url, "alt": alt }, [])
+}`;
+
 export const GROQ_EVENT_DETAIL = (slug: string) =>
   `*[_type == "event" && slug.current == "${slug}"][0]{
     "id": _id,

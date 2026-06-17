@@ -7,6 +7,7 @@ export { Domains } from './Domains';
 export { Hero } from './Hero';
 export { type IndexEntry, IndexOverlay } from './IndexOverlay';
 export { Interlocutor } from './Interlocutor';
+export { LandingEvents } from './LandingEvents';
 export { LandingFooter } from './LandingFooter';
 export { Manifesto } from './Manifesto';
 export { Marquee } from './Marquee';

@@ -1677,7 +1677,7 @@
     "index": {
       "title": "SAW↗NEXT / Index complet",
       "footerLocation": "Boudry, Suisse",
-      "footerCount": "07 sections",
+      "footerCount": "08 sections",
       "footerEdition": "Édition Mai 2026",
       "s01name": "Introduction",
       "s01label": "Hero",
@@ -1689,6 +1689,8 @@
       "s04label": "Document",
       "s05name": "Domaines",
       "s05label": "Services",
+      "s06name": "Événements",
+      "s06label": "Agenda",
       "s08name": "Accès",
       "s08label": "Cooptation",
       "s09name": "Interlocuteur",
@@ -1718,6 +1720,15 @@
       "requestAccess": "Demander un accès",
       "privateArea": "Espace privé",
       "callDirect": "Appeler"
+    },
+    "events": {
+      "tag": "Événements",
+      "headline": "Événements ouverts au public.",
+      "lede": "Un aperçu public. Le reste se découvre sur cooptation.",
+      "locked": "Réservé aux membres",
+      "lockedHint": "Sur cooptation",
+      "cardAria": "{{title}} — demander un accès",
+      "lockedAria": "Contenu réservé aux membres — demander un accès"
     }
   }
 }

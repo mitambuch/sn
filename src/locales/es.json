@@ -1677,7 +1677,7 @@
     "index": {
       "title": "SAW↗NEXT / Índice completo",
       "footerLocation": "Boudry, Suiza",
-      "footerCount": "07 secciones",
+      "footerCount": "08 secciones",
       "footerEdition": "Edición mayo de 2026",
       "s01name": "Introducción",
       "s01label": "Hero",
@@ -1689,6 +1689,8 @@
       "s04label": "Documento",
       "s05name": "Ámbitos",
       "s05label": "Servicios",
+      "s06name": "Eventos",
+      "s06label": "Agenda",
       "s08name": "Acceso",
       "s08label": "Cooptación",
       "s09name": "Interlocutor",
@@ -1718,6 +1720,15 @@
       "requestAccess": "Solicitar un acceso",
       "privateArea": "Espacio privado",
       "callDirect": "Llamar"
+    },
+    "events": {
+      "tag": "Eventos",
+      "headline": "Eventos abiertos al público.",
+      "lede": "Un vistazo público. El resto, por cooptación.",
+      "locked": "Reservado a miembros",
+      "lockedHint": "Por cooptación",
+      "cardAria": "{{title}} — solicitar un acceso",
+      "lockedAria": "Contenido reservado a miembros — solicitar un acceso"
     }
   }
 }
