@@ -22,7 +22,7 @@ interface PublicFicheModalProps {
 
 /** The public fiche, opened as a popup over the landing. */
 export const PublicFicheModal = ({ item, onClose, onRequestAccess }: PublicFicheModalProps) => (
-  <Modal isOpen={item !== null} onClose={onClose} className="max-w-2xl">
+  <Modal isOpen={item !== null} onClose={onClose} className="max-w-5xl">
     {item && <PublicFichePanel type={item.type} id={item.id} onRequestAccess={onRequestAccess} />}
   </Modal>
 );
