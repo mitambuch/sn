@@ -73,22 +73,17 @@ export const GROQ_EVENTS_LIST = `*[_type == "event" && ${PUBLIC_VISIBILITY}] | o
   "images": coalesce(images[]{ "src": asset->url, "alt": alt }, [])
 }`;
 
-/** Public landing teaser — strictly `visibility == "public"` (excludes
- *  shareCode, which is link-only), lean projection, capped at 8. Powers the
- *  public home Events section + its server gate action `publicEvents`. */
-export const GROQ_PUBLIC_EVENTS = `*[_type == "event" && visibility == "public"] | order(startsAt asc)[0...8]{
+/** Public landing teaser — ANY catalogue doc tagged `visibility == "public"`
+ *  (event, journey, property, timepiece, artwork, conciergeService, article),
+ *  not just events. Lean type-agnostic projection (type + title + first
+ *  image), most-recent first, capped at 6. Powers the home "08.A Aperçu du
+ *  catalogue" grid + its server gate action `publicCatalogue`. `article`
+ *  carries its cover as `heroImage`; everything else uses `images[]`. */
+export const GROQ_PUBLIC_CATALOGUE = `*[_type in ["event", "journey", "property", "timepiece", "artwork", "conciergeService", "article"] && visibility == "public"] | order(_createdAt desc)[0...6]{
   "id": _id,
-  "slug": slug.current,
+  "type": _type,
   "title": ${L('title')},
-  category,
-  dateMode,
-  startsAt,
-  endsAt,
-  "dateLabel": ${L('dateLabel')},
-  city,
-  countryCode,
-  venue,
-  "images": coalesce(images[]{ "src": asset->url, "alt": alt }, [])
+  "image": coalesce(images[0]{ "src": asset->url, "alt": alt }, heroImage{ "src": asset->url, "alt": alt })
 }`;
 
 export const GROQ_EVENT_DETAIL = (slug: string) =>
