@@ -19,7 +19,7 @@ import { MonoGradientPlaceholder } from '@components/ui/MonoGradientPlaceholder'
 import { useLandingContext } from '@context/LandingContentContext';
 import { useAccessRequestModal } from '@context/useAccessRequestModal';
 import { SectionTag } from '@features/landing/SectionTag';
-import { usePublicEvents } from '@features/landing/usePublicEvents';
+import { type PublicCatalogueType, usePublicCatalogue } from '@features/landing/usePublicCatalogue';
 import { useReveal } from '@hooks/useReveal';
 import { resolveFieldOrFallback } from '@lib/i18nField';
 import { cn } from '@utils/cn';
@@ -27,12 +27,21 @@ import { Lock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { isVitrineMode } from '@/config/env';
-import { resolveEventDate } from '@/features/events/eventDate';
 
-/** How many locked cadenas teasers trail the real public events — "quelques
- *  fiches floutées pour donner envie", bumped to 5 so the grid reads
- *  homogeneous next to the real events (owner 2026-06-17). */
-const TEASER_COUNT = 5;
+/** Total tiles in the 08.A teaser — real public items first, then locked
+ *  cadenas teasers fill the rest. "Max 6 vignettes" (owner 2026-06-17). */
+const MAX_TILES = 6;
+
+/** _type → i18n label key for the card eyebrow (reuses the member nav labels). */
+const TYPE_LABEL: Record<PublicCatalogueType, string> = {
+  event: 'account.nav.events',
+  journey: 'account.nav.journeys',
+  property: 'account.nav.properties',
+  timepiece: 'account.nav.timepieces',
+  artwork: 'account.nav.artworks',
+  conciergeService: 'account.nav.concierge',
+  article: 'account.nav.news',
+};
 
 /** Landing S08 — catalogue teaser + cooptation gate. */
 export const Access = () => {
@@ -41,7 +50,11 @@ export const Access = () => {
   const locale = (i18n.language as 'fr' | 'en') ?? 'fr';
   const ref = useReveal<HTMLDivElement>();
   const { openAccessRequest } = useAccessRequestModal();
-  const { events } = usePublicEvents();
+  const { items } = usePublicCatalogue();
+
+  // Real public items first (capped), locked cadenas teasers fill up to MAX_TILES.
+  const shownItems = items.slice(0, MAX_TILES);
+  const lockedCount = Math.max(0, MAX_TILES - shownItems.length);
 
   return (
     <section id="s08" data-landing-dark="true" data-theme="dark" className="bg-ink text-white">
@@ -75,14 +88,14 @@ export const Access = () => {
           </p>
         </header>
 
-        {/* ─── Catalogue teaser — backend Card style, 4-up ───
-             Real public events (Sanity `visibility: public`) shown clearly +
-             a few LOCKED cadenas cards so the visitor feels there's more
-             behind access. Every card opens the AccessRequestModal — the
-             teaser is a funnel. No real public event published yet ⇒ the row
-             gracefully shows locked cards only (no fake fiche). Owner
-             2026-06-17 : "voir les événements public, garder quelques fiches
-             floutées pour donner envie ... reprends le petit cadenas". */}
+        {/* ─── Catalogue teaser — backend Card style, max 6 tiles ───
+             ANY catalogue doc tagged `visibility: public` (event, journey,
+             property…) shown clearly + LOCKED cadenas cards filling up to 6
+             so the visitor feels there's more behind access. Every card opens
+             the AccessRequestModal — the teaser is a funnel. No public doc
+             published yet ⇒ the row gracefully shows locked cards only (no
+             fake fiche). Owner 2026-06-17 : "si un événement est tag public on
+             le met, max 6 vignettes ... reprends le petit cadenas". */}
         <div className="flex flex-col gap-6">
           <span className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
             {resolveFieldOrFallback(
@@ -91,44 +104,37 @@ export const Access = () => {
               t('landing.access.eventsEyebrow'),
             )}
           </span>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
-            {/* Real public events — clear, clickable */}
-            {events.map(event => {
-              const { badge } = resolveEventDate(event, locale, t);
-              return (
-                <button
-                  key={event.id}
-                  type="button"
-                  onClick={() => {
-                    openAccessRequest('request');
-                  }}
-                  aria-label={t('landing.access.cardAria', { title: event.title })}
-                  className="rounded-card block text-left focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none"
-                >
-                  <Card interactive padding="none" className="h-full border-white/15">
-                    <Card.Media
-                      src={event.images[0]?.src}
-                      alt={event.images[0]?.alt ?? event.title}
-                      ratio="4/3"
-                    />
-                    <Card.Badge top={badge.top} bottom={badge.bottom} />
-                    <Card.Body>
-                      <Card.Eyebrow className="text-white/60">
-                        {t(`events.category.${event.category}`)} · {event.city}
-                      </Card.Eyebrow>
-                      <Card.Title className="text-white">{event.title}</Card.Title>
-                      <Card.Meta className="text-xs leading-relaxed text-white/55">
-                        {event.venue}
-                      </Card.Meta>
-                    </Card.Body>
-                  </Card>
-                </button>
-              );
-            })}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+            {/* Real public items (ANY type tagged public) — clear, clickable */}
+            {shownItems.map(item => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => {
+                  openAccessRequest('request');
+                }}
+                aria-label={t('landing.access.cardAria', { title: item.title })}
+                className="rounded-card block text-left focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none"
+              >
+                <Card interactive padding="none" className="h-full border-white/15">
+                  <Card.Media
+                    src={item.image?.src}
+                    alt={item.image?.alt ?? item.title}
+                    ratio="4/3"
+                  />
+                  <Card.Body>
+                    <Card.Eyebrow className="text-white/60">
+                      {t(TYPE_LABEL[item.type])}
+                    </Card.Eyebrow>
+                    <Card.Title className="text-white">{item.title}</Card.Title>
+                  </Card.Body>
+                </Card>
+              </button>
+            ))}
 
             {/* Locked cadenas teasers — content redacted + veiled, hover lifts
                 the blur a touch. Click opens access. */}
-            {Array.from({ length: TEASER_COUNT }).map((_, i) => (
+            {Array.from({ length: lockedCount }).map((_, i) => (
               <button
                 key={`locked-${String(i)}`}
                 type="button"
