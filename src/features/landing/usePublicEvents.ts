@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { hasSanity, sanityClient } from '@/lib/sanity';
 import { gateEnabled, gateList } from '@/lib/sanityGate';
 import { GROQ_PUBLIC_EVENTS } from '@/lib/sanityQueries';
+import { listEvents } from '@/mocks';
 import type { PublicEvent } from '@/types/event';
 
 interface UsePublicEventsResult {
@@ -23,11 +24,19 @@ interface UsePublicEventsResult {
   loading: boolean;
 }
 
+/** DEV-only preview seed : when running locally with NO Sanity connection,
+ *  surface a couple of mock events so the section is visible while building.
+ *  `import.meta.env.DEV` is false in every production build, so this can
+ *  never ship fake fiches to a real client. The moment real Sanity creds are
+ *  present (sanityClient set) or the gate is on, this is bypassed entirely. */
+const devSeed = (): readonly PublicEvent[] =>
+  import.meta.env.DEV && !gateEnabled && !sanityClient ? listEvents().slice(0, 2) : [];
+
 export function usePublicEvents(): UsePublicEventsResult {
   const { i18n } = useTranslation();
   const locale = i18n.language === 'en' ? 'en' : i18n.language === 'es' ? 'es' : 'fr';
 
-  const [events, setEvents] = useState<readonly PublicEvent[]>([]);
+  const [events, setEvents] = useState<readonly PublicEvent[]>(devSeed);
   // Only "loading" when there's actually a source to read from.
   const [loading, setLoading] = useState<boolean>(gateEnabled || hasSanity);
 
