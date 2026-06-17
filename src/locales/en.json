@@ -990,7 +990,14 @@
       "word3": "bespoke",
       "word4": "frictionless",
       "lede": "A Swiss house that opens, for a chosen clientele, the doors that stay closed. Rare goods, private experiences, invisible logistics.",
-      "scrollHint": "Discover"
+      "scrollHint": "Discover",
+      "gps": "46°12′N · 06°09′E",
+      "m1Label": "Type",
+      "m1Value": "Private concierge",
+      "m2Label": "Access",
+      "m2Value": "By invitation",
+      "m3Label": "House",
+      "m3Value": "Geneva · Switzerland"
     },
     "offer": {
       "tag": "What we offer",
@@ -1043,13 +1050,12 @@
       "body": "Become a member to access the private area, or explore the house.",
       "becomeMember": "Become a member",
       "seeSite": "See the site",
-      "share": "Share",
-      "shared": "Link copied",
-      "shareText": "Swiss private concierge — curated access to the exceptional."
+      "share": "Share"
     },
-    "qrcode": {
-      "button": "Show the QR code",
-      "scan": "Scan with your phone"
+    "qrpage": {
+      "eyebrow": "Scan",
+      "title": "Scan to discover",
+      "hint": "Point your phone camera at the code to open the presentation."
     }
   },
   "articles": {

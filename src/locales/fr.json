@@ -990,7 +990,14 @@
       "word3": "sur-mesure",
       "word4": "sans friction",
       "lede": "Une maison suisse qui ouvre, pour une clientèle choisie, les portes que l'on n'ouvre pas. Biens rares, expériences fermées, logistique invisible.",
-      "scrollHint": "Découvrir"
+      "scrollHint": "Découvrir",
+      "gps": "46°12′N · 06°09′E",
+      "m1Label": "Type",
+      "m1Value": "Conciergerie privée",
+      "m2Label": "Accès",
+      "m2Value": "Sur invitation",
+      "m3Label": "Maison",
+      "m3Value": "Genève · Suisse"
     },
     "offer": {
       "tag": "Ce que nous proposons",
@@ -1043,13 +1050,12 @@
       "body": "Devenez membre pour accéder à l'espace privé, ou découvrez la maison.",
       "becomeMember": "Devenir membre",
       "seeSite": "Voir le site",
-      "share": "Partager",
-      "shared": "Lien copié",
-      "shareText": "Conciergerie privée suisse — accès curé à l'exceptionnel."
+      "share": "Partager"
     },
-    "qrcode": {
-      "button": "Afficher le QR code",
-      "scan": "Scannez avec votre téléphone"
+    "qrpage": {
+      "eyebrow": "Scan",
+      "title": "Scannez pour découvrir",
+      "hint": "Pointez l'appareil photo de votre téléphone vers le code pour ouvrir la présentation."
     }
   },
   "articles": {
