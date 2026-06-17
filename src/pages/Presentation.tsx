@@ -18,6 +18,7 @@ import { LanguageSwitcher } from '@components/ui/LanguageSwitcher';
 import { Reveal } from '@components/ui/Reveal';
 import { Marquee } from '@features/landing/Marquee';
 import { SectionTag } from '@features/landing/SectionTag';
+import { FOCAL_MEMBER } from '@features/landing/teamData';
 import { useCyclingWord } from '@features/landing/useCyclingWord';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -219,7 +220,8 @@ function Platform() {
  *  ("Télécharger le PDF" → window.print()). Same mono typography, black on
  *  white, just the essentials. */
 function PrintSheet() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language === 'en' ? 'en' : i18n.language === 'es' ? 'es' : 'fr';
   return (
     <div className="hidden bg-white font-mono text-black print:fixed print:inset-0 print:block print:overflow-hidden">
       <div className="flex items-baseline justify-between border-b border-black/25 pb-4">
@@ -246,8 +248,22 @@ function PrintSheet() {
         </ul>
       </div>
       <p className="mt-12 max-w-2xl text-base leading-relaxed">{t('qr.experience.body')}</p>
-      <div className="mt-12 border-t border-black/25 pt-4 text-[10px] tracking-[0.3em] uppercase">
-        saw-next.ch
+      <div className="mt-12 flex items-end justify-between gap-6 border-t border-black/25 pt-5">
+        <div className="flex flex-col gap-1">
+          <span className="text-[10px] tracking-[0.3em] text-black/55 uppercase">
+            {t('qr.pdf.contact')}
+          </span>
+          <span className="text-sm font-medium uppercase">
+            {FOCAL_MEMBER.firstName} {FOCAL_MEMBER.lastName}
+          </span>
+          <span className="text-xs text-black/65 uppercase">
+            {FOCAL_MEMBER.functionLabel[lang]}
+          </span>
+          <span className="text-xs">
+            {FOCAL_MEMBER.phone} · {FOCAL_MEMBER.email}
+          </span>
+        </div>
+        <span className="text-lg font-bold tracking-[0.12em] uppercase">saw-next.ch</span>
       </div>
     </div>
   );
