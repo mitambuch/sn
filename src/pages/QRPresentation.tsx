@@ -364,7 +364,7 @@ function QrOverlay({ open, onClose, url }: { open: boolean; onClose: () => void;
         marginSize={2}
         className="h-auto w-[min(78vw,360px)]"
       />
-      <p className="font-mono text-[11px] tracking-widest text-black/50 lowercase">
+      <p className="font-mono text-[11px] tracking-widest text-black/50">
         {url.replace(/^https?:\/\//, '')}
       </p>
     </div>
