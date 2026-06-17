@@ -35,6 +35,7 @@ import {
   GROQ_ADMIN_CATALOGUE,
   GROQ_LANDING,
   GROQ_PUBLIC_CATALOGUE,
+  GROQ_PUBLIC_FICHE,
   GROQ_SHARED_FICHE,
   GROQ_SHARED_FICHES,
   GROQ_SITE_CONFIG,
@@ -178,7 +179,15 @@ function shareDocIds(row: PeekRow): { type: string; id: string }[] {
 export default async function handler(req: Request): Promise<Response> {
   if (req.method !== 'POST') return json(405, { error: 'method-not-allowed' });
 
-  let body: { action?: string; module?: string; slug?: string; code?: string; locale?: string };
+  let body: {
+    action?: string;
+    module?: string;
+    slug?: string;
+    code?: string;
+    type?: string;
+    id?: string;
+    locale?: string;
+  };
   try {
     body = (await req.json()) as typeof body;
   } catch {
@@ -196,6 +205,18 @@ export default async function handler(req: Request): Promise<Response> {
     // Public landing teaser — any catalogue doc visibility=="public", no auth.
     if (action === 'publicCatalogue')
       return json(200, { data: await sanity.fetch(GROQ_PUBLIC_CATALOGUE, { locale }) });
+
+    // Public fiche by type + id — the /c/:type/:id route, no auth. The GROQ is
+    // HARD-restricted to visibility=="public"; type + id are interpolated into
+    // the query, so validate both before they reach GROQ (injection surface).
+    // 404 (not 400) on a bad type/id so a probe can't distinguish the cases.
+    if (action === 'publicFiche') {
+      const type = (body.type ?? '').trim();
+      const id = (body.id ?? '').trim();
+      if (!isModuleKey(type) || !DOC_ID_RE.test(id)) return json(404, { error: 'not-found' });
+      const data = await sanity.fetch(GROQ_PUBLIC_FICHE(type, id), { locale });
+      return json(200, { data: data ?? null });
+    }
 
     // ── share (validated by code possession, no auth) ─────────────
     if (action === 'shared') {

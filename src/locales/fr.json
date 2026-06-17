@@ -1237,6 +1237,10 @@
       "expiredBody": "Ce code a atteint sa date d'expiration ou son nombre de vues maximum. Valmont peut en générer un nouveau.",
       "revokedBody": "Valmont a révoqué ce code. Aucun accès n'est possible avec ce lien."
     },
+    "section": {
+      "description": "Description",
+      "gallery": "Galerie"
+    },
     "interest": {
       "title": "Cette fiche vous intéresse ?",
       "cta": "Manifester mon intérêt"
@@ -1562,6 +1566,7 @@
       "lockedLabel": "Réservé aux membres",
       "lockedAria": "Contenu réservé aux membres — demander un accès",
       "cardAria": "{{title}} — demander un accès",
+      "cardOpenAria": "{{title}} — voir la fiche",
       "locked1": {
         "tag": "Propriété · Engadine",
         "title": "Chalet historique, Sankt Moritz",

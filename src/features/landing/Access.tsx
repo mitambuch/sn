@@ -25,6 +25,7 @@ import { resolveFieldOrFallback } from '@lib/i18nField';
 import { cn } from '@utils/cn';
 import { Lock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import { isVitrineMode } from '@/config/env';
 
@@ -105,15 +106,15 @@ export const Access = () => {
             )}
           </span>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
-            {/* Real public items (ANY type tagged public) — clear, clickable */}
+            {/* Real public items (ANY type tagged public) — clear, clickable.
+                Opens the public read-only fiche at /c/:type/:id (a
+                visibility=="public" doc is meant to be viewable, not just
+                teased). The bottom CTAs remain the cooptation gate. */}
             {shownItems.map(item => (
-              <button
+              <Link
                 key={item.id}
-                type="button"
-                onClick={() => {
-                  openAccessRequest('request');
-                }}
-                aria-label={t('landing.access.cardAria', { title: item.title })}
+                to={`/c/${item.type}/${item.id}`}
+                aria-label={t('landing.access.cardOpenAria', { title: item.title })}
                 className="rounded-card block text-left focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none"
               >
                 <Card interactive padding="none" className="h-full border-white/15">
@@ -129,7 +130,7 @@ export const Access = () => {
                     <Card.Title className="text-white">{item.title}</Card.Title>
                   </Card.Body>
                 </Card>
-              </button>
+              </Link>
             ))}
 
             {/* Locked cadenas teasers — content redacted + veiled, hover lifts
