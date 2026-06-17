@@ -30,8 +30,9 @@ import { isVitrineMode } from '@/config/env';
 import { resolveEventDate } from '@/features/events/eventDate';
 
 /** How many locked cadenas teasers trail the real public events — "quelques
- *  fiches floutées pour donner envie" (owner 2026-06-17). */
-const TEASER_COUNT = 3;
+ *  fiches floutées pour donner envie", bumped to 5 so the grid reads
+ *  homogeneous next to the real events (owner 2026-06-17). */
+const TEASER_COUNT = 5;
 
 /** Landing S08 — catalogue teaser + cooptation gate. */
 export const Access = () => {
