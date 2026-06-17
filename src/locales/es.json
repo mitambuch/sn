@@ -1056,6 +1056,15 @@
       "eyebrow": "Scan",
       "title": "Escanee para descubrir",
       "hint": "Apunte la cámara de su teléfono al código para abrir la presentación."
+    },
+    "experience": {
+      "tag": "Experiencia",
+      "heading": "Todo se vuelve una experiencia",
+      "body": "Gestión de patrimonio, seguridad, adquisición de un bien excepcional — cada prestación se vive como una experiencia."
+    },
+    "pdf": {
+      "download": "Descargar el PDF",
+      "contact": "Contacto"
     }
   },
   "articles": {
@@ -1549,7 +1558,10 @@
         "teaser": "First Choice a las 9h, desayuno Hauser & Wirth, visita guiada por Marc Spiegler."
       },
       "lockedEyebrow": "↘ Fuera de mercado — acceso por cooptación",
-      "lockedHint": "Bajo petición",
+      "lockedHint": "Por cooptación",
+      "lockedLabel": "Reservado a miembros",
+      "lockedAria": "Contenido reservado a miembros — solicitar acceso",
+      "cardAria": "{{title}} — solicitar acceso",
       "locked1": {
         "tag": "Propiedad · Engadina",
         "title": "Chalet histórico, Sankt Moritz",

@@ -50,9 +50,10 @@ async function callGate<T>(body: GateBody): Promise<T> {
   return (await res.json()) as T;
 }
 
-/** A list read (member catalogue list / team / admin list). Returns []. */
+/** A list read (member catalogue list / team / admin list / public events).
+ *  `publicEvents` is unauthenticated (public landing teaser). Returns []. */
 export async function gateList<T>(
-  action: 'list' | 'team' | 'adminList',
+  action: 'list' | 'team' | 'adminList' | 'publicEvents',
   opts: { module?: string; locale?: Locale } = {},
 ): Promise<T[]> {
   const { data } = await callGate<{ data: T[] | null }>({ action, ...opts });

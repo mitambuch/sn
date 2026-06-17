@@ -61,3 +61,24 @@ export interface Event {
   images: EventImage[];
   createdAt: string;
 }
+
+/**
+ * Lean shape for the public landing teaser — only the fields a card needs.
+ * Fetched via GROQ_PUBLIC_EVENTS (visibility == "public" only) so the public
+ * home never ships the full private event payload. Compatible with
+ * `resolveEventDate` (it reads dateMode / startsAt / dateLabel).
+ */
+export interface PublicEvent {
+  id: string;
+  slug: string;
+  title: string;
+  category: EventCategory;
+  dateMode?: EventDateMode;
+  startsAt?: string;
+  endsAt?: string;
+  dateLabel?: string;
+  city: string;
+  countryCode: string;
+  venue: string;
+  images: EventImage[];
+}

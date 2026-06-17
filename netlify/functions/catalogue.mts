@@ -34,6 +34,7 @@ import {
   type CatalogueModuleKey,
   GROQ_ADMIN_CATALOGUE,
   GROQ_LANDING,
+  GROQ_PUBLIC_EVENTS,
   GROQ_SHARED_FICHE,
   GROQ_SHARED_FICHES,
   GROQ_SITE_CONFIG,
@@ -192,6 +193,9 @@ export default async function handler(req: Request): Promise<Response> {
     if (action === 'landing') return json(200, { data: await sanity.fetch(GROQ_LANDING) });
     if (action === 'siteConfig') return json(200, { data: await sanity.fetch(GROQ_SITE_CONFIG) });
     if (action === 'team') return json(200, { data: await sanity.fetch(GROQ_TEAM) });
+    // Public landing teaser — strictly visibility=="public", no auth.
+    if (action === 'publicEvents')
+      return json(200, { data: await sanity.fetch(GROQ_PUBLIC_EVENTS, { locale }) });
 
     // ── share (validated by code possession, no auth) ─────────────
     if (action === 'shared') {

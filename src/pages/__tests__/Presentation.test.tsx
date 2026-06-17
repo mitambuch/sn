@@ -7,8 +7,9 @@ import { beforeAll, describe, expect, it, vi } from 'vitest';
 
 import Presentation from '../Presentation';
 
-// No Supabase in test env → the bespoke form takes the simulator submit path.
-vi.mock('@/lib/supabase', () => ({ hasSupabase: false, supabase: null }));
+// Force the device-locale resolver to FR so the page stays French under jsdom
+// (whose navigator.language is en-US).
+vi.mock('@/lib/deviceLocale', () => ({ resolveDeviceLocale: () => 'fr' }));
 
 describe('Presentation', () => {
   beforeAll(async () => {
@@ -27,18 +28,20 @@ describe('Presentation', () => {
     expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
   });
 
-  it('renders the bespoke lead form submit button', () => {
-    renderPage();
-    expect(screen.getByRole('button', { name: /envoyer la demande/i })).toBeInTheDocument();
-  });
-
-  it('points the "see the site" CTA at the active-locale home', () => {
+  it('redirects to the site (no membership form) via the see-site CTA', () => {
     renderPage();
     expect(screen.getByRole('link', { name: /voir le site/i })).toHaveAttribute('href', '/fr');
   });
 
-  it('exposes the form anchor targeted by the become-member CTA', () => {
-    const { container } = renderPage();
-    expect(container.querySelector('#presentation-form')).not.toBeNull();
+  it('offers a PDF download button', () => {
+    renderPage();
+    expect(screen.getByRole('button', { name: /télécharger le pdf/i })).toBeInTheDocument();
+  });
+
+  it('closes on the experience statement', () => {
+    renderPage();
+    expect(
+      screen.getByRole('heading', { name: /tout devient une expérience/i }),
+    ).toBeInTheDocument();
   });
 });
