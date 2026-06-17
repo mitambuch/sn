@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-06-17** — [Session — Page salon /QR (présentation + QR scannable + lead form)](sessions/2026-06-17-1315.md)
 - **2026-06-16** — [Session — Retours client : programme i18n des expériences + vidéos Actualités](sessions/2026-06-16-1605.md)
 - **2026-06-10** — [Session — Team cards: per-member data (no Valmont leak)](sessions/2026-06-10-1055.md)
-- **2026-06-09** — [Session — Espagnol « partout » : contenu Sanity + flow partage + sélecteur popover](sessions/2026-06-09-1124.md)
 
 ## Active decisions (top 5)
 
@@ -36,6 +36,7 @@
 
 ## Active patterns
 
+- **2026-06-17** — [Page publique autonome à URL fixe, hors LocaleProvider](patterns/2026-06-17-standalone-public-page-outside-localeprovider.md)
 - **2026-06-09** — [Adding a locale ≠ editing SUPPORTED_LOCALES — audit every binary collapse](patterns/2026-06-09-adding-a-locale-audit-binary-collapses.md)
 - **2026-06-04** — [Un panneau partagé, deux coques (page + modale)](patterns/2026-06-04-shared-panel-two-shells.md)
 - **2026-05-14** — [Sanity singleton + React context provider = one fetch, N consumers](patterns/2026-05-14-singleton-with-context-provider.md)
@@ -45,7 +46,7 @@
 
 ## Deep dive
 
-- Full catalogue (167 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (169 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
