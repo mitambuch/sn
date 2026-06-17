@@ -990,7 +990,14 @@
       "word3": "a medida",
       "word4": "sin fricción",
       "lede": "Una casa suiza que abre, para una clientela escogida, las puertas que no se abren. Bienes excepcionales, experiencias privadas, logística invisible.",
-      "scrollHint": "Descubrir"
+      "scrollHint": "Descubrir",
+      "gps": "46°12′N · 06°09′E",
+      "m1Label": "Tipo",
+      "m1Value": "Conserjería privada",
+      "m2Label": "Acceso",
+      "m2Value": "Por invitación",
+      "m3Label": "Casa",
+      "m3Value": "Ginebra · Suiza"
     },
     "offer": {
       "tag": "Lo que ofrecemos",
@@ -1043,13 +1050,12 @@
       "body": "Hágase miembro para acceder al espacio privado, o descubra la casa.",
       "becomeMember": "Hacerse miembro",
       "seeSite": "Ver el sitio",
-      "share": "Compartir",
-      "shared": "Enlace copiado",
-      "shareText": "Conserjería privada suiza — acceso curado a lo excepcional."
+      "share": "Compartir"
     },
-    "qrcode": {
-      "button": "Mostrar el código QR",
-      "scan": "Escanee con su teléfono"
+    "qrpage": {
+      "eyebrow": "Scan",
+      "title": "Escanee para descubrir",
+      "hint": "Apunte la cámara de su teléfono al código para abrir la presentación."
     }
   },
   "articles": {
