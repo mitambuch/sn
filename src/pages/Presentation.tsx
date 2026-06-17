@@ -1,16 +1,16 @@
 // ═══════════════════════════════════════════════════
 // Presentation — public salon presentation page at /presentation
 //
-// WHAT: The destination scanned from /QR. A rich, editorial presentation in
-//       the landing's visual universe — ink/light section rhythm, global film
-//       grain, ✦ marquees, terminal SectionTags, hairline meta rows, a
-//       mix-blend-difference cycling hero word, scroll reveals. Summarises the
-//       offer, service quality and member platform, then converts via a
-//       bespoke lead form + CTAs. Multilingual (FR/EN/ES), mobile-first.
-// WHEN: /presentation (top-level route, outside the /:locale tree and outside
-//       LocaleProvider — self-manages language + meta). Pattern:
-//       .claude/memory/patterns/2026-06-17-standalone-public-page-outside-localeprovider.md
-// EDIT COPY: src/locales/{fr,en,es}.json under qr.*
+// WHAT: The destination scanned from /QR. Immersive, editorial, in the
+//       landing's visual universe — a cinematic video hero (same Cloudinary
+//       shots as the landing), global film grain, ✦ marquees, a big manifesto
+//       statement, a two-column domain index, service quality as prose, an
+//       ink platform statement, then a bespoke lead form + CTAs. Layout is
+//       deliberately VARIED (statement / index / prose / ink) rather than a
+//       repeated card grid. Multilingual (FR/EN/ES), mobile-first.
+// WHEN: /presentation (top-level route, outside LocaleProvider — self-manages
+//       language + meta). Pattern: patterns/2026-06-17-standalone-public-page-outside-localeprovider.md
+// EDIT COPY: src/locales/{fr,en,es}.json under qr.*  ·  EDIT FOOTAGE: config/heroVideos.ts
 // ═══════════════════════════════════════════════════
 
 import { BrandMark } from '@components/brand/BrandMark';
@@ -20,10 +20,11 @@ import { Marquee } from '@features/landing/Marquee';
 import { SectionTag } from '@features/landing/SectionTag';
 import { useCyclingWord } from '@features/landing/useCyclingWord';
 import { PresentationForm } from '@features/presentation/PresentationForm';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import { HERO_VIDEOS } from '@/config/heroVideos';
 import { siteConfig } from '@/config/site';
 
 const DOMAIN_KEYS = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'] as const;
@@ -31,10 +32,13 @@ const QUALITY_ITEMS = [1, 2, 3, 4] as const;
 const PLATFORM_POINTS = [1, 2, 3] as const;
 const HERO_META = [1, 2, 3] as const;
 
-/** Terminal hero — ink section, grain, cycling word in mix-blend negative,
- *  hairline meta rows. The landing's S01 language, condensed. */
+/** S01 — cinematic video hero (same shots as the landing), grain, cycling
+ *  word in mix-blend negative over the footage, terminal meta strip. */
 function Hero() {
   const { t } = useTranslation();
+  const [videoSrc] = useState(
+    () => HERO_VIDEOS[Math.floor(Math.random() * HERO_VIDEOS.length)] ?? HERO_VIDEOS[0],
+  );
   const word = useCyclingWord([
     t('qr.hero.word1'),
     t('qr.hero.word2'),
@@ -42,8 +46,20 @@ function Hero() {
     t('qr.hero.word4'),
   ]);
   return (
-    <section className="bg-ink text-on-ink relative isolate flex min-h-[100svh] flex-col justify-between overflow-hidden px-5 pt-28 pb-8 md:px-12 md:pt-32">
-      <SectionTag num="01" label={t('qr.hero.eyebrow')} className="text-on-ink/70" />
+    <section className="bg-ink relative isolate flex min-h-[100svh] flex-col justify-between overflow-hidden px-5 pt-28 pb-8 text-white md:px-12 md:pt-32">
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        src={videoSrc}
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover"
+      />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-black/45" />
+
+      <SectionTag num="01" label={t('qr.hero.eyebrow')} className="text-white/70" />
 
       <div className="flex flex-1 flex-col justify-center py-12">
         <h1 className="max-w-5xl font-mono text-[clamp(2.5rem,8vw,6rem)] leading-[0.95] font-medium tracking-[-0.03em] text-balance uppercase">
@@ -55,23 +71,22 @@ function Hero() {
             style={{ mixBlendMode: 'difference' }}
           >
             {word}
-            <span aria-hidden="true" className="text-on-ink/40">
+            <span aria-hidden="true" className="text-white/40">
               .
             </span>
           </span>
         </h1>
-        <p className="text-on-ink/70 mt-8 max-w-xl text-base leading-relaxed text-pretty md:text-lg">
+        <p className="mt-8 max-w-xl text-base leading-relaxed text-pretty text-white/85 md:text-lg">
           {t('qr.hero.lede')}
         </p>
       </div>
 
-      {/* Terminal meta strip — GPS hairline + 3 meta rows. */}
-      <div className="border-on-ink/20 flex flex-col gap-6 border-t pt-6">
-        <div className="text-on-ink/70 flex items-center justify-between font-mono text-[10px] tracking-widest uppercase">
+      <div className="flex flex-col gap-6 border-t border-white/25 pt-6">
+        <div className="flex items-center justify-between font-mono text-[10px] tracking-widest text-white/70 uppercase">
           <span className="inline-flex items-center gap-1.5">
             <span
               aria-hidden="true"
-              className="bg-on-ink inline-block h-1 w-1 rounded-full"
+              className="inline-block h-1 w-1 rounded-full bg-white"
               style={{ animation: 'terminal-pulse 1.4s ease-in-out infinite' }}
             />
             {t('qr.hero.scrollHint')}
@@ -80,9 +95,9 @@ function Hero() {
         </div>
         <dl className="grid grid-cols-1 gap-x-12 gap-y-1.5 font-mono text-[10px] leading-[1.9] tracking-wider uppercase sm:grid-cols-3">
           {HERO_META.map(n => (
-            <div key={n} className="border-on-ink/15 flex justify-between border-b py-1.5">
-              <dt className="text-on-ink/55">{t(`qr.hero.m${String(n)}Label`)}</dt>
-              <dd className="text-on-ink font-medium">{t(`qr.hero.m${String(n)}Value`)}</dd>
+            <div key={n} className="flex justify-between border-b border-white/15 py-1.5">
+              <dt className="text-white/55">{t(`qr.hero.m${String(n)}Label`)}</dt>
+              <dd className="font-medium text-white">{t(`qr.hero.m${String(n)}Value`)}</dd>
             </div>
           ))}
         </dl>
@@ -91,26 +106,37 @@ function Hero() {
   );
 }
 
-/** S02 — the 10 domains, terminal list, staggered reveal. */
+/** S02 — a single immersive statement (the offer thesis, set large). */
+function Manifesto() {
+  const { t } = useTranslation();
+  return (
+    <section className="px-5 py-28 md:px-12 md:py-40">
+      <Reveal>
+        <p className="text-fg max-w-4xl font-mono text-[clamp(1.5rem,4.2vw,2.75rem)] leading-[1.2] font-medium tracking-[-0.02em] text-balance uppercase">
+          {t('qr.offer.lede')}
+        </p>
+      </Reveal>
+    </section>
+  );
+}
+
+/** S03 — the ten domains as a dense two-column index. */
 function Offer() {
   const { t } = useTranslation();
   return (
-    <section className="border-border border-b px-5 py-24 md:px-12 md:py-32">
+    <section className="border-border border-y px-5 py-24 md:px-12 md:py-32">
       <Reveal className="mb-12 flex flex-col gap-4">
         <SectionTag num="02" label={t('qr.offer.tag')} />
         <h2 className="font-mono text-[clamp(1.75rem,5vw,3.5rem)] leading-[0.98] font-medium tracking-[-0.025em] text-balance uppercase">
           {t('qr.offer.heading')}
         </h2>
-        <p className="text-muted max-w-xl text-sm leading-relaxed text-pretty md:text-base">
-          {t('qr.offer.lede')}
-        </p>
       </Reveal>
-      <div className="border-border border-t">
+      <div className="border-border grid border-t sm:grid-cols-2">
         {DOMAIN_KEYS.map((k, i) => (
           <Reveal key={k} index={i}>
-            <div className="border-border group grid grid-cols-[44px_1fr_auto] items-baseline gap-4 border-b py-5 transition-[padding] duration-300 ease-out hover:pl-2">
-              <span className="text-muted font-mono text-[10px] tracking-wider">{k} / 10</span>
-              <span className="font-mono text-[clamp(1.1rem,4.5vw,1.6rem)] tracking-[-0.01em] uppercase">
+            <div className="border-border group flex items-baseline gap-4 border-b py-4 transition-[padding] duration-300 ease-out hover:pl-2 sm:odd:pr-8 sm:even:border-l sm:even:pl-8">
+              <span className="text-muted font-mono text-[10px] tracking-wider">{k}</span>
+              <span className="flex-1 font-mono text-[clamp(1rem,3.5vw,1.4rem)] tracking-[-0.01em] uppercase">
                 {t(`landing.domains.${k}.name`)}
               </span>
               <span
@@ -127,29 +153,26 @@ function Offer() {
   );
 }
 
-/** S03 — service quality, four pillars in a hairline grid. */
+/** S04 — service quality as flowing editorial prose, not a card grid. */
 function Quality() {
   const { t } = useTranslation();
   return (
-    <section className="border-border border-b px-5 py-24 md:px-12 md:py-32">
-      <Reveal className="mb-12 flex flex-col gap-4">
+    <section className="px-5 py-24 md:px-12 md:py-32">
+      <Reveal className="mb-14 flex max-w-3xl flex-col gap-5">
         <SectionTag num="03" label={t('qr.quality.tag')} />
-        <h2 className="font-mono text-[clamp(1.75rem,5vw,3.5rem)] leading-[0.98] font-medium tracking-[-0.025em] text-balance uppercase">
+        <h2 className="font-mono text-[clamp(1.75rem,5vw,3.5rem)] leading-[1.02] font-medium tracking-[-0.025em] text-balance uppercase">
           {t('qr.quality.heading')}
         </h2>
       </Reveal>
-      <div className="border-border grid grid-cols-1 border-t md:grid-cols-2">
+      <div className="grid gap-x-16 gap-y-10 md:grid-cols-2">
         {QUALITY_ITEMS.map((n, i) => (
           <Reveal key={n} index={i}>
-            <div className="border-border flex h-full flex-col gap-2 border-b px-0 py-7 md:odd:pr-12 md:even:border-l md:even:pl-12">
-              <span className="text-muted font-mono text-[10px] tracking-wider">0{String(n)}</span>
-              <h3 className="font-mono text-base tracking-tight uppercase">
-                {t(`qr.quality.item${String(n)}Title`)}
-              </h3>
-              <p className="text-muted text-sm leading-relaxed text-pretty">
-                {t(`qr.quality.item${String(n)}Body`)}
-              </p>
-            </div>
+            <p className="text-muted max-w-xl text-base leading-[1.7] text-pretty md:text-lg">
+              <span className="text-fg mr-2 font-mono text-sm tracking-wide uppercase">
+                {t(`qr.quality.item${String(n)}Title`)} —
+              </span>
+              {t(`qr.quality.item${String(n)}Body`)}
+            </p>
           </Reveal>
         ))}
       </div>
@@ -157,24 +180,24 @@ function Quality() {
   );
 }
 
-/** S04 — the member platform, ink section for dark/light rhythm. */
+/** S05 — the member platform as an immersive ink statement + run-in points. */
 function Platform() {
   const { t } = useTranslation();
   return (
-    <section className="bg-ink text-on-ink relative isolate overflow-hidden px-5 py-24 md:px-12 md:py-32">
-      <Reveal className="mb-12 flex flex-col gap-4">
+    <section className="bg-ink text-on-ink relative isolate overflow-hidden px-5 py-28 md:px-12 md:py-40">
+      <Reveal className="flex max-w-4xl flex-col gap-6">
         <SectionTag num="04" label={t('qr.platform.tag')} className="text-on-ink/70" />
-        <h2 className="font-mono text-[clamp(1.75rem,5vw,3.5rem)] leading-[0.98] font-medium tracking-[-0.025em] text-balance uppercase">
+        <h2 className="font-mono text-[clamp(1.75rem,5vw,3.5rem)] leading-[1] font-medium tracking-[-0.025em] text-balance uppercase">
           {t('qr.platform.heading')}
         </h2>
-        <p className="text-on-ink/75 max-w-xl text-base leading-relaxed text-pretty md:text-lg">
+        <p className="text-on-ink/85 text-[clamp(1.125rem,2.5vw,1.6rem)] leading-[1.45] text-pretty">
           {t('qr.platform.body')}
         </p>
       </Reveal>
-      <div className="border-on-ink/20 grid grid-cols-1 border-t md:grid-cols-3">
+      <div className="border-on-ink/20 mt-16 grid gap-10 border-t pt-12 md:grid-cols-3 md:gap-12">
         {PLATFORM_POINTS.map((n, i) => (
           <Reveal key={n} index={i}>
-            <div className="border-on-ink/15 flex h-full flex-col gap-2 border-b py-7 md:border-b-0 md:[&:not(:first-child)]:border-l md:[&:not(:first-child)]:pl-10 md:[&:not(:last-child)]:pr-10">
+            <div className="flex flex-col gap-2">
               <span className="text-on-ink/50 font-mono text-[10px] tracking-wider">
                 0{String(n)}
               </span>
@@ -192,17 +215,17 @@ function Platform() {
   );
 }
 
-/** S05 — bespoke lead form. */
+/** S06 — bespoke lead form. */
 function FormSection() {
   const { t } = useTranslation();
   return (
-    <section id="presentation-form" className="border-border border-b px-5 py-24 md:px-12 md:py-32">
-      <Reveal className="mb-10 flex flex-col gap-4">
+    <section id="presentation-form" className="border-border border-y px-5 py-24 md:px-12 md:py-32">
+      <Reveal className="mb-10 flex max-w-2xl flex-col gap-4">
         <SectionTag num="05" label={t('qr.form.tag')} />
-        <h2 className="font-mono text-[clamp(1.75rem,5vw,3.5rem)] leading-[0.98] font-medium tracking-[-0.025em] text-balance uppercase">
+        <h2 className="font-mono text-[clamp(1.75rem,5vw,3.5rem)] leading-[1.02] font-medium tracking-[-0.025em] text-balance uppercase">
           {t('qr.form.heading')}
         </h2>
-        <p className="text-muted max-w-xl text-sm leading-relaxed text-pretty md:text-base">
+        <p className="text-muted text-sm leading-relaxed text-pretty md:text-base">
           {t('qr.form.lede')}
         </p>
       </Reveal>
@@ -235,7 +258,6 @@ export default function Presentation() {
       <meta property="og:type" content="website" />
       <meta property="og:url" content={`${siteConfig.url}/presentation`} />
 
-      {/* Mix-blend chrome — auto-inverts over ink + light sections (landing signature). */}
       <header
         className="pointer-events-none fixed inset-x-0 top-0 z-100 flex items-center justify-between px-5 py-4 text-white md:px-12 md:py-5"
         style={{ mixBlendMode: 'difference' }}
@@ -252,14 +274,14 @@ export default function Presentation() {
 
       <Hero />
       <Marquee items={marqueeItems} tone="dark" />
+      <Manifesto />
       <Offer />
-      <Marquee items={marqueeItems} tone="light" />
       <Quality />
+      <Marquee items={marqueeItems} tone="light" />
       <Platform />
-      <Marquee items={marqueeItems} tone="dark" />
       <FormSection />
 
-      {/* S06 — closing CTA */}
+      {/* S07 — closing CTA */}
       <section className="px-5 py-28 md:px-12 md:py-36">
         <Reveal className="flex flex-col gap-8">
           <div className="flex flex-col gap-4">
