@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-06-17** — [Session — Événements publics sur la home (vrais + fiches floutées)](sessions/2026-06-17-1700.md)
 - **2026-06-17** — [Session — /presentation immersive (vidéo + mise en page variée)](sessions/2026-06-17-1429.md)
 - **2026-06-17** — [Session — Split /QR + /presentation, redesign dans l'univers landing](sessions/2026-06-17-1335.md)
-- **2026-06-17** — [Session — Page salon /QR (présentation + QR scannable + lead form)](sessions/2026-06-17-1315.md)
 
 ## Active decisions (top 5)
 
@@ -46,7 +46,7 @@
 
 ## Deep dive
 
-- Full catalogue (172 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (173 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
