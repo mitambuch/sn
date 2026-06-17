@@ -1037,6 +1037,15 @@
       "sending": "Envoi…",
       "success": "Demande reçue. Un référent vous recontacte sous peu.",
       "error": "L'envoi a échoué. Réessayez ou écrivez-nous directement."
+    },
+    "cta": {
+      "heading": "Rejoindre le cercle",
+      "body": "Devenez membre pour accéder à l'espace privé, ou découvrez la maison.",
+      "becomeMember": "Devenir membre",
+      "seeSite": "Voir le site",
+      "share": "Partager",
+      "shared": "Lien copié",
+      "shareText": "Conciergerie privée suisse — accès curé à l'exceptionnel."
     }
   },
   "articles": {

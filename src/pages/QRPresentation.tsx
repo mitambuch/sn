@@ -245,6 +245,78 @@ function BespokeForm() {
   );
 }
 
+/** S06 — bottom conversion: become a member (scrolls to the form), see the
+ *  site, and the native share micro-feature (Web Share API → clipboard). */
+function CtaSection() {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language === 'en' ? 'en' : i18n.language === 'es' ? 'es' : 'fr';
+  const [copied, setCopied] = useState(false);
+
+  const scrollToForm = () => {
+    document.getElementById('qr-bespoke')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const share = async () => {
+    const url = typeof window === 'undefined' ? `${siteConfig.url}/QR` : window.location.href;
+    const data = { title: siteConfig.name, text: t('qr.cta.shareText'), url };
+    if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+      try {
+        await navigator.share(data);
+      } catch {
+        /* user dismissed the share sheet — no-op */
+      }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => {
+        setCopied(false);
+      }, 2500);
+    } catch {
+      /* clipboard blocked — no-op */
+    }
+  };
+
+  return (
+    <section className="border-border border-t px-5 py-24 md:px-10 md:py-32">
+      <Reveal className="flex flex-col gap-8">
+        <div className="flex flex-col gap-3">
+          <h2 className="font-mono text-[clamp(1.75rem,6vw,3.5rem)] leading-[1] font-medium tracking-[-0.02em] text-balance uppercase">
+            {t('qr.cta.heading')}
+          </h2>
+          <p className="text-muted max-w-md text-base leading-relaxed text-pretty">
+            {t('qr.cta.body')}
+          </p>
+        </div>
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+          <Button type="button" onClick={scrollToForm} className="justify-center">
+            {t('qr.cta.becomeMember')} <span aria-hidden="true">↗</span>
+          </Button>
+          <Link
+            to={`/${lang}`}
+            className={cn(
+              'border-border text-fg hover:bg-fg/5 inline-flex items-center justify-center gap-3 rounded-full border px-6 py-3 text-sm tracking-widest uppercase',
+              'duration-base transition-colors',
+            )}
+          >
+            {t('qr.cta.seeSite')} <span aria-hidden="true">→</span>
+          </Link>
+          <button
+            type="button"
+            onClick={() => {
+              void share();
+            }}
+            className="text-muted hover:text-fg duration-base inline-flex items-center justify-center gap-2 rounded-full px-4 py-3 font-mono text-xs tracking-widest uppercase transition-colors"
+          >
+            {copied ? t('qr.cta.shared') : t('qr.cta.share')} <span aria-hidden="true">↗</span>
+          </button>
+        </div>
+      </Reveal>
+    </section>
+  );
+}
+
 export default function QRPresentation() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language === 'en' ? 'en' : i18n.language === 'es' ? 'es' : 'fr';
@@ -319,6 +391,14 @@ export default function QRPresentation() {
       <QualitySection />
       <PlatformSection />
       <BespokeForm />
+      <CtaSection />
+
+      <footer className="border-border flex items-center justify-between border-t px-5 py-8 md:px-10">
+        <BrandMark variant="short" className="text-muted text-sm" />
+        <span className="text-muted/70 font-mono text-[10px] tracking-[0.3em] uppercase">
+          {t('qr.hero.eyebrow')}
+        </span>
+      </footer>
     </div>
   );
 }

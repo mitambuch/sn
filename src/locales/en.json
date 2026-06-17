@@ -1037,6 +1037,15 @@
       "sending": "Sending…",
       "success": "Request received. A dedicated lead will contact you shortly.",
       "error": "Sending failed. Please try again or write to us directly."
+    },
+    "cta": {
+      "heading": "Join the circle",
+      "body": "Become a member to access the private area, or explore the house.",
+      "becomeMember": "Become a member",
+      "seeSite": "See the site",
+      "share": "Share",
+      "shared": "Link copied",
+      "shareText": "Swiss private concierge — curated access to the exceptional."
     }
   },
   "articles": {

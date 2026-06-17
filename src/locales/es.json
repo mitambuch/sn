@@ -1037,6 +1037,15 @@
       "sending": "Enviando…",
       "success": "Solicitud recibida. Un responsable le contactará en breve.",
       "error": "El envío ha fallado. Inténtelo de nuevo o escríbanos directamente."
+    },
+    "cta": {
+      "heading": "Unirse al círculo",
+      "body": "Hágase miembro para acceder al espacio privado, o descubra la casa.",
+      "becomeMember": "Hacerse miembro",
+      "seeSite": "Ver el sitio",
+      "share": "Compartir",
+      "shared": "Enlace copiado",
+      "shareText": "Conserjería privada suiza — acceso curado a lo excepcional."
     }
   },
   "articles": {
