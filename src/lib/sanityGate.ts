@@ -24,6 +24,10 @@ interface GateBody {
   module?: string;
   slug?: string;
   code?: string;
+  /** Sanity `_type` — used by the unauthenticated `publicFiche` read. */
+  type?: string;
+  /** Sanity `_id` — used by the unauthenticated `publicFiche` read. */
+  id?: string;
   locale?: Locale;
 }
 
@@ -71,6 +75,27 @@ export async function gateItem<T>(
     return data ?? null;
   } catch {
     // 404 (forbidden/absent) surfaces as a thrown HTTP error → treat as null.
+    return null;
+  }
+}
+
+/** A single PUBLIC fiche read by type + id (the public fiche popup). Server-side
+ *  the action is HARD-restricted to `visibility == "public"`, so this never
+ *  surfaces a private/shareCode doc. Unauthenticated. Returns null when absent. */
+export async function gatePublicFiche<T>(
+  type: string,
+  id: string,
+  locale: Locale,
+): Promise<T | null> {
+  try {
+    const { data } = await callGate<{ data: T | null }>({
+      action: 'publicFiche',
+      type,
+      id,
+      locale,
+    });
+    return data ?? null;
+  } catch {
     return null;
   }
 }

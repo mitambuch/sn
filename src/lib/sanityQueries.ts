@@ -328,9 +328,12 @@ export const GROQ_ARTICLE_DETAIL = (slug: string) =>
     "author": author->{ firstName, lastName, "photoUrl": photo.asset->url }
   }`;
 
-// ─── Share fiche by type + id (for /share/:code render) ──────────
-export const GROQ_SHARED_FICHE = (type: string, id: string) =>
-  `*[_type == "${type}" && _id == "${id}"][0]{
+// ─── Shared / public fiche by type + id ──────────────────────────
+/** Type-agnostic core (title, summary, description, images, hero) + the event
+ *  specsheet fields (null on other types) + a raw `...` spread so the full doc
+ *  renders. Shared by the /share fiche and the public /c fiche so the two
+ *  renderers can never read a divergent shape. */
+const SHARED_FICHE_PROJECTION = `{
     _type,
     _id,
     "slug": slug.current,
@@ -343,8 +346,8 @@ export const GROQ_SHARED_FICHE = (type: string, id: string) =>
     )),
     "images": coalesce(images[]{ "src": asset->url, "alt": alt }, []),
     "heroImage": { "src": heroImage.asset->url, "alt": heroImage.alt },
-    // Event specsheet + programme (null on other types) so the public
-    // share page renders the full fiche from Sanity, not just the generics.
+    // Event specsheet + programme (null on other types) so the fiche renders
+    // the full fiche from Sanity, not just the generics.
     dateMode,
     startsAt,
     "dateLabel": ${L('dateLabel')},
@@ -357,6 +360,44 @@ export const GROQ_SHARED_FICHE = (type: string, id: string) =>
     programme[]{ time, "label": ${L_LABEL}, "description": ${L('description')} },
     ...
   }`;
+
+/** Share fiche by type + id (for /share/:code render). */
+export const GROQ_SHARED_FICHE = (type: string, id: string) =>
+  `*[_type == "${type}" && _id == "${id}"][0]${SHARED_FICHE_PROJECTION}`;
+
+/** Public fiche projection — a strict WHITELIST of only the fields the public
+ *  public fiche popup renders. Deliberately NO `...` raw spread (unlike the
+ *  share projection): the unauthenticated, enumerable public route must never
+ *  ship the "deal sheet" (price, provenanceNote, catalogueRaisonne, property /
+ *  journey specsheets, seo, raw locales) in the network payload. HNW discretion
+ *  is a data-layer boundary, not a UI choice — the page hiding a field is not a
+ *  control. Whitelist > blocklist for an exposure boundary. */
+const PUBLIC_FICHE_PROJECTION = `{
+    _type,
+    _id,
+    "title": ${L('title')},
+    "summary": ${L('summary')},
+    "description": pt::text(select(
+      $locale == "en" => coalesce(description.en, body.en, bio.en, description.fr, body.fr, bio.fr),
+      $locale == "es" => coalesce(description.es, body.es, bio.es, description.fr, body.fr, bio.fr),
+      coalesce(description.fr, body.fr, bio.fr)
+    )),
+    "images": coalesce(images[]{ "src": asset->url, "alt": alt }, []),
+    "heroImage": { "src": heroImage.asset->url, "alt": heroImage.alt },
+    dateMode,
+    startsAt,
+    "dateLabel": ${L('dateLabel')},
+    venue,
+    city,
+    countryCode
+  }`;
+
+/** Public fiche by type + id (for the public fiche popup). HARD-restricted to
+ *  `visibility == "public"` so an id guess can never surface a private or
+ *  shareCode-gated doc on the unauthenticated public route, and reduced to the
+ *  PUBLIC_FICHE_PROJECTION whitelist so no sensitive field leaks in the payload. */
+export const GROQ_PUBLIC_FICHE = (type: string, id: string) =>
+  `*[_type == "${type}" && _id == "${id}" && visibility == "public"][0]${PUBLIC_FICHE_PROJECTION}`;
 
 /** Compact projection for a SET of fiches by _id — used by the multi-doc
  *  share page (one code → several fiches) to render a collection of cards. */

@@ -18,12 +18,14 @@ import { Card } from '@components/ui/Card';
 import { MonoGradientPlaceholder } from '@components/ui/MonoGradientPlaceholder';
 import { useLandingContext } from '@context/LandingContentContext';
 import { useAccessRequestModal } from '@context/useAccessRequestModal';
+import { PublicFicheModal } from '@features/landing/PublicFicheModal';
 import { SectionTag } from '@features/landing/SectionTag';
 import { type PublicCatalogueType, usePublicCatalogue } from '@features/landing/usePublicCatalogue';
 import { useReveal } from '@hooks/useReveal';
 import { resolveFieldOrFallback } from '@lib/i18nField';
 import { cn } from '@utils/cn';
 import { Lock } from 'lucide-react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { isVitrineMode } from '@/config/env';
@@ -51,9 +53,18 @@ export const Access = () => {
   const ref = useReveal<HTMLDivElement>();
   const { openAccessRequest } = useAccessRequestModal();
   const { items } = usePublicCatalogue();
+  // Which public item the fiche popup is showing (null = closed).
+  const [ficheItem, setFicheItem] = useState<{ type: PublicCatalogueType; id: string } | null>(
+    null,
+  );
 
   // Real public items first (capped), locked cadenas teasers fill up to MAX_TILES.
-  const shownItems = items.slice(0, MAX_TILES);
+  // Only feature items that ACTUALLY have an image — a teaser tile with no photo
+  // reads as broken (regression after the teaser broadened to all types: an
+  // image-less public article surfaced and rendered a blank gradient tile). An
+  // image-less public doc is skipped here; a locked cadenas fills its slot
+  // instead. To surface such a doc, upload an image on it in Sanity.
+  const shownItems = items.filter(item => item.image?.src).slice(0, MAX_TILES);
   const lockedCount = Math.max(0, MAX_TILES - shownItems.length);
 
   return (
@@ -105,15 +116,18 @@ export const Access = () => {
             )}
           </span>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
-            {/* Real public items (ANY type tagged public) — clear, clickable */}
+            {/* Real public items (ANY type tagged public) — clear, clickable.
+                Opens the read-only fiche as a popup OVER the landing (owner
+                2026-06-17 : modal, not a separate page). The bottom CTAs remain
+                the cooptation gate. */}
             {shownItems.map(item => (
               <button
                 key={item.id}
                 type="button"
                 onClick={() => {
-                  openAccessRequest('request');
+                  setFicheItem({ type: item.type, id: item.id });
                 }}
-                aria-label={t('landing.access.cardAria', { title: item.title })}
+                aria-label={t('landing.access.cardOpenAria', { title: item.title })}
                 className="rounded-card block text-left focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none"
               >
                 <Card interactive padding="none" className="h-full border-white/15">
@@ -215,6 +229,19 @@ export const Access = () => {
           </div>
         </div>
       </div>
+
+      {/* Fiche popup over the landing — opened by a teaser card. Its CTA closes
+          the fiche then opens the access tunnel (no stacked modals). */}
+      <PublicFicheModal
+        item={ficheItem}
+        onClose={() => {
+          setFicheItem(null);
+        }}
+        onRequestAccess={() => {
+          setFicheItem(null);
+          openAccessRequest('request');
+        }}
+      />
     </section>
   );
 };

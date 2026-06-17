@@ -991,13 +991,13 @@
       "word4": "frictionless",
       "lede": "A Swiss house that opens, for a chosen clientele, the doors that stay closed. Rare goods, private experiences, invisible logistics.",
       "scrollHint": "Discover",
-      "gps": "46°12′N · 06°09′E",
+      "gps": "46°57′N · 06°50′E",
       "m1Label": "Type",
       "m1Value": "Private concierge",
       "m2Label": "Access",
       "m2Value": "By invitation",
       "m3Label": "House",
-      "m3Value": "Geneva · Switzerland"
+      "m3Value": "Boudry · Switzerland"
     },
     "offer": {
       "tag": "What we offer",
@@ -1236,6 +1236,10 @@
       "invalidFormatBody": "The expected code is 6 characters, with no prefix or space. Check your entry or contact Valmont.",
       "expiredBody": "This code has reached its expiry date or maximum number of views. Valmont can generate a new one.",
       "revokedBody": "Valmont has revoked this code. No access is possible with this link."
+    },
+    "section": {
+      "description": "Description",
+      "gallery": "Gallery"
     },
     "interest": {
       "title": "Interested in this item?",
@@ -1562,6 +1566,7 @@
       "lockedLabel": "Members only",
       "lockedAria": "Members-only content — request access",
       "cardAria": "{{title}} — request access",
+      "cardOpenAria": "{{title}} — view the fiche",
       "locked1": {
         "tag": "Property · Engadine",
         "title": "Historic chalet, Sankt Moritz",
