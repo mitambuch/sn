@@ -21,6 +21,7 @@
 import { useLandingContext } from '@context/LandingContentContext';
 import { useAccessRequestModal } from '@context/useAccessRequestModal';
 import { useLoginModal } from '@context/useLoginModal';
+import { useMediaQuery } from '@hooks/useMediaQuery';
 import { resolveFieldOrFallback } from '@lib/i18nField';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -51,6 +52,7 @@ export const Hero = () => {
   const locale = (i18n.language as 'fr' | 'en') ?? 'fr';
   const { openAccessRequest } = useAccessRequestModal();
   const { openLogin, isOpen: loginOpen } = useLoginModal();
+  const isMobile = useMediaQuery('(max-width: 767px)');
   const [phraseIdx, setPhraseIdx] = useState(0);
   const [text, setText] = useState('');
   const [phase, setPhase] = useState<TypewriterPhase>('typing');
@@ -123,16 +125,28 @@ export const Hero = () => {
     }
   }, [loginOpen]);
 
-  // Swap to a random video on each phrase change.
+  // Swap to a random video on each phrase change — DESKTOP ONLY. On mobile
+  // the network is slower and reloading a multi-MB clip every phrase means it
+  // never finishes loading → black hero. Keep the first clip stable so it has
+  // time to load, loop and play. (Mobile regression surfaced 2026-06-17.)
   const isInitialMount = useRef(true);
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
       return;
     }
+    if (isMobile) return;
     const idx = Math.floor(Math.random() * HERO_VIDEOS.length);
-    setVideoSrc(HERO_VIDEOS[idx] ?? HERO_VIDEOS[0]);
-  }, [phraseIdx]);
+    const next = HERO_VIDEOS[idx] ?? HERO_VIDEOS[0];
+    // setState routed via setTimeout per this file's React 19 convention
+    // (react-hooks/set-state-in-effect) — same as the typewriter loop above.
+    const timer = window.setTimeout(() => {
+      setVideoSrc(next);
+    }, 0);
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [phraseIdx, isMobile]);
 
   return (
     <section
