@@ -1,5 +1,110 @@
 # Changelog
 
+## [1.3.0](https://github.com/mitambuch/sn/compare/v1.2.2...v1.3.0) (2026-06-17)
+
+### ✨ Features
+
+* **access:** email a single-use invitation code when a request is accepted ([4818f40](https://github.com/mitambuch/sn/commit/4818f409d078d7ace85cf436b685c5ea714820cf))
+* **access:** phone/email validation + required legal consent on request form ([82dfbdc](https://github.com/mitambuch/sn/commit/82dfbdcf7a807f39847ccd9e0b95ef2d2d13c5c1))
+* **account:** gate mock catalogue behind "espace en préparation" holding state ([18a1179](https://github.com/mitambuch/sn/commit/18a1179f977ff90479f6c67e214524365b8f44b8))
+* **admin:** catalogue card — click a fiche to manage who sees it ([1fd73fd](https://github.com/mitambuch/sn/commit/1fd73fd383e3b6c05e0cc884c8ada362173ad3f8))
+* **admin:** inquiry cancel loading box + delete access requests ([aa5b8d9](https://github.com/mitambuch/sn/commit/aa5b8d98b49dcceac40dc061380c88fa849005b7))
+* **admin:** member management drawer — edit, segments, suspend, delete ([d71e621](https://github.com/mitambuch/sn/commit/d71e621773eac6876a1d46de6355b153a9e13f89))
+* **admin:** pending-requests badge on the access-requests nav item ([c4cd11a](https://github.com/mitambuch/sn/commit/c4cd11a587d5a0a87415d502a5ce5a878afbcc79))
+* **audience:** Phase 1a — segments + per-fiche audience data model ([0927d36](https://github.com/mitambuch/sn/commit/0927d36046e86b0e5e9c16ac83e3dd8d50178c07))
+* **audience:** Phase 1b — admin segments page + member tagging ([5715309](https://github.com/mitambuch/sn/commit/571530904f4b466c3f8ba927488e8e00a6e8facd))
+* **audience:** Phase 1b — per-fiche audience editor in catalogue ([f6c5d0f](https://github.com/mitambuch/sn/commit/f6c5d0fd3cce303b2986d38e158a326e22958a22))
+* **audience:** Phase 2 — server gate for real per-fiche security ([5094059](https://github.com/mitambuch/sn/commit/50940591219652f9e25fde0ed78d31073c0da36d))
+* **audience:** Phase 3 — Tous/Restreint badge on admin catalogue cards ([85eab50](https://github.com/mitambuch/sn/commit/85eab5050d844f79199bdb088f6a211dab62f1a7))
+* **auth:** password-based access tunnel — one flow, two entry points ([2d2885f](https://github.com/mitambuch/sn/commit/2d2885f14c6d13627c47767757f35473ce31f89f))
+* **cms:** programme i18n des expériences Concierge + galerie média photo/vidéo ([adc21ca](https://github.com/mitambuch/sn/commit/adc21ca7dfcf18abf1f40f51fd1bdc653677cd98))
+* **events:** dates flexibles — toute l'année ou texte libre ([bec9140](https://github.com/mitambuch/sn/commit/bec9140fa987eacd82fb8606c0064cdfbfb5cf88))
+* **i18n:** add Spanish (es) as a third locale across app, Studio + GROQ ([8fdf90e](https://github.com/mitambuch/sn/commit/8fdf90e316aabf594779b78b9e9e2b0b8d7d7d2e))
+* **i18n:** mirror Sanity content to Spanish + i18n the share flow ([f45b1b3](https://github.com/mitambuch/sn/commit/f45b1b384a17ad8cad0dcdf3c54a9a0691c3178a))
+* **landing:** add per-member team data structure (teamData) ([e000d16](https://github.com/mitambuch/sn/commit/e000d16224266fa50ef003eb15cb0ab7df53ae02))
+* **share:** fiche picker (no manual ID) + exact end time + live countdown ([af2b61c](https://github.com/mitambuch/sn/commit/af2b61c477d08dd60a2f7ae25a5010c2ee6ddf8b))
+* **share:** one code → many fiches (multi-select + collection page) ([4c304b2](https://github.com/mitambuch/sn/commit/4c304b24c286749525aa8af6d03602c380123e80))
+* **share:** polish the shared fiche — lighter type, hero placeholder, interest CTA ([99d0b01](https://github.com/mitambuch/sn/commit/99d0b015ef638a5a236553a37998fa67a3664b11))
+* **share:** refine programme + infos layout (mobile-safe, boxed infos) ([88455d2](https://github.com/mitambuch/sn/commit/88455d234a994829efd9da29274724be5d2a4cee))
+* **share:** render full event fiche from Sanity (specs + programme + gallery) ([e8e0ee2](https://github.com/mitambuch/sn/commit/e8e0ee2d61a7271dd40bc0e193f57d383e042e43))
+* **studio:** add optional Description to programme step (Heure/Titre/Description) ([34f5ce4](https://github.com/mitambuch/sn/commit/34f5ce413fe648a64a603687c2d5da52cc467bed))
+* **studio:** clock picker for programme hour (prevents free-text in Heure) ([c5c231d](https://github.com/mitambuch/sn/commit/c5c231d8d29f802021cf75679f094e42b4bee0a9))
+* **supabase:** email Salva when a new member signs up ([11845af](https://github.com/mitambuch/sn/commit/11845af25520aa56603adfc2174bae84407dea62))
+* **ui:** language switcher as a popover box (FR/EN/ES) ([07f97d2](https://github.com/mitambuch/sn/commit/07f97d241a6c42c27068fb8ae29de55775e1de99))
+* **ui:** pro forms — phone widget, monochrome checkbox, themed inputs ([a2d2e36](https://github.com/mitambuch/sn/commit/a2d2e3611ccde31dc74ead25482dfef5643c09fb))
+
+### 🐛 Bug Fixes
+
+* **access:** point acceptance email at /login + fix code placeholder ([c9c895a](https://github.com/mitambuch/sn/commit/c9c895a8179a16498a5dfb52299015b1c56e1507))
+* **audience:** Phase 4 — security review + two critical fixes ([487de18](https://github.com/mitambuch/sn/commit/487de1889b9f619d1a3c417df7a34d0224f0c0b3))
+* **auth:** return to the gated URL after login instead of the dashboard ([149efd2](https://github.com/mitambuch/sn/commit/149efd216e31ae47cbeb5d3c8c859bdbcd990ffc))
+* **build:** studio:deploy script + log pnpm deploy-builtin friction ([75aaf56](https://github.com/mitambuch/sn/commit/75aaf569ca891aae05239a8013f30e5759bfaf38))
+* **content:** crash-safe Sanity rendering for 5 remaining modules ([45612fc](https://github.com/mitambuch/sn/commit/45612fc785908e51fbdfd49f2a9be2403ecb14ac))
+* **content:** render Sanity catalogue model on timepiece + journey pages ([8ddfad9](https://github.com/mitambuch/sn/commit/8ddfad965d9fe28a9d4f39efc6eb75c907ecb162))
+* **content:** translatable material/destinations + day itinerary ([5964341](https://github.com/mitambuch/sn/commit/59643411dd24b6b150cd70b1f20668997b8843e6))
+* **db:** repair share-code revoke + admin role change (audit findings) ([f2c0386](https://github.com/mitambuch/sn/commit/f2c0386c071f6e01df3ea319770de597f278ae21))
+* **forms+share:** clickable Select, bundled phone flags, themed views stepper ([45dcd95](https://github.com/mitambuch/sn/commit/45dcd9534d52c5abf64e413e4984ccab895779fb))
+* **gate:** read Supabase as the caller — drop the service_role dependency ([44c8b9b](https://github.com/mitambuch/sn/commit/44c8b9bb01416e47ca35fc462794739446d0d6ed))
+* **gate:** surface the real reason behind a 401/403 from the gate ([d77cd0c](https://github.com/mitambuch/sn/commit/d77cd0cb21907b0acad6fc7771d020673a7f8db0))
+* **i18n:** add es to Studio languageFilter so the ES field is editable ([f60b5ee](https://github.com/mitambuch/sn/commit/f60b5ee5ed5a743c9e129b8f620e66f2c178f8b3))
+* **i18n:** render catalogue fiches in the active locale (FR/EN) ([f773c13](https://github.com/mitambuch/sn/commit/f773c13db45517afac8114c22d53dcde6a03e4d0))
+* **landing:** each team profile drives its own card data (no Valmont leak) ([d2643fa](https://github.com/mitambuch/sn/commit/d2643fa02967622e6c34f5f53cc12c87423981ed))
+* **sanity:** align GROQ field names with the app types (timepiece/property/article) ([83110e1](https://github.com/mitambuch/sn/commit/83110e1f0b0c71efe291bc463302ac05b5b40624))
+* **sanity:** coalesce images to [] — stop 500 on list/detail for image-less fiches ([afa772f](https://github.com/mitambuch/sn/commit/afa772fd10e8898296ce0c4563855442137ecad8))
+* **saved:** re-saving an item must not hit the missing UPDATE grant ([8fd5bf7](https://github.com/mitambuch/sn/commit/8fd5bf7438b53371d8f8711755daf6a5acda26f0))
+* **share:** coerce all fiche fields at render — kill React [#31](https://github.com/mitambuch/sn/issues/31) on /share ([7643dbc](https://github.com/mitambuch/sn/commit/7643dbcab30127fb196698a3cc03a82b1719d0fd))
+* **share:** harden the share-code flow + navigable selection + tests ([0928a92](https://github.com/mitambuch/sn/commit/0928a92e0c09a4866d4bfdb80c810348808c8101))
+* **share:** stop /share 500 when a fiche field arrives as a localeString object ([974432e](https://github.com/mitambuch/sn/commit/974432e97ad2b21ab73453470ba83c37bb8411fb))
+* **studio:** force dark color scheme in Sanity Studio ([4ece055](https://github.com/mitambuch/sn/commit/4ece055850846b2fff28004c8f7dd66b56468b79)), closes [#1a1a1a](https://github.com/mitambuch/sn/issues/1a1a1a)
+* **studio:** make programme "time" field translatable (FR/EN) ([af3b61b](https://github.com/mitambuch/sn/commit/af3b61bd3410e36f6ab29e8c99c5f06def59943c))
+* **studio:** preview on localeString/localeText so array items aren't "Untitled" ([da49b75](https://github.com/mitambuch/sn/commit/da49b75712efd8a21586bf6e5a2c469859c8d7c2))
+* **studio:** split programme step into Heure (text) + Titre (translatable) ([5f97191](https://github.com/mitambuch/sn/commit/5f9719176cb4de9f61fb90fc39a2c91944069fb9))
+* **supabase:** consume_share_code view_count ambiguity (42702) ([dfd499f](https://github.com/mitambuch/sn/commit/dfd499fee7f7eca5666785e3c3e17e770969d9c2))
+* **supabase:** grant table privileges on share_codes (admin read 403) ([47722fa](https://github.com/mitambuch/sn/commit/47722fa2da438ceb8b2aefec92406c187f02ea63))
+* **supabase:** notify both salva@ and info@saw-next.ch on new leads ([80f7f68](https://github.com/mitambuch/sn/commit/80f7f68d5eae10b9d3d59dc01c4d08c10ebcba7b))
+* **team:** surgical Sanity script to replace stale team members ([5030fe9](https://github.com/mitambuch/sn/commit/5030fe921485b93f51d92d5761a3f27a9d2e1303))
+
+### ♻️  Refactoring
+
+* **dispatch:** token-economy — terse output + cheap-by-default routing ([e1058ad](https://github.com/mitambuch/sn/commit/e1058ada76a26d38a17b953d33263bd9c7de2fea)), closes [#8](https://github.com/mitambuch/sn/issues/8)
+
+### 📚 Documentation
+
+* **content:** prompts d'art-direction pour les visuels des 3 expériences ([eae4950](https://github.com/mitambuch/sn/commit/eae49508037edf480bc842f0b28e2c04761c8b8f))
+* **memory:** journal + decision/pattern/friction for the auth tunnel ([ffbc603](https://github.com/mitambuch/sn/commit/ffbc603704ec80fa99d4e72fbfb0d9d561327411))
+
+### 🔧 Chores
+
+* **memory:** audience feature decision + grant-trap friction + session journal ([b778f8a](https://github.com/mitambuch/sn/commit/b778f8a64f62b3525d4d13c61c6a8ee64ea942c7))
+* **memory:** catalogue content-model session + triple-model friction ([522e4e5](https://github.com/mitambuch/sn/commit/522e4e55f64f0d3699363ce020533c22611f3c87))
+* **memory:** event flexible-dates decision + session journal ([0516bc8](https://github.com/mitambuch/sn/commit/0516bc8efbe7d0204d1e0877067ea4c123273c90))
+* **memory:** fix invalid [#components](https://github.com/mitambuch/sn/issues/components) tag → [#design](https://github.com/mitambuch/sn/issues/design) on session journal ([b14d4fd](https://github.com/mitambuch/sn/commit/b14d4fd2706568673579a02234df9a0d78172347))
+* **memory:** fix session journal tag ([#session](https://github.com/mitambuch/sn/issues/session) not canonical) + regen index ([fa7759d](https://github.com/mitambuch/sn/commit/fa7759d5e09e56aeebb61a833d1acf208c929016))
+* **memory:** holding-state decision + session journal + digest refresh ([b238ff1](https://github.com/mitambuch/sn/commit/b238ff127e4fadb33d932a91141d12933e31ef2f))
+* **memory:** journal session + friction CMS i18n (champ manquant vs bug) ([f76106d](https://github.com/mitambuch/sn/commit/f76106df73ec80e767994804d267cc6c024a5b17))
+* **memory:** Layer 3 — all 7 detail pages crash-safe ([f3ad405](https://github.com/mitambuch/sn/commit/f3ad4058abd4aa933f704b7d549c9f1e6f1addf6))
+* **memory:** record team-cards decision + validate date-drift friction (0610) ([35da1e4](https://github.com/mitambuch/sn/commit/35da1e41118b88ba957d1d1f337c77f2055dc48a))
+* **memory:** refresh index digest date ([f80f1a2](https://github.com/mitambuch/sn/commit/f80f1a2d177d3babba7da13e3ab1a21f56095100))
+* **memory:** resolve access-step3 friction (stale deploy, not code) ([005b9b7](https://github.com/mitambuch/sn/commit/005b9b776448d1664501f8bb368a6c92bd85d553))
+* **memory:** resolve bilingual-detail-gap friction + session journal ([3e5907e](https://github.com/mitambuch/sn/commit/3e5907ea92009dfa4239bdcb5a92b98dc8bf2b30))
+* **memory:** salve triage session + locale-array preview friction ([2db3fb8](https://github.com/mitambuch/sn/commit/2db3fb8f0ed2f0b7ebb6c1541629008ccd8a4084))
+* **memory:** session deploy outcome + post-deploy cache friction ([b35de69](https://github.com/mitambuch/sn/commit/b35de69f69f67726c46e32920134ec588992e03e))
+* **memory:** session journal — emails live + form pro + programme i18n ([2c450d7](https://github.com/mitambuch/sn/commit/2c450d7f1308df7edce8ed6c09caa6d13812aa73))
+* **memory:** session journal — operator email notifications + form diagnosis ([1dd776f](https://github.com/mitambuch/sn/commit/1dd776f378773bbd5a939f9958c36fc0c183d87b))
+* **memory:** session journal — Spanish content mirror + popover switcher ([9f05430](https://github.com/mitambuch/sn/commit/9f05430355e487a9f663871ebdad8739efb71795))
+* **memory:** session journal + pattern for Spanish locale add ([74c388a](https://github.com/mitambuch/sn/commit/74c388a5b343d8201a683bc54f8182a2b6578366))
+* **memory:** session journal 2026-06-03 PM + saved-items friction ([734ba83](https://github.com/mitambuch/sn/commit/734ba83d1ac57869edfb20247fcfd5d71754b66a))
+* **memory:** session journal for branch consolidation + ship ([dbd70b8](https://github.com/mitambuch/sn/commit/dbd70b89bb4c6f4414155a4f32162ba481439950))
+* **memory:** session wrap — pro forms + share UX + gates lesson ([3234132](https://github.com/mitambuch/sn/commit/32341327c8a8b8a7f08f3542eee9bc716a6c0e20))
+* **memory:** session wrap 2026-06-02 + Sanity CORS friction ([32f0dbd](https://github.com/mitambuch/sn/commit/32f0dbde2652f266c30554fff880a9cfbfa09c70))
+* **memory:** session wrap 2026-06-02 + Sanity stale-data friction ([d8fec24](https://github.com/mitambuch/sn/commit/d8fec24da2eb54a664b04c05a4aa50acb2bb46db))
+* **netlify:** declare functions dir + esbuild bundler explicitly ([dc7283e](https://github.com/mitambuch/sn/commit/dc7283e3eafcf25bc476161567398fbc3e5e2074))
+
+### ✅ Tests
+
+* **access:** prove request wizard reaches the Message step ([c8cfaf6](https://github.com/mitambuch/sn/commit/c8cfaf65bb208e0f070bdfc564d519aff0c945a9))
+* **landing:** lock per-member team data + WhatsApp generation ([4b1b4fa](https://github.com/mitambuch/sn/commit/4b1b4fac80f6a2ee45a838480113529a3d697a03))
+
 ## [1.2.2](https://github.com/mitambuch/sn/compare/v1.2.1...v1.2.2) (2026-05-29)
 
 ### 🐛 Fixes
