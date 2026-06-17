@@ -21,10 +21,16 @@ pas l'espace membre.
 ## Décision
 
 Un doc tagué `visibility: public` est **consultable publiquement**, pas
-seulement aguiché. Nouvelle route **`/c/:type/:id`** (hors LocaleProvider,
-`noindex`) → page `PublicFiche` lecture seule réutilisant le langage visuel de
-`/share` (version allégée). Les vignettes réelles du teaser deviennent des
-`<Link>` ; les cadenas restent sur demande d'accès.
+seulement aguiché. La fiche s'ouvre en **popup modale au-dessus de la landing**
+(owner 2026-06-17 soir : « en mode popup devant le site, pas une page
+distincte »), lecture seule, réutilisant le langage visuel de `/share`. Les
+vignettes réelles du teaser sont des `<button>` qui ouvrent la modale ; les
+cadenas restent sur demande d'accès.
+
+**Direction initiale (révisée le même soir)** : d'abord livré comme page/route
+`/c/:type/:id`, puis basculé en modale à la demande de l'owner → pattern
+[[shared-panel-two-shells]] (panel sans chrome + coque). La route a été
+supprimée (le partage de fiche reste couvert par `/share/:code`).
 
 Le catalogue **membre** gated (`FEATURES.catalogueLive: false`) reste inchangé.
 
@@ -44,11 +50,14 @@ projection `/share` avec son `...` brut et fuyait tout le doc dans le payload
 - Action serveur Netlify `publicFiche` (non authentifiée, validée `isModuleKey`
   + `DOC_ID_RE` avant interpolation GROQ — même garde que l'action `item`).
 - Hook `usePublicFiche` (gate-aware + fallback mock dev offline, jamais en prod).
-- `Access.tsx` : `<button>` → `<Link to=/c/:type/:id>`, aria `cardOpenAria`.
+- `PublicFichePanel` (corps de fiche, champs vides masqués, CTA bas) + coque
+  `PublicFicheModal` (Modal existant). `Access.tsx` ouvre la popup via state.
 
 ## Fichiers
 
-`src/pages/PublicFiche.tsx`, `src/features/landing/usePublicFiche.ts`,
+`src/features/landing/PublicFichePanel.tsx`,
+`src/features/landing/PublicFicheModal.tsx`,
+`src/features/landing/usePublicFiche.ts`,
 `src/lib/sanityQueries.ts` (GROQ_PUBLIC_FICHE + PUBLIC_FICHE_PROJECTION),
 `src/lib/sanityGate.ts` (gatePublicFiche), `netlify/functions/catalogue.mts`,
-`src/app/routes/index.tsx`, `src/features/landing/Access.tsx`.
+`src/features/landing/Access.tsx`.
