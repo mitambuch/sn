@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-06-17** — [Session — Split /QR + /presentation, redesign dans l'univers landing](sessions/2026-06-17-1335.md)
 - **2026-06-17** — [Session — Page salon /QR (présentation + QR scannable + lead form)](sessions/2026-06-17-1315.md)
 - **2026-06-16** — [Session — Retours client : programme i18n des expériences + vidéos Actualités](sessions/2026-06-16-1605.md)
-- **2026-06-10** — [Session — Team cards: per-member data (no Valmont leak)](sessions/2026-06-10-1055.md)
 
 ## Active decisions (top 5)
 
@@ -46,7 +46,7 @@
 
 ## Deep dive
 
-- Full catalogue (169 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (171 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
