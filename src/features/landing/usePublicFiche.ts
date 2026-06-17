@@ -2,8 +2,8 @@
 // usePublicFiche — one public catalogue fiche by type + id
 //
 // WHAT: Fetches a SINGLE catalogue doc flagged `visibility == "public"` in
-//       Sanity, by `_type` + `_id`. Powers the public read-only fiche at
-//       /c/:type/:id (opened from the home "08.A Aperçu du catalogue" teaser).
+//       Sanity, by `_type` + `_id`. Powers the public read-only fiche popup
+//       (opened from the home "08.A Aperçu du catalogue" teaser).
 //       Gate-aware : reads through the Netlify function's `publicFiche` action
 //       when the audience gate is on (private dataset), otherwise hits Sanity
 //       directly. The server HARD-restricts to visibility=="public", so a

@@ -72,7 +72,6 @@ const AccountSaved = lazyWithRetry(() => import('@pages/AccountSaved'));
 const LogoPreview = lazyWithRetry(() => import('@pages/LogoPreview'));
 const MotionShowcase = lazyWithRetry(() => import('@pages/MotionShowcase'));
 const SharePage = lazyWithRetry(() => import('@pages/SharePage'));
-const PublicFiche = lazyWithRetry(() => import('@pages/PublicFiche'));
 const ExamplePage = lazyWithRetry(() => import('@pages/ExamplePage'));
 const QRPage = lazyWithRetry(() => import('@pages/QRPage'));
 const Presentation = lazyWithRetry(() => import('@pages/Presentation'));
@@ -145,10 +144,6 @@ export default function AppRoutes() {
 
         {/* ─── /share/:code — single Sanity-doc share, public, no auth ─── */}
         <Route path="/share/:code" element={<SharePage />} />
-
-        {/* ─── /c/:type/:id — public read-only fiche for a visibility=="public"
-              catalogue doc, opened from the home 08.A teaser. No auth. ─── */}
-        <Route path="/c/:type/:id" element={<PublicFiche />} />
 
         {/* ─── /exemple — public esthetic gate that pre-fills the demo
               share code and pushes through to /share/SAW-DEMO-2026 ─── */}

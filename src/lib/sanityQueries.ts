@@ -366,7 +366,7 @@ export const GROQ_SHARED_FICHE = (type: string, id: string) =>
   `*[_type == "${type}" && _id == "${id}"][0]${SHARED_FICHE_PROJECTION}`;
 
 /** Public fiche projection — a strict WHITELIST of only the fields the public
- *  /c/:type/:id page renders. Deliberately NO `...` raw spread (unlike the
+ *  public fiche popup renders. Deliberately NO `...` raw spread (unlike the
  *  share projection): the unauthenticated, enumerable public route must never
  *  ship the "deal sheet" (price, provenanceNote, catalogueRaisonne, property /
  *  journey specsheets, seo, raw locales) in the network payload. HNW discretion
@@ -392,7 +392,7 @@ const PUBLIC_FICHE_PROJECTION = `{
     countryCode
   }`;
 
-/** Public fiche by type + id (for /c/:type/:id render). HARD-restricted to
+/** Public fiche by type + id (for the public fiche popup). HARD-restricted to
  *  `visibility == "public"` so an id guess can never surface a private or
  *  shareCode-gated doc on the unauthenticated public route, and reduced to the
  *  PUBLIC_FICHE_PROJECTION whitelist so no sensitive field leaks in the payload. */

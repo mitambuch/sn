@@ -18,14 +18,15 @@ import { Card } from '@components/ui/Card';
 import { MonoGradientPlaceholder } from '@components/ui/MonoGradientPlaceholder';
 import { useLandingContext } from '@context/LandingContentContext';
 import { useAccessRequestModal } from '@context/useAccessRequestModal';
+import { PublicFicheModal } from '@features/landing/PublicFicheModal';
 import { SectionTag } from '@features/landing/SectionTag';
 import { type PublicCatalogueType, usePublicCatalogue } from '@features/landing/usePublicCatalogue';
 import { useReveal } from '@hooks/useReveal';
 import { resolveFieldOrFallback } from '@lib/i18nField';
 import { cn } from '@utils/cn';
 import { Lock } from 'lucide-react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 
 import { isVitrineMode } from '@/config/env';
 
@@ -52,6 +53,10 @@ export const Access = () => {
   const ref = useReveal<HTMLDivElement>();
   const { openAccessRequest } = useAccessRequestModal();
   const { items } = usePublicCatalogue();
+  // Which public item the fiche popup is showing (null = closed).
+  const [ficheItem, setFicheItem] = useState<{ type: PublicCatalogueType; id: string } | null>(
+    null,
+  );
 
   // Real public items first (capped), locked cadenas teasers fill up to MAX_TILES.
   // Only feature items that ACTUALLY have an image — a teaser tile with no photo
@@ -112,13 +117,16 @@ export const Access = () => {
           </span>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
             {/* Real public items (ANY type tagged public) — clear, clickable.
-                Opens the public read-only fiche at /c/:type/:id (a
-                visibility=="public" doc is meant to be viewable, not just
-                teased). The bottom CTAs remain the cooptation gate. */}
+                Opens the read-only fiche as a popup OVER the landing (owner
+                2026-06-17 : modal, not a separate page). The bottom CTAs remain
+                the cooptation gate. */}
             {shownItems.map(item => (
-              <Link
+              <button
                 key={item.id}
-                to={`/c/${item.type}/${item.id}`}
+                type="button"
+                onClick={() => {
+                  setFicheItem({ type: item.type, id: item.id });
+                }}
                 aria-label={t('landing.access.cardOpenAria', { title: item.title })}
                 className="rounded-card block text-left focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none"
               >
@@ -135,7 +143,7 @@ export const Access = () => {
                     <Card.Title className="text-white">{item.title}</Card.Title>
                   </Card.Body>
                 </Card>
-              </Link>
+              </button>
             ))}
 
             {/* Locked cadenas teasers — content redacted + veiled, hover lifts
@@ -221,6 +229,19 @@ export const Access = () => {
           </div>
         </div>
       </div>
+
+      {/* Fiche popup over the landing — opened by a teaser card. Its CTA closes
+          the fiche then opens the access tunnel (no stacked modals). */}
+      <PublicFicheModal
+        item={ficheItem}
+        onClose={() => {
+          setFicheItem(null);
+        }}
+        onRequestAccess={() => {
+          setFicheItem(null);
+          openAccessRequest('request');
+        }}
+      />
     </section>
   );
 };

@@ -79,7 +79,7 @@ export async function gateItem<T>(
   }
 }
 
-/** A single PUBLIC fiche read by type + id (the /c/:type/:id route). Server-side
+/** A single PUBLIC fiche read by type + id (the public fiche popup). Server-side
  *  the action is HARD-restricted to `visibility == "public"`, so this never
  *  surfaces a private/shareCode doc. Unauthenticated. Returns null when absent. */
 export async function gatePublicFiche<T>(
