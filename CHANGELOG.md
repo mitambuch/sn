@@ -1,5 +1,60 @@
 # Changelog
 
+## [1.4.0](https://github.com/mitambuch/sn/compare/v1.3.0...v1.4.0) (2026-06-17)
+
+### ✨ Features
+
+* **catalogue:** fiche produit publique depuis le teaser accueil ([61566f3](https://github.com/mitambuch/sn/commit/61566f3cdf17bce008ae22e6cbbbd31967063b58))
+* **landing:** 08.A teaser shows ALL public catalogue types, capped at 6 ([f9d96fc](https://github.com/mitambuch/sn/commit/f9d96fc2d2cab8ceaa902d4ac03b32eb449ded89))
+* **landing:** 5 locked teasers in the catalogue grid (was 3) ([b92d566](https://github.com/mitambuch/sn/commit/b92d566c48da6a38c89b03971c9c93ba6514f147))
+* **landing:** DEV-only preview seed for the public events section ([8f72528](https://github.com/mitambuch/sn/commit/8f72528aa3aec3dd3890528cd7f6d0915096cb72))
+* **landing:** public events section on the home with locked teasers ([fd989d1](https://github.com/mitambuch/sn/commit/fd989d1793e42cf47f03cd265fc3ed8aa7b7ffad))
+* **presentation:** add Valmont's contact + prominent site on the PDF ([9a1bd00](https://github.com/mitambuch/sn/commit/9a1bd00a26d0e3fc7933decd42edeaf6bd7da2c0))
+* **presentation:** device-language auto-open, redirect-only close + A4 PDF ([747b12c](https://github.com/mitambuch/sn/commit/747b12c1e10ae844e66b299136278c19d99e0f63))
+* **presentation:** immersive video hero + varied editorial layout ([e4f54ca](https://github.com/mitambuch/sn/commit/e4f54caee4578bd6af46bfbb6e4d718f61f3f308))
+* **presentation:** split /QR + /presentation, rebuilt in the landing universe ([e2bd1ba](https://github.com/mitambuch/sn/commit/e2bd1bad9a66efaaac56602f810856356ba7fbe7))
+* **presentation:** stack the PDF download under "see the site" ([5cb0daa](https://github.com/mitambuch/sn/commit/5cb0daac9d5bbfed29f2e29fc15cecb7314f07d6))
+* **qr:** bespoke lead form wired to the anonymous access-request path ([f3e8fc1](https://github.com/mitambuch/sn/commit/f3e8fc1351a826c36dabde5962967ace1a306b3c)), closes [#qr-bespoke](https://github.com/mitambuch/sn/issues/qr-bespoke)
+* **qr:** bottom CTAs — become a member, see the site, native share ([dc30d4f](https://github.com/mitambuch/sn/commit/dc30d4f2e6a4864c8f0cdd2c72ee1d59e81a7e95))
+* **qr:** content sections — offer, service quality, member platform ([27cebb1](https://github.com/mitambuch/sn/commit/27cebb183b139030866ca5cfee6c273c698e9a2f))
+* **qr:** on-screen scannable QR code overlay for the salon flow ([0800142](https://github.com/mitambuch/sn/commit/0800142356130742eda6e54f3d8eb9b284aece88))
+* **qr:** salon presentation page /QR — route + hero shell ([eda6031](https://github.com/mitambuch/sn/commit/eda60316c495a56d3e77bc3bf3e67b9bc13c7fd4))
+
+### 🐛 Bug Fixes
+
+* **landing:** hero vidéos self-hosted (compte Cloudinary désactivé) ([2ba1ef1](https://github.com/mitambuch/sn/commit/2ba1ef182f4d4fd5f270a0abd0e5014430ddd10a))
+* **landing:** keep the hero video stable on mobile (no per-phrase swap) ([96e346a](https://github.com/mitambuch/sn/commit/96e346a87ed302d345c17c7207e21210b7a5eb7b))
+* **landing:** teaser 08.A ne montre que les vignettes AVEC image ([ef1dba1](https://github.com/mitambuch/sn/commit/ef1dba1a88d60ce1f916305ee7401ff84057950e))
+* **presentation:** clean A4 PDF — kill the grey block, add list intro ([4d0f12a](https://github.com/mitambuch/sn/commit/4d0f12a6890f8efa76a48ce0ad0a421f540847bc))
+* **presentation:** PDF takeaway plus jamais blanc (flux normal au lieu de fixed) ([08b1420](https://github.com/mitambuch/sn/commit/08b14206184f5abc7d44f85b7c7a4210a3c5d05f))
+* **presentation:** siège Boudry au lieu de Genève (texte + GPS) ([9aab1a4](https://github.com/mitambuch/sn/commit/9aab1a46f668fca11370bb7d3bfb359f589e24ab))
+* **qr:** display the QR overlay url in canonical /QR case ([8da318a](https://github.com/mitambuch/sn/commit/8da318a377f94525836f8961a047326b36f59151))
+
+### ♻️  Refactoring
+
+* **catalogue:** fiche produit en popup modale + champs vides masqués ([35b01cf](https://github.com/mitambuch/sn/commit/35b01cf1bea04a53a27d0fda67843bff1ec0e767))
+* **landing:** wire real public events into 08.A teaser, drop standalone section ([7e3cfcb](https://github.com/mitambuch/sn/commit/7e3cfcba9df3b417daaae0c2523ecb368681d469))
+
+### 📚 Documentation
+
+* **memory:** fiche en modale (révision décision) + diag images teaser ([b9d7f3f](https://github.com/mitambuch/sn/commit/b9d7f3f8ab8e16478757c28e9072a084b6018da8))
+* **memory:** friction compte Cloudinary désactivé + self-host vidéos hero ([a54212a](https://github.com/mitambuch/sn/commit/a54212a9ffcd0c084c948d231b1e029626891c5e))
+* **memory:** public catalogue fiche decision + whitelist pattern + session wrap ([70c33b5](https://github.com/mitambuch/sn/commit/70c33b548d33d0ffa5b1b441f1a276d803157c86))
+
+### 🔧 Chores
+
+* **memory:** /QR session journal + standalone-public-page pattern ([6d8eb24](https://github.com/mitambuch/sn/commit/6d8eb247bd33e5a78adc9873595168257c6dbb3e))
+* **memory:** immersive presentation session journal ([07b3c48](https://github.com/mitambuch/sn/commit/07b3c48d2e694af78e6c409a38afc838bf13ba3f))
+* **memory:** presentation redesign feedback + session journal ([b7b167c](https://github.com/mitambuch/sn/commit/b7b167c2a516b46499fa4bcc2b925d846e84cdc6))
+* **memory:** record v1.3.0 release + refresh digest ([f6578d8](https://github.com/mitambuch/sn/commit/f6578d84a6920677c33ba01415dcee8acb4e420a))
+* **memory:** release-from-sandbox friction + digest ([2991d34](https://github.com/mitambuch/sn/commit/2991d344c9d0628bf79357f5c31c77f35674b875))
+* **memory:** session journal — public events on the home ([1b432e7](https://github.com/mitambuch/sn/commit/1b432e7d0a6d8d144074935e07cb7ef05ac50599))
+* **memory:** session wrap — 08.A public events shipped, studio deploy pending ([da4041b](https://github.com/mitambuch/sn/commit/da4041b05835125b0135e289ddbc80c4c329a89c))
+
+### ✅ Tests
+
+* **qr:** render tests for the /QR presentation page ([a5e0756](https://github.com/mitambuch/sn/commit/a5e07562dd912d7e218abfd11cb8ff49b7225b2f)), closes [#qr-bespoke](https://github.com/mitambuch/sn/issues/qr-bespoke)
+
 ## [1.3.0](https://github.com/mitambuch/sn/compare/v1.2.2...v1.3.0) (2026-06-17)
 
 ### ✨ Features
