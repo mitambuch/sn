@@ -218,12 +218,16 @@ function Platform() {
 
 /** Sober A4 takeaway — hidden on screen, shown only when printing
  *  ("Télécharger le PDF" → window.print()). Same mono typography, black on
- *  white, just the essentials. */
+ *  white, just the essentials.
+ *  WHY normal flow (not `print:fixed`): a `position: fixed` print sheet renders
+ *  a BLANK page on Safari/iOS and ignores the @page margins — a client reported
+ *  "the PDF is all white". Plain `print:block` lets the @page 16mm margins apply
+ *  and prints reliably across browsers. */
 function PrintSheet() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language === 'en' ? 'en' : i18n.language === 'es' ? 'es' : 'fr';
   return (
-    <div className="hidden bg-white font-mono text-black print:fixed print:inset-0 print:block print:overflow-hidden">
+    <div className="hidden bg-white font-mono text-black print:block">
       <div className="flex items-baseline justify-between border-b border-black/25 pb-4">
         <BrandMark variant="full" className="text-2xl" />
         <span className="text-[10px] tracking-[0.3em] uppercase">{t('qr.hero.eyebrow')}</span>
