@@ -333,7 +333,7 @@ export default function Presentation() {
                 {t('qr.experience.body')}
               </p>
             </div>
-            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+            <div className="flex flex-col items-start gap-3">
               <Link
                 to={`/${lang}`}
                 className="border-fg bg-fg text-bg hover:bg-fg/90 focus-visible:ring-accent inline-flex items-center justify-center gap-3 rounded-full border px-7 py-3.5 font-mono text-xs tracking-widest uppercase transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
