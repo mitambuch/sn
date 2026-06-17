@@ -1056,6 +1056,15 @@
       "eyebrow": "Scan",
       "title": "Scan to discover",
       "hint": "Point your phone camera at the code to open the presentation."
+    },
+    "experience": {
+      "tag": "Experience",
+      "heading": "Everything becomes an experience",
+      "body": "Wealth management, security, acquiring a rare asset — every service is lived as an experience."
+    },
+    "pdf": {
+      "download": "Download the PDF",
+      "contact": "Contact"
     }
   },
   "articles": {

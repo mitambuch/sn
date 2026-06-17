@@ -1056,6 +1056,15 @@
       "eyebrow": "Scan",
       "title": "Escanee para descubrir",
       "hint": "Apunte la cámara de su teléfono al código para abrir la presentación."
+    },
+    "experience": {
+      "tag": "Experiencia",
+      "heading": "Todo se vuelve una experiencia",
+      "body": "Gestión de patrimonio, seguridad, adquisición de un bien excepcional — cada prestación se vive como una experiencia."
+    },
+    "pdf": {
+      "download": "Descargar el PDF",
+      "contact": "Contacto"
     }
   },
   "articles": {

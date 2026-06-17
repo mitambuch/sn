@@ -354,6 +354,25 @@ body::before {
   }
 }
 
+/* ─── Print — sober A4 takeaway (/presentation "Télécharger le PDF") ─────
+   The page's PrintSheet is `hidden print:block`; everything else is
+   `print:hidden`. Here we just set the A4 page + kill the film grain. */
+@media print {
+  @page {
+    size: A4;
+    margin: 16mm;
+  }
+  /* The grey page bg lives on `html` (not body) — force white on both so the
+     short takeaway sheet doesn't leave a grey block below the content. */
+  html,
+  body {
+    background: #fff !important;
+  }
+  body::before {
+    display: none;
+  }
+}
+
 /* ─── Headings — base brand identity (2026-05-12) ──────────────────
    "Le logo est la base des titres" (owner direction). Tous les h1-h6
    default = Geist Mono / 700 / uppercase / tracking-tight. Composants

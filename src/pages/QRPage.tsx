@@ -19,12 +19,18 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { siteConfig } from '@/config/site';
+import { resolveDeviceLocale } from '@/lib/deviceLocale';
 
 const DOMAIN_KEYS = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'] as const;
 
 export default function QRPage() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language === 'en' ? 'en' : i18n.language === 'es' ? 'es' : 'fr';
+
+  // Open in the visitor's device language (owner direction 2026-06-17).
+  useEffect(() => {
+    void i18n.changeLanguage(resolveDeviceLocale());
+  }, [i18n]);
 
   useEffect(() => {
     document.documentElement.lang = lang;
