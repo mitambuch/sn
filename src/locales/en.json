@@ -991,6 +991,34 @@
       "word4": "frictionless",
       "lede": "A Swiss house that opens, for a chosen clientele, the doors that stay closed. Rare goods, private experiences, invisible logistics.",
       "scrollHint": "Discover"
+    },
+    "offer": {
+      "tag": "What we offer",
+      "heading": "Ten domains, one standard",
+      "lede": "From exceptional assets to confidential experiences, every request is handled with the same rigour."
+    },
+    "quality": {
+      "tag": "Service quality",
+      "heading": "Discretion as a method",
+      "item1Title": "A single point of contact",
+      "item1Body": "A dedicated lead coordinates every party, from the first request to delivery.",
+      "item2Title": "Absolute discretion",
+      "item2Body": "Contractual confidentiality, no display. What is private stays private.",
+      "item3Title": "Vetted network",
+      "item3Body": "Partners selected and proven, in Switzerland and internationally.",
+      "item4Title": "Truly bespoke",
+      "item4Body": "No standard offer. Each case is built around a precise need."
+    },
+    "platform": {
+      "tag": "The platform",
+      "heading": "A private member area",
+      "body": "Beyond concierge, members access a private area presenting bespoke offers, reserved and renewed regularly.",
+      "point1Title": "Reserved offers",
+      "point1Body": "Goods and experiences offered to members only, off the public market.",
+      "point2Title": "Bespoke request",
+      "point2Body": "Express a need; it is qualified and handled by a lead within 24 hours.",
+      "point3Title": "By invitation",
+      "point3Body": "Entry is by referral or reviewed request. The circle stays small."
     }
   },
   "articles": {

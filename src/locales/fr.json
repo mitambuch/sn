@@ -991,6 +991,34 @@
       "word4": "sans friction",
       "lede": "Une maison suisse qui ouvre, pour une clientèle choisie, les portes que l'on n'ouvre pas. Biens rares, expériences fermées, logistique invisible.",
       "scrollHint": "Découvrir"
+    },
+    "offer": {
+      "tag": "Ce que nous proposons",
+      "heading": "Dix domaines, une exigence",
+      "lede": "Du bien d'exception à l'expérience confidentielle, chaque demande est traitée avec la même rigueur."
+    },
+    "quality": {
+      "tag": "La qualité de service",
+      "heading": "La discrétion comme méthode",
+      "item1Title": "Un interlocuteur unique",
+      "item1Body": "Un référent dédié coordonne chaque intervenant, de la première demande à la livraison.",
+      "item2Title": "Discrétion absolue",
+      "item2Body": "Confidentialité contractuelle, aucune mise en avant. Ce qui est privé le reste.",
+      "item3Title": "Réseau vérifié",
+      "item3Body": "Des partenaires sélectionnés et éprouvés, en Suisse et à l'international.",
+      "item4Title": "Sur-mesure réel",
+      "item4Body": "Aucune offre standard. Chaque dossier est construit autour d'un besoin précis."
+    },
+    "platform": {
+      "tag": "La plateforme",
+      "heading": "Un espace membre privé",
+      "body": "Au-delà de la conciergerie, les membres accèdent à un espace privé où sont présentées des offres sur-mesure, réservées et renouvelées régulièrement.",
+      "point1Title": "Offres réservées",
+      "point1Body": "Biens et expériences proposés uniquement aux membres, hors marché public.",
+      "point2Title": "Demande sur-mesure",
+      "point2Body": "Exprimez un besoin ; il est qualifié et traité par un référent sous 24 h.",
+      "point3Title": "Accès sur invitation",
+      "point3Body": "L'entrée se fait par cooptation ou demande étudiée. Le cercle reste restreint."
     }
   },
   "articles": {
