@@ -19,6 +19,7 @@
 
 ## Open frictions
 
+- **2026-06-17** — [Couper une release depuis un env sans `.env.local` : deux gates faux-positifs](frictions/2026-06-17-release-from-sandbox-gates.md)
 - **2026-06-16** — [Un retour client « le programme n'est pas traduisible » = champ manquant, pas un bug i18n](frictions/2026-06-16-cms-i18n-complaint-real-cause-missing-field.md)
 - **2026-06-10** — [`pnpm validate` fails on memory:index:check whenever the calendar day rolls over](frictions/2026-06-10-memory-index-check-date-drift.md)
 - **2026-06-09** — [`pnpm --filter X deploy` runs pnpm's builtin, not the package's `deploy` script](frictions/2026-06-09-pnpm-deploy-builtin-shadows-script.md)
@@ -44,7 +45,7 @@
 
 ## Deep dive
 
-- Full catalogue (166 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (167 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
