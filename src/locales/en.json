@@ -1019,6 +1019,24 @@
       "point2Body": "Express a need; it is qualified and handled by a lead within 24 hours.",
       "point3Title": "By invitation",
       "point3Body": "Entry is by referral or reviewed request. The circle stays small."
+    },
+    "form": {
+      "tag": "Bespoke request",
+      "heading": "Tell us what you are looking for",
+      "lede": "Describe your need. A dedicated lead will contact you discreetly.",
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "phone": "Phone (optional)",
+      "phonePlaceholder": "+41 …",
+      "message": "Your request",
+      "messagePlaceholder": "What you are looking for, by when, for whom.",
+      "consent": "I agree to be contacted about my request.",
+      "submit": "Send request",
+      "sending": "Sending…",
+      "success": "Request received. A dedicated lead will contact you shortly.",
+      "error": "Sending failed. Please try again or write to us directly."
     }
   },
   "articles": {

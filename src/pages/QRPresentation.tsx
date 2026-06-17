@@ -13,15 +13,23 @@
 // ═══════════════════════════════════════════════════
 
 import { BrandMark } from '@components/brand/BrandMark';
+import { Button } from '@components/ui/Button';
+import { Checkbox } from '@components/ui/Checkbox';
+import { Input } from '@components/ui/Input';
 import { LanguageSwitcher } from '@components/ui/LanguageSwitcher';
 import { Reveal } from '@components/ui/Reveal';
+import { Textarea } from '@components/ui/Textarea';
 import { useCyclingWord } from '@features/landing/useCyclingWord';
 import { cn } from '@utils/cn';
-import { useEffect } from 'react';
+import { type FormEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { siteConfig } from '@/config/site';
+import { hasSupabase, supabase } from '@/lib/supabase';
+
+/** Boundary email check — good enough for a salon form, not RFC-perfect. */
+const isValidEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 
 // The 10 service verticales — content reused from the landing (landing.domains.*),
 // rendered here as a condensed, scannable list (no Sanity, no hover preview).
@@ -120,6 +128,123 @@ function PlatformSection() {
   );
 }
 
+/** S05 — anonymous bespoke lead form. Writes to access_requests (the same
+ *  anon-write path as the membership request) → the Postgres trigger emails
+ *  the operator. Marked activity "Salon / QR" so Salva knows the source.
+ *  Falls back to a simulator when no backend (starter without .env.local). */
+function BespokeForm() {
+  const { t } = useTranslation();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [message, setMessage] = useState('');
+  const [consent, setConsent] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'sending' | 'ok' | 'error'>('idle');
+
+  const valid = name.trim() !== '' && isValidEmail(email) && message.trim() !== '' && consent;
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (status === 'sending' || !valid) return;
+    setStatus('sending');
+    const parts = name.trim().split(/\s+/);
+    const first = parts[0] ?? name.trim();
+    const last = parts.slice(1).join(' ') || first;
+
+    if (hasSupabase && supabase) {
+      const { error } = await supabase.from('access_requests').insert({
+        first_name: first,
+        last_name: last,
+        email: email.trim(),
+        phone: phone.trim() || null,
+        activity: 'Salon / QR',
+        message: message.trim(),
+      });
+      setStatus(error ? 'error' : 'ok');
+      return;
+    }
+    await new Promise<void>(resolve => {
+      setTimeout(resolve, 600);
+    });
+    setStatus('ok');
+  };
+
+  return (
+    <section id="qr-bespoke" className="border-border border-t px-5 py-20 md:px-10 md:py-28">
+      <SectionHeading tag={t('qr.form.tag')} heading={t('qr.form.heading')} />
+      {status === 'ok' ? (
+        <Reveal className="border-border bg-surface/40 max-w-xl rounded-lg border p-8">
+          <p className="text-fg text-base leading-relaxed">{t('qr.form.success')}</p>
+        </Reveal>
+      ) : (
+        <Reveal className="max-w-xl">
+          <p className="text-muted mb-8 text-sm leading-relaxed text-pretty md:text-base">
+            {t('qr.form.lede')}
+          </p>
+          <form
+            className="flex flex-col gap-5"
+            onSubmit={e => {
+              void handleSubmit(e);
+            }}
+          >
+            <Input
+              label={t('qr.form.name')}
+              value={name}
+              onChange={e => setName(e.target.value)}
+              placeholder={t('qr.form.namePlaceholder')}
+              autoComplete="name"
+              required
+            />
+            <Input
+              label={t('qr.form.email')}
+              type="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder={t('qr.form.emailPlaceholder')}
+              autoComplete="email"
+              required
+            />
+            <Input
+              label={t('qr.form.phone')}
+              type="tel"
+              value={phone}
+              onChange={e => setPhone(e.target.value)}
+              placeholder={t('qr.form.phonePlaceholder')}
+              autoComplete="tel"
+            />
+            <Textarea
+              label={t('qr.form.message')}
+              rows={5}
+              value={message}
+              onChange={e => setMessage(e.target.value)}
+              placeholder={t('qr.form.messagePlaceholder')}
+              required
+            />
+            <Checkbox
+              label={t('qr.form.consent')}
+              checked={consent}
+              onChange={e => setConsent(e.target.checked)}
+            />
+            {status === 'error' && (
+              <p className="text-danger-text text-sm" role="alert">
+                {t('qr.form.error')}
+              </p>
+            )}
+            <Button
+              type="submit"
+              isLoading={status === 'sending'}
+              disabled={!valid}
+              className="self-start"
+            >
+              {status === 'sending' ? t('qr.form.sending') : t('qr.form.submit')}
+            </Button>
+          </form>
+        </Reveal>
+      )}
+    </section>
+  );
+}
+
 export default function QRPresentation() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language === 'en' ? 'en' : i18n.language === 'es' ? 'es' : 'fr';
@@ -193,6 +318,7 @@ export default function QRPresentation() {
       <OfferSection />
       <QualitySection />
       <PlatformSection />
+      <BespokeForm />
     </div>
   );
 }

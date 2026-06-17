@@ -1019,6 +1019,24 @@
       "point2Body": "Exprese una necesidad; se cualifica y la gestiona un responsable en 24 horas.",
       "point3Title": "Acceso por invitación",
       "point3Body": "El acceso es por cooptación o solicitud estudiada. El círculo permanece reducido."
+    },
+    "form": {
+      "tag": "Solicitud a medida",
+      "heading": "Díganos lo que busca",
+      "lede": "Describa su necesidad. Un responsable le contactará con total discreción.",
+      "name": "Nombre",
+      "namePlaceholder": "Su nombre",
+      "email": "Email",
+      "emailPlaceholder": "usted@ejemplo.com",
+      "phone": "Teléfono (opcional)",
+      "phonePlaceholder": "+41 …",
+      "message": "Su solicitud",
+      "messagePlaceholder": "Lo que busca, para cuándo, para quién.",
+      "consent": "Acepto que me contacten en relación con mi solicitud.",
+      "submit": "Enviar la solicitud",
+      "sending": "Enviando…",
+      "success": "Solicitud recibida. Un responsable le contactará en breve.",
+      "error": "El envío ha fallado. Inténtelo de nuevo o escríbanos directamente."
     }
   },
   "articles": {
