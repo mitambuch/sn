@@ -54,7 +54,12 @@ export const Access = () => {
   const { items } = usePublicCatalogue();
 
   // Real public items first (capped), locked cadenas teasers fill up to MAX_TILES.
-  const shownItems = items.slice(0, MAX_TILES);
+  // Only feature items that ACTUALLY have an image — a teaser tile with no photo
+  // reads as broken (regression after the teaser broadened to all types: an
+  // image-less public article surfaced and rendered a blank gradient tile). An
+  // image-less public doc is skipped here; a locked cadenas fills its slot
+  // instead. To surface such a doc, upload an image on it in Sanity.
+  const shownItems = items.filter(item => item.image?.src).slice(0, MAX_TILES);
   const lockedCount = Math.max(0, MAX_TILES - shownItems.length);
 
   return (
