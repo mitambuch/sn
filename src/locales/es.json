@@ -1046,6 +1046,10 @@
       "share": "Compartir",
       "shared": "Enlace copiado",
       "shareText": "Conserjería privada suiza — acceso curado a lo excepcional."
+    },
+    "qrcode": {
+      "button": "Mostrar el código QR",
+      "scan": "Escanee con su teléfono"
     }
   },
   "articles": {

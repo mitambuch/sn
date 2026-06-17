@@ -21,6 +21,7 @@ import { Reveal } from '@components/ui/Reveal';
 import { Textarea } from '@components/ui/Textarea';
 import { useCyclingWord } from '@features/landing/useCyclingWord';
 import { cn } from '@utils/cn';
+import { QRCodeSVG } from 'qrcode.react';
 import { type FormEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -317,6 +318,59 @@ function CtaSection() {
   );
 }
 
+/** Fullscreen QR overlay the presenter shows so visitors scan and land on
+ *  /QR on their own phones. White background + dark modules for reliable
+ *  scanning regardless of the site theme. Encodes the canonical prod URL. */
+function QrOverlay({ open, onClose, url }: { open: boolean; onClose: () => void; url: string }) {
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={t('qr.qrcode.scan')}
+      className="fixed inset-0 z-100 flex flex-col items-center justify-center gap-8 bg-white p-6"
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label={t('common.close')}
+        className="absolute top-5 right-5 font-mono text-xs tracking-widest text-black/70 uppercase hover:text-black"
+      >
+        ✕
+      </button>
+      <p className="font-mono text-xs tracking-[0.3em] text-black/60 uppercase">
+        {t('qr.qrcode.scan')}
+      </p>
+      <QRCodeSVG
+        value={url}
+        size={360}
+        level="M"
+        fgColor="#000000"
+        bgColor="#ffffff"
+        marginSize={2}
+        className="h-auto w-[min(78vw,360px)]"
+      />
+      <p className="font-mono text-[11px] tracking-widest text-black/50 lowercase">
+        {url.replace(/^https?:\/\//, '')}
+      </p>
+    </div>
+  );
+}
+
 export default function QRPresentation() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language === 'en' ? 'en' : i18n.language === 'es' ? 'es' : 'fr';
@@ -335,6 +389,8 @@ export default function QRPresentation() {
 
   const title = `${t('qr.seo.title')} | ${siteConfig.name}`;
   const description = t('qr.seo.description');
+  const pageUrl = `${siteConfig.url}/QR`;
+  const [qrOpen, setQrOpen] = useState(false);
 
   return (
     <div className="bg-bg text-fg min-h-screen">
@@ -352,7 +408,19 @@ export default function QRPresentation() {
         <Link to={`/${lang}`} aria-label={t('qr.brandHomeLabel')} className="inline-flex">
           <BrandMark variant="full" className="text-base md:text-lg" />
         </Link>
-        <LanguageSwitcher />
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              setQrOpen(true);
+            }}
+            aria-label={t('qr.qrcode.button')}
+            className="border-border/60 bg-surface/60 text-fg hover:bg-fg/5 duration-base inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-[11px] font-semibold tracking-[0.15em] uppercase transition-colors"
+          >
+            QR
+          </button>
+          <LanguageSwitcher />
+        </div>
       </header>
 
       {/* ─── Hero ─── */}
@@ -399,6 +467,14 @@ export default function QRPresentation() {
           {t('qr.hero.eyebrow')}
         </span>
       </footer>
+
+      <QrOverlay
+        open={qrOpen}
+        onClose={() => {
+          setQrOpen(false);
+        }}
+        url={pageUrl}
+      />
     </div>
   );
 }

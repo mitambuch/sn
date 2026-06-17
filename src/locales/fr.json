@@ -1046,6 +1046,10 @@
       "share": "Partager",
       "shared": "Lien copié",
       "shareText": "Conciergerie privée suisse — accès curé à l'exceptionnel."
+    },
+    "qrcode": {
+      "button": "Afficher le QR code",
+      "scan": "Scannez avec votre téléphone"
     }
   },
   "articles": {

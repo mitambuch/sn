@@ -1046,6 +1046,10 @@
       "share": "Share",
       "shared": "Link copied",
       "shareText": "Swiss private concierge — curated access to the exceptional."
+    },
+    "qrcode": {
+      "button": "Show the QR code",
+      "scan": "Scan with your phone"
     }
   },
   "articles": {
