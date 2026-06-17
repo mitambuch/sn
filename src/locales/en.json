@@ -1549,7 +1549,10 @@
         "teaser": "First Choice at 9am, Hauser & Wirth private breakfast, guided tour with Marc Spiegler."
       },
       "lockedEyebrow": "↘ Off-market — access by cooptation",
-      "lockedHint": "On request",
+      "lockedHint": "By cooptation",
+      "lockedLabel": "Members only",
+      "lockedAria": "Members-only content — request access",
+      "cardAria": "{{title}} — request access",
       "locked1": {
         "tag": "Property · Engadine",
         "title": "Historic chalet, Sankt Moritz",
@@ -1677,7 +1680,7 @@
     "index": {
       "title": "SAW↗NEXT / Full index",
       "footerLocation": "Boudry, Switzerland",
-      "footerCount": "08 sections",
+      "footerCount": "07 sections",
       "footerEdition": "May 2026 edition",
       "s01name": "Introduction",
       "s01label": "Hero",
@@ -1689,8 +1692,6 @@
       "s04label": "Document",
       "s05name": "Domains",
       "s05label": "Services",
-      "s06name": "Events",
-      "s06label": "Agenda",
       "s08name": "Access",
       "s08label": "Cooptation",
       "s09name": "Contact",
@@ -1720,15 +1721,6 @@
       "requestAccess": "Request access",
       "privateArea": "Private area",
       "callDirect": "Call"
-    },
-    "events": {
-      "tag": "Events",
-      "headline": "Events open to the public.",
-      "lede": "A public glimpse. The rest is by cooptation.",
-      "locked": "Members only",
-      "lockedHint": "By cooptation",
-      "cardAria": "{{title}} — request access",
-      "lockedAria": "Members-only content — request access"
     }
   }
 }

@@ -19,40 +19,19 @@ import { MonoGradientPlaceholder } from '@components/ui/MonoGradientPlaceholder'
 import { useLandingContext } from '@context/LandingContentContext';
 import { useAccessRequestModal } from '@context/useAccessRequestModal';
 import { SectionTag } from '@features/landing/SectionTag';
+import { usePublicEvents } from '@features/landing/usePublicEvents';
 import { useReveal } from '@hooks/useReveal';
 import { resolveFieldOrFallback } from '@lib/i18nField';
 import { cn } from '@utils/cn';
+import { Lock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { isVitrineMode } from '@/config/env';
-import { unsplash } from '@/mocks/unsplash';
+import { resolveEventDate } from '@/features/events/eventDate';
 
-interface EventTeaser {
-  imgSlug: string;
-  imgAlt: string;
-  keyBase: 'evt01' | 'evt02';
-  day: string;
-  month: string;
-}
-
-const EVENTS: EventTeaser[] = [
-  {
-    imgSlug: 'geneva-united-nations-gala',
-    imgAlt: 'Palais des Nations en gala',
-    keyBase: 'evt01',
-    day: '14',
-    month: 'juin',
-  },
-  {
-    imgSlug: 'art-basel-fair',
-    imgAlt: 'Art Basel galerie principale',
-    keyBase: 'evt02',
-    day: '16',
-    month: 'juin',
-  },
-];
-
-const LOCKED_KEYS = ['locked1', 'locked2', 'locked3', 'locked4'] as const;
+/** How many locked cadenas teasers trail the real public events — "quelques
+ *  fiches floutées pour donner envie" (owner 2026-06-17). */
+const TEASER_COUNT = 3;
 
 /** Landing S08 — catalogue teaser + cooptation gate. */
 export const Access = () => {
@@ -61,6 +40,7 @@ export const Access = () => {
   const locale = (i18n.language as 'fr' | 'en') ?? 'fr';
   const ref = useReveal<HTMLDivElement>();
   const { openAccessRequest } = useAccessRequestModal();
+  const { events } = usePublicEvents();
 
   return (
     <section id="s08" data-landing-dark="true" data-theme="dark" className="bg-ink text-white">
@@ -95,12 +75,13 @@ export const Access = () => {
         </header>
 
         {/* ─── Catalogue teaser — backend Card style, 4-up ───
-             Soft-launch state : offers are deliberately blurred to
-             signal "preview only, content curation in progress".
-             Pointer-events-none so the cards aren't clickable.
-             Owner direction 2026-05-27 17:30 : "flouté les offres
-             dans l'aperçu du catalogue ... on travaillera ça mieux
-             par la suite". */}
+             Real public events (Sanity `visibility: public`) shown clearly +
+             a few LOCKED cadenas cards so the visitor feels there's more
+             behind access. Every card opens the AccessRequestModal — the
+             teaser is a funnel. No real public event published yet ⇒ the row
+             gracefully shows locked cards only (no fake fiche). Owner
+             2026-06-17 : "voir les événements public, garder quelques fiches
+             floutées pour donner envie ... reprends le petit cadenas". */}
         <div className="flex flex-col gap-6">
           <span className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
             {resolveFieldOrFallback(
@@ -109,57 +90,86 @@ export const Access = () => {
               t('landing.access.eventsEyebrow'),
             )}
           </span>
-          <div
-            aria-hidden="true"
-            className={cn(
-              'pointer-events-none blur-sm select-none',
-              'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5',
-            )}
-          >
-            {/* Real event teasers — Cloudinary imagery */}
-            {EVENTS.map(evt => (
-              <Card key={evt.keyBase} padding="none" className="border-white/15">
-                <Card.Media src={unsplash(evt.imgSlug)} alt={evt.imgAlt} ratio="4/3" />
-                <Card.Badge top={evt.day} bottom={evt.month} />
-                <Card.Body>
-                  <Card.Eyebrow className="text-white/60">
-                    {t(`landing.access.${evt.keyBase}.tag`)}
-                  </Card.Eyebrow>
-                  <Card.Title className="text-white">
-                    {t(`landing.access.${evt.keyBase}.title`)}
-                  </Card.Title>
-                  <Card.Meta className="text-xs leading-relaxed text-white/55">
-                    {t(`landing.access.${evt.keyBase}.venue`)}
-                  </Card.Meta>
-                </Card.Body>
-              </Card>
-            ))}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+            {/* Real public events — clear, clickable */}
+            {events.map(event => {
+              const { badge } = resolveEventDate(event, locale, t);
+              return (
+                <button
+                  key={event.id}
+                  type="button"
+                  onClick={() => {
+                    openAccessRequest('request');
+                  }}
+                  aria-label={t('landing.access.cardAria', { title: event.title })}
+                  className="rounded-card block text-left focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none"
+                >
+                  <Card interactive padding="none" className="h-full border-white/15">
+                    <Card.Media
+                      src={event.images[0]?.src}
+                      alt={event.images[0]?.alt ?? event.title}
+                      ratio="4/3"
+                    />
+                    <Card.Badge top={badge.top} bottom={badge.bottom} />
+                    <Card.Body>
+                      <Card.Eyebrow className="text-white/60">
+                        {t(`events.category.${event.category}`)} · {event.city}
+                      </Card.Eyebrow>
+                      <Card.Title className="text-white">{event.title}</Card.Title>
+                      <Card.Meta className="text-xs leading-relaxed text-white/55">
+                        {event.venue}
+                      </Card.Meta>
+                    </Card.Body>
+                  </Card>
+                </button>
+              );
+            })}
 
-            {/* Off-market placeholders — MonoGradientPlaceholder as media */}
-            {LOCKED_KEYS.slice(0, 2).map(key => (
-              <Card key={key} padding="none" className="border-white/15">
-                <div className="bg-ink relative aspect-4/3 w-full overflow-hidden">
-                  <MonoGradientPlaceholder tone="dark" className="absolute inset-0 h-full w-full" />
-                </div>
-                <Card.Body>
-                  <Card.Eyebrow className="text-white/60">
-                    {t(`landing.access.${key}.tag`)}
-                  </Card.Eyebrow>
-                  <Card.Title className="text-white">{t(`landing.access.${key}.title`)}</Card.Title>
-                  <Card.Meta className="text-xs leading-relaxed text-white/55">
-                    {t(`landing.access.${key}.stat`)}
-                  </Card.Meta>
-                </Card.Body>
-              </Card>
+            {/* Locked cadenas teasers — content redacted + veiled, hover lifts
+                the blur a touch. Click opens access. */}
+            {Array.from({ length: TEASER_COUNT }).map((_, i) => (
+              <button
+                key={`locked-${String(i)}`}
+                type="button"
+                onClick={() => {
+                  openAccessRequest('request');
+                }}
+                aria-label={t('landing.access.lockedAria')}
+                className="group/locked rounded-card block text-left focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none"
+              >
+                <Card interactive padding="none" className="relative h-full border-white/15">
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none blur-[6px] saturate-0 transition-[filter] duration-500 ease-out select-none group-hover/locked:blur-[3px]"
+                  >
+                    <div className="bg-ink relative aspect-4/3 w-full overflow-hidden">
+                      <MonoGradientPlaceholder
+                        tone="dark"
+                        className="absolute inset-0 h-full w-full"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-3 p-5">
+                      <span className="block h-2 w-1/3 rounded-full bg-white/15" />
+                      <span className="block h-4 w-3/4 rounded-full bg-white/25" />
+                      <span className="block h-2 w-1/2 rounded-full bg-white/10" />
+                    </div>
+                  </div>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-4 text-center">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/40 text-white">
+                      <Lock size={16} strokeWidth={1.5} aria-hidden="true" />
+                    </span>
+                    <span className="font-mono text-[11px] tracking-[0.2em] text-white uppercase">
+                      {t('landing.access.lockedLabel')}
+                    </span>
+                    <span className="font-mono text-[10px] tracking-[0.18em] text-white/55 uppercase">
+                      {t('landing.access.lockedHint')}
+                    </span>
+                  </div>
+                </Card>
+              </button>
             ))}
           </div>
         </div>
-
-        {/* ─── Off-market secondary row HIDDEN 2026-05-27 17:30 ───
-             Owner direction : "masqué la section offmarket on
-             travaillera ça mieux par la suite". The block stays in
-             the source so it's a one-line revert when the content
-             is curated post-launch. */}
 
         {/* ─── Bottom CTA strip — cooptation gate ─── */}
         <div className="flex flex-col gap-6 border-t border-white/15 pt-12 md:flex-row md:items-end md:justify-between">

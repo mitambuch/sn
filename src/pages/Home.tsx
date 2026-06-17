@@ -30,7 +30,6 @@ import {
   Hero,
   IndexOverlay,
   Interlocutor,
-  LandingEvents,
   LandingFooter,
   Manifesto,
   Marquee,
@@ -196,7 +195,6 @@ function HomeContent() {
         <Marquee items={finalMarquee} tone="light" />
         <Principles />
         <Domains />
-        <LandingEvents />
         <Marquee items={finalMarquee} tone="light" />
         <Access />
         <Interlocutor />
