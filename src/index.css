@@ -362,8 +362,11 @@ body::before {
     size: A4;
     margin: 16mm;
   }
+  /* The grey page bg lives on `html` (not body) — force white on both so the
+     short takeaway sheet doesn't leave a grey block below the content. */
+  html,
   body {
-    background: #fff;
+    background: #fff !important;
   }
   body::before {
     display: none;

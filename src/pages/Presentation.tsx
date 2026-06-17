@@ -221,7 +221,7 @@ function Platform() {
 function PrintSheet() {
   const { t } = useTranslation();
   return (
-    <div className="hidden font-mono text-black print:block">
+    <div className="hidden bg-white font-mono text-black print:fixed print:inset-0 print:block print:overflow-hidden">
       <div className="flex items-baseline justify-between border-b border-black/25 pb-4">
         <BrandMark variant="full" className="text-2xl" />
         <span className="text-[10px] tracking-[0.3em] uppercase">{t('qr.hero.eyebrow')}</span>
@@ -233,7 +233,10 @@ function PrintSheet() {
         <span className="text-[10px] tracking-[0.3em] text-black/60 uppercase">
           ↘ {t('qr.offer.tag')}
         </span>
-        <ul className="mt-4 grid grid-cols-2 gap-x-12">
+        <p className="mt-3 max-w-xl text-sm leading-relaxed text-black/75">
+          {t('qr.offer.heading')}
+        </p>
+        <ul className="mt-5 grid grid-cols-2 gap-x-12">
           {DOMAIN_KEYS.map(k => (
             <li key={k} className="flex gap-3 border-b border-black/10 py-2 text-sm uppercase">
               <span className="text-black/50">{k}</span>
