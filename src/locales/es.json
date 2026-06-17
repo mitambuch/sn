@@ -976,6 +976,23 @@
     "success": "Solicitud enviada. Valmont confirma el {{day}} a las {{slot}} en 30 minutos.",
     "error": "El envío ha fallado. Inténtelo de nuevo en un momento o escriba a Valmont."
   },
+  "qr": {
+    "seo": {
+      "title": "Presentación",
+      "description": "Conserjería privada suiza — acceso curado a lo excepcional, una plataforma a medida y discreción absoluta."
+    },
+    "brandHomeLabel": "Volver al inicio",
+    "hero": {
+      "eyebrow": "Conserjería privada · Suiza",
+      "title": "El acceso a lo excepcional,",
+      "word1": "orquestado",
+      "word2": "discreto",
+      "word3": "a medida",
+      "word4": "sin fricción",
+      "lede": "Una casa suiza que abre, para una clientela escogida, las puertas que no se abren. Bienes excepcionales, experiencias privadas, logística invisible.",
+      "scrollHint": "Descubrir"
+    }
+  },
   "articles": {
     "readMinutes": "min de lectura",
     "related": "Sobre este tema",

@@ -73,6 +73,7 @@ const LogoPreview = lazyWithRetry(() => import('@pages/LogoPreview'));
 const MotionShowcase = lazyWithRetry(() => import('@pages/MotionShowcase'));
 const SharePage = lazyWithRetry(() => import('@pages/SharePage'));
 const ExamplePage = lazyWithRetry(() => import('@pages/ExamplePage'));
+const QRPresentation = lazyWithRetry(() => import('@pages/QRPresentation'));
 
 /* ─── Loading fallback — themed, no white flash ───────────────── */
 function PageLoader() {
@@ -133,6 +134,10 @@ export default function AppRoutes() {
 
         {/* ─── /motion — Phase 1-5 motion showcase (no locale, no layout) ─── */}
         <Route path="/motion" element={<MotionShowcase />} />
+
+        {/* ─── /QR — salon presentation one-pager (no locale, no layout,
+              self-managed i18n + meta). Reached by scanning a QR code. ─── */}
+        <Route path="/QR" element={<QRPresentation />} />
 
         {/* ─── /share/:code — single Sanity-doc share, public, no auth ─── */}
         <Route path="/share/:code" element={<SharePage />} />

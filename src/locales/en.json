@@ -976,6 +976,23 @@
     "navigate": "Navigate",
     "open": "Open"
   },
+  "qr": {
+    "seo": {
+      "title": "Presentation",
+      "description": "Swiss private concierge — curated access to the exceptional, a bespoke platform and absolute discretion."
+    },
+    "brandHomeLabel": "Back to home",
+    "hero": {
+      "eyebrow": "Private concierge · Switzerland",
+      "title": "Access to the exceptional,",
+      "word1": "orchestrated",
+      "word2": "discreet",
+      "word3": "bespoke",
+      "word4": "frictionless",
+      "lede": "A Swiss house that opens, for a chosen clientele, the doors that stay closed. Rare goods, private experiences, invisible logistics.",
+      "scrollHint": "Discover"
+    }
+  },
   "articles": {
     "readMinutes": "min read",
     "related": "On this topic",

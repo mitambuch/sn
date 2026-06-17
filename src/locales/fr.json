@@ -976,6 +976,23 @@
     "success": "Demande envoyée. Valmont confirme {{day}} à {{slot}} dans 30 minutes.",
     "error": "L’envoi a échoué. Réessayez dans un instant ou écrivez à Valmont."
   },
+  "qr": {
+    "seo": {
+      "title": "Présentation",
+      "description": "Conciergerie privée suisse — accès curé à l'exceptionnel, plateforme sur-mesure et discrétion absolue."
+    },
+    "brandHomeLabel": "Retour à l'accueil",
+    "hero": {
+      "eyebrow": "Conciergerie privée · Suisse",
+      "title": "L'accès à l'exceptionnel,",
+      "word1": "orchestré",
+      "word2": "discret",
+      "word3": "sur-mesure",
+      "word4": "sans friction",
+      "lede": "Une maison suisse qui ouvre, pour une clientèle choisie, les portes que l'on n'ouvre pas. Biens rares, expériences fermées, logistique invisible.",
+      "scrollHint": "Découvrir"
+    }
+  },
   "articles": {
     "readMinutes": "min de lecture",
     "related": "Sur ce sujet",
