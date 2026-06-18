@@ -216,9 +216,12 @@ function Platform() {
   );
 }
 
-/** Sober A4 takeaway — hidden on screen, shown only when printing
- *  ("Télécharger le PDF" → window.print()). Same mono typography, black on
- *  white, just the essentials.
+/** A4 takeaway — hidden on screen, printed on "Télécharger le PDF"
+ *  (window.print()). Mirrors the house deck (cover + meta → the standard →
+ *  the member platform → ten fields → single interlocutor + contact), kept
+ *  sober: mono, black on white. Same i18n keys as the screen page, so it is
+ *  generated live in the visitor's language and always in sync. Paginates
+ *  across A4 sheets via `break-inside-avoid` per section.
  *  WHY normal flow (not `print:fixed`): a `position: fixed` print sheet renders
  *  a BLANK page on Safari/iOS and ignores the @page margins — a client reported
  *  "the PDF is all white". Plain `print:block` lets the @page 16mm margins apply
@@ -228,21 +231,79 @@ function PrintSheet() {
   const lang = i18n.language === 'en' ? 'en' : i18n.language === 'es' ? 'es' : 'fr';
   return (
     <div className="hidden bg-white font-mono text-black print:block">
-      <div className="flex items-baseline justify-between border-b border-black/25 pb-4">
+      {/* ─── Cover header + meta strip (echoes the deck cover) ─── */}
+      <header className="flex items-baseline justify-between border-b border-black/25 pb-4">
         <BrandMark variant="full" className="text-2xl" />
         <span className="text-[10px] tracking-[0.3em] uppercase">{t('qr.hero.eyebrow')}</span>
-      </div>
+      </header>
+      <dl className="mt-4 grid grid-cols-3 gap-x-8 border-b border-black/15 pb-4 text-[9px] tracking-[0.18em] uppercase">
+        {HERO_META.map(n => (
+          <div key={n} className="flex flex-col gap-0.5">
+            <dt className="text-black/45">{t(`qr.hero.m${String(n)}Label`)}</dt>
+            <dd className="font-medium">{t(`qr.hero.m${String(n)}Value`)}</dd>
+          </div>
+        ))}
+      </dl>
+
+      {/* ─── Manifesto statement ─── */}
       <p className="mt-10 max-w-2xl text-xl leading-snug font-medium tracking-tight uppercase">
         {t('qr.offer.lede')}
       </p>
-      <div className="mt-12">
+
+      {/* ─── The standard (method / service quality) ─── */}
+      <section className="mt-12 break-inside-avoid">
+        <span className="text-[10px] tracking-[0.3em] text-black/60 uppercase">
+          ↘ {t('qr.quality.tag')}
+        </span>
+        <h2 className="mt-2 text-base font-medium tracking-tight uppercase">
+          {t('qr.quality.heading')}
+        </h2>
+        <div className="mt-4 grid grid-cols-2 gap-x-10 gap-y-4">
+          {QUALITY_ITEMS.map(n => (
+            <p key={n} className="text-xs leading-relaxed text-black/75">
+              <span className="font-medium text-black uppercase">
+                {t(`qr.quality.item${String(n)}Title`)} —{' '}
+              </span>
+              {t(`qr.quality.item${String(n)}Body`)}
+            </p>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── The member platform (principles) ─── */}
+      <section className="mt-12 break-inside-avoid">
+        <span className="text-[10px] tracking-[0.3em] text-black/60 uppercase">
+          ↘ {t('qr.platform.tag')}
+        </span>
+        <h2 className="mt-2 text-base font-medium tracking-tight uppercase">
+          {t('qr.platform.heading')}
+        </h2>
+        <p className="mt-3 max-w-xl text-sm leading-relaxed text-black/75">
+          {t('qr.platform.body')}
+        </p>
+        <div className="mt-4 grid grid-cols-3 gap-x-8">
+          {PLATFORM_POINTS.map(n => (
+            <div key={n}>
+              <h3 className="text-[11px] font-medium uppercase">
+                {t(`qr.platform.point${String(n)}Title`)}
+              </h3>
+              <p className="mt-1 text-[11px] leading-relaxed text-black/70">
+                {t(`qr.platform.point${String(n)}Body`)}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── Ten fields ─── */}
+      <section className="mt-12 break-inside-avoid">
         <span className="text-[10px] tracking-[0.3em] text-black/60 uppercase">
           ↘ {t('qr.offer.tag')}
         </span>
-        <p className="mt-3 max-w-xl text-sm leading-relaxed text-black/75">
+        <h2 className="mt-2 text-base font-medium tracking-tight uppercase">
           {t('qr.offer.heading')}
-        </p>
-        <ul className="mt-5 grid grid-cols-2 gap-x-12">
+        </h2>
+        <ul className="mt-4 grid grid-cols-2 gap-x-12">
           {DOMAIN_KEYS.map(k => (
             <li key={k} className="flex gap-3 border-b border-black/10 py-2 text-sm uppercase">
               <span className="text-black/50">{k}</span>
@@ -250,25 +311,29 @@ function PrintSheet() {
             </li>
           ))}
         </ul>
-      </div>
-      <p className="mt-12 max-w-2xl text-base leading-relaxed">{t('qr.experience.body')}</p>
-      <div className="mt-12 flex items-end justify-between gap-6 border-t border-black/25 pt-5">
-        <div className="flex flex-col gap-1">
-          <span className="text-[10px] tracking-[0.3em] text-black/55 uppercase">
-            {t('qr.pdf.contact')}
-          </span>
-          <span className="text-sm font-medium uppercase">
-            {FOCAL_MEMBER.firstName} {FOCAL_MEMBER.lastName}
-          </span>
-          <span className="text-xs text-black/65 uppercase">
-            {FOCAL_MEMBER.functionLabel[lang]}
-          </span>
-          <span className="text-xs">
-            {FOCAL_MEMBER.phone} · {FOCAL_MEMBER.email}
-          </span>
+      </section>
+
+      {/* ─── Single interlocutor + contact ─── */}
+      <section className="mt-12 break-inside-avoid">
+        <p className="max-w-2xl text-base leading-relaxed">{t('qr.experience.body')}</p>
+        <div className="mt-10 flex items-end justify-between gap-6 border-t border-black/25 pt-5">
+          <div className="flex flex-col gap-1">
+            <span className="text-[10px] tracking-[0.3em] text-black/55 uppercase">
+              {t('qr.pdf.contact')}
+            </span>
+            <span className="text-sm font-medium uppercase">
+              {FOCAL_MEMBER.firstName} {FOCAL_MEMBER.lastName}
+            </span>
+            <span className="text-xs text-black/65 uppercase">
+              {FOCAL_MEMBER.functionLabel[lang]}
+            </span>
+            <span className="text-xs">
+              {FOCAL_MEMBER.phone} · {FOCAL_MEMBER.email}
+            </span>
+          </div>
+          <span className="text-lg font-bold tracking-[0.12em] uppercase">saw-next.ch</span>
         </div>
-        <span className="text-lg font-bold tracking-[0.12em] uppercase">saw-next.ch</span>
-      </div>
+      </section>
     </div>
   );
 }
