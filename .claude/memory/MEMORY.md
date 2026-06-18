@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-06-18** — [Session — PDF /presentation enrichi + 3 fix retours client + politique traduction](sessions/2026-06-18-0955.md)
 - **2026-06-17** — [Session — 3 fix /presentation + fiche produit publique](sessions/2026-06-17-2058.md)
 - **2026-06-17** — [Session — Aperçu catalogue 08.A branché sur events publics + ship](sessions/2026-06-17-1736.md)
-- **2026-06-17** — [Session — Événements publics sur la home (vrais + fiches floutées)](sessions/2026-06-17-1700.md)
 
 ## Active decisions (top 5)
 
@@ -48,7 +48,7 @@
 
 ## Deep dive
 
-- Full catalogue (180 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (181 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
