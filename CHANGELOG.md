@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.5.0](https://github.com/mitambuch/sn/compare/v1.4.0...v1.5.0) (2026-06-18)
+
+### ✨ Features
+
+* **presentation:** enrich the A4 takeaway PDF, mirror the house deck ([7bd9801](https://github.com/mitambuch/sn/commit/7bd980164c2717bd0f1ef86d719a07da2a942977))
+
+### 🐛 Bug Fixes
+
+* **catalogue:** fiche desktop plus large, scroll court, confiné à la popup ([85625ba](https://github.com/mitambuch/sn/commit/85625bab7ea8386f82ec3019839d27af8c7cb135))
+* **concierge:** make the inquiry CTA prominent on concierge experiences ([6a41c47](https://github.com/mitambuch/sn/commit/6a41c47f77e51c32e9875eda1b5b0c9295307d31))
+* **landing:** remove the inert "Voir <name>" CTA on profile cards ([e889bc6](https://github.com/mitambuch/sn/commit/e889bc6125c37d55af4cd8bab0edf1a50d17815e))
+* **studio:** hint that empty EN/ES locale tabs are the editor's to fill ([c10aa4e](https://github.com/mitambuch/sn/commit/c10aa4e0c46f700c8f6d93107564841dd391389e))
+
+### 📚 Documentation
+
+* **landing:** correct stale teamData slug comment after CTA removal ([41536c0](https://github.com/mitambuch/sn/commit/41536c08c41757250cf6c3a6874f0010cff5d52e))
+* **memory:** clôture session 2026-06-17 (release v1.4.0, vidéos, fiche desktop) ([9dade64](https://github.com/mitambuch/sn/commit/9dade64a008e172a18c9e4b786ab523e27bc983c))
+* **memory:** clôture session 2026-06-18 (PDF enrichi + fix retours client) ([e42df3f](https://github.com/mitambuch/sn/commit/e42df3f09cdc6883aa4427dc611fe240b4bc0313))
+* **memory:** codify "client owns their Sanity translations, FR = fallback" ([2ffb7eb](https://github.com/mitambuch/sn/commit/2ffb7eb18518a88804b3a3bc648d63543dc4da86))
+
+### 🔧 Chores
+
+* **gitignore:** never commit public/modifs (client internal docs leak) ([ae66945](https://github.com/mitambuch/sn/commit/ae66945223ed707aa5fea2796b69a304881398ca))
+* **memory:** artefacts release v1.4.0 + fix tag [#perf](https://github.com/mitambuch/sn/issues/perf) ([01430d7](https://github.com/mitambuch/sn/commit/01430d798b009b9aadb766d4383ba2aa0eae2385)), closes [#performance](https://github.com/mitambuch/sn/issues/performance)
+
 ## [1.4.0](https://github.com/mitambuch/sn/compare/v1.3.0...v1.4.0) (2026-06-17)
 
 ### ✨ Features
