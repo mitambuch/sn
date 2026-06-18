@@ -65,8 +65,8 @@ export default function ConciergeDetail() {
           />
         )}
 
-        <div className="grid gap-12 lg:grid-cols-3">
-          <div className="space-y-8 lg:col-span-2">
+        <div className="grid gap-12 lg:grid-cols-3 lg:items-start">
+          <div className="space-y-8 lg:order-1 lg:col-span-2">
             <p className="text-fg text-lg leading-relaxed text-pretty">{service.description}</p>
 
             {service.programme && service.programme.length > 0 && (
@@ -81,7 +81,12 @@ export default function ConciergeDetail() {
               </div>
             )}
           </div>
-          <aside className="border-border bg-surface/40 space-y-4 rounded-lg border p-6">
+          {/* WHY order-first / lg:sticky: the inquiry CTA is the page's primary
+              action. On other detail types it sits in the hero; here it lived
+              in a secondary side box, so a client reported it "missing" on a
+              concierge experience. Pull it above the long description on mobile
+              and keep it in view while scrolling on desktop. */}
+          <aside className="border-border bg-surface/40 order-first space-y-4 rounded-lg border p-6 lg:sticky lg:top-24 lg:order-2">
             <span className="text-muted text-xs tracking-widest uppercase">
               {t('concierge.leadTime')}
             </span>

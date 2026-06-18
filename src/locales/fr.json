@@ -1669,8 +1669,7 @@
       "whatsapp": "WhatsApp sécurisé",
       "whatsappAction": "Ouvrir",
       "linkedin": "LinkedIn",
-      "linkedinAction": "Profil",
-      "seeMember": "Voir {{name}}"
+      "linkedinAction": "Profil"
     },
     "footer": {
       "colNavLabel": "Navigation",

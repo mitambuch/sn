@@ -25,7 +25,8 @@ export interface TeamMemberData {
   key: string;
   firstName: string;
   lastName: string;
-  /** URL slug — used for the per-member CTA anchor. */
+  /** URL-safe slug — member identity; not currently rendered (the per-member
+   *  CTA anchor that used it was removed 2026-06-18). */
   slug: string;
   /** Focal contact: loads first and anchors the autoplay rotation. */
   isFocal: boolean;

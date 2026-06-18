@@ -74,3 +74,8 @@ dist-handoff/
 
 .vercel
 qr-preview/
+
+# Client-supplied reference material (bug lists, decks). Lives under public/
+# only as a local scratch — must NEVER be committed: anything in public/ is
+# served publicly by Vite, which would leak the client's internal documents.
+public/modifs/

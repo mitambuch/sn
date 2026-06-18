@@ -217,11 +217,9 @@ export const Interlocutor = () => {
            md:min-h-170 locks the row height so swapping focal doesn't make
            the box jump. */}
       <div className="grid grid-cols-1 md:min-h-170 md:grid-cols-[1.25fr_1fr]">
-        {/* ─── Focal card — hover-pauses the timer. id = active member slug
-             so the per-member CTA anchor resolves. ─── */}
+        {/* ─── Focal card — hover-pauses the timer. ─── */}
         <article
-          id={focal.slug}
-          className="bg-surface border-border duration-base flex scroll-mt-24 flex-col gap-8 border-b p-8 transition-all md:border-r md:border-b-0 md:p-12"
+          className="bg-surface border-border duration-base flex flex-col gap-8 border-b p-8 transition-all md:border-r md:border-b-0 md:p-12"
           aria-live="polite"
           onMouseEnter={() => {
             pausedRef.current = true;
@@ -261,9 +259,9 @@ export const Interlocutor = () => {
           <span className="font-mono text-[12px] tracking-[0.18em] uppercase">{focalFunction}</span>
           <p className="text-fg max-w-prose text-sm leading-relaxed md:text-base">{focalBio}</p>
 
-          {/* Contact block — every member shows its own channels, then a CTA
-              that reflects the active member (never hardcoded to Valmont).
-              mt-auto anchors the block to the bottom of the focal article. */}
+          {/* Contact block — every member shows its own channels (phone,
+              email, WhatsApp, LinkedIn when set). mt-auto anchors the block
+              to the bottom of the focal article. */}
           <div className="mt-auto">
             <ul className="border-border border-t">
               {channels.map(channel => (
@@ -278,15 +276,6 @@ export const Interlocutor = () => {
                 </li>
               ))}
             </ul>
-            <div className="flex justify-end pt-4">
-              <a
-                href={`#${focal.slug}`}
-                className="border-fg text-fg hover:bg-fg hover:text-bg duration-base inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-[10px] tracking-[0.25em] uppercase transition-colors"
-              >
-                {t('landing.interlocutor.seeMember', { name: focal.firstName })}
-                <span aria-hidden="true">↗</span>
-              </a>
-            </div>
           </div>
         </article>
 

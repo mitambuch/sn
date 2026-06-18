@@ -128,6 +128,24 @@ export function LocaleTabsInput(props: ObjectInputProps) {
         })}
       </div>
 
+      {/* ─── Empty non-FR locale → remind the editor this is theirs to fill.
+           The client reported translations "blocked"; in reality the EN/ES
+           tab was simply empty and FR was showing as fallback on the site.
+           This contextual hint makes the expected action explicit. ─── */}
+      {active !== 'fr' && !filled[active] && (
+        <p
+          style={{
+            margin: 0,
+            fontSize: 11,
+            lineHeight: 1.5,
+            color: 'var(--card-muted-fg-color, #9aa0a6)',
+          }}
+        >
+          Traduction {active.toUpperCase()} vide — le français s’affiche sur le site en attendant.
+          Saisissez la traduction dans le champ ci-dessous, puis publiez.
+        </p>
+      )}
+
       {/* ─── Active locale field (rendered via renderDefault) ─── */}
       {props.renderDefault({ ...props, members: filteredMembers })}
     </div>
