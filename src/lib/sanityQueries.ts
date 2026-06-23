@@ -389,7 +389,14 @@ const PUBLIC_FICHE_PROJECTION = `{
     "dateLabel": ${L('dateLabel')},
     venue,
     city,
-    countryCode
+    countryCode,
+    // Experience storytelling — the full programme/steps the visitor must see
+    // (events carry an hour, concierge "expériences" don't). Locale-flattened
+    // here so the ES site never renders FR step labels. Null on types without it.
+    programme[]{ time, "label": ${L_LABEL}, "description": ${L('description')} },
+    // Concierge experiences: the "ce qui est inclus" bullet list (editorial,
+    // never pricing — price/specsheet stay behind access).
+    "capabilities": ${LARR('capabilities')}
   }`;
 
 /** Public fiche by type + id (for the public fiche popup). HARD-restricted to

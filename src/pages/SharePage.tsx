@@ -21,6 +21,7 @@ import { ExpiryCountdown } from '@components/ui/ExpiryCountdown';
 import { GalleryGrid } from '@components/ui/GalleryGrid';
 import { Image } from '@components/ui/Image';
 import { AccessRequestModal } from '@features/access/AccessRequestModal';
+import { ExperienceInterestModal } from '@features/landing/ExperienceInterestModal';
 import { type CollectionFiche, ShareCollection } from '@features/share/ShareCollection';
 import { useSanityItem } from '@hooks/useSanityItem';
 import { useEffect, useMemo, useState } from 'react';
@@ -87,6 +88,10 @@ export default function SharePage() {
   const [status, setStatus] = useState<Status>('loading');
   const [consumed, setConsumed] = useState<ConsumedShareCode | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  // Interest contact form (distinct from the access-request modal above):
+  // expressing interest in a shared fiche opens a simple contact, not the
+  // access/invitation tunnel (client retour 2026-06-23).
+  const [interestOpen, setInterestOpen] = useState(false);
   // Gate mode: the fiche content is fetched server-side (private dataset)
   // via the validated share code, never directly from Sanity in the browser.
   const [gateFiche, setGateFiche] = useState<SharedFiche | null>(null);
@@ -708,15 +713,14 @@ export default function SharePage() {
                     {t('share.interest.title')}
                   </span>
                   <p className="text-muted max-w-xl font-sans text-sm leading-relaxed normal-case">
-                    Manifestez votre intérêt : nous vous recontactons et, si vous le souhaitez, vous
-                    ouvrons un accès privé — même sans compte.
+                    {t('share.interest.lede')}
                   </p>
                 </div>
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                   <button
                     type="button"
                     onClick={() => {
-                      setModalOpen(true);
+                      setInterestOpen(true);
                     }}
                     className="border-fg bg-fg text-bg hover:bg-fg/90 inline-flex w-fit items-center gap-2 rounded-full border px-6 py-3 font-mono text-xs tracking-[0.3em] uppercase transition-colors"
                   >
@@ -749,6 +753,14 @@ export default function SharePage() {
           setModalOpen(false);
         }}
         initialMode="request"
+      />
+
+      {/* Express interest in the shared fiche → simple contact form. */}
+      <ExperienceInterestModal
+        experienceTitle={interestOpen ? ficheTitle || t('share.fallbackTitle') : null}
+        onClose={() => {
+          setInterestOpen(false);
+        }}
       />
     </main>
   );

@@ -1239,11 +1239,14 @@
     },
     "section": {
       "description": "Description",
-      "gallery": "Gallery"
+      "gallery": "Gallery",
+      "programme": "Programme",
+      "included": "What's included"
     },
     "interest": {
       "title": "Interested in this item?",
-      "cta": "Express my interest"
+      "cta": "Express my interest",
+      "lede": "Express your interest: the SAW Next team will contact you directly."
     },
     "meta": {
       "views": "View",
@@ -1269,6 +1272,31 @@
       "selected_other": "{{count}} items selected",
       "heading": "A selection for you",
       "back": "Back to selection"
+    }
+  },
+  "interestForm": {
+    "eyebrow": "Contact",
+    "title": "Express your interest",
+    "lede": "Leave us a message and your details: the SAW Next team will contact you directly about this experience.",
+    "about": "About:",
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone (optional)",
+      "message": "Your message",
+      "messagePlaceholder": "Tell us what interests you about this experience…",
+      "availability": "Your availability (optional)",
+      "availabilityPlaceholder": "E.g. weekdays, after 6pm, June 2026…"
+    },
+    "legal": "By sending this form, you agree to be contacted by the SAW Next team regarding your request.",
+    "submit": "Send",
+    "submitting": "Sending…",
+    "success": "Message sent. The SAW Next team will contact you shortly.",
+    "error": "Sending failed. Please try again in a moment.",
+    "errors": {
+      "email": "Invalid email address.",
+      "phone": "Invalid phone number."
     }
   },
   "public": {

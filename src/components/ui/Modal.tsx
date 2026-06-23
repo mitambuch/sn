@@ -17,6 +17,10 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
+  /** Accessible name for the dialog when the content renders its OWN heading
+   *  instead of using `title` — without it the dialog has no accessible name.
+   *  Ignored when `title` is set (the rendered title labels the dialog). */
+  ariaLabel?: string;
   children: ReactNode;
   className?: string;
 }
@@ -25,7 +29,7 @@ const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 /** Accessible modal dialog with focus trap, backdrop, and portal rendering. */
-export const Modal = ({ isOpen, onClose, title, children, className }: ModalProps) => {
+export const Modal = ({ isOpen, onClose, title, ariaLabel, children, className }: ModalProps) => {
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
@@ -116,6 +120,7 @@ export const Modal = ({ isOpen, onClose, title, children, className }: ModalProp
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? titleId : undefined}
+        aria-label={!title && ariaLabel ? ariaLabel : undefined}
         tabIndex={-1}
         className={cn(
           // overscroll-contain: when the dialog scrolls past its end, the scroll

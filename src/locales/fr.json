@@ -1239,11 +1239,14 @@
     },
     "section": {
       "description": "Description",
-      "gallery": "Galerie"
+      "gallery": "Galerie",
+      "programme": "Programme",
+      "included": "Ce qui est inclus"
     },
     "interest": {
       "title": "Cette fiche vous intéresse ?",
-      "cta": "Manifester mon intérêt"
+      "cta": "Manifester mon intérêt",
+      "lede": "Manifestez votre intérêt : l'équipe SAW Next vous recontacte directement."
     },
     "meta": {
       "views": "Vue",
@@ -1269,6 +1272,31 @@
       "selected_other": "{{count}} pièces sélectionnées",
       "heading": "Une sélection pour vous",
       "back": "Retour à la sélection"
+    }
+  },
+  "interestForm": {
+    "eyebrow": "Contact",
+    "title": "Manifester mon intérêt",
+    "lede": "Laissez-nous un message et vos coordonnées : l'équipe SAW Next vous recontacte directement au sujet de cette expérience.",
+    "about": "À propos de :",
+    "fields": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Email",
+      "phone": "Téléphone (optionnel)",
+      "message": "Votre message",
+      "messagePlaceholder": "Dites-nous ce qui vous intéresse dans cette expérience…",
+      "availability": "Vos disponibilités (optionnel)",
+      "availabilityPlaceholder": "Ex : en semaine, après 18h, juin 2026…"
+    },
+    "legal": "En envoyant ce formulaire, vous acceptez d'être recontacté par l'équipe SAW Next au sujet de votre demande.",
+    "submit": "Envoyer",
+    "submitting": "Envoi…",
+    "success": "Message envoyé. L'équipe SAW Next vous recontacte rapidement.",
+    "error": "L'envoi a échoué. Réessayez dans un instant.",
+    "errors": {
+      "email": "Adresse email invalide.",
+      "phone": "Numéro de téléphone invalide."
     }
   },
   "public": {
