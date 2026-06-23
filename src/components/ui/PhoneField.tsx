@@ -31,6 +31,7 @@ interface PhoneFieldProps {
 export const PhoneField = ({ label, value, onChange, error, id }: PhoneFieldProps) => {
   const autoId = useId();
   const fieldId = id ?? autoId;
+  const errorId = `${fieldId}-error`;
 
   return (
     <div className="flex flex-col gap-1.5">
@@ -45,9 +46,14 @@ export const PhoneField = ({ label, value, onChange, error, id }: PhoneFieldProp
         value={value}
         onChange={next => onChange(next ?? '')}
         className={cn('sn-phone', error && 'sn-phone--error')}
+        // WHY: associate the error text with the input so assistive tech
+        // announces the invalid state + reason (react-phone-number-input
+        // forwards unknown props to the underlying <input>).
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? errorId : undefined}
       />
       {error && (
-        <p className="text-danger-text text-sm" role="alert">
+        <p id={errorId} className="text-danger-text text-sm" role="alert">
           {error}
         </p>
       )}

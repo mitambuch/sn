@@ -146,7 +146,12 @@ export const ExperienceInterestModal = ({
     form.phone.trim() !== '' && !isValidPhone(form.phone) ? t('interestForm.errors.phone') : null;
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} className="max-w-xl">
+    <Modal
+      isOpen={isOpen}
+      onClose={handleClose}
+      ariaLabel={t('interestForm.title')}
+      className="max-w-xl"
+    >
       <form
         className="flex flex-col gap-6 p-2"
         onSubmit={e => {
@@ -164,7 +169,9 @@ export const ExperienceInterestModal = ({
           </h2>
           {experienceTitle !== null && experienceTitle !== '' && (
             <p className="text-muted text-sm leading-relaxed">
-              {t('interestForm.about')} :{' '}
+              {/* Colon lives in the locale string so each language keeps its own
+                  typography (FR "… :" with a space, EN/ES "…:" without). */}
+              {t('interestForm.about')}{' '}
               <span className="text-fg font-medium">{experienceTitle}</span>
             </p>
           )}
@@ -222,6 +229,8 @@ export const ExperienceInterestModal = ({
           <textarea
             id="interest-message"
             rows={4}
+            required
+            aria-required="true"
             value={form.message}
             onChange={e => {
               set('message')(e.target.value);

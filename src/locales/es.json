@@ -1278,7 +1278,7 @@
     "eyebrow": "Contacto",
     "title": "Manifestar mi interés",
     "lede": "Déjenos un mensaje y sus datos de contacto: el equipo de SAW Next se pondrá en contacto con usted directamente sobre esta experiencia.",
-    "about": "Acerca de",
+    "about": "Acerca de:",
     "fields": {
       "firstName": "Nombre",
       "lastName": "Apellido",

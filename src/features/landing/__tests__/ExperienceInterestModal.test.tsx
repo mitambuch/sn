@@ -58,6 +58,9 @@ describe('ExperienceInterestModal', () => {
 
   it('shows the experience as context and disables submit until valid', () => {
     render(<ExperienceInterestModal experienceTitle="Jaquet Droz" onClose={vi.fn()} />);
+    // The dialog must carry an accessible name even though it renders its own
+    // heading (Modal ariaLabel path).
+    expect(screen.getByRole('dialog', { name: /manifester mon intérêt/i })).toBeInTheDocument();
     expect(screen.getByText(/jaquet droz/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /envoyer/i })).toBeDisabled();
   });
