@@ -1239,11 +1239,14 @@
     },
     "section": {
       "description": "Descripción",
-      "gallery": "Galería"
+      "gallery": "Galería",
+      "programme": "Programa",
+      "included": "Qué incluye"
     },
     "interest": {
       "title": "¿Le interesa esta ficha?",
-      "cta": "Manifestar mi interés"
+      "cta": "Manifestar mi interés",
+      "lede": "Manifieste su interés: el equipo de SAW Next se pondrá en contacto con usted directamente."
     },
     "meta": {
       "views": "Vista",
@@ -1269,6 +1272,31 @@
       "selected_other": "{{count}} fichas seleccionadas",
       "heading": "Una selección para usted",
       "back": "Volver a la selección"
+    }
+  },
+  "interestForm": {
+    "eyebrow": "Contacto",
+    "title": "Manifestar mi interés",
+    "lede": "Déjenos un mensaje y sus datos de contacto: el equipo de SAW Next se pondrá en contacto con usted directamente sobre esta experiencia.",
+    "about": "Acerca de",
+    "fields": {
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Email",
+      "phone": "Teléfono (opcional)",
+      "message": "Su mensaje",
+      "messagePlaceholder": "Cuéntenos qué le interesa de esta experiencia…",
+      "availability": "Su disponibilidad (opcional)",
+      "availabilityPlaceholder": "Ej.: entre semana, después de las 18h, junio de 2026…"
+    },
+    "legal": "Al enviar este formulario, acepta ser contactado por el equipo de SAW Next en relación con su solicitud.",
+    "submit": "Enviar",
+    "submitting": "Enviando…",
+    "success": "Mensaje enviado. El equipo de SAW Next se pondrá en contacto con usted en breve.",
+    "error": "El envío ha fallado. Inténtelo de nuevo en un momento.",
+    "errors": {
+      "email": "Dirección de email no válida.",
+      "phone": "Número de teléfono no válido."
     }
   },
   "public": {

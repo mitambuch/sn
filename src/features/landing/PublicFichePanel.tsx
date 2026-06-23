@@ -21,14 +21,19 @@ import { localeStr } from '@/utils/localeString';
 interface PublicFichePanelProps {
   type: string | undefined;
   id: string | undefined;
-  /** Enter the access tunnel from the fiche CTA (the shell decides how). */
-  onRequestAccess: () => void;
+  /** Express interest in this experience — the shell opens the contact form.
+   *  Receives the resolved experience title so the lead carries its context. */
+  onExpressInterest: (experienceTitle: string) => void;
 }
 
 /** The read-only fiche, fields self-hiding when empty. */
-export const PublicFichePanel = ({ type, id, onRequestAccess }: PublicFichePanelProps) => {
+export const PublicFichePanel = ({ type, id, onExpressInterest }: PublicFichePanelProps) => {
   const { t, i18n } = useTranslation();
   const { fiche, loading } = usePublicFiche(type, id);
+  // Active locale → passed to localeStr() so any field that arrives as a raw
+  // {fr,en,es} object (e.g. an image alt the projection didn't flatten) resolves
+  // to the visitor's language instead of collapsing to FR.
+  const locale = i18n.language === 'en' ? 'en' : i18n.language === 'es' ? 'es' : 'fr';
 
   if (loading) {
     return (
@@ -49,12 +54,15 @@ export const PublicFichePanel = ({ type, id, onRequestAccess }: PublicFichePanel
     );
   }
 
-  const title = localeStr(fiche.title);
-  const summary = localeStr(fiche.summary);
-  const description = localeStr(fiche.description);
+  const title = localeStr(fiche.title, locale);
+  const summary = localeStr(fiche.summary, locale);
+  const description = localeStr(fiche.description, locale);
   const heroSrc = fiche.heroImage?.src ?? fiche.images?.[0]?.src;
   const heroAlt =
-    fiche.heroImage?.alt ?? fiche.images?.[0]?.alt ?? (title || t('share.fallbackTitle'));
+    localeStr(fiche.heroImage?.alt, locale) ||
+    localeStr(fiche.images?.[0]?.alt, locale) ||
+    title ||
+    t('share.fallbackTitle');
 
   // Prominent date + place line (events only) — present only when in the data.
   const isEvent = fiche._type === 'event';
@@ -70,13 +78,15 @@ export const PublicFichePanel = ({ type, id, onRequestAccess }: PublicFichePanel
       });
     }
     if (mode === 'allYear') return t('share.value.allYear');
-    return localeStr(fiche.dateLabel) || t('share.value.onRequest');
+    return localeStr(fiche.dateLabel, locale) || t('share.value.onRequest');
   })();
   const heroVenue = isEvent
-    ? [localeStr(fiche.venue), localeStr(fiche.city)].filter(Boolean).join(' · ')
+    ? [localeStr(fiche.venue, locale), localeStr(fiche.city, locale)].filter(Boolean).join(' · ')
     : '';
 
   const galleryImages = (fiche.images ?? []).slice(1);
+  const programme = fiche.programme ?? [];
+  const capabilities = fiche.capabilities ?? [];
 
   return (
     <article className="flex flex-col gap-7">
@@ -129,6 +139,61 @@ export const PublicFichePanel = ({ type, id, onRequestAccess }: PublicFichePanel
         </section>
       )}
 
+      {/* Programme — the full ordered steps of the experience (events show an
+          hour, concierge experiences don't). Self-hiding when empty. */}
+      {programme.length > 0 && (
+        <section className="border-fg/10 flex flex-col gap-5 border-t pt-6">
+          <span className="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
+            {t('share.section.programme')}
+          </span>
+          <ol className="flex flex-col gap-6">
+            {programme.map((step, i) => {
+              const stepLabel = localeStr(step.label, locale);
+              const stepDesc = localeStr(step.description, locale);
+              const stepTime = localeStr(step.time, locale);
+              return (
+                <li key={i} className="border-fg/15 flex flex-col gap-1.5 border-l-2 pl-4 sm:pl-5">
+                  <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    {stepTime && (
+                      <span className="text-fg font-mono text-xs tracking-wider tabular-nums">
+                        {stepTime}
+                      </span>
+                    )}
+                    <span className="text-fg font-sans text-sm font-medium normal-case">
+                      {stepLabel}
+                    </span>
+                  </div>
+                  {stepDesc && (
+                    <p className="text-muted max-w-2xl font-sans text-sm leading-relaxed normal-case">
+                      {stepDesc}
+                    </p>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+        </section>
+      )}
+
+      {/* What's included — concierge experiences' capability bullet list. */}
+      {capabilities.length > 0 && (
+        <section className="border-fg/10 flex flex-col gap-3 border-t pt-6">
+          <span className="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
+            {t('share.section.included')}
+          </span>
+          <ul className="flex flex-col gap-2">
+            {capabilities.map((cap, i) => (
+              <li key={i} className="text-muted flex gap-2 font-sans text-sm normal-case">
+                <span aria-hidden="true" className="text-fg/40">
+                  —
+                </span>
+                <span>{localeStr(cap, locale)}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       {/* Gallery — hidden unless there are photos beyond the hero */}
       {galleryImages.length > 0 && (
         <section className="border-fg/10 flex flex-col gap-4 border-t pt-6">
@@ -136,24 +201,28 @@ export const PublicFichePanel = ({ type, id, onRequestAccess }: PublicFichePanel
             {t('share.section.gallery')}
           </span>
           <GalleryGrid
-            images={galleryImages.map(img => ({ src: img.src, alt: localeStr(img.alt) }))}
+            images={galleryImages.map(img => ({ src: img.src, alt: localeStr(img.alt, locale) }))}
           />
         </section>
       )}
 
-      {/* Bottom CTA — enter the access tunnel straight from the fiche */}
+      {/* Bottom CTA — express interest in this experience. Opens a simple
+          contact form (the shell decides how), NOT the access/invitation
+          tunnel: a public experience needs a low-friction contact. */}
       <section className="border-fg/10 flex flex-col gap-4 border-t pt-6">
         <div className="flex flex-col gap-1">
           <span className="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
             {t('share.interest.title')}
           </span>
           <p className="text-muted font-sans text-sm leading-relaxed normal-case">
-            {t('landing.access.modal.lede')}
+            {t('share.interest.lede')}
           </p>
         </div>
         <button
           type="button"
-          onClick={onRequestAccess}
+          onClick={() => {
+            onExpressInterest(title || t('share.fallbackTitle'));
+          }}
           className="border-fg bg-fg text-bg hover:bg-fg/90 inline-flex w-fit items-center gap-2 rounded-full border px-6 py-3 font-mono text-xs tracking-[0.3em] uppercase transition-colors"
         >
           {t('share.interest.cta')}

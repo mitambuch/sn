@@ -15,19 +15,29 @@ describe('PublicFichePanel', () => {
   });
 
   it('renders the fiche for a public catalogue item', () => {
-    render(<PublicFichePanel type="event" id="evt-01" onRequestAccess={vi.fn()} />);
+    render(<PublicFichePanel type="event" id="evt-01" onExpressInterest={vi.fn()} />);
     expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
   });
 
-  it('fires onRequestAccess from the bottom CTA', async () => {
-    const onRequestAccess = vi.fn();
-    render(<PublicFichePanel type="event" id="evt-01" onRequestAccess={onRequestAccess} />);
+  it('renders the full programme (steps must not be truncated)', () => {
+    render(<PublicFichePanel type="event" id="evt-01" onExpressInterest={vi.fn()} />);
+    // evt-01 mock has a 4-step programme — the public fiche must show them all.
+    // First step's label + last step's hour (23:30, unique to the programme)
+    // prove the whole list renders, not just a head slice.
+    expect(screen.getByText(/cocktail — salle des pas-perdus/i)).toBeInTheDocument();
+    expect(screen.getByText('23:30')).toBeInTheDocument();
+  });
+
+  it('fires onExpressInterest with the experience title from the bottom CTA', async () => {
+    const onExpressInterest = vi.fn();
+    render(<PublicFichePanel type="event" id="evt-01" onExpressInterest={onExpressInterest} />);
     await userEvent.click(screen.getByRole('button', { name: /manifester mon intérêt/i }));
-    expect(onRequestAccess).toHaveBeenCalledOnce();
+    expect(onExpressInterest).toHaveBeenCalledOnce();
+    expect(onExpressInterest).toHaveBeenCalledWith(expect.any(String));
   });
 
   it('shows a not-found message for an unknown item', () => {
-    render(<PublicFichePanel type="event" id="does-not-exist" onRequestAccess={vi.fn()} />);
+    render(<PublicFichePanel type="event" id="does-not-exist" onExpressInterest={vi.fn()} />);
     expect(screen.getByRole('heading', { name: /ce code n.existe pas/i })).toBeInTheDocument();
   });
 });

@@ -18,6 +18,7 @@ import { Card } from '@components/ui/Card';
 import { MonoGradientPlaceholder } from '@components/ui/MonoGradientPlaceholder';
 import { useLandingContext } from '@context/LandingContentContext';
 import { useAccessRequestModal } from '@context/useAccessRequestModal';
+import { ExperienceInterestModal } from '@features/landing/ExperienceInterestModal';
 import { PublicFicheModal } from '@features/landing/PublicFicheModal';
 import { SectionTag } from '@features/landing/SectionTag';
 import { type PublicCatalogueType, usePublicCatalogue } from '@features/landing/usePublicCatalogue';
@@ -57,6 +58,9 @@ export const Access = () => {
   const [ficheItem, setFicheItem] = useState<{ type: PublicCatalogueType; id: string } | null>(
     null,
   );
+  // The experience the contact form is open for (null = closed). Opened from a
+  // fiche CTA — a public experience gets a simple contact, not the access tunnel.
+  const [interestFor, setInterestFor] = useState<string | null>(null);
 
   // Real public items first (capped), locked cadenas teasers fill up to MAX_TILES.
   // Only feature items that ACTUALLY have an image — a teaser tile with no photo
@@ -231,15 +235,25 @@ export const Access = () => {
       </div>
 
       {/* Fiche popup over the landing — opened by a teaser card. Its CTA closes
-          the fiche then opens the access tunnel (no stacked modals). */}
+          the fiche then opens the experience contact form (no stacked modals).
+          NOTE: this is the EXPERIENCE contact form, not the access tunnel — the
+          bottom-strip + cadenas CTAs above still open the access request. */}
       <PublicFicheModal
         item={ficheItem}
         onClose={() => {
           setFicheItem(null);
         }}
-        onRequestAccess={() => {
+        onExpressInterest={experienceTitle => {
           setFicheItem(null);
-          openAccessRequest('request');
+          setInterestFor(experienceTitle);
+        }}
+      />
+
+      {/* Experience contact form — simple message + coordinates, posts a lead. */}
+      <ExperienceInterestModal
+        experienceTitle={interestFor}
+        onClose={() => {
+          setInterestFor(null);
         }}
       />
     </section>

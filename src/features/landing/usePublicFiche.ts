@@ -48,6 +48,11 @@ export interface PublicFicheData {
   venue?: string;
   city?: string;
   countryCode?: string;
+  /** Ordered experience steps (events carry `time`, concierge ones don't).
+   *  Locale-flattened by the GROQ projection. */
+  programme?: { time?: string; label?: string; description?: string }[];
+  /** Concierge "ce qui est inclus" bullet list (locale-flattened). */
+  capabilities?: string[];
 }
 
 const PUBLIC_TYPES: readonly PublicCatalogueType[] = [
@@ -86,6 +91,7 @@ function mockFiche(type: PublicCatalogueType, id: string): PublicFicheData | nul
       ...(e.venue ? { venue: e.venue } : {}),
       ...(e.city ? { city: e.city } : {}),
       ...(e.countryCode ? { countryCode: e.countryCode } : {}),
+      ...(e.programme && e.programme.length > 0 ? { programme: e.programme } : {}),
     };
   }
   const lookup: Record<
@@ -98,6 +104,8 @@ function mockFiche(type: PublicCatalogueType, id: string): PublicFicheData | nul
           summary?: string;
           description?: string;
           images?: { src: string; alt?: string }[];
+          programme?: { time?: string; label?: string; description?: string }[];
+          capabilities?: string[];
         }
       | undefined
   > = {
@@ -118,6 +126,10 @@ function mockFiche(type: PublicCatalogueType, id: string): PublicFicheData | nul
     ...(item.summary ? { summary: item.summary } : {}),
     ...(item.description ? { description: item.description } : {}),
     ...(item.images ? { images: item.images } : {}),
+    ...(item.programme && item.programme.length > 0 ? { programme: item.programme } : {}),
+    ...(item.capabilities && item.capabilities.length > 0
+      ? { capabilities: item.capabilities }
+      : {}),
   };
 }
 

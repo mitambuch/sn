@@ -16,13 +16,16 @@ interface PublicFicheModalProps {
   /** The catalogue item to show, or null when the modal is closed. */
   item: { type: PublicCatalogueType; id: string } | null;
   onClose: () => void;
-  /** Fired by the fiche CTA — the parent closes the fiche then opens access. */
-  onRequestAccess: () => void;
+  /** Fired by the fiche CTA — the parent closes the fiche then opens the
+   *  experience contact form (with the resolved experience title). */
+  onExpressInterest: (experienceTitle: string) => void;
 }
 
 /** The public fiche, opened as a popup over the landing. */
-export const PublicFicheModal = ({ item, onClose, onRequestAccess }: PublicFicheModalProps) => (
+export const PublicFicheModal = ({ item, onClose, onExpressInterest }: PublicFicheModalProps) => (
   <Modal isOpen={item !== null} onClose={onClose} className="max-w-5xl">
-    {item && <PublicFichePanel type={item.type} id={item.id} onRequestAccess={onRequestAccess} />}
+    {item && (
+      <PublicFichePanel type={item.type} id={item.id} onExpressInterest={onExpressInterest} />
+    )}
   </Modal>
 );
