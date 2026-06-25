@@ -41,9 +41,14 @@ const L = (field: string) =>
 const LPT = (field: string) =>
   `pt::text(select($locale == "en" => coalesce(${field}.en, ${field}.fr), $locale == "es" => coalesce(${field}.es, ${field}.fr), ${field}.fr))`;
 
-/** Localised array-of-localeString → array of active-locale strings. */
+/** Localised array-of-localeString → array of active-locale strings.
+ *  WHY the `[]{ "v": … }.v` shape: GROQ has no `array[]<expression>` form —
+ *  `array[]select(…)` is a parse error ("expected '}' following object body")
+ *  and makes the whole query 500 at runtime (not caught by lint/typecheck/build
+ *  since it's a string). Map each element to a one-key object, then pluck the
+ *  key to flatten back to an array of scalars. */
 const LARR = (field: string) =>
-  `${field}[]select($locale == "en" => coalesce(@.en, @.fr), $locale == "es" => coalesce(@.es, @.fr), @.fr)`;
+  `${field}[]{ "v": select($locale == "en" => coalesce(@.en, @.fr), $locale == "es" => coalesce(@.es, @.fr), @.fr) }.v`;
 
 /** Localised `label` inside an array element (element has a `label` localeString). */
 const L_LABEL = `select($locale == "en" => coalesce(label.en, label.fr), $locale == "es" => coalesce(label.es, label.fr), label.fr)`;
