@@ -280,13 +280,26 @@ function Day() {
       onClick={() => setOption(key)}
       aria-pressed={option === key}
       className={cn(
-        'rounded-full font-mono tracking-[0.12em] uppercase transition-colors',
-        variant === 'bar' ? 'flex-1 px-4 py-3 text-xs' : 'px-4 py-2 text-[11px]',
+        'rounded-full font-mono uppercase transition-colors',
+        variant === 'bar'
+          ? 'flex-1 px-3 py-2 text-center leading-tight'
+          : 'px-4 py-2 text-[11px] tracking-[0.12em]',
         option === key ? 'bg-fg text-bg' : 'text-muted hover:text-fg',
       )}
     >
-      {optionLabels[key].name}
-      <span className="ml-1.5 opacity-60">· {optionLabels[key].tagline}</span>
+      {variant === 'bar' ? (
+        <>
+          <span className="block text-[11px] tracking-[0.12em]">{optionLabels[key].name}</span>
+          <span className="mt-0.5 block text-[9px] tracking-wide opacity-60">
+            {optionLabels[key].tagline}
+          </span>
+        </>
+      ) : (
+        <>
+          {optionLabels[key].name}
+          <span className="ml-1.5 opacity-60">· {optionLabels[key].tagline}</span>
+        </>
+      )}
     </button>
   );
 
@@ -345,8 +358,8 @@ function Day() {
         aria-label="Departure option"
         inert={!barVisible}
         className={cn(
-          'border-border bg-bg/95 fixed inset-x-0 bottom-0 z-40 flex gap-2 border-t p-3 backdrop-blur-sm transition-transform duration-300 md:hidden',
-          'pb-[max(0.75rem,env(safe-area-inset-bottom))]',
+          'border-border bg-bg/95 fixed inset-x-0 bottom-0 z-40 flex gap-2 border-t px-3 pt-2 backdrop-blur-sm transition-transform duration-300 md:hidden',
+          'pb-[max(0.5rem,env(safe-area-inset-bottom))]',
           barVisible ? 'translate-y-0' : 'translate-y-full',
         )}
       >
