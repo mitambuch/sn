@@ -75,6 +75,7 @@ const SharePage = lazyWithRetry(() => import('@pages/SharePage'));
 const ExamplePage = lazyWithRetry(() => import('@pages/ExamplePage'));
 const QRPage = lazyWithRetry(() => import('@pages/QRPage'));
 const Presentation = lazyWithRetry(() => import('@pages/Presentation'));
+const TheHiddenShore = lazyWithRetry(() => import('@pages/TheHiddenShore'));
 
 /* ─── Loading fallback — themed, no white flash ───────────────── */
 function PageLoader() {
@@ -141,6 +142,10 @@ export default function AppRoutes() {
               layout, self-managed i18n + meta. ─── */}
         <Route path="/QR" element={<QRPage />} />
         <Route path="/presentation" element={<Presentation />} />
+
+        {/* ─── /the-hidden-shore — bespoke private-journey pitch (no locale,
+              no layout, English-only, noindex). EDIT: src/data/hiddenShore.ts ─── */}
+        <Route path="/the-hidden-shore" element={<TheHiddenShore />} />
 
         {/* ─── /share/:code — single Sanity-doc share, public, no auth ─── */}
         <Route path="/share/:code" element={<SharePage />} />
