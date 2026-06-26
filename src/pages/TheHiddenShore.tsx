@@ -8,7 +8,7 @@
 //       category) so the page is never an endless scroll. Small lucide
 //       pictos label each section. No bullet lists — services are
 //       separated by hairlines. Reuses the SAW NEXT monochrome visual
-//       language end-to-end. A background video for the cover is pending.
+//       language end-to-end. A muted looping video sits behind the cover.
 // WHEN: /the-hidden-shore — top-level route, outside the locale tree, no
 //       layout chrome, self-manages its own <title>/meta (noindex).
 //       English only by design — a one-off client document, not site
@@ -135,10 +135,23 @@ function SectionHead({ icon, label, title }: { icon: string; label: string; titl
   );
 }
 
-/** Cover — title, subtitle, location/dates, epigraph. One screen. */
+/** Cover — muted looping video behind the title, with a dark scrim so the
+ *  text stays legible. Title, subtitle, location/dates, epigraph. One screen. */
 function Hero() {
   return (
     <section className="bg-ink relative isolate flex min-h-svh flex-col justify-between overflow-hidden px-5 pt-28 pb-10 text-white md:px-12 md:pt-32">
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        src="/video/portimao.mp4"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover"
+      />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-black/45" />
+
       <span className="flex items-center gap-2.5 font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase">
         <Compass size={14} strokeWidth={1.5} aria-hidden="true" /> {hiddenShore.brand}
       </span>
