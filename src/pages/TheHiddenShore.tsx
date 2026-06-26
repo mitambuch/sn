@@ -29,12 +29,14 @@ import { Reveal } from '@components/ui/Reveal';
 import { cn } from '@utils/cn';
 import {
   Anchor,
+  ArrowUpRight,
   BellRing,
   BookOpen,
   Building2,
   CalendarDays,
   Camera,
   Car,
+  ChevronDown,
   Clock,
   Compass,
   Gift,
@@ -163,9 +165,20 @@ function Hero() {
         <h1 className="mt-5 max-w-5xl font-mono text-[clamp(2.75rem,9vw,7rem)] leading-[0.92] font-medium tracking-[-0.03em] text-balance uppercase">
           {hiddenShore.title}
         </h1>
-        <p className="mt-8 max-w-xl font-mono text-sm tracking-[0.2em] text-white/75 uppercase">
-          {hiddenShore.location} &nbsp;·&nbsp; {hiddenShore.dates}
-        </p>
+        <div className="mt-8 flex flex-col gap-3">
+          <span className="flex items-center gap-2 font-mono text-xs tracking-[0.25em] text-white/70 uppercase">
+            <MapPin size={15} strokeWidth={1.5} aria-hidden="true" /> {hiddenShore.location}
+          </span>
+          <span className="flex items-center gap-2.5 font-mono text-[clamp(1.5rem,5vw,2.5rem)] leading-none font-medium tracking-tight text-white uppercase">
+            <CalendarDays
+              size={26}
+              strokeWidth={1.5}
+              aria-hidden="true"
+              className="shrink-0 text-white/80"
+            />
+            {hiddenShore.dates}
+          </span>
+        </div>
         <p className="mt-10 max-w-md text-lg leading-relaxed text-pretty text-white/85">
           {hiddenShore.epigraph.map(line => (
             <span key={line} className="block">
@@ -175,9 +188,15 @@ function Hero() {
         </p>
       </div>
 
-      <span className="font-mono text-[10px] tracking-[0.3em] text-white/45 uppercase">
-        Scroll · tap to open
-      </span>
+      <div className="flex items-center gap-2 font-mono text-[10px] tracking-[0.3em] text-white/55 uppercase">
+        <ChevronDown
+          size={16}
+          strokeWidth={1.5}
+          aria-hidden="true"
+          className="motion-safe:animate-bounce"
+        />
+        Scroll to explore
+      </div>
     </section>
   );
 }
@@ -217,11 +236,13 @@ function Story() {
             <p className="text-fg mb-4 font-mono text-sm leading-snug tracking-tight uppercase">
               {manifesto.lead}
             </p>
-            <div className="text-fg/75 flex flex-col gap-2 leading-[1.7]">
+            <ul className="divide-border/40 text-fg/80 divide-y">
               {manifesto.lines.map(line => (
-                <span key={line}>{line}</span>
+                <li key={line} className="py-2 leading-relaxed first:pt-0">
+                  {line}
+                </li>
               ))}
-            </div>
+            </ul>
           </AccordionContent>
         </AccordionItem>
 
@@ -237,13 +258,13 @@ function Story() {
               </span>
             </AccordionTrigger>
             <AccordionContent className="text-base">
-              <div className="text-fg/75 flex flex-col gap-2 leading-[1.7]">
+              <ul className="divide-border/40 text-fg/80 divide-y">
                 {chapter.lines.map(line => (
-                  <span key={line} className="block">
+                  <li key={line} className="py-2 leading-relaxed first:pt-0">
                     {line}
-                  </span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </AccordionContent>
           </AccordionItem>
         ))}
@@ -403,7 +424,7 @@ function Included() {
 function Closing() {
   return (
     <section className="bg-ink text-on-ink px-5 py-28 md:px-12 md:py-40">
-      <Reveal>
+      <Reveal className="flex flex-col gap-10">
         <p className="max-w-4xl font-mono text-[clamp(1.75rem,6vw,4rem)] leading-none font-medium tracking-tight text-balance uppercase">
           {closing.map(line => (
             <span key={line} className="block">
@@ -411,6 +432,13 @@ function Closing() {
             </span>
           ))}
         </p>
+        <Link
+          to="/"
+          className="border-on-ink/30 text-on-ink hover:bg-on-ink hover:text-ink focus-visible:ring-on-ink inline-flex w-fit items-center gap-2.5 rounded-full border px-7 py-3.5 font-mono text-xs tracking-[0.2em] uppercase transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+        >
+          Discover Saw Next
+          <ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />
+        </Link>
       </Reveal>
     </section>
   );
@@ -434,6 +462,11 @@ export default function TheHiddenShore() {
       <meta property="og:description" content={description} />
       <meta property="og:type" content="website" />
       <meta property="og:url" content={`${siteConfig.url}/the-hidden-shore`} />
+      <meta property="og:image" content={`${siteConfig.url}/images/sn-og.png`} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:image" content={`${siteConfig.url}/images/sn-og.png`} />
 
       <header
         className="pointer-events-none fixed inset-x-0 top-0 z-100 flex items-center justify-between px-5 py-4 text-white md:px-12 md:py-5"
