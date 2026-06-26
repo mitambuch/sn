@@ -29,9 +29,14 @@ describe('TheHiddenShore', () => {
     renderPage();
     // Option A is the default → 11:00 departure is shown.
     expect(screen.getByText('11:00')).toBeInTheDocument();
-    await userEvent.click(screen.getByRole('button', { name: /option b/i }));
+    // Two A/B controls can exist (inline on desktop + the pinned mobile bar);
+    // either flips the same shared state — click the first match.
+    const [optionB] = screen.getAllByRole('button', { name: /option b/i });
+    if (!optionB) throw new Error('Option B control not found');
+    await userEvent.click(optionB);
     // Switching to B swaps the morning departure times.
     expect(screen.getByText('14:00')).toBeInTheDocument();
+    expect(screen.queryByText('11:00')).not.toBeInTheDocument();
   });
 
   it('exposes an included service group as a tap-to-open trigger', () => {

@@ -53,7 +53,7 @@ import {
   Waves,
   Wine,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { siteConfig } from '@/config/site';
@@ -252,37 +252,59 @@ function Story() {
   );
 }
 
-/** The day — A/B departure toggle + four acts, each tap-to-open. */
+/** The day — A/B departure schedule. On desktop the toggle sits inline; on
+ *  mobile a thumb-reachable bar pins to the bottom of the screen while this
+ *  section is in view, so switching A/B never means scrolling back up. */
 function Day() {
   const [option, setOption] = useState<OptionKey>('a');
+  const sectionRef = useRef<HTMLElement>(null);
+  const [barVisible, setBarVisible] = useState(false);
+
+  // Reveal the mobile bottom bar only while The Day is on screen — switching
+  // A/B elsewhere would change times the visitor cannot see.
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setBarVisible(entry?.isIntersecting ?? false),
+      { rootMargin: '0px 0px -20% 0px' },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const optionButton = (key: OptionKey, variant: 'inline' | 'bar') => (
+    <button
+      key={key}
+      type="button"
+      onClick={() => setOption(key)}
+      aria-pressed={option === key}
+      className={cn(
+        'rounded-full font-mono tracking-[0.12em] uppercase transition-colors',
+        variant === 'bar' ? 'flex-1 px-4 py-3 text-xs' : 'px-4 py-2 text-[11px]',
+        option === key ? 'bg-fg text-bg' : 'text-muted hover:text-fg',
+      )}
+    >
+      {optionLabels[key].name}
+      <span className="ml-1.5 opacity-60">· {optionLabels[key].tagline}</span>
+    </button>
+  );
+
   return (
-    <section className="border-border border-t px-5 py-20 md:px-12 md:py-28">
+    <section ref={sectionRef} className="border-border border-t px-5 py-20 md:px-12 md:py-28">
       <SectionHead icon="day" label="Hour by hour" title="The Day" />
 
       <div className="mb-8 flex flex-col gap-3">
         <p className="text-muted text-sm leading-relaxed">
           Same journey, two start times — pick the schedule that suits the day.
         </p>
+        {/* Desktop toggle (inline). Mobile uses the pinned bottom bar below. */}
         <div
           role="group"
           aria-label="Departure option"
-          className="border-border inline-flex w-fit rounded-full border p-1"
+          className="border-border hidden w-fit rounded-full border p-1 md:inline-flex"
         >
-          {(['a', 'b'] as const).map(key => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => setOption(key)}
-              aria-pressed={option === key}
-              className={cn(
-                'rounded-full px-4 py-2 font-mono text-[11px] tracking-[0.12em] uppercase transition-colors',
-                option === key ? 'bg-fg text-bg' : 'text-muted hover:text-fg',
-              )}
-            >
-              {optionLabels[key].name}
-              <span className="ml-1.5 opacity-60">· {optionLabels[key].tagline}</span>
-            </button>
-          ))}
+          {(['a', 'b'] as const).map(key => optionButton(key, 'inline'))}
         </div>
       </div>
 
@@ -315,6 +337,21 @@ function Day() {
           </AccordionItem>
         ))}
       </Accordion>
+
+      {/* Mobile: thumb-reachable A/B switch pinned to the bottom of the
+          screen while The Day is in view. Hidden on desktop. */}
+      <div
+        role="group"
+        aria-label="Departure option"
+        inert={!barVisible}
+        className={cn(
+          'border-border bg-bg/95 fixed inset-x-0 bottom-0 z-40 flex gap-2 border-t p-3 backdrop-blur-sm transition-transform duration-300 md:hidden',
+          'pb-[max(0.75rem,env(safe-area-inset-bottom))]',
+          barVisible ? 'translate-y-0' : 'translate-y-full',
+        )}
+      >
+        {(['a', 'b'] as const).map(key => optionButton(key, 'bar'))}
+      </div>
     </section>
   );
 }
