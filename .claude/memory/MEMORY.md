@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-06-26** — [Handoff — ship Option B on /the-hidden-shore FAST when info lands](sessions/2026-06-26-1714.md)
 - **2026-06-26** — [Session — The Hidden Shore pitch page: rebuilt, video cover, shipped live](sessions/2026-06-26-1551.md)
 - **2026-06-26** — [Session — Bespoke "The Hidden Shore" private-journey pitch page](sessions/2026-06-26-1219.md)
-- **2026-06-23** — [Session — Retours client sur les fiches expériences publiques (4 points)](sessions/2026-06-23-0901.md)
 
 ## Active decisions (top 5)
 
@@ -50,7 +50,7 @@
 
 ## Deep dive
 
-- Full catalogue (191 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (192 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
