@@ -17,7 +17,7 @@ export const siteConfig = {
   title: env.APP_NAME,
   description:
     'Conciergerie privée suisse — accès curaté à des biens, expériences et opportunités exclusives.',
-  ogImage: '', // Add your OG image to public/images/ and update this path
+  ogImage: '/images/sn-og.png', // SN-branded share card — public/images/sn-og.png
 
   // ─── Contact ───────────────────────────────────────────────
   email: '',
