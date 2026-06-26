@@ -2,7 +2,7 @@
 id: groq-larr-array-select-invalid
 date: 2026-06-25
 type: friction
-tags: [#sanity, #i18n, #frontend, #client-specific]
+tags: [#sanity, #i18n, #client-specific]
 scope: client-specific
 status: active
 ---
