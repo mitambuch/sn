@@ -328,10 +328,31 @@ function Day() {
     <section ref={sectionRef} className="border-border border-t px-5 py-20 md:px-12 md:py-28">
       <SectionHead icon="day" label="Hour by hour" title="The Day" />
 
-      <div className="mb-8 flex flex-col gap-3">
+      <div className="mb-8 flex flex-col gap-5">
         <p className="text-muted text-sm leading-relaxed">
-          Same journey, two start times — pick the schedule that suits the day.
+          Same journey, two start times. The marked moments below change with your choice —
+          everything else stays identical.
         </p>
+
+        {/* Active option made unmistakable — large A/B badge + label, updates
+            on toggle so you always know which schedule you are reading. */}
+        <div className="border-fg/15 bg-fg/3 flex w-fit items-center gap-4 rounded-xl border p-4">
+          <span
+            aria-hidden="true"
+            className="bg-fg text-bg flex size-12 shrink-0 items-center justify-center rounded-lg font-mono text-2xl font-bold"
+          >
+            {option.toUpperCase()}
+          </span>
+          <div className="flex flex-col">
+            <span className="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
+              Now viewing
+            </span>
+            <span className="text-fg font-mono text-base font-medium tracking-tight uppercase">
+              {optionLabels[option].name} · {optionLabels[option].tagline}
+            </span>
+          </div>
+        </div>
+
         {/* Desktop toggle (inline). Mobile uses the pinned bottom bar below. */}
         <div
           role="group"
@@ -358,10 +379,21 @@ function Day() {
                   .map(entry => (
                     <li
                       key={entry.body}
-                      className="grid gap-1 py-3 first:pt-0 md:grid-cols-[7rem_1fr] md:gap-5"
+                      className={cn(
+                        'grid gap-1 py-3 first:pt-0 md:grid-cols-[9rem_1fr] md:gap-5',
+                        // Mark the moments that differ between Option A and B.
+                        entry.options && 'border-fg border-l-2 pl-3 md:pl-4',
+                      )}
                     >
-                      <span className="text-fg font-mono text-xs tracking-[0.12em] uppercase">
-                        {entry.options ? entry.options[option] : entry.label}
+                      <span className="flex flex-col gap-0.5">
+                        {entry.options && (
+                          <span className="text-muted font-mono text-[9px] tracking-[0.2em] uppercase">
+                            {optionLabels[option].name}
+                          </span>
+                        )}
+                        <span className="text-fg font-mono text-xs tracking-[0.12em] uppercase">
+                          {entry.options ? entry.options[option] : entry.label}
+                        </span>
                       </span>
                       <span className="text-muted leading-relaxed">{entry.body}</span>
                     </li>
