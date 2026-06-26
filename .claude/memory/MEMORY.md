@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-06-26** — [Session — The Hidden Shore pitch page: rebuilt, video cover, shipped live](sessions/2026-06-26-1551.md)
 - **2026-06-26** — [Session — Bespoke "The Hidden Shore" private-journey pitch page](sessions/2026-06-26-1219.md)
 - **2026-06-23** — [Session — Retours client sur les fiches expériences publiques (4 points)](sessions/2026-06-23-0901.md)
-- **2026-06-18** — [Session — PDF /presentation enrichi + 3 fix retours client + politique traduction](sessions/2026-06-18-0955.md)
 
 ## Active decisions (top 5)
 
@@ -19,6 +19,7 @@
 
 ## Open frictions
 
+- **2026-06-26** — [PowerShell here-strings break on embedded double quotes in `git commit -m`](frictions/2026-06-26-powershell-heredoc-double-quotes.md)
 - **2026-06-25** — [`LARR` générait du GROQ invalide (`array[]select()`) → fiches publiques en 500](frictions/2026-06-25-groq-larr-array-select-invalid.md)
 - **2026-06-17** — [Couper une release depuis un env sans `.env.local` : deux gates faux-positifs](frictions/2026-06-17-release-from-sandbox-gates.md)
 - **2026-06-17** — [Compte Cloudinary désactivé → vidéos hero 401, self-host sous public/](frictions/2026-06-17-cloudinary-account-disabled-selfhost-videos.md)
@@ -49,7 +50,7 @@
 
 ## Deep dive
 
-- Full catalogue (189 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (191 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
