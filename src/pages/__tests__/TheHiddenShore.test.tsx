@@ -34,8 +34,8 @@ describe('TheHiddenShore', () => {
     expect(screen.getByText('14:00')).toBeInTheDocument();
   });
 
-  it('lists an included service group', () => {
+  it('exposes an included service group as a tap-to-open trigger', () => {
     renderPage();
-    expect(screen.getByRole('heading', { name: /private yacht/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /private yacht/i })).toBeInTheDocument();
   });
 });

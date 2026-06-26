@@ -180,8 +180,21 @@ export const optionLabels: Record<OptionKey, { name: string; tagline: string }> 
   b: { name: 'Option B', tagline: 'Afternoon departure' },
 };
 
+/** The four acts of the day — used to group the timeline into expandable
+ *  phases (so no single panel becomes a wall of text). Order matters. */
+export const dayPhases = [
+  'Afternoon at Sea',
+  'The Hidden Shore',
+  'The Celebration',
+  'Sunrise',
+] as const;
+
+export type DayPhase = (typeof dayPhases)[number];
+
 export interface TimelineEntry {
-  /** Left-column label (a clock time or a phase name). Null when the time
+  /** Which act of the day this moment belongs to. */
+  phase: DayPhase;
+  /** Left-column label (a clock time or a moment name). Null when the time
    *  depends on the chosen option — then `options` supplies both values. */
   label: string | null;
   /** Option-dependent start times (used when `label` is null). */
@@ -191,61 +204,82 @@ export interface TimelineEntry {
 
 export const timeline: TimelineEntry[] = [
   {
+    phase: 'Afternoon at Sea',
     label: null,
     options: { a: '11:00', b: '14:00' },
     body: "Private collection from the guests' villas.",
   },
   {
+    phase: 'Afternoon at Sea',
     label: null,
     options: { a: '11:45', b: '14:45' },
     body: 'Arrival at Portimão Marina. Private boarding. Welcome cocktails. Champagne.',
   },
   {
+    phase: 'Afternoon at Sea',
     label: null,
     options: { a: '12:00', b: '15:00' },
-    body: 'Departure. Private navigation. Relaxation. Swimming. Water activities. Lunch and drinks served on board.',
+    body: 'Departure. Private navigation. Swimming. Water activities. Lunch and drinks on board.',
   },
   {
-    label: 'Throughout the afternoon',
+    phase: 'Afternoon at Sea',
+    label: 'Afternoon',
     body: 'Exploration of the Algarve coastline. Stops for swimming. Cocktail service. Music. Photography.',
   },
   {
+    phase: 'Afternoon at Sea',
     label: 'Golden Hour',
     body: 'Sunset navigation. Signature cocktails. Premium canapés.',
   },
   {
+    phase: 'The Hidden Shore',
     label: '18:30',
     body: 'Arrival offshore. Transfer by luxury tenders.',
   },
   {
+    phase: 'The Hidden Shore',
     label: '18:45',
     body: 'Arrival at the Hidden Shore. Private welcome. Champagne. Cocktails. Live music.',
   },
   {
+    phase: 'The Hidden Shore',
     label: 'World Cup Lounge',
-    body: 'Private screening of the FIFA World Cup on a giant LED screen. Premium lounge seating. Cocktail service. Open Bar.',
+    body: 'Private screening of the FIFA World Cup on a giant LED screen. Premium lounge seating. Open Bar.',
   },
   {
+    phase: 'The Celebration',
     label: 'Dinner Experience',
     body: "Exclusive gastronomic dinner. Chef's tasting menu. Wine pairing. Live culinary experience.",
   },
   {
+    phase: 'The Celebration',
     label: 'Celebration',
     body: 'Private DJ. Premium Open Bar. Dance floor. Late-night food. Exclusive entertainment.',
   },
   {
+    phase: 'The Celebration',
     label: 'Signature Moment',
     body: 'Presentation of the Julien Durix artwork. Birthday cake. Champagne. Celebration.',
   },
   {
+    phase: 'Sunrise',
     label: 'Until Sunrise',
     body: 'Music. Cocktails. Premium service. Late-night lounge. Breakfast preparation.',
   },
   {
+    phase: 'Sunrise',
     label: 'Sunrise Breakfast',
-    body: 'Breakfast served facing the sea. Relaxation. Private transfers back to the villas.',
+    body: 'Breakfast facing the sea. Relaxation. Private transfers back to the villas.',
   },
 ];
+
+/** At-a-glance key facts — a compact, always-visible orientation strip. */
+export const facts = [
+  { label: 'Destination', value: 'Portimão · Algarve' },
+  { label: 'Dates', value: '2 – 3 July' },
+  { label: 'Yacht', value: 'Azimut 80 Fly' },
+  { label: 'Shore venue', value: 'Rei das Praias' },
+] as const;
 
 export interface IncludedGroup {
   title: string;
