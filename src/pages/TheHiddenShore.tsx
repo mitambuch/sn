@@ -3,19 +3,19 @@
 //
 // WHAT: A short, mobile-first, tap-to-open presentation for one client
 //       pitch (a private birthday journey). A cinematic cover, an at-a-
-//       glance strip, two photo bands, then everything else lives in
-//       collapsed accordions (the story in chapters, the day in four
-//       acts, what is included by category) so the page is never an
-//       endless scroll. Small lucide pictos label each section. No bullet
-//       lists — services are separated by hairlines. Reuses the SAW NEXT
-//       monochrome visual language end-to-end.
+//       glance strip, then everything else lives in collapsed accordions
+//       (the story in chapters, the day in four acts, what is included by
+//       category) so the page is never an endless scroll. Small lucide
+//       pictos label each section. No bullet lists — services are
+//       separated by hairlines. Reuses the SAW NEXT monochrome visual
+//       language end-to-end. A background video for the cover is pending.
 // WHEN: /the-hidden-shore — top-level route, outside the locale tree, no
 //       layout chrome, self-manages its own <title>/meta (noindex).
 //       English only by design — a one-off client document, not site
 //       content.
-// EDIT COPY: src/data/hiddenShore.ts  ·  EDIT PHOTOS: drop two files into
-//       public/images/  → hidden-shore-yacht.jpg + hidden-shore-beach.jpg
-//       (they replace the animated placeholders automatically).
+// EDIT COPY: src/data/hiddenShore.ts  ·  COVER VIDEO: drop a .mp4 into
+//       public/video/ and wire it as the Hero background (same pattern as
+//       the landing — see src/config/heroVideos.ts).
 // ═══════════════════════════════════════════════════
 
 import { BrandMark } from '@components/brand/BrandMark';
@@ -25,7 +25,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@components/ui/Accordion';
-import { MonoGradientPlaceholder } from '@components/ui/MonoGradientPlaceholder';
 import { Reveal } from '@components/ui/Reveal';
 import { cn } from '@utils/cn';
 import {
@@ -133,35 +132,6 @@ function SectionHead({ icon, label, title }: { icon: string; label: string; titl
         {title}
       </h2>
     </div>
-  );
-}
-
-/** A framed photo. Falls back to an animated monochrome placeholder until
- *  the real file is dropped into public/images/. */
-function Photo({ src, alt, caption }: { src: string; alt: string; caption: string }) {
-  const [errored, setErrored] = useState(false);
-  return (
-    <Reveal>
-      <figure className="flex flex-col gap-3">
-        <div className="bg-surface relative aspect-3/2 w-full overflow-hidden">
-          {errored ? (
-            <MonoGradientPlaceholder tone="light" alt={alt} className="h-full w-full" />
-          ) : (
-            <img
-              src={src}
-              alt={alt}
-              loading="lazy"
-              decoding="async"
-              onError={() => setErrored(true)}
-              className="h-full w-full object-cover"
-            />
-          )}
-        </div>
-        <figcaption className="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
-          {caption}
-        </figcaption>
-      </figure>
-    </Reveal>
   );
 }
 
@@ -414,21 +384,7 @@ export default function TheHiddenShore() {
 
       <Hero />
       <Facts />
-      <section className="px-5 pt-12 md:px-12 md:pt-16">
-        <Photo
-          src="/images/hidden-shore-yacht.jpg"
-          alt="The Azimut 80 Fly cruising along the Algarve coastline"
-          caption="Azimut 80 Fly"
-        />
-      </section>
       <Story />
-      <section className="border-border border-t px-5 py-12 md:px-12 md:py-16">
-        <Photo
-          src="/images/hidden-shore-beach.jpg"
-          alt="The private beach at sunset"
-          caption="The Hidden Shore · Private beach"
-        />
-      </section>
       <Day />
       <Included />
       <Closing />
