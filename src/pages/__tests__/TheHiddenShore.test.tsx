@@ -32,6 +32,16 @@ describe('TheHiddenShore', () => {
     expect(screen.getByRole('button', { name: /the yacht/i })).toBeInTheDocument();
   });
 
+  it('links out to the Azimut yacht page in a new tab', () => {
+    renderPage();
+    const link = screen.getByRole('link', { name: /explore the yacht on azimut/i });
+    expect(link).toHaveAttribute(
+      'href',
+      'https://azimutyachts.com/en/grande-series/grande-trideck/',
+    );
+    expect(link).toHaveAttribute('target', '_blank');
+  });
+
   it('keeps the dormant A/B schedule module hidden', () => {
     renderPage();
     // The journey ships as a single programme — the A/B toggle must not render.

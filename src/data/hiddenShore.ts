@@ -165,6 +165,29 @@ export const facts = [
   { label: 'Guests', value: '12 sailing · 40 static' },
 ] as const;
 
+/** The vessel — the yacht itself. Designer credits, key specifications from
+ *  the Azimut spec sheet, and a link out to the builder so the recipient can
+ *  browse photos and full detail. */
+export const vessel = {
+  name: 'Azimut Grande Trideck',
+  lead: 'The journey unfolds aboard the Azimut Grande Trideck — a 38-metre superyacht with exterior design by Alberto Mancini and interiors by m2atelier. Four cascading terraces, from the sundeck down to a sea-level beach area.',
+  designers: [
+    { role: 'Concept & exterior', name: 'Alberto Mancini' },
+    { role: 'Interior', name: 'm2atelier' },
+    { role: 'Builder', name: 'Azimut Yachts' },
+  ],
+  specs: [
+    { label: 'Length overall', value: '38.22 m · 125′5″' },
+    { label: 'Beam', value: '7.98 m · 26′2″' },
+    { label: 'Cabins', value: '5/6 + 4 crew' },
+    { label: 'Berths', value: '10 + 6 crew' },
+    { label: 'Engines', value: '2 × MTU' },
+    { label: 'Max speed', value: '23–25 knots' },
+  ],
+  link: 'https://azimutyachts.com/en/grande-series/grande-trideck/',
+  linkLabel: 'Explore the yacht on Azimut',
+} as const;
+
 export interface IncludedGroup {
   title: string;
   items: string[];

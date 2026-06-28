@@ -67,6 +67,7 @@ import {
   type OptionKey,
   optionLabels,
   timeline,
+  vessel,
 } from '@/data/hiddenShore';
 
 /* ─── Picto registry — one map, keyed by chapter numeral / phase name /
@@ -92,6 +93,7 @@ const ICONS: Record<string, LucideIcon> = {
   // Sections + journey
   'The Journey': Compass,
   story: BookOpen,
+  vessel: Ship,
   day: Clock,
   included: ListChecks,
 };
@@ -250,6 +252,55 @@ function Story() {
           </AccordionItem>
         ))}
       </Accordion>
+    </section>
+  );
+}
+
+/** The vessel — the yacht itself: a short editorial line, designer credits,
+ *  key specifications, and a link out to Azimut so the recipient can browse
+ *  photos and full detail. */
+function Vessel() {
+  return (
+    <section className="border-border border-t px-5 py-20 md:px-12 md:py-28">
+      <SectionHead icon="vessel" label="The Vessel" title={vessel.name} />
+
+      <p className="text-fg/80 mb-10 max-w-2xl text-lg leading-relaxed text-pretty">
+        {vessel.lead}
+      </p>
+
+      {/* Designer credits — exterior / interior / builder. */}
+      <dl className="border-border mb-10 grid grid-cols-1 gap-x-6 gap-y-5 border-t pt-8 sm:grid-cols-3">
+        {vessel.designers.map(d => (
+          <div key={d.name} className="flex flex-col gap-1.5">
+            <dt className="text-muted font-mono text-[10px] tracking-[0.2em] uppercase">
+              {d.role}
+            </dt>
+            <dd className="text-fg font-mono text-sm tracking-tight uppercase">{d.name}</dd>
+          </div>
+        ))}
+      </dl>
+
+      {/* Key specifications from the Azimut spec sheet. */}
+      <dl className="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-3">
+        {vessel.specs.map(s => (
+          <div key={s.label} className="flex flex-col gap-1.5">
+            <dt className="text-muted font-mono text-[10px] tracking-[0.2em] uppercase">
+              {s.label}
+            </dt>
+            <dd className="text-fg font-mono text-sm tracking-tight uppercase">{s.value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <a
+        href={vessel.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="border-border text-fg hover:bg-fg hover:text-bg focus-visible:ring-fg mt-12 inline-flex w-fit items-center gap-2.5 rounded-full border px-7 py-3.5 font-mono text-xs tracking-[0.2em] uppercase transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+      >
+        {vessel.linkLabel}
+        <ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />
+      </a>
     </section>
   );
 }
@@ -499,6 +550,7 @@ export default function TheHiddenShore() {
       <Hero />
       <Facts />
       <Story />
+      <Vessel />
       {SHOW_DAY && <Day />}
       <Included />
       <Closing />
