@@ -1,18 +1,23 @@
 // ═══════════════════════════════════════════════════
-// TheHiddenShore — bespoke private-journey presentation at /the-hidden-shore
+// TheHiddenShore — bespoke private-journey presentation (THE ODYSSEY) at
+// /the-hidden-shore
 //
 // WHAT: A short, mobile-first, tap-to-open presentation for one client
-//       pitch (a private birthday journey). A cinematic cover, an at-a-
-//       glance strip, then everything else lives in collapsed accordions
-//       (the story in chapters, the day in four acts, what is included by
-//       category) so the page is never an endless scroll. Small lucide
+//       pitch (a private three-day birthday voyage, Cascais → Algarve). A
+//       cinematic cover, an at-a-glance strip, then everything else lives
+//       in collapsed accordions (the story in chapters, what is included
+//       by category) so the page is never an endless scroll. Small lucide
 //       pictos label each section. No bullet lists — services are
 //       separated by hairlines. Reuses the SAW NEXT monochrome visual
 //       language end-to-end. A muted looping video sits behind the cover.
+//       The A/B schedule module (<Day/>) is retained but DORMANT — gated
+//       off via SHOW_DAY; ships as a single programme until a second
+//       version is authored.
 // WHEN: /the-hidden-shore — top-level route, outside the locale tree, no
-//       layout chrome, self-manages its own <title>/meta (noindex).
-//       English only by design — a one-off client document, not site
-//       content.
+//       layout chrome, self-manages its own <title>/meta (noindex). The
+//       route slug is kept (was "The Hidden Shore") so the shared link
+//       still resolves. English only by design — a one-off client
+//       document, not site content.
 // EDIT COPY: src/data/hiddenShore.ts  ·  COVER VIDEO: drop a .mp4 into
 //       public/video/ and wire it as the Hero background (same pattern as
 //       the landing — see src/config/heroVideos.ts).
@@ -28,14 +33,9 @@ import {
 import { Reveal } from '@components/ui/Reveal';
 import { cn } from '@utils/cn';
 import {
-  Anchor,
   ArrowUpRight,
-  BellRing,
   BookOpen,
-  Building2,
   CalendarDays,
-  Camera,
-  Car,
   ChevronDown,
   Clock,
   Compass,
@@ -43,17 +43,13 @@ import {
   ListChecks,
   type LucideIcon,
   MapPin,
-  Moon,
   Music,
   Palette,
   ShieldCheck,
   Ship,
   Sparkles,
-  Sun,
   Sunrise,
-  UtensilsCrossed,
-  Waves,
-  Wine,
+  Users,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -71,46 +67,33 @@ import {
   type OptionKey,
   optionLabels,
   timeline,
+  vessel,
 } from '@/data/hiddenShore';
 
 /* ─── Picto registry — one map, keyed by chapter numeral / phase name /
    included title / fact label / section. Keeps icons in one place. ─── */
 const ICONS: Record<string, LucideIcon> = {
   // Chapters
-  I: Car,
-  II: Ship,
-  III: Waves,
-  IV: MapPin,
-  V: Moon,
-  VI: Music,
-  VII: Palette,
-  VIII: Sunrise,
-  // Day acts
-  'Afternoon at Sea': Sun,
-  'The Hidden Shore': MapPin,
-  'The Celebration': Music,
-  Sunrise: Sunrise,
+  I: Ship, // The Departure — boarding the yacht at Cascais
+  II: MapPin, // The Arrival — along the Algarve
+  III: Music, // The Celebration
+  IV: Palette, // The Signature Moment — the artwork
+  V: Sunrise, // The Sunrise — day three
+  VI: Sparkles, // The Saw Next Philosophy
   // Included groups
-  'Private Yacht': Ship,
-  'Maritime Operations': Anchor,
-  'Ground Transportation': Car,
-  'Exclusive Venue': MapPin,
-  'Event Design': Sparkles,
-  Gastronomy: UtensilsCrossed,
-  'Premium Bar': Wine,
-  Entertainment: Music,
-  Security: ShieldCheck,
-  Media: Camera,
+  'The Yacht': Ship,
+  'The Celebration': Music,
   'Signature Gift': Gift,
-  'Concierge & Production': BellRing,
+  'Coordination & Confidentiality': ShieldCheck,
   // Facts
   Destination: MapPin,
   Dates: CalendarDays,
   Yacht: Ship,
-  'Shore venue': Building2,
+  Guests: Users,
   // Sections + journey
   'The Journey': Compass,
   story: BookOpen,
+  vessel: Ship,
   day: Clock,
   included: ListChecks,
 };
@@ -219,7 +202,7 @@ function Facts() {
   );
 }
 
-/** The story — manifesto + eight chapters, each tap-to-open. */
+/** The story — manifesto + chapters, each tap-to-open. */
 function Story() {
   return (
     <section className="px-5 py-20 md:px-12 md:py-28">
@@ -269,6 +252,55 @@ function Story() {
           </AccordionItem>
         ))}
       </Accordion>
+    </section>
+  );
+}
+
+/** The vessel — the yacht itself: a short editorial line, designer credits,
+ *  key specifications, and a link out to Azimut so the recipient can browse
+ *  photos and full detail. */
+function Vessel() {
+  return (
+    <section className="border-border border-t px-5 py-20 md:px-12 md:py-28">
+      <SectionHead icon="vessel" label="The Vessel" title={vessel.name} />
+
+      <p className="text-fg/80 mb-10 max-w-2xl text-lg leading-relaxed text-pretty">
+        {vessel.lead}
+      </p>
+
+      {/* Designer credits — exterior / interior / builder. */}
+      <dl className="border-border mb-10 grid grid-cols-1 gap-x-6 gap-y-5 border-t pt-8 sm:grid-cols-3">
+        {vessel.designers.map(d => (
+          <div key={d.name} className="flex flex-col gap-1.5">
+            <dt className="text-muted font-mono text-[10px] tracking-[0.2em] uppercase">
+              {d.role}
+            </dt>
+            <dd className="text-fg font-mono text-sm tracking-tight uppercase">{d.name}</dd>
+          </div>
+        ))}
+      </dl>
+
+      {/* Key specifications from the Azimut spec sheet. */}
+      <dl className="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-3">
+        {vessel.specs.map(s => (
+          <div key={s.label} className="flex flex-col gap-1.5">
+            <dt className="text-muted font-mono text-[10px] tracking-[0.2em] uppercase">
+              {s.label}
+            </dt>
+            <dd className="text-fg font-mono text-sm tracking-tight uppercase">{s.value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <a
+        href={vessel.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="border-border text-fg hover:bg-fg hover:text-bg focus-visible:ring-fg mt-12 inline-flex w-fit items-center gap-2.5 rounded-full border px-7 py-3.5 font-mono text-xs tracking-[0.2em] uppercase transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+      >
+        {vessel.linkLabel}
+        <ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />
+      </a>
     </section>
   );
 }
@@ -476,6 +508,11 @@ function Closing() {
   );
 }
 
+// The A/B day-by-day schedule module (<Day/>) is retained but dormant — THE
+// ODYSSEY ships as a single programme. Flip to true (and refill the timeline /
+// optionLabels in src/data/hiddenShore.ts) to surface a second version.
+const SHOW_DAY: boolean = false;
+
 export default function TheHiddenShore() {
   useEffect(() => {
     document.documentElement.lang = 'en';
@@ -483,7 +520,7 @@ export default function TheHiddenShore() {
 
   const title = `${hiddenShore.title} · ${hiddenShore.subtitle} | ${siteConfig.name}`;
   const description =
-    'A private, one-of-one birthday journey along the Algarve coastline — an exclusive Saw Next experience.';
+    'A private three-day birthday voyage from Cascais to the Algarve — an exclusive Saw Next experience.';
 
   return (
     <div className="bg-bg text-fg min-h-screen">
@@ -513,7 +550,8 @@ export default function TheHiddenShore() {
       <Hero />
       <Facts />
       <Story />
-      <Day />
+      <Vessel />
+      {SHOW_DAY && <Day />}
       <Included />
       <Closing />
 
