@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   THE HIDDEN SHORE — bespoke private-journey presentation content.
+   THE ODYSSEY — bespoke private-journey presentation content.
 
    All user-facing copy for the /the-hidden-shore page lives here so the
    layout file (src/pages/TheHiddenShore.tsx) stays focused on structure.
@@ -7,45 +7,33 @@
    (the recipient is anglophone). Not part of the i18n/Sanity content
    stack. Edit the text here; the page re-renders it as-is.
 
-   OPTION A / OPTION B : the journey is identical; only the morning
-   departure schedule changes (midday vs afternoon). Those entries carry
-   an `options` pair instead of a fixed `label`.
+   The route stays /the-hidden-shore so the link already shared keeps
+   working; only the displayed title changed to THE ODYSSEY.
+
+   A/B MODULE : the page now ships as a single programme. The A/B
+   schedule module (optionLabels / dayPhases / timeline + the <Day/>
+   component) is retained but DORMANT — `timeline` is empty and <Day/>
+   is gated off via `SHOW_DAY` in the page. To surface a second version,
+   refill the three exports below and flip `SHOW_DAY` to true.
    ═══════════════════════════════════════════════════════════════ */
 
 export const hiddenShore = {
   brand: 'A Saw Next Experience',
-  title: 'The Hidden Shore',
+  title: 'The Odyssey',
   subtitle: 'An Exclusive Birthday Journey',
-  location: 'Portimão · Portugal',
-  dates: '2 – 3 July',
+  location: 'Cascais → Algarve · Portugal',
+  dates: '1 – 3 July',
   epigraph: ['Some celebrations are remembered.', 'Others become legends.'],
-
-  meta: [
-    { label: 'Destination', value: 'Algarve · Portugal' },
-    { label: 'Dates', value: '2 – 3 July' },
-    { label: 'Format', value: 'Private charter · 24h' },
-  ],
-
-  marquee: [
-    'Portimão · Portugal',
-    'Azimut 80 Fly',
-    'Private charter',
-    'The Hidden Shore',
-    'Algarve coastline',
-    '2 – 3 July',
-  ],
 } as const;
 
 /** Opening thesis — first line set large, the rest as supporting statements. */
 export const manifesto = {
-  tag: 'A Private Journey',
-  lead: 'This experience has been imagined as a succession of moments rather than an event.',
+  tag: 'The Concept',
+  lead: 'A three-day voyage along the Portuguese coast, imagined as a succession of moments rather than an event.',
   lines: [
-    'Nothing is left to chance.',
-    'Every detail has been designed to surprise, elevate emotions and create memories that will last a lifetime.',
-    'Absolute privacy.',
-    'Exceptional service.',
-    'A destination that remains secret until the very last moment.',
+    "Conceived for Burna Boy's birthday.",
+    'More than an event — an immersive journey where luxury, privacy and emotion meet.',
+    'Every detail is designed for an adventure the guests will never forget.',
   ],
 } as const;
 
@@ -60,134 +48,98 @@ export interface Chapter {
 export const chapters: Chapter[] = [
   {
     num: 'I',
-    title: 'The Invitation',
+    title: 'The Departure',
     lines: [
-      "The experience begins directly from the guests' private villas.",
-      'Luxury vehicles collect each guest individually.',
-      'No destination is announced.',
-      'The journey has already begun.',
+      'Day one — 1 July. Late morning.',
+      "Departure from Cascais, one of Portugal's most prestigious destinations, near Lisbon.",
+      'Guests board a fully privatised yacht for an exceptional passage toward the Algarve.',
+      'Along the way, carefully chosen stops:',
+      'Secluded coves.',
+      'Secret beaches.',
+      'Spectacular landscapes.',
+      'Iconic coastal villages.',
+      'Spots reachable only by sea.',
+      'Each stop is an experience in itself — rest, gastronomy, swimming, discovery.',
+      'The first night is spent on board.',
     ],
   },
   {
     num: 'II',
-    title: 'Leaving the Shore',
+    title: 'The Arrival',
     lines: [
-      'Private boarding aboard the Azimut 80 Fly.',
-      'Welcome cocktails.',
-      'Champagne.',
-      'Personalised soundtrack.',
-      'The yacht slowly leaves the marina to begin an exclusive cruise along the Algarve coastline.',
-      'Time slows down.',
+      'Day two — 2 July.',
+      'The yacht continues along the most beautiful stretches of the Algarve.',
+      'Guests discover new exceptional places before reaching the destination chosen for the celebration.',
+      "At day's end, the yacht is berthed or held at anchor, subject to the authorisations obtained.",
+      'Capacity is limited to 12 guests under sail; up to 40 guests when static, subject to approval by the competent authorities.',
+      'The birthday celebration takes place entirely on board.',
+      'The yacht becomes a private reception venue, transformed for the occasion.',
     ],
   },
   {
     num: 'III',
-    title: 'The Ocean',
+    title: 'The Celebration',
     lines: [
-      'Several hours dedicated to freedom.',
-      'Swimming.',
-      'Sun.',
-      'Music.',
-      'Fine wines.',
-      'Premium spirits.',
-      'Signature cocktails.',
+      'A celebration imagined down to the last detail.',
+      'Premium open bar.',
       'Private chef.',
-      'Exceptional scenery.',
-      'An afternoon designed to disconnect from everything except the present moment.',
+      'Gastronomic dinner.',
+      'Signature cocktails.',
+      'Private DJ.',
+      'Sunset atmosphere.',
+      'World Cup broadcast on a giant screen.',
+      'Lounge spaces.',
+      'Celebration until sunrise.',
+      'Breakfast served facing the ocean.',
     ],
   },
   {
     num: 'IV',
-    title: 'The Hidden Shore',
+    title: 'The Signature Moment',
     lines: [
-      'As the sun begins to set, the yacht anchors offshore.',
-      'Luxury tenders approach.',
-      'Guests leave the yacht without knowing where they are heading.',
-      'A few minutes later…',
-      'An entirely private beach appears.',
-      'No public.',
-      'No spectators.',
-      'No distractions.',
-      'Only a place created for one evening.',
-      'Only for one celebration.',
+      'To make this celebration truly unique, contemporary artist Julien Durix will personally present Burna Boy with an original work, created exclusively for his birthday.',
+      'A single piece.',
+      'A timeless keepsake.',
+      'A work that will exist in one example only.',
     ],
   },
   {
     num: 'V',
-    title: 'Under the Stars',
+    title: 'The Sunrise',
     lines: [
-      'Rei das Praias has been transformed into an exclusive private residence.',
-      'An elegant atmosphere.',
-      'Warm lighting.',
-      'Personalised decoration.',
-      'Live music.',
-      'Premium open bar.',
-      'Signature cocktails.',
-      'A gastronomic dinner prepared exclusively for the occasion.',
-      'An evening where every detail contributes to a unique atmosphere.',
+      'Day three — 3 July.',
+      'After breakfast on board, guests enjoy a final moment of calm before the experience ends.',
+      'The yacht is returned on 3 July at 10:00.',
     ],
   },
   {
     num: 'VI',
-    title: 'The Celebration',
+    title: 'The Saw Next Philosophy',
     lines: [
-      'As night falls, the atmosphere naturally evolves.',
-      'The lounge becomes a celebration.',
-      'Music.',
-      'Dance.',
-      'Conversations.',
-      'Laughter.',
-      'Open Bar.',
-      'Private DJ.',
-      'Premium service.',
-      'The celebration continues without interruption.',
-    ],
-  },
-  {
-    num: 'VII',
-    title: 'The Legacy',
-    lines: [
-      'A unique work of art is revealed.',
-      'Created exclusively for Burna Boy by contemporary French artist Julien Durix.',
-      'A one-of-one artwork.',
-      'Created for one person.',
-      'A timeless reminder of an unforgettable night.',
-    ],
-  },
-  {
-    num: 'VIII',
-    title: 'Sunrise',
-    lines: [
-      'The music gently fades.',
-      'The first light appears over the ocean.',
-      'Breakfast is served facing the sea.',
-      'Fresh pastries.',
-      'Seasonal fruits.',
-      'Eggs prepared to order.',
-      'Fresh juices.',
-      'Coffee.',
-      'Tea.',
-      'Champagne available.',
-      'A peaceful ending before returning to the villas.',
+      'At Saw Next, we do not simply offer a yacht.',
+      'We create experiences.',
+      'Every project is imagined bespoke.',
+      'Every detail is considered with precision.',
+      'Every moment is designed to leave a lasting mark.',
     ],
   },
 ];
 
+/* ───────────────────────────────────────────────────────────────
+   A/B SCHEDULE MODULE — DORMANT. Retained for a future second version
+   of the journey. `timeline` is intentionally empty and <Day/> is gated
+   off (SHOW_DAY=false) in the page. Refill to re-enable. ─────────── */
+
 export type OptionKey = 'a' | 'b';
 
 export const optionLabels: Record<OptionKey, { name: string; tagline: string }> = {
-  a: { name: 'Option A', tagline: 'Midday departure' },
-  b: { name: 'Option B', tagline: 'Afternoon departure' },
+  a: { name: 'Option A', tagline: 'Version A' },
+  b: { name: 'Option B', tagline: 'Version B' },
 };
 
-/** The four acts of the day — used to group the timeline into expandable
- *  phases (so no single panel becomes a wall of text). Order matters. */
-export const dayPhases = [
-  'Afternoon at Sea',
-  'The Hidden Shore',
-  'The Celebration',
-  'Sunrise',
-] as const;
+/** Phases that group the dormant schedule. Neutral placeholder until a
+ *  second version is authored. */
+export const dayPhases = ['Schedule'] as const;
 
 export type DayPhase = (typeof dayPhases)[number];
 
@@ -202,83 +154,15 @@ export interface TimelineEntry {
   body: string;
 }
 
-export const timeline: TimelineEntry[] = [
-  {
-    phase: 'Afternoon at Sea',
-    label: null,
-    options: { a: '11:00', b: '14:00' },
-    body: "Private collection from the guests' villas.",
-  },
-  {
-    phase: 'Afternoon at Sea',
-    label: null,
-    options: { a: '11:45', b: '14:45' },
-    body: 'Arrival at Portimão Marina. Private boarding. Welcome cocktails. Champagne.',
-  },
-  {
-    phase: 'Afternoon at Sea',
-    label: null,
-    options: { a: '12:00', b: '15:00' },
-    body: 'Departure. Private navigation. Swimming. Water activities. Lunch and drinks on board.',
-  },
-  {
-    phase: 'Afternoon at Sea',
-    label: 'Afternoon',
-    body: 'Exploration of the Algarve coastline. Stops for swimming. Cocktail service. Music. Photography.',
-  },
-  {
-    phase: 'Afternoon at Sea',
-    label: 'Golden Hour',
-    body: 'Sunset navigation. Signature cocktails. Premium canapés.',
-  },
-  {
-    phase: 'The Hidden Shore',
-    label: '18:30',
-    body: 'Arrival offshore. Transfer by luxury tenders.',
-  },
-  {
-    phase: 'The Hidden Shore',
-    label: '18:45',
-    body: 'Arrival at the Hidden Shore. Private welcome. Champagne. Cocktails. Live music.',
-  },
-  {
-    phase: 'The Hidden Shore',
-    label: 'World Cup Lounge',
-    body: 'Private screening of the FIFA World Cup on a giant LED screen. Premium lounge seating. Open Bar.',
-  },
-  {
-    phase: 'The Celebration',
-    label: 'Dinner Experience',
-    body: "Exclusive gastronomic dinner. Chef's tasting menu. Wine pairing. Live culinary experience.",
-  },
-  {
-    phase: 'The Celebration',
-    label: 'Celebration',
-    body: 'Private DJ. Premium Open Bar. Dance floor. Late-night food. Exclusive entertainment.',
-  },
-  {
-    phase: 'The Celebration',
-    label: 'Signature Moment',
-    body: 'Presentation of the Julien Durix artwork. Birthday cake. Champagne. Celebration.',
-  },
-  {
-    phase: 'Sunrise',
-    label: 'Until Sunrise',
-    body: 'Music. Cocktails. Premium service. Late-night lounge. Breakfast preparation.',
-  },
-  {
-    phase: 'Sunrise',
-    label: 'Sunrise Breakfast',
-    body: 'Breakfast facing the sea. Relaxation. Private transfers back to the villas.',
-  },
-];
+/** Empty by design — the journey ships as a single programme. */
+export const timeline: TimelineEntry[] = [];
 
 /** At-a-glance key facts — a compact, always-visible orientation strip. */
 export const facts = [
-  { label: 'Destination', value: 'Portimão · Algarve' },
-  { label: 'Dates', value: '2 – 3 July' },
-  { label: 'Yacht', value: 'Azimut 80 Fly' },
-  { label: 'Shore venue', value: 'Rei das Praias' },
+  { label: 'Destination', value: 'Cascais → Algarve' },
+  { label: 'Dates', value: '1 – 3 July' },
+  { label: 'Yacht', value: 'Private · 6 cabins' },
+  { label: 'Guests', value: '12 sailing · 40 static' },
 ] as const;
 
 export interface IncludedGroup {
@@ -288,128 +172,50 @@ export interface IncludedGroup {
 
 export const included: IncludedGroup[] = [
   {
-    title: 'Private Yacht',
+    title: 'The Yacht',
     items: [
-      'Azimut 80 Fly exclusive charter',
-      'Captain',
-      'Crew',
-      'Fuel',
-      'Port fees',
-      'Cleaning',
-      'Insurance',
+      'Fully privatised yacht',
+      'Private navigation from Cascais to the Algarve',
+      '6 double cabins',
+      '12 guests maximum under sail',
+      'Dedicated professional crew',
+      'Indoor and outdoor living spaces',
+      'Sun deck',
+      'Lounge areas',
     ],
   },
   {
-    title: 'Maritime Operations',
-    items: ['Luxury tenders', 'Tender captains', 'Fuel', 'Guest transfers'],
-  },
-  {
-    title: 'Ground Transportation',
+    title: 'The Celebration',
     items: [
-      'Premium Mercedes V-Class',
-      'Professional chauffeurs',
-      'Coordination',
-      'Guest logistics',
-    ],
-  },
-  {
-    title: 'Exclusive Venue',
-    items: ['Full privatisation', 'Exclusive use', 'Venue management', 'Operational coordination'],
-  },
-  {
-    title: 'Event Design',
-    items: [
-      'Complete decoration',
-      'Floral design',
-      'Lounge furniture',
-      'Ambient lighting',
-      'Candles & lanterns',
-      'Styling',
-    ],
-  },
-  {
-    title: 'Gastronomy',
-    items: [
+      'Premium open bar',
       'Private chef',
-      'Kitchen brigade',
-      'Service staff',
-      'Cocktail reception',
       'Gastronomic dinner',
-      'Late-night food',
-      'Sunrise breakfast',
-      'Birthday cake',
-    ],
-  },
-  {
-    title: 'Premium Bar',
-    items: [
-      'Champagne',
-      'Fine wines',
-      'Premium spirits',
       'Signature cocktails',
-      'Mocktails',
-      'Soft drinks',
-      'Mineral waters',
-      'Fresh juices',
-      'Coffee & Tea',
-      'Ice',
-      'Glassware',
-      'Mixologist',
-      'Bartenders',
-    ],
-  },
-  {
-    title: 'Entertainment',
-    items: [
       'Private DJ',
-      'Professional sound system',
-      'Architectural lighting',
-      'World Cup giant screen',
-      'Audiovisual production',
-    ],
-  },
-  {
-    title: 'Security',
-    items: [
-      'Close protection',
-      'Private security officers',
-      'Access control',
-      'Venue security',
-      'Yacht security',
-      'Guest management',
-    ],
-  },
-  {
-    title: 'Media',
-    items: [
-      'Photographer',
-      'Videographer',
-      'Drone footage (subject to authorisation)',
-      'Private content delivery',
+      'Sunset atmosphere',
+      'World Cup on a giant screen',
+      'Lounge spaces',
+      'Celebration until sunrise',
+      'Sunrise breakfast facing the ocean',
     ],
   },
   {
     title: 'Signature Gift',
     items: [
-      'Exclusive Julien Durix artwork',
-      'Certificate of authenticity',
-      'Premium presentation',
+      'Original Julien Durix artwork',
+      'Created exclusively for the occasion',
+      'A single, one-of-one piece',
     ],
   },
   {
-    title: 'Concierge & Production',
+    title: 'Coordination & Confidentiality',
     items: [
-      'Complete project management',
-      'Event production',
-      'Operational coordination',
-      'On-site management',
-      '24/7 assistance',
-      'Wi-Fi & backup internet',
-      'Technical support',
-      'Weather contingency',
-      'Operational backup plan',
+      'Bespoke project management',
+      'On-site coordination',
+      'NDA signed by every partner and provider',
+      'Total privacy and security',
     ],
   },
 ];
 
-export const closing = ['The experience ends.', 'The memory remains forever.'] as const;
+export const closing = ['The finest memories are never improvised.', 'They are created.'] as const;

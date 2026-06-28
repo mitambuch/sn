@@ -1,18 +1,23 @@
 // ═══════════════════════════════════════════════════
-// TheHiddenShore — bespoke private-journey presentation at /the-hidden-shore
+// TheHiddenShore — bespoke private-journey presentation (THE ODYSSEY) at
+// /the-hidden-shore
 //
 // WHAT: A short, mobile-first, tap-to-open presentation for one client
-//       pitch (a private birthday journey). A cinematic cover, an at-a-
-//       glance strip, then everything else lives in collapsed accordions
-//       (the story in chapters, the day in four acts, what is included by
-//       category) so the page is never an endless scroll. Small lucide
+//       pitch (a private three-day birthday voyage, Cascais → Algarve). A
+//       cinematic cover, an at-a-glance strip, then everything else lives
+//       in collapsed accordions (the story in chapters, what is included
+//       by category) so the page is never an endless scroll. Small lucide
 //       pictos label each section. No bullet lists — services are
 //       separated by hairlines. Reuses the SAW NEXT monochrome visual
 //       language end-to-end. A muted looping video sits behind the cover.
+//       The A/B schedule module (<Day/>) is retained but DORMANT — gated
+//       off via SHOW_DAY; ships as a single programme until a second
+//       version is authored.
 // WHEN: /the-hidden-shore — top-level route, outside the locale tree, no
-//       layout chrome, self-manages its own <title>/meta (noindex).
-//       English only by design — a one-off client document, not site
-//       content.
+//       layout chrome, self-manages its own <title>/meta (noindex). The
+//       route slug is kept (was "The Hidden Shore") so the shared link
+//       still resolves. English only by design — a one-off client
+//       document, not site content.
 // EDIT COPY: src/data/hiddenShore.ts  ·  COVER VIDEO: drop a .mp4 into
 //       public/video/ and wire it as the Hero background (same pattern as
 //       the landing — see src/config/heroVideos.ts).
@@ -28,14 +33,9 @@ import {
 import { Reveal } from '@components/ui/Reveal';
 import { cn } from '@utils/cn';
 import {
-  Anchor,
   ArrowUpRight,
-  BellRing,
   BookOpen,
-  Building2,
   CalendarDays,
-  Camera,
-  Car,
   ChevronDown,
   Clock,
   Compass,
@@ -43,17 +43,13 @@ import {
   ListChecks,
   type LucideIcon,
   MapPin,
-  Moon,
   Music,
   Palette,
   ShieldCheck,
   Ship,
   Sparkles,
-  Sun,
   Sunrise,
-  UtensilsCrossed,
-  Waves,
-  Wine,
+  Users,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -77,37 +73,22 @@ import {
    included title / fact label / section. Keeps icons in one place. ─── */
 const ICONS: Record<string, LucideIcon> = {
   // Chapters
-  I: Car,
-  II: Ship,
-  III: Waves,
-  IV: MapPin,
-  V: Moon,
-  VI: Music,
-  VII: Palette,
-  VIII: Sunrise,
-  // Day acts
-  'Afternoon at Sea': Sun,
-  'The Hidden Shore': MapPin,
-  'The Celebration': Music,
-  Sunrise: Sunrise,
+  I: Ship, // The Departure — boarding the yacht at Cascais
+  II: MapPin, // The Arrival — along the Algarve
+  III: Music, // The Celebration
+  IV: Palette, // The Signature Moment — the artwork
+  V: Sunrise, // The Sunrise — day three
+  VI: Sparkles, // The Saw Next Philosophy
   // Included groups
-  'Private Yacht': Ship,
-  'Maritime Operations': Anchor,
-  'Ground Transportation': Car,
-  'Exclusive Venue': MapPin,
-  'Event Design': Sparkles,
-  Gastronomy: UtensilsCrossed,
-  'Premium Bar': Wine,
-  Entertainment: Music,
-  Security: ShieldCheck,
-  Media: Camera,
+  'The Yacht': Ship,
+  'The Celebration': Music,
   'Signature Gift': Gift,
-  'Concierge & Production': BellRing,
+  'Coordination & Confidentiality': ShieldCheck,
   // Facts
   Destination: MapPin,
   Dates: CalendarDays,
   Yacht: Ship,
-  'Shore venue': Building2,
+  Guests: Users,
   // Sections + journey
   'The Journey': Compass,
   story: BookOpen,
@@ -476,6 +457,11 @@ function Closing() {
   );
 }
 
+// The A/B day-by-day schedule module (<Day/>) is retained but dormant — THE
+// ODYSSEY ships as a single programme. Flip to true (and refill the timeline /
+// optionLabels in src/data/hiddenShore.ts) to surface a second version.
+const SHOW_DAY: boolean = false;
+
 export default function TheHiddenShore() {
   useEffect(() => {
     document.documentElement.lang = 'en';
@@ -483,7 +469,7 @@ export default function TheHiddenShore() {
 
   const title = `${hiddenShore.title} · ${hiddenShore.subtitle} | ${siteConfig.name}`;
   const description =
-    'A private, one-of-one birthday journey along the Algarve coastline — an exclusive Saw Next experience.';
+    'A private three-day birthday voyage from Cascais to the Algarve — an exclusive Saw Next experience.';
 
   return (
     <div className="bg-bg text-fg min-h-screen">
@@ -513,7 +499,7 @@ export default function TheHiddenShore() {
       <Hero />
       <Facts />
       <Story />
-      <Day />
+      {SHOW_DAY && <Day />}
       <Included />
       <Closing />
 
