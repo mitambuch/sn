@@ -202,7 +202,7 @@ function Facts() {
   );
 }
 
-/** The story — manifesto + eight chapters, each tap-to-open. */
+/** The story — manifesto + chapters, each tap-to-open. */
 function Story() {
   return (
     <section className="px-5 py-20 md:px-12 md:py-28">
