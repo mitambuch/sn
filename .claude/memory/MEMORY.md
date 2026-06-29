@@ -5,9 +5,9 @@
 
 ## Recent sessions (top 3)
 
+- **2026-06-29** — [Session — THE ODYSSEY revised to the 24h Faro programme, shipped](sessions/2026-06-29-1419.md)
 - **2026-06-28** — [Session — THE ODYSSEY content swap + Azimut Grande Trideck vessel section, shipped](sessions/2026-06-28-0858.md)
 - **2026-06-26** — [Handoff — ship Option B on /the-hidden-shore FAST when info lands](sessions/2026-06-26-1714.md)
-- **2026-06-26** — [Session — The Hidden Shore pitch page: rebuilt, video cover, shipped live](sessions/2026-06-26-1551.md)
 
 ## Active decisions (top 5)
 
@@ -50,7 +50,7 @@
 
 ## Deep dive
 
-- Full catalogue (194 entries): [`INDEX.md`](INDEX.md)
+- Full catalogue (195 entries): [`INDEX.md`](INDEX.md)
 - Canonical tag vocabulary: [`TAGS.md`](TAGS.md)
 - Grep by domain: `grep -rl "#<tag>" .claude/memory/`
 
