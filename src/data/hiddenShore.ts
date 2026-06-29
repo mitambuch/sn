@@ -8,32 +8,31 @@
    stack. Edit the text here; the page re-renders it as-is.
 
    The route stays /the-hidden-shore so the link already shared keeps
-   working; only the displayed title changed to THE ODYSSEY.
+   working; only the displayed title is THE ODYSSEY.
 
-   A/B MODULE : the page now ships as a single programme. The A/B
-   schedule module (optionLabels / dayPhases / timeline + the <Day/>
-   component) is retained but DORMANT — `timeline` is empty and <Day/>
-   is gated off via `SHOW_DAY` in the page. To surface a second version,
-   refill the three exports below and flip `SHOW_DAY` to true.
+   A/B MODULE : the page ships as a single programme. The A/B schedule
+   module (optionLabels / dayPhases / timeline + the <Day/> component) is
+   retained but DORMANT — `timeline` is empty and <Day/> is gated off via
+   `SHOW_DAY` in the page. To surface a second version, refill the three
+   exports below and flip `SHOW_DAY` to true.
    ═══════════════════════════════════════════════════════════════ */
 
 export const hiddenShore = {
   brand: 'A Saw Next Experience',
   title: 'The Odyssey',
-  subtitle: 'An Exclusive Birthday Journey',
-  location: 'Cascais → Algarve · Portugal',
-  dates: '1 – 3 July',
+  subtitle: 'An Exclusive Birthday Experience',
+  location: 'Algarve · Portugal',
+  dates: '2 – 3 July',
   epigraph: ['Some celebrations are remembered.', 'Others become legends.'],
 } as const;
 
 /** Opening thesis — first line set large, the rest as supporting statements. */
 export const manifesto = {
   tag: 'The Concept',
-  lead: 'A three-day voyage along the Portuguese coast, imagined as a succession of moments rather than an event.',
+  lead: "A private, immersive experience imagined exclusively to celebrate Burna Boy's birthday.",
   lines: [
-    "Conceived for Burna Boy's birthday.",
-    'More than an event — an immersive journey where luxury, privacy and emotion meet.',
-    'Every detail is designed for an adventure the guests will never forget.',
+    'For 24 hours the yacht becomes a floating private residence — a succession of exclusive moments between navigation, the Algarve coast and celebration.',
+    'The aim: an experience the guests will remember for the rest of their lives.',
   ],
 } as const;
 
@@ -48,79 +47,54 @@ export interface Chapter {
 export const chapters: Chapter[] = [
   {
     num: 'I',
-    title: 'The Departure',
+    title: 'The Programme',
     lines: [
-      'Day one — 1 July. Late morning.',
-      "Departure from Cascais, one of Portugal's most prestigious destinations, near Lisbon.",
-      'Guests board a fully privatised yacht for an exceptional passage toward the Algarve.',
-      'Along the way, carefully chosen stops:',
-      'Secluded coves.',
-      'Secret beaches.',
-      'Spectacular landscapes.',
-      'Iconic coastal villages.',
-      'Spots reachable only by sea.',
-      'Each stop is an experience in itself — rest, gastronomy, swimming, discovery.',
-      'The first night is spent on board.',
+      '2 July, 2:00 pm — pickup of Burna Boy and his guests directly at Faro.',
+      'Boarding the fully privatised yacht.',
+      'The yacht is at your disposal for 24 hours, until 3 July at 2:00 pm.',
     ],
   },
   {
     num: 'II',
-    title: 'The Arrival',
+    title: 'Navigation',
     lines: [
-      'Day two — 2 July.',
-      'The yacht continues along the most beautiful stretches of the Algarve.',
-      'Guests discover new exceptional places before reaching the destination chosen for the celebration.',
-      "At day's end, the yacht is berthed or held at anchor, subject to the authorisations obtained.",
-      'Capacity is limited to 12 guests under sail; up to 40 guests when static, subject to approval by the competent authorities.',
-      'The birthday celebration takes place entirely on board.',
-      'The yacht becomes a private reception venue, transformed for the occasion.',
+      'Discovery of the Algarve coast.',
+      "Cruising along the region's most beautiful landscapes.",
+      'Stops in coves, bays and iconic spots reachable only by sea.',
+      'Swimming.',
+      'Relaxation.',
+      'Cocktails.',
+      'Music.',
+      'Sunset.',
+      "Navigation is limited to 12 guests, in line with the yacht's authorisations.",
+      'Six double cabins let guests enjoy the experience fully and spend the night on board.',
     ],
   },
   {
     num: 'III',
     title: 'The Celebration',
     lines: [
-      'A celebration imagined down to the last detail.',
-      'Premium open bar.',
-      'Private chef.',
-      'Gastronomic dinner.',
-      'Signature cocktails.',
-      'Private DJ.',
-      'Sunset atmosphere.',
-      'World Cup broadcast on a giant screen.',
-      'Lounge spaces.',
-      'Celebration until sunrise.',
-      'Breakfast served facing the ocean.',
+      "At day's end, the yacht reaches its final location — Portimão, Vilamoura or another authorised site.",
+      'The yacht becomes the exclusive venue for the celebration.',
+      'At anchor or alongside, it can host up to 30–35 guests, subject to approval by the competent authorities.',
+      'The entire evening takes place on board.',
     ],
   },
   {
     num: 'IV',
     title: 'The Signature Moment',
     lines: [
-      'To make this celebration truly unique, contemporary artist Julien Durix will personally present Burna Boy with an original work, created exclusively for his birthday.',
-      'A single piece.',
-      'A timeless keepsake.',
-      'A work that will exist in one example only.',
+      'At a high point of the evening, contemporary artist Julien Durix will personally present Burna Boy with an original work, created exclusively for his birthday.',
+      'The presentation is an integral part of the experience.',
     ],
   },
   {
     num: 'V',
-    title: 'The Sunrise',
+    title: 'Confidentiality',
     lines: [
-      'Day three — 3 July.',
-      'After breakfast on board, guests enjoy a final moment of calm before the experience ends.',
-      'The yacht is returned on 3 July at 10:00.',
-    ],
-  },
-  {
-    num: 'VI',
-    title: 'The Saw Next Philosophy',
-    lines: [
-      'At Saw Next, we do not simply offer a yacht.',
-      'We create experiences.',
-      'Every project is imagined bespoke.',
-      'Every detail is considered with precision.',
-      'Every moment is designed to leave a lasting mark.',
+      'Confidentiality is an absolute priority.',
+      'Every partner, supplier, provider and contributor signs a non-disclosure agreement to guarantee total discretion throughout the event.',
+      'Guests move through an entirely private and secure environment.',
     ],
   },
 ];
@@ -159,10 +133,10 @@ export const timeline: TimelineEntry[] = [];
 
 /** At-a-glance key facts — a compact, always-visible orientation strip. */
 export const facts = [
-  { label: 'Destination', value: 'Cascais → Algarve' },
-  { label: 'Dates', value: '1 – 3 July' },
+  { label: 'Destination', value: 'Algarve · Portugal' },
+  { label: 'Dates', value: '2 – 3 July · 24h' },
   { label: 'Yacht', value: 'Private · 6 cabins' },
-  { label: 'Guests', value: '12 sailing · 40 static' },
+  { label: 'Guests', value: '12 at sea · 30–35 moored' },
 ] as const;
 
 /** The vessel — the yacht itself. Designer credits, key specifications from
@@ -170,7 +144,7 @@ export const facts = [
  *  browse photos and full detail. */
 export const vessel = {
   name: 'Azimut Grande Trideck',
-  lead: 'The journey unfolds aboard the Azimut Grande Trideck — a 38-metre superyacht with exterior design by Alberto Mancini and interiors by m2atelier. Four cascading terraces, from the sundeck down to a sea-level beach area.',
+  lead: 'The experience unfolds aboard the Azimut Grande Trideck — a 38-metre superyacht with exterior design by Alberto Mancini and interiors by m2atelier. Four cascading terraces, from the sundeck down to a sea-level beach area.',
   designers: [
     { role: 'Concept & exterior', name: 'Alberto Mancini' },
     { role: 'Interior', name: 'm2atelier' },
@@ -195,50 +169,31 @@ export interface IncludedGroup {
 
 export const included: IncludedGroup[] = [
   {
-    title: 'The Yacht',
-    items: [
-      'Fully privatised yacht',
-      'Private navigation from Cascais to the Algarve',
-      '6 double cabins',
-      '12 guests maximum under sail',
-      'Dedicated professional crew',
-      'Indoor and outdoor living spaces',
-      'Sun deck',
-      'Lounge areas',
-    ],
+    title: 'Catering & Cuisine',
+    items: ['High-end catering', 'Private chef', 'Premium breakfast served on board'],
   },
   {
-    title: 'The Celebration',
+    title: 'Bar',
+    items: ['Premium open bar', 'Champagne', 'Premium spirits', 'Signature cocktails'],
+  },
+  {
+    title: 'Atmosphere',
     items: [
-      'Premium open bar',
-      'Private chef',
-      'Gastronomic dinner',
-      'Signature cocktails',
       'Private DJ',
-      'Sunset atmosphere',
-      'World Cup on a giant screen',
       'Lounge spaces',
+      'World Cup on a giant screen',
       'Celebration until sunrise',
-      'Sunrise breakfast facing the ocean',
-    ],
-  },
-  {
-    title: 'Signature Gift',
-    items: [
-      'Original Julien Durix artwork',
-      'Created exclusively for the occasion',
-      'A single, one-of-one piece',
-    ],
-  },
-  {
-    title: 'Coordination & Confidentiality',
-    items: [
-      'Bespoke project management',
-      'On-site coordination',
-      'NDA signed by every partner and provider',
-      'Total privacy and security',
     ],
   },
 ];
+
+/** Offer validity — a time-sensitive commercial note from the client. */
+export const offer = {
+  tag: 'Offer validity',
+  lines: [
+    'This proposal is subject to the current availability of the yacht and of the various partners.',
+    'Given high-season demand, the offer and availability are guaranteed only until this evening. After that, they must be reconfirmed with all providers.',
+  ],
+} as const;
 
 export const closing = ['The finest memories are never improvised.', 'They are created.'] as const;

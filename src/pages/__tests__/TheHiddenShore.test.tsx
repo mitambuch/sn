@@ -24,12 +24,12 @@ describe('TheHiddenShore', () => {
 
   it('exposes a story chapter as a tap-to-open trigger', () => {
     renderPage();
-    expect(screen.getByRole('button', { name: /the departure/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /the programme/i })).toBeInTheDocument();
   });
 
   it('exposes an included service group as a tap-to-open trigger', () => {
     renderPage();
-    expect(screen.getByRole('button', { name: /the yacht/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /atmosphere/i })).toBeInTheDocument();
   });
 
   it('links out to the Azimut yacht page in a new tab', () => {

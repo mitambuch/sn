@@ -3,8 +3,8 @@
 // /the-hidden-shore
 //
 // WHAT: A short, mobile-first, tap-to-open presentation for one client
-//       pitch (a private three-day birthday voyage, Cascais → Algarve). A
-//       cinematic cover, an at-a-glance strip, then everything else lives
+//       pitch (a private 24-hour birthday experience along the Algarve
+//       coast). A cinematic cover, an at-a-glance strip, then everything lives
 //       in collapsed accordions (the story in chapters, what is included
 //       by category) so the page is never an endless scroll. Small lucide
 //       pictos label each section. No bullet lists — services are
@@ -39,7 +39,6 @@ import {
   ChevronDown,
   Clock,
   Compass,
-  Gift,
   ListChecks,
   type LucideIcon,
   MapPin,
@@ -47,9 +46,9 @@ import {
   Palette,
   ShieldCheck,
   Ship,
-  Sparkles,
-  Sunrise,
   Users,
+  UtensilsCrossed,
+  Wine,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -64,6 +63,7 @@ import {
   hiddenShore,
   included,
   manifesto,
+  offer,
   type OptionKey,
   optionLabels,
   timeline,
@@ -74,17 +74,15 @@ import {
    included title / fact label / section. Keeps icons in one place. ─── */
 const ICONS: Record<string, LucideIcon> = {
   // Chapters
-  I: Ship, // The Departure — boarding the yacht at Cascais
-  II: MapPin, // The Arrival — along the Algarve
+  I: Ship, // The Programme — boarding at Faro
+  II: Compass, // Navigation — cruising the Algarve coast
   III: Music, // The Celebration
   IV: Palette, // The Signature Moment — the artwork
-  V: Sunrise, // The Sunrise — day three
-  VI: Sparkles, // The Saw Next Philosophy
+  V: ShieldCheck, // Confidentiality
   // Included groups
-  'The Yacht': Ship,
-  'The Celebration': Music,
-  'Signature Gift': Gift,
-  'Coordination & Confidentiality': ShieldCheck,
+  'Catering & Cuisine': UtensilsCrossed,
+  Bar: Wine,
+  Atmosphere: Music,
   // Facts
   Destination: MapPin,
   Dates: CalendarDays,
@@ -484,6 +482,25 @@ function Included() {
   );
 }
 
+/** Offer validity — a compact, time-sensitive commercial note from the
+ *  client, set apart in a bordered callout. */
+function Validity() {
+  return (
+    <section className="border-border border-t px-5 py-12 md:px-12">
+      <div className="border-border bg-fg/3 flex max-w-2xl flex-col gap-3 rounded-xl border p-6">
+        <span className="text-muted flex items-center gap-2.5 font-mono text-[10px] tracking-[0.3em] uppercase">
+          <Clock size={14} strokeWidth={1.5} aria-hidden="true" /> {offer.tag}
+        </span>
+        {offer.lines.map(line => (
+          <p key={line} className="text-fg/80 text-sm leading-relaxed">
+            {line}
+          </p>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 /** Closing statement on ink — the final word. */
 function Closing() {
   return (
@@ -520,7 +537,7 @@ export default function TheHiddenShore() {
 
   const title = `${hiddenShore.title} · ${hiddenShore.subtitle} | ${siteConfig.name}`;
   const description =
-    'A private three-day birthday voyage from Cascais to the Algarve — an exclusive Saw Next experience.';
+    'A private 24-hour birthday experience along the Algarve coast — an exclusive Saw Next experience.';
 
   return (
     <div className="bg-bg text-fg min-h-screen">
@@ -553,6 +570,7 @@ export default function TheHiddenShore() {
       <Vessel />
       {SHOW_DAY && <Day />}
       <Included />
+      <Validity />
       <Closing />
 
       <footer className="border-border flex items-center justify-between border-t px-5 py-8 md:px-12">
