@@ -979,11 +979,11 @@
   "qr": {
     "seo": {
       "title": "Presentation",
-      "description": "Swiss private concierge — curated access to the exceptional, a bespoke platform and absolute discretion."
+      "description": "Swiss private circle — curated access to the exceptional, a bespoke platform and absolute discretion."
     },
     "brandHomeLabel": "Back to home",
     "hero": {
-      "eyebrow": "Private concierge · Switzerland",
+      "eyebrow": "Private circle · Switzerland",
       "title": "Access to the exceptional,",
       "word1": "orchestrated",
       "word2": "discreet",
@@ -993,7 +993,7 @@
       "scrollHint": "Discover",
       "gps": "46°57′N · 06°50′E",
       "m1Label": "Type",
-      "m1Value": "Private concierge",
+      "m1Value": "Independent",
       "m2Label": "Access",
       "m2Value": "By invitation",
       "m3Label": "House",
@@ -1154,7 +1154,7 @@
   "trust": {
     "badge": "Security & confidentiality",
     "modalTitle": "Seven premium guarantees",
-    "modalLede": "Sawnext Studio is a Swiss private concierge. Every request, every transaction, every exchange follows the protocol below — no exception.",
+    "modalLede": "Sawnext Studio is a Swiss private circle. Every request, every transaction, every exchange follows the protocol below — no exception.",
     "footerNote": "For specific legal questions, your lawyer or notary is invited to contact our compliance department directly — Valmont will introduce them.",
     "pillar": {
       "nda": {
@@ -1300,7 +1300,7 @@
     }
   },
   "public": {
-    "tagline": "Swiss private concierge",
+    "tagline": "Swiss private circle",
     "intro": "A by-invitation selection for a vetted clientele. Without noise, without excess.",
     "loginCta": "Access your space",
     "footer": {

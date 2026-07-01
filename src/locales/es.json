@@ -979,11 +979,11 @@
   "qr": {
     "seo": {
       "title": "Presentación",
-      "description": "Conserjería privada suiza — acceso curado a lo excepcional, una plataforma a medida y discreción absoluta."
+      "description": "Círculo privado suizo — acceso curado a lo excepcional, una plataforma a medida y discreción absoluta."
     },
     "brandHomeLabel": "Volver al inicio",
     "hero": {
-      "eyebrow": "Conserjería privada · Suiza",
+      "eyebrow": "Círculo privado · Suiza",
       "title": "El acceso a lo excepcional,",
       "word1": "orquestado",
       "word2": "discreto",
@@ -993,7 +993,7 @@
       "scrollHint": "Descubrir",
       "gps": "46°57′N · 06°50′E",
       "m1Label": "Tipo",
-      "m1Value": "Conserjería privada",
+      "m1Value": "Independiente",
       "m2Label": "Acceso",
       "m2Value": "Por invitación",
       "m3Label": "Casa",
@@ -1154,7 +1154,7 @@
   "trust": {
     "badge": "Seguridad y confidencialidad",
     "modalTitle": "Siete garantías premium",
-    "modalLede": "Sawnext Studio es una conserjería privada suiza. Cada solicitud, cada transacción, cada intercambio sigue el protocolo que se indica a continuación — sin excepción.",
+    "modalLede": "Sawnext Studio es un círculo privado suizo. Cada solicitud, cada transacción, cada intercambio sigue el protocolo que se indica a continuación — sin excepción.",
     "footerNote": "Para cualquier pregunta jurídica precisa, su abogado o notario está invitado a contactar directamente con nuestro departamento de cumplimiento normativo — Valmont les pondrá en contacto.",
     "pillar": {
       "nda": {
@@ -1300,7 +1300,7 @@
     }
   },
   "public": {
-    "tagline": "Conserjería privada suiza",
+    "tagline": "Círculo privado suizo",
     "intro": "Una selección por invitación para una clientela seleccionada. Sin ruido, sin excesos.",
     "loginCta": "Acceder a su espacio",
     "footer": {

@@ -13,8 +13,8 @@
         "en": "SAW↗NEXT"
       },
       "tagline": {
-        "fr": "Conciergerie privée suisse — accès par cooptation",
-        "en": "Swiss private concierge — access by cooptation"
+        "fr": "Cercle privé suisse — accès par cooptation",
+        "en": "Swiss private circle — access by cooptation"
       },
       "primaryNav": [
         {
@@ -51,12 +51,12 @@
         "x": ""
       },
       "seoTitle": {
-        "fr": "SAW↗NEXT — Conciergerie privée suisse",
-        "en": "SAW↗NEXT — Swiss private concierge"
+        "fr": "SAW↗NEXT — Cercle privé suisse",
+        "en": "SAW↗NEXT — Swiss private circle"
       },
       "seoDescription": {
-        "fr": "Cercle restreint suisse pour clientèle HNW. Évènements, propriétés, garde-temps, œuvres, voyages, conciergerie sur mesure. Accès par cooptation.",
-        "en": "Swiss restricted circle for HNW clientele. Events, properties, timepieces, artworks, journeys, bespoke concierge. Access by cooptation."
+        "fr": "Cercle restreint suisse pour clientèle HNW. Évènements, propriétés, garde-temps, œuvres, voyages sur mesure. Accès par cooptation.",
+        "en": "Swiss restricted circle for HNW clientele. Events, properties, timepieces, artworks, bespoke journeys. Access by cooptation."
       }
     },
     {
@@ -69,7 +69,7 @@
       "ctaCallDirect": { "fr": "Appeler", "en": "Call" },
       "heroMetaStructure": { "fr": "Structure", "en": "Structure" },
       "heroMetaType": { "fr": "Type", "en": "Type" },
-      "heroMetaTypeValue": { "fr": "Conciergerie privée", "en": "Private concierge" },
+      "heroMetaTypeValue": { "fr": "Indépendante", "en": "Independent" },
       "heroMetaStatus": { "fr": "Statut", "en": "Status" },
       "heroMetaStatusValue": { "fr": "Cooptation ouverte", "en": "Cooptation open" },
       "heroMetaModel": { "fr": "Modèle", "en": "Model" },
@@ -224,7 +224,7 @@
         "en": "Three founders behind."
       },
       "interlocutorCircleTag": { "fr": "Cercle", "en": "Circle" },
-      "interlocutorRole": { "fr": "Concierge", "en": "Concierge" },
+      "interlocutorRole": { "fr": "Point de contact", "en": "Point of contact" },
       "footerNote": {
         "fr": "Sawnext Sàrl — cercle restreint suisse. Aucune diffusion commerciale, aucun relais. Confidentialité comme livrable.",
         "en": "Sawnext Sàrl — Swiss restricted circle. No commercial broadcast, no relay. Confidentiality as a deliverable."
@@ -238,8 +238,8 @@
       "title": "Accueil",
       "slug": { "_type": "slug", "current": "home" },
       "eyebrow": {
-        "fr": "Conciergerie privée suisse",
-        "en": "Swiss private concierge"
+        "fr": "Cercle privé suisse",
+        "en": "Swiss private circle"
       },
       "heroHeading": {
         "fr": "L'accès retenu.",
@@ -250,8 +250,8 @@
         "en": "Sawnext is a restricted circle. We guide a Swiss private clientele toward goods, events and meetings closed to the rest of the market. Every request is treated as an encounter, never as a transaction."
       },
       "seoTitle": {
-        "fr": "SAW↗NEXT — Conciergerie privée suisse",
-        "en": "SAW↗NEXT — Swiss private concierge"
+        "fr": "SAW↗NEXT — Cercle privé suisse",
+        "en": "SAW↗NEXT — Swiss private circle"
       },
       "seoDescription": {
         "fr": "Cercle restreint suisse pour clientèle HNW.",

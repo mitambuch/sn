@@ -979,11 +979,11 @@
   "qr": {
     "seo": {
       "title": "Présentation",
-      "description": "Conciergerie privée suisse — accès curé à l'exceptionnel, plateforme sur-mesure et discrétion absolue."
+      "description": "Cercle privé suisse — accès curé à l'exceptionnel, plateforme sur-mesure et discrétion absolue."
     },
     "brandHomeLabel": "Retour à l'accueil",
     "hero": {
-      "eyebrow": "Conciergerie privée · Suisse",
+      "eyebrow": "Cercle privé · Suisse",
       "title": "L'accès à l'exceptionnel,",
       "word1": "orchestré",
       "word2": "discret",
@@ -993,7 +993,7 @@
       "scrollHint": "Découvrir",
       "gps": "46°57′N · 06°50′E",
       "m1Label": "Type",
-      "m1Value": "Conciergerie privée",
+      "m1Value": "Indépendante",
       "m2Label": "Accès",
       "m2Value": "Sur invitation",
       "m3Label": "Maison",
@@ -1154,7 +1154,7 @@
   "trust": {
     "badge": "Sécurité & confidentialité",
     "modalTitle": "Sept garanties premium",
-    "modalLede": "Sawnext Studio est une conciergerie privée suisse. Chaque demande, chaque transaction, chaque échange suit le protocole ci-dessous — sans exception.",
+    "modalLede": "Sawnext Studio est un cercle privé suisse. Chaque demande, chaque transaction, chaque échange suit le protocole ci-dessous — sans exception.",
     "footerNote": "Pour toute question juridique précise, votre avocat ou notaire est invité à contacter directement notre département conformité — Valmont vous met en relation.",
     "pillar": {
       "nda": {
@@ -1300,7 +1300,7 @@
     }
   },
   "public": {
-    "tagline": "Conciergerie privée suisse",
+    "tagline": "Cercle privé suisse",
     "intro": "Une sélection sur invitation pour une clientèle vetted. Sans bruit, sans excès.",
     "loginCta": "Accéder à votre espace",
     "footer": {
