@@ -71,5 +71,30 @@ leur numérotation propre.
 - Sortir `public/*.xlsx` et `public/brief_*.md` de `public/` (sinon servis
   publiquement s'ils sont commités).
 
+## Audit V2 (ajout ES) — 2026-07-01 après-midi
+Le client a fourni une V2 (`public/SAWNEXT_Audit_UX_incoherences_v2.xlsx`) =
+V1 + espagnol (26 items : 19 V1 + ES1-ES6 + C9). Traitement :
+- **ES1** (ES « Fundada 2025 ») déjà réglé par A3 ; **ES5** (ES « Estado :
+  Suiza ») déjà réglé par A4.
+- **ES4** (GPS ES faux 46.50°N — Boudry = 46.83°) + **ES6** (index
+  « Interlocutor » ≠ header « Equipo ») corrigés côté i18n (commit `6fa1c04`),
+  `topRightGps` → « 46.831° N · 6.842° E » et `eyebrowTeam` aligné sur le nom
+  de section (3 langues).
+- **Restent des décisions owner/client** : **ES2** (la version ES est un texte
+  distinct, pas une traduction — réécrire sur une trame commune), **ES3** (le
+  catalogue ES n'affiche aucune fiche ouverte), **C9** (anglicisme
+  « marketplace » FR), **C1** (confirmer domaine officiel saw-next.ch), **C4**
+  (graphie de marque en prose).
+
+## PIÈGE CRITIQUE — push Sanity casse l'ES
+`resolveField = value[locale] ?? value.fr ?? i18n` (src/lib/i18nField.ts). Les
+champs Sanity du fixture n'ont que **fr/en**. Donc si on **push** le landing
+Sanity en prod, la version **ES rendra du FRANÇAIS** (fallback `.fr`) pour tout
+champ Sanity peuplé. Aujourd'hui l'ES rend l'i18n espagnol (Sanity ne délivre
+pas d'es). **Ne pas push Sanity tel quel** : soit rester sur l'i18n (couvre les
+3 langues, déjà corrigé), soit ajouter l'es aux champs Sanity d'abord (client).
+Corollaire : les corrections i18n suffisent pour le live ; le push Sanity n'est
+PAS requis et serait risqué sans traduction ES préalable.
+
 Voir aussi [[2026-06-02-sanity-stale-data-overrides-code]] (Sanity écrase le
 fallback code), [[option-b-fast-ship]] (flux de livraison rapide).
