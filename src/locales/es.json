@@ -1318,7 +1318,7 @@
     "hero": {
       "topLeft": "Edición v0.6 / Disposición",
       "topCenter": "SAW↗NEXT",
-      "topRightGps": "46.50° N, 6.83° E",
+      "topRightGps": "46.831° N · 6.842° E",
       "topRightLoc": "Boudry / NE",
       "sideMark": "01 / Introducción",
       "cyclePhrases": {
@@ -1672,7 +1672,7 @@
     },
     "interlocutor": {
       "eyebrow": "Interlocutor",
-      "eyebrowTeam": "Equipo",
+      "eyebrowTeam": "Interlocutor",
       "countLabel": "Cinco presencias",
       "headlineA": "Una voz",
       "headlineB": "Una red detrás",
