@@ -220,8 +220,8 @@
       "interlocutorEyebrow": { "fr": "Interlocuteur", "en": "Contact" },
       "interlocutorHeadlineA": { "fr": "Une voix.", "en": "One voice." },
       "interlocutorHeadlineB": {
-        "fr": "Trois fondateurs derrière.",
-        "en": "Three founders behind."
+        "fr": "Un réseau derrière.",
+        "en": "A network behind."
       },
       "interlocutorCircleTag": { "fr": "Cercle", "en": "Circle" },
       "interlocutorRole": { "fr": "Point de contact", "en": "Point of contact" },
@@ -265,8 +265,8 @@
       "slug": { "_type": "slug", "current": "about" },
       "eyebrow": { "fr": "Notre méthode", "en": "Our method" },
       "heroHeading": {
-        "fr": "Une voix, trois fondateurs, un seul standard.",
-        "en": "One voice, three founders, a single standard."
+        "fr": "Une voix, un réseau, un seul standard.",
+        "en": "One voice, one network, a single standard."
       },
       "heroText": {
         "fr": "Autour de Valmont Seragone Mato, un cercle de cinq présences construit Sawnext sur un constat simple : le luxe contemporain s'épuise dans le bruit. Notre proposition est inverse — un cercle silencieux où la confidentialité est un livrable.",
@@ -277,8 +277,8 @@
         "en": "About — SAW↗NEXT"
       },
       "seoDescription": {
-        "fr": "Trois fondateurs, un standard unique.",
-        "en": "Three founders, a single standard."
+        "fr": "Un fondateur, un réseau, un standard unique.",
+        "en": "One founder, a network, a single standard."
       }
     },
     {
