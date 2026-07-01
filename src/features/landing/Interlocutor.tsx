@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════
-// Interlocutor — landing S09 (focal contact + extended network)
+// Interlocutor — landing S07 (focal contact + extended network)
 //
 // WHAT: Two-column section with autoplay rotation through the team
 //       personas. The focal contact (Valmont) always loads first, then
@@ -22,7 +22,7 @@
 //       5. Click on any segment or circle card → jump to that member.
 //       6. Each member shows ITS OWN channels + a "Voir <name>" CTA.
 //
-// WHEN: Anchored at #s09 of the landing.
+// WHEN: Anchored at #s07 of the landing.
 // ═══════════════════════════════════════════════════
 
 import type { Locale } from '@config/i18n';
@@ -42,7 +42,7 @@ const SLIDE_DURATION_MS = 8000;
 /** Derive a stable member key from a Sanity firstName (matches teamData keys). */
 const keyOf = (firstName: string): string => firstName.toLowerCase().replace(/\s+/g, '');
 
-/** Landing S09 — autoplay focal interlocutor + supporting circle. */
+/** Landing S07 — autoplay focal interlocutor + supporting circle. */
 export const Interlocutor = () => {
   const { t, i18n } = useTranslation();
   const { data: landing } = useLandingContext();
@@ -182,12 +182,12 @@ export const Interlocutor = () => {
   const focalFunction = pickLabel(focal.functionLabel);
 
   return (
-    <section id="s09" ref={ref} className="border-border border-b">
+    <section id="s07" ref={ref} className="border-border border-b">
       {/* ─── Header strip — eyebrow + monumental title ─── */}
       <div className="border-border border-b px-8 py-8 md:px-12 md:py-10">
         <div className="flex items-center justify-between font-mono text-[10px] tracking-widest uppercase">
           <span>
-            ↘ 09 /{' '}
+            ↘ 07 /{' '}
             {resolveFieldOrFallback(
               landing?.interlocutorEyebrow,
               locale,

@@ -211,7 +211,7 @@ export const Manifesto = () => {
         {/* Top meta */}
         <div className="text-on-ink/55 z-30 flex items-center justify-between font-mono text-[10px] tracking-widest uppercase">
           <span>↘ {t('landing.manifesto.eyebrow')}</span>
-          <span>02 / 09</span>
+          <span>02 / 07</span>
         </div>
 
         {/* Phrases — typographic constellation with per-phrase indent score */}

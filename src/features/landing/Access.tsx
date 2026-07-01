@@ -10,7 +10,7 @@
 //       the global AccessRequestModal (form / code) — "demander un
 //       accès" is no longer the section identity, it's the closing
 //       move after the teaser.
-// WHEN: Anchored at #s08, après Domaines et avant Interlocutor.
+// WHEN: Anchored at #s06, après Domaines et avant Interlocutor.
 // CHANGE COPY: src/locales/{fr,en}.json under landing.access.*
 // ═══════════════════════════════════════════════════
 
@@ -72,7 +72,7 @@ export const Access = () => {
   const lockedCount = Math.max(0, MAX_TILES - shownItems.length);
 
   return (
-    <section id="s08" data-landing-dark="true" data-theme="dark" className="bg-ink text-white">
+    <section id="s06" data-landing-dark="true" data-theme="dark" className="bg-ink text-white">
       <div
         ref={ref}
         className="mx-auto flex max-w-7xl flex-col gap-16 px-5 py-24 md:gap-20 md:px-12 md:py-32"
@@ -80,7 +80,7 @@ export const Access = () => {
         {/* ─── Header ─── */}
         <header className="flex flex-col gap-6">
           <SectionTag
-            num="08.A"
+            num="06.A"
             label={resolveFieldOrFallback(
               landing?.accessEyebrow,
               locale,

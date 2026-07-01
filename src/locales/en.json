@@ -1419,7 +1419,7 @@
       }
     },
     "manifesto": {
-      "eyebrow": "Manifesto / 01",
+      "eyebrow": "Manifesto / 02",
       "hint": "Keep scrolling",
       "p1": [
         "No agency.",
@@ -1739,10 +1739,10 @@
       "s04label": "Document",
       "s05name": "Domains",
       "s05label": "Services",
-      "s08name": "Access",
-      "s08label": "Cooptation",
-      "s09name": "Contact",
-      "s09label": "Contact"
+      "s06name": "Access",
+      "s06label": "Cooptation",
+      "s07name": "Contact",
+      "s07label": "Contact"
     },
     "marquee": {
       "edition": "May 2026 edition",

@@ -1419,7 +1419,7 @@
       }
     },
     "manifesto": {
-      "eyebrow": "Manifeste / 01",
+      "eyebrow": "Manifeste / 02",
       "hint": "Continuez à dérouler",
       "p1": [
         "Pas d’agence.",
@@ -1739,10 +1739,10 @@
       "s04label": "Document",
       "s05name": "Domaines",
       "s05label": "Services",
-      "s08name": "Accès",
-      "s08label": "Cooptation",
-      "s09name": "Interlocuteur",
-      "s09label": "Contact"
+      "s06name": "Accès",
+      "s06label": "Cooptation",
+      "s07name": "Interlocuteur",
+      "s07label": "Contact"
     },
     "marquee": {
       "edition": "Édition Mai 2026",

@@ -44,8 +44,8 @@ export const LandingFooter = () => {
           <FooterLink href="#s03">{t('landing.footer.navPresentation')}</FooterLink>
           <FooterLink href="#s04">{t('landing.principles.tag')}</FooterLink>
           <FooterLink href="#s05">{t('landing.domains.tag')}</FooterLink>
-          <FooterLink href="#s08">{t('landing.footer.navAccess')}</FooterLink>
-          <FooterLink href="#s09">{t('landing.footer.navContact')}</FooterLink>
+          <FooterLink href="#s06">{t('landing.footer.navAccess')}</FooterLink>
+          <FooterLink href="#s07">{t('landing.footer.navContact')}</FooterLink>
         </FooterCol>
 
         <FooterCol label={t('landing.footer.colLegalLabel')}>
