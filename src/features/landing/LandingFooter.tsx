@@ -48,10 +48,14 @@ export const LandingFooter = () => {
           <FooterLink href="#s07">{t('landing.footer.navContact')}</FooterLink>
         </FooterCol>
 
+        {/* Legal — non-interactive until real pages exist. WHY: shipping
+            dead href="#" links is worse than a muted "pending" label; the
+            client provides the Mentions/Confidentialité/CGU content, then
+            these become real links to the published pages. */}
         <FooterCol label={t('landing.footer.colLegalLabel')}>
-          <FooterLink href="#">{t('landing.footer.legalMentions')}</FooterLink>
-          <FooterLink href="#">{t('landing.footer.legalPrivacy')}</FooterLink>
-          <FooterLink href="#">{t('landing.footer.legalTerms')}</FooterLink>
+          <FooterPending>{t('landing.footer.legalMentions')}</FooterPending>
+          <FooterPending>{t('landing.footer.legalPrivacy')}</FooterPending>
+          <FooterPending>{t('landing.footer.legalTerms')}</FooterPending>
         </FooterCol>
 
         <FooterCol label={t('landing.footer.colSeatLabel')}>
@@ -89,4 +93,11 @@ const FooterLink = ({ href, children }: { href: string; children: ReactNode }) =
   >
     {children}
   </a>
+);
+
+/** Non-interactive footer label — used for legal entries whose pages do not
+ *  exist yet, so no dead href="#" link ships. Replace with FooterLink once the
+ *  client supplies the legal content and the pages are wired. */
+const FooterPending = ({ children }: { children: ReactNode }) => (
+  <span className="text-muted w-fit py-0.5 text-[11px]">{children}</span>
 );
