@@ -1370,9 +1370,9 @@
       "metaType": "Type",
       "metaTypeValue": "Indépendante",
       "metaStatus": "Statut",
-      "metaStatusValue": "Suisse",
+      "metaStatusValue": "Cooptation ouverte",
       "metaModel": "Modèle",
-      "metaModelValue": "Cooptation",
+      "metaModelValue": "Sur invitation",
       "metaEstablished": "Établi",
       "metaEstablishedValue": "2026",
       "metaFieldLabel": "Champ d’action",
@@ -1752,7 +1752,7 @@
       "copyright": "© 2026",
       "rightsReserved": "Tous droits réservés",
       "confidential": "Document confidentiel",
-      "cooptationOnly": "Cooptation uniquement"
+      "cooptationOnly": "Sur cooptation"
     },
     "terminal": {
       "status": "Cooptation ouverte",

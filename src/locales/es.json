@@ -1370,9 +1370,9 @@
       "metaType": "Tipo",
       "metaTypeValue": "Independiente",
       "metaStatus": "Estado",
-      "metaStatusValue": "Suiza",
+      "metaStatusValue": "Cooptación abierta",
       "metaModel": "Modelo",
-      "metaModelValue": "Cooptación",
+      "metaModelValue": "Por invitación",
       "metaEstablished": "Fundada",
       "metaEstablishedValue": "2026",
       "metaFieldLabel": "Campo de acción",
@@ -1752,7 +1752,7 @@
       "copyright": "© 2026",
       "rightsReserved": "Todos los derechos reservados",
       "confidential": "Documento confidencial",
-      "cooptationOnly": "Solo por cooptación"
+      "cooptationOnly": "Por cooptación"
     },
     "terminal": {
       "status": "Cooptación abierta",

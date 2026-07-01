@@ -1370,9 +1370,9 @@
       "metaType": "Type",
       "metaTypeValue": "Independent",
       "metaStatus": "Status",
-      "metaStatusValue": "Swiss",
+      "metaStatusValue": "Cooptation open",
       "metaModel": "Model",
-      "metaModelValue": "Cooptation",
+      "metaModelValue": "By invitation",
       "metaEstablished": "Established",
       "metaEstablishedValue": "2026",
       "metaFieldLabel": "Field of action",
@@ -1752,7 +1752,7 @@
       "copyright": "© 2026",
       "rightsReserved": "All rights reserved",
       "confidential": "Confidential document",
-      "cooptationOnly": "Cooptation only"
+      "cooptationOnly": "By cooptation"
     },
     "terminal": {
       "status": "Cooptation open",
