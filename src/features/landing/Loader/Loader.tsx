@@ -18,6 +18,7 @@
 
 import { ArrowUpRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { WordmarkStroke } from './WordmarkStroke';
 
@@ -48,6 +49,7 @@ interface LoaderProps {
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
 export const Loader = ({ onDone }: LoaderProps = {}) => {
+  const { t } = useTranslation();
   const [phase, setPhase] = useState<LoaderPhase>('animating');
   const [drawProgress, setDrawProgress] = useState(0);
   const [fillProgress, setFillProgress] = useState(0);
@@ -128,7 +130,7 @@ export const Loader = ({ onDone }: LoaderProps = {}) => {
   return (
     <div
       role="status"
-      aria-label="Chargement de SAW Next"
+      aria-label={t('landing.loader.ariaLoading')}
       className="bg-bg fixed inset-0 z-60 flex flex-col items-center justify-center"
       style={{
         opacity: exiting ? 0 : 1,
@@ -214,7 +216,7 @@ export const Loader = ({ onDone }: LoaderProps = {}) => {
             position: ctaVisible ? 'static' : 'absolute',
           }}
         >
-          <span>Entrer</span>
+          <span>{t('landing.loader.enter')}</span>
           <ArrowUpRight
             size={16}
             strokeWidth={1.8}

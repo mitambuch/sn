@@ -1762,7 +1762,13 @@
     },
     "terminal": {
       "status": "Cooptation open",
-      "tz": "CH / CET"
+      "tz": "CH / CET",
+      "requestShort": "Request",
+      "privateShort": "Area"
+    },
+    "loader": {
+      "ariaLoading": "Loading SAW Next",
+      "enter": "Enter"
     },
     "cta": {
       "requestAccess": "Request access",
