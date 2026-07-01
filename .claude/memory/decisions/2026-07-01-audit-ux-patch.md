@@ -96,5 +96,28 @@ pas d'es). **Ne pas push Sanity tel quel** : soit rester sur l'i18n (couvre les
 Corollaire : les corrections i18n suffisent pour le live ; le push Sanity n'est
 PAS requis et serait risqué sans traduction ES préalable.
 
+## Carte d'éditabilité (gros TOUR 2026-07-01) — 109 éléments texte landing
+Owner a cadré : texte hardcodé = notre job (code) ; texte éditable = client sur
+Sanity. Mapping (workflow) :
+- **43 éditables client (Sanity-live)** : hero meta (Type/Statut/Modèle/Établi
+  +termes+valeurs), heroField, heroGps, CTAs ; presentation eyebrow/headline/
+  lede ; principlesEyebrow/Headline ; domainsEyebrow/Headline/Lede ; access
+  eyebrow/titres/lede/eventsEyebrow ; interlocutor eyebrow/headlineA/headlineB ;
+  footerLocation ; + siteConfig (tagline/seo/copyright/contact). Fiches
+  catalogue = docs propres ; bio membre = doc teamMember.
+- **66 verrouillés (i18n / hardcodé / dormant)** : manifeste (tout), hero
+  cyclePhrases, marquee/ticker, index (sections+compteurs), terminal, loader,
+  footer nav/legal/canton/type, interlocutor countLabel/circleTag/circleCount/
+  labels contact, teamData (noms/tél/email/sector/function).
+- **16 champs Sanity DORMANTS** (existent mais le composant rend l'i18n → éditer
+  = zéro effet) : **principles[]** (les 4 piliers), **domainTiles[]** (10 rendus
+  vs 6 en base), **interlocutorRole**, **interlocutorCircleTag**,
+  **accessLockedEyebrow**, **footerEdition**. Piège à signaler au client.
+
+Conséquence : les corrections éditoriales de l'audit portent sur des champs
+Sanity-live (headlines/meta/ledes) → **job client**. Le structurel/verrouillé →
+fait par nous. Dette : si le client doit un jour éditer principes/domaines/
+manifeste lui-même, il faut câbler les tableaux Sanity dormants (refactor).
+
 Voir aussi [[2026-06-02-sanity-stale-data-overrides-code]] (Sanity écrase le
 fallback code), [[option-b-fast-ship]] (flux de livraison rapide).
