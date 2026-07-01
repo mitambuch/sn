@@ -152,7 +152,7 @@ const tileSurface: React.CSSProperties = {
 };
 
 const DOMAIN_TYPES_ORDERED = [
-  { type: 'event', label: 'Évènement' },
+  { type: 'event', label: 'Événement' },
   { type: 'property', label: 'Propriété' },
   { type: 'timepiece', label: 'Garde-temps' },
   { type: 'artwork', label: 'Œuvre' },
@@ -298,7 +298,7 @@ export function Dashboard() {
         >
           <ActionTile
             label="Créer une offre"
-            hint="Évènement · propriété · garde-temps · …"
+            hint="Événement · propriété · garde-temps · …"
             indicator={createOpen ? 'CHOISIS UN TYPE' : '⊕'}
             onClick={() => setCreateOpen(o => !o)}
           />
