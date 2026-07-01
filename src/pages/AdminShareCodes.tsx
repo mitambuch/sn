@@ -34,7 +34,7 @@ import {
 } from '@/types/share';
 
 const DOC_TYPES: { value: ShareableDocType; label: string }[] = [
-  { value: 'event', label: 'Évènement' },
+  { value: 'event', label: 'Événement' },
   { value: 'property', label: 'Propriété' },
   { value: 'timepiece', label: 'Garde-temps' },
   { value: 'artwork', label: "Œuvre d'art" },

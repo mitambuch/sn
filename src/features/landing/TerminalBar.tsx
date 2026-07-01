@@ -16,6 +16,7 @@
 import { BrandMark } from '@components/brand/BrandMark';
 import { Phone } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const PHONE_TEL = '+41787498170';
 
@@ -58,6 +59,7 @@ export const TerminalBar = ({
   onSecondaryCta,
   callCtaLabel,
 }: TerminalBarProps) => {
+  const { t } = useTranslation();
   const [time, setTime] = useState<string>(() => formatCHTime(new Date()));
 
   useEffect(() => {
@@ -118,7 +120,7 @@ export const TerminalBar = ({
           onClick={onPrimaryCta}
           className="bg-bg text-fg hover:bg-bg/90 focus-visible:ring-bg/40 inline-flex items-center gap-1 rounded-full px-3 py-2 font-mono text-[10px] tracking-widest whitespace-nowrap uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none sm:gap-2 sm:px-5 sm:text-xs"
         >
-          <span className="sm:hidden">Demander</span>
+          <span className="sm:hidden">{t('landing.terminal.requestShort')}</span>
           <span className="hidden sm:inline">{primaryCtaLabel}</span>
           <span aria-hidden="true">↗</span>
         </button>
@@ -132,7 +134,7 @@ export const TerminalBar = ({
             onClick={onSecondaryCta}
             className="border-bg/50 text-bg hover:border-bg hover:bg-bg/10 focus-visible:ring-bg/40 inline-flex items-center gap-1 rounded-full border px-3 py-2 font-mono text-[10px] tracking-widest whitespace-nowrap uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none sm:gap-2 sm:px-5 sm:text-xs"
           >
-            <span className="sm:hidden">Espace</span>
+            <span className="sm:hidden">{t('landing.terminal.privateShort')}</span>
             <span className="hidden sm:inline">{secondaryCtaLabel}</span>
             <span aria-hidden="true">↗</span>
           </button>

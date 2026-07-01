@@ -19,7 +19,7 @@ import { cn } from '@utils/cn';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const PILLARS = ['1', '2', '3'] as const;
+const PILLARS = ['1', '2', '3', '4'] as const;
 type PillarKey = (typeof PILLARS)[number];
 
 /** Landing S04 — blur-by-default, cursor-or-scroll reveal manifesto. */
@@ -44,7 +44,7 @@ export const Principles = () => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
             const pillar = entry.target.getAttribute('data-pillar');
-            if (pillar === '1' || pillar === '2' || pillar === '3') {
+            if (pillar === '1' || pillar === '2' || pillar === '3' || pillar === '4') {
               setScrollActive(pillar);
             }
           }

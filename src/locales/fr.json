@@ -979,11 +979,11 @@
   "qr": {
     "seo": {
       "title": "Présentation",
-      "description": "Conciergerie privée suisse — accès curé à l'exceptionnel, plateforme sur-mesure et discrétion absolue."
+      "description": "Cercle privé suisse — accès curé à l'exceptionnel, plateforme sur-mesure et discrétion absolue."
     },
     "brandHomeLabel": "Retour à l'accueil",
     "hero": {
-      "eyebrow": "Conciergerie privée · Suisse",
+      "eyebrow": "Cercle privé · Suisse",
       "title": "L'accès à l'exceptionnel,",
       "word1": "orchestré",
       "word2": "discret",
@@ -993,7 +993,7 @@
       "scrollHint": "Découvrir",
       "gps": "46°57′N · 06°50′E",
       "m1Label": "Type",
-      "m1Value": "Conciergerie privée",
+      "m1Value": "Indépendante",
       "m2Label": "Accès",
       "m2Value": "Sur invitation",
       "m3Label": "Maison",
@@ -1154,7 +1154,7 @@
   "trust": {
     "badge": "Sécurité & confidentialité",
     "modalTitle": "Sept garanties premium",
-    "modalLede": "Sawnext Studio est une conciergerie privée suisse. Chaque demande, chaque transaction, chaque échange suit le protocole ci-dessous — sans exception.",
+    "modalLede": "Sawnext Studio est un cercle privé suisse. Chaque demande, chaque transaction, chaque échange suit le protocole ci-dessous — sans exception.",
     "footerNote": "Pour toute question juridique précise, votre avocat ou notaire est invité à contacter directement notre département conformité — Valmont vous met en relation.",
     "pillar": {
       "nda": {
@@ -1259,7 +1259,7 @@
     "privateShare": "Partage privé",
     "fallbackTitle": "Fiche partagée",
     "docType": {
-      "event": "Évènement",
+      "event": "Événement",
       "property": "Propriété",
       "timepiece": "Garde-temps",
       "artwork": "Œuvre",
@@ -1300,7 +1300,7 @@
     }
   },
   "public": {
-    "tagline": "Conciergerie privée suisse",
+    "tagline": "Cercle privé suisse",
     "intro": "Une sélection sur invitation pour une clientèle vetted. Sans bruit, sans excès.",
     "loginCta": "Accéder à votre espace",
     "footer": {
@@ -1318,7 +1318,7 @@
     "hero": {
       "topLeft": "Édition v0.6 / Disposition",
       "topCenter": "SAW↗NEXT",
-      "topRightGps": "46.50° N, 6.83° E",
+      "topRightGps": "46.831° N · 6.842° E",
       "topRightLoc": "Boudry / NE",
       "sideMark": "01 / Introduction",
       "cyclePhrases": {
@@ -1370,11 +1370,11 @@
       "metaType": "Type",
       "metaTypeValue": "Indépendante",
       "metaStatus": "Statut",
-      "metaStatusValue": "Suisse",
+      "metaStatusValue": "Cooptation ouverte",
       "metaModel": "Modèle",
-      "metaModelValue": "Cooptation",
+      "metaModelValue": "Sur invitation",
       "metaEstablished": "Établi",
-      "metaEstablishedValue": "2025",
+      "metaEstablishedValue": "2026",
       "metaFieldLabel": "Champ d’action",
       "metaFieldText": "Services privés, projets confidentiels, accès off-market. Un interlocuteur unique. Pas d’agence, pas de plateforme."
     },
@@ -1419,7 +1419,7 @@
       }
     },
     "manifesto": {
-      "eyebrow": "Manifeste / 01",
+      "eyebrow": "Manifeste / 02",
       "hint": "Continuez à dérouler",
       "p1": [
         "Pas d’agence.",
@@ -1468,6 +1468,12 @@
         "prefix": "Et au-delà des projets, ce qui compte vraiment, ce sont les",
         "keyword": "Relations humaines",
         "body": ". Un seul interlocuteur. Pas de plateforme, pas de chaîne où chacun se renvoie la responsabilité."
+      },
+      "p4": {
+        "mark": "IV. Suisse",
+        "prefix": "Et tout repose sur un",
+        "keyword": "engagement suisse",
+        "body": ". Cadre légal et fiscal local maîtrisé, hébergement européen des données."
       },
       "footer": "Ce sur quoi on ne transige pas.",
       "signature": "Boudry, mars 2026"
@@ -1666,7 +1672,7 @@
     },
     "interlocutor": {
       "eyebrow": "Interlocuteur",
-      "eyebrowTeam": "Équipe",
+      "eyebrowTeam": "Interlocuteur",
       "countLabel": "Cinq présences",
       "headlineA": "Une voix",
       "headlineB": "Un réseau derrière",
@@ -1716,13 +1722,13 @@
       "seatType": "Indépendant",
       "copyright": "© 2026 SAW Next",
       "confidential": "Document confidentiel",
-      "version": "v0.6 / Édition Mai 2026"
+      "version": "v0.6 / Édition mai 2026"
     },
     "index": {
       "title": "SAW↗NEXT / Index complet",
       "footerLocation": "Boudry, Suisse",
       "footerCount": "07 sections",
-      "footerEdition": "Édition Mai 2026",
+      "footerEdition": "Édition mai 2026",
       "s01name": "Introduction",
       "s01label": "Hero",
       "s02name": "Manifeste",
@@ -1733,13 +1739,13 @@
       "s04label": "Document",
       "s05name": "Domaines",
       "s05label": "Services",
-      "s08name": "Accès",
-      "s08label": "Cooptation",
-      "s09name": "Interlocuteur",
-      "s09label": "Contact"
+      "s06name": "Accès",
+      "s06label": "Cooptation",
+      "s07name": "Interlocuteur",
+      "s07label": "Contact"
     },
     "marquee": {
-      "edition": "Édition Mai 2026",
+      "edition": "Édition mai 2026",
       "coopOpen": "Cooptation ouverte",
       "experiencesActive": "03 expériences actives",
       "verticals": "10 verticales",
@@ -1752,11 +1758,17 @@
       "copyright": "© 2026",
       "rightsReserved": "Tous droits réservés",
       "confidential": "Document confidentiel",
-      "cooptationOnly": "Cooptation uniquement"
+      "cooptationOnly": "Sur cooptation"
     },
     "terminal": {
       "status": "Cooptation ouverte",
-      "tz": "CH / CET"
+      "tz": "CH / CET",
+      "requestShort": "Demander",
+      "privateShort": "Espace"
+    },
+    "loader": {
+      "ariaLoading": "Chargement de SAW Next",
+      "enter": "Entrer"
     },
     "cta": {
       "requestAccess": "Demander un accès",

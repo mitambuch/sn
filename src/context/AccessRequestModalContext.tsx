@@ -4,7 +4,7 @@
 // WHAT: Mounts <AccessRequestModal> once at the landing root. Any CTA
 //       across the page (Hero, IndexOverlay, TerminalBar, Access
 //       section) opens the form directly via useAccessRequestModal()
-//       instead of scrolling to #s08. Pair with the LoginModalContext
+//       instead of scrolling to #s06. Pair with the LoginModalContext
 //       so the two cooptation surfaces (request / sign-in) live as
 //       sibling modals at the same level.
 // WHEN: Wrap inside <LoginModalProvider> (or alongside it) at the top

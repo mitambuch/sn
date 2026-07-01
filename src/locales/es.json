@@ -979,11 +979,11 @@
   "qr": {
     "seo": {
       "title": "Presentación",
-      "description": "Conserjería privada suiza — acceso curado a lo excepcional, una plataforma a medida y discreción absoluta."
+      "description": "Círculo privado suizo — acceso curado a lo excepcional, una plataforma a medida y discreción absoluta."
     },
     "brandHomeLabel": "Volver al inicio",
     "hero": {
-      "eyebrow": "Conserjería privada · Suiza",
+      "eyebrow": "Círculo privado · Suiza",
       "title": "El acceso a lo excepcional,",
       "word1": "orquestado",
       "word2": "discreto",
@@ -993,7 +993,7 @@
       "scrollHint": "Descubrir",
       "gps": "46°57′N · 06°50′E",
       "m1Label": "Tipo",
-      "m1Value": "Conserjería privada",
+      "m1Value": "Independiente",
       "m2Label": "Acceso",
       "m2Value": "Por invitación",
       "m3Label": "Casa",
@@ -1154,7 +1154,7 @@
   "trust": {
     "badge": "Seguridad y confidencialidad",
     "modalTitle": "Siete garantías premium",
-    "modalLede": "Sawnext Studio es una conserjería privada suiza. Cada solicitud, cada transacción, cada intercambio sigue el protocolo que se indica a continuación — sin excepción.",
+    "modalLede": "Sawnext Studio es un círculo privado suizo. Cada solicitud, cada transacción, cada intercambio sigue el protocolo que se indica a continuación — sin excepción.",
     "footerNote": "Para cualquier pregunta jurídica precisa, su abogado o notario está invitado a contactar directamente con nuestro departamento de cumplimiento normativo — Valmont les pondrá en contacto.",
     "pillar": {
       "nda": {
@@ -1300,7 +1300,7 @@
     }
   },
   "public": {
-    "tagline": "Conserjería privada suiza",
+    "tagline": "Círculo privado suizo",
     "intro": "Una selección por invitación para una clientela seleccionada. Sin ruido, sin excesos.",
     "loginCta": "Acceder a su espacio",
     "footer": {
@@ -1318,7 +1318,7 @@
     "hero": {
       "topLeft": "Edición v0.6 / Disposición",
       "topCenter": "SAW↗NEXT",
-      "topRightGps": "46.50° N, 6.83° E",
+      "topRightGps": "46.831° N · 6.842° E",
       "topRightLoc": "Boudry / NE",
       "sideMark": "01 / Introducción",
       "cyclePhrases": {
@@ -1370,11 +1370,11 @@
       "metaType": "Tipo",
       "metaTypeValue": "Independiente",
       "metaStatus": "Estado",
-      "metaStatusValue": "Suiza",
+      "metaStatusValue": "Cooptación abierta",
       "metaModel": "Modelo",
-      "metaModelValue": "Cooptación",
+      "metaModelValue": "Por invitación",
       "metaEstablished": "Fundada",
-      "metaEstablishedValue": "2025",
+      "metaEstablishedValue": "2026",
       "metaFieldLabel": "Campo de acción",
       "metaFieldText": "Servicios privados, proyectos confidenciales, acceso fuera de mercado. Un único interlocutor. Sin agencia, sin plataforma."
     },
@@ -1419,7 +1419,7 @@
       }
     },
     "manifesto": {
-      "eyebrow": "Manifiesto / 01",
+      "eyebrow": "Manifiesto / 02",
       "hint": "Continúe desplazando",
       "p1": [
         "Sin agencia.",
@@ -1468,6 +1468,12 @@
         "prefix": "Y más allá de los proyectos, lo que realmente importa son las",
         "keyword": "Relaciones humanas",
         "body": ". Un único interlocutor. Sin plataforma, sin cadena donde cada uno deriva la responsabilidad."
+      },
+      "p4": {
+        "mark": "IV. Suiza",
+        "prefix": "Y todo se apoya en un",
+        "keyword": "compromiso suizo",
+        "body": ". Marco legal y fiscal local dominado, alojamiento europeo de los datos."
       },
       "footer": "Aquello sobre lo que no transigimos.",
       "signature": "Boudry, marzo de 2026"
@@ -1666,7 +1672,7 @@
     },
     "interlocutor": {
       "eyebrow": "Interlocutor",
-      "eyebrowTeam": "Equipo",
+      "eyebrowTeam": "Interlocutor",
       "countLabel": "Cinco presencias",
       "headlineA": "Una voz",
       "headlineB": "Una red detrás",
@@ -1733,10 +1739,10 @@
       "s04label": "Documento",
       "s05name": "Ámbitos",
       "s05label": "Servicios",
-      "s08name": "Acceso",
-      "s08label": "Cooptación",
-      "s09name": "Interlocutor",
-      "s09label": "Contacto"
+      "s06name": "Acceso",
+      "s06label": "Cooptación",
+      "s07name": "Interlocutor",
+      "s07label": "Contacto"
     },
     "marquee": {
       "edition": "Edición mayo de 2026",
@@ -1752,11 +1758,17 @@
       "copyright": "© 2026",
       "rightsReserved": "Todos los derechos reservados",
       "confidential": "Documento confidencial",
-      "cooptationOnly": "Solo por cooptación"
+      "cooptationOnly": "Por cooptación"
     },
     "terminal": {
       "status": "Cooptación abierta",
-      "tz": "CH / CET"
+      "tz": "CH / CET",
+      "requestShort": "Solicitar",
+      "privateShort": "Espacio"
+    },
+    "loader": {
+      "ariaLoading": "Cargando SAW Next",
+      "enter": "Entrar"
     },
     "cta": {
       "requestAccess": "Solicitar un acceso",

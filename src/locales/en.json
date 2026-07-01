@@ -979,11 +979,11 @@
   "qr": {
     "seo": {
       "title": "Presentation",
-      "description": "Swiss private concierge — curated access to the exceptional, a bespoke platform and absolute discretion."
+      "description": "Swiss private circle — curated access to the exceptional, a bespoke platform and absolute discretion."
     },
     "brandHomeLabel": "Back to home",
     "hero": {
-      "eyebrow": "Private concierge · Switzerland",
+      "eyebrow": "Private circle · Switzerland",
       "title": "Access to the exceptional,",
       "word1": "orchestrated",
       "word2": "discreet",
@@ -993,7 +993,7 @@
       "scrollHint": "Discover",
       "gps": "46°57′N · 06°50′E",
       "m1Label": "Type",
-      "m1Value": "Private concierge",
+      "m1Value": "Independent",
       "m2Label": "Access",
       "m2Value": "By invitation",
       "m3Label": "House",
@@ -1154,7 +1154,7 @@
   "trust": {
     "badge": "Security & confidentiality",
     "modalTitle": "Seven premium guarantees",
-    "modalLede": "Sawnext Studio is a Swiss private concierge. Every request, every transaction, every exchange follows the protocol below — no exception.",
+    "modalLede": "Sawnext Studio is a Swiss private circle. Every request, every transaction, every exchange follows the protocol below — no exception.",
     "footerNote": "For specific legal questions, your lawyer or notary is invited to contact our compliance department directly — Valmont will introduce them.",
     "pillar": {
       "nda": {
@@ -1300,7 +1300,7 @@
     }
   },
   "public": {
-    "tagline": "Swiss private concierge",
+    "tagline": "Swiss private circle",
     "intro": "A by-invitation selection for a vetted clientele. Without noise, without excess.",
     "loginCta": "Access your space",
     "footer": {
@@ -1318,7 +1318,7 @@
     "hero": {
       "topLeft": "Edition v0.6 / Layout",
       "topCenter": "SAW↗NEXT",
-      "topRightGps": "46.50° N, 6.83° E",
+      "topRightGps": "46.831° N · 6.842° E",
       "topRightLoc": "Boudry / NE",
       "sideMark": "01 / Introduction",
       "cyclePhrases": {
@@ -1370,11 +1370,11 @@
       "metaType": "Type",
       "metaTypeValue": "Independent",
       "metaStatus": "Status",
-      "metaStatusValue": "Swiss",
+      "metaStatusValue": "Cooptation open",
       "metaModel": "Model",
-      "metaModelValue": "Cooptation",
+      "metaModelValue": "By invitation",
       "metaEstablished": "Established",
-      "metaEstablishedValue": "2025",
+      "metaEstablishedValue": "2026",
       "metaFieldLabel": "Field of action",
       "metaFieldText": "Private services, confidential projects, off-market access. A single point of contact. No agency, no platform."
     },
@@ -1419,7 +1419,7 @@
       }
     },
     "manifesto": {
-      "eyebrow": "Manifesto / 01",
+      "eyebrow": "Manifesto / 02",
       "hint": "Keep scrolling",
       "p1": [
         "No agency.",
@@ -1468,6 +1468,12 @@
         "prefix": "And beyond projects, what matters most are",
         "keyword": "human relations",
         "body": ". A single interlocutor. No platform, no chain where everyone passes responsibility."
+      },
+      "p4": {
+        "mark": "IV. Swiss",
+        "prefix": "And all of it rests on a",
+        "keyword": "Swiss commitment",
+        "body": ". Mastered local legal and tax framework, European data hosting."
       },
       "footer": "What we do not compromise on.",
       "signature": "Boudry, March 2026"
@@ -1666,7 +1672,7 @@
     },
     "interlocutor": {
       "eyebrow": "Contact",
-      "eyebrowTeam": "Team",
+      "eyebrowTeam": "Contact",
       "countLabel": "Five presences",
       "headlineA": "One voice",
       "headlineB": "A network behind it",
@@ -1733,10 +1739,10 @@
       "s04label": "Document",
       "s05name": "Domains",
       "s05label": "Services",
-      "s08name": "Access",
-      "s08label": "Cooptation",
-      "s09name": "Contact",
-      "s09label": "Contact"
+      "s06name": "Access",
+      "s06label": "Cooptation",
+      "s07name": "Contact",
+      "s07label": "Contact"
     },
     "marquee": {
       "edition": "May 2026 edition",
@@ -1752,11 +1758,17 @@
       "copyright": "© 2026",
       "rightsReserved": "All rights reserved",
       "confidential": "Confidential document",
-      "cooptationOnly": "Cooptation only"
+      "cooptationOnly": "By cooptation"
     },
     "terminal": {
       "status": "Cooptation open",
-      "tz": "CH / CET"
+      "tz": "CH / CET",
+      "requestShort": "Request",
+      "privateShort": "Area"
+    },
+    "loader": {
+      "ariaLoading": "Loading SAW Next",
+      "enter": "Enter"
     },
     "cta": {
       "requestAccess": "Request access",

@@ -13,8 +13,8 @@
         "en": "SAW↗NEXT"
       },
       "tagline": {
-        "fr": "Conciergerie privée suisse — accès par cooptation",
-        "en": "Swiss private concierge — access by cooptation"
+        "fr": "Cercle privé suisse — accès par cooptation",
+        "en": "Swiss private circle — access by cooptation"
       },
       "primaryNav": [
         {
@@ -51,12 +51,12 @@
         "x": ""
       },
       "seoTitle": {
-        "fr": "SAW↗NEXT — Conciergerie privée suisse",
-        "en": "SAW↗NEXT — Swiss private concierge"
+        "fr": "SAW↗NEXT — Cercle privé suisse",
+        "en": "SAW↗NEXT — Swiss private circle"
       },
       "seoDescription": {
-        "fr": "Cercle restreint suisse pour clientèle HNW. Évènements, propriétés, garde-temps, œuvres, voyages, conciergerie sur mesure. Accès par cooptation.",
-        "en": "Swiss restricted circle for HNW clientele. Events, properties, timepieces, artworks, journeys, bespoke concierge. Access by cooptation."
+        "fr": "Cercle restreint suisse pour clientèle HNW. Événements, propriétés, garde-temps, œuvres, voyages sur mesure. Accès par cooptation.",
+        "en": "Swiss restricted circle for HNW clientele. Events, properties, timepieces, artworks, bespoke journeys. Access by cooptation."
       }
     },
     {
@@ -69,7 +69,7 @@
       "ctaCallDirect": { "fr": "Appeler", "en": "Call" },
       "heroMetaStructure": { "fr": "Structure", "en": "Structure" },
       "heroMetaType": { "fr": "Type", "en": "Type" },
-      "heroMetaTypeValue": { "fr": "Conciergerie privée", "en": "Private concierge" },
+      "heroMetaTypeValue": { "fr": "Indépendante", "en": "Independent" },
       "heroMetaStatus": { "fr": "Statut", "en": "Status" },
       "heroMetaStatusValue": { "fr": "Cooptation ouverte", "en": "Cooptation open" },
       "heroMetaModel": { "fr": "Modèle", "en": "Model" },
@@ -78,7 +78,7 @@
       "heroMetaEstablishedValue": { "fr": "2026 — Boudry, CH", "en": "2026 — Boudry, CH" },
       "heroFieldLabel": { "fr": "Champ d'action", "en": "Field of action" },
       "heroFieldText": {
-        "fr": "Évènements fermés, biens hors-marché, garde-temps et œuvres documentés, voyages sur mesure. Une seule voix opérationnelle pour orchestrer tout cela.",
+        "fr": "Événements fermés, biens hors-marché, garde-temps et œuvres documentés, voyages sur mesure. Une seule voix opérationnelle pour orchestrer tout cela.",
         "en": "Closed events, off-market goods, documented timepieces and artworks, bespoke travel. A single operational voice to orchestrate all of it."
       },
       "heroGpsLabel": { "fr": "Coordonnées", "en": "Coordinates" },
@@ -139,18 +139,18 @@
       ],
       "domainsEyebrow": { "fr": "05 · Domaines", "en": "05 · Domains" },
       "domainsHeadline": {
-        "fr": "Six chantiers, un seul standard.",
-        "en": "Six fields, a single standard."
+        "fr": "Dix verticales, un seul standard.",
+        "en": "Ten verticals, a single standard."
       },
       "domainsLede": {
-        "fr": "Le périmètre est volontairement restreint. Nous opérons là où l'accès rare fait la différence.",
-        "en": "The scope is deliberately narrow. We operate where rare access makes the difference."
+        "fr": "Le périmètre couvre dix verticales. Nous opérons là où l'accès rare fait la différence.",
+        "en": "The scope spans ten verticals. We operate where rare access makes the difference."
       },
       "domainTiles": [
         {
           "_key": "d-event",
           "key": "event",
-          "title": { "fr": "Évènements privés", "en": "Private events" },
+          "title": { "fr": "Événements privés", "en": "Private events" },
           "lead": {
             "fr": "Galas, ouvertures, dîners protocolaires — accès tenu hors-marché.",
             "en": "Galas, openings, protocol dinners — kept off-market."
@@ -197,8 +197,8 @@
           "key": "concierge",
           "title": { "fr": "Conciergerie", "en": "Concierge" },
           "lead": {
-            "fr": "Réponse opérationnelle 24/7 sur tout ce qui sort des six domaines.",
-            "en": "24/7 operational response for anything outside the six fields."
+            "fr": "Réponse opérationnelle 24/7 sur tout ce qui sort des dix domaines.",
+            "en": "24/7 operational response for anything outside the ten fields."
           }
         }
       ],
@@ -220,11 +220,11 @@
       "interlocutorEyebrow": { "fr": "Interlocuteur", "en": "Contact" },
       "interlocutorHeadlineA": { "fr": "Une voix.", "en": "One voice." },
       "interlocutorHeadlineB": {
-        "fr": "Trois fondateurs derrière.",
-        "en": "Three founders behind."
+        "fr": "Un réseau derrière.",
+        "en": "A network behind."
       },
       "interlocutorCircleTag": { "fr": "Cercle", "en": "Circle" },
-      "interlocutorRole": { "fr": "Concierge", "en": "Concierge" },
+      "interlocutorRole": { "fr": "Point de contact", "en": "Point of contact" },
       "footerNote": {
         "fr": "Sawnext Sàrl — cercle restreint suisse. Aucune diffusion commerciale, aucun relais. Confidentialité comme livrable.",
         "en": "Sawnext Sàrl — Swiss restricted circle. No commercial broadcast, no relay. Confidentiality as a deliverable."
@@ -238,8 +238,8 @@
       "title": "Accueil",
       "slug": { "_type": "slug", "current": "home" },
       "eyebrow": {
-        "fr": "Conciergerie privée suisse",
-        "en": "Swiss private concierge"
+        "fr": "Cercle privé suisse",
+        "en": "Swiss private circle"
       },
       "heroHeading": {
         "fr": "L'accès retenu.",
@@ -250,8 +250,8 @@
         "en": "Sawnext is a restricted circle. We guide a Swiss private clientele toward goods, events and meetings closed to the rest of the market. Every request is treated as an encounter, never as a transaction."
       },
       "seoTitle": {
-        "fr": "SAW↗NEXT — Conciergerie privée suisse",
-        "en": "SAW↗NEXT — Swiss private concierge"
+        "fr": "SAW↗NEXT — Cercle privé suisse",
+        "en": "SAW↗NEXT — Swiss private circle"
       },
       "seoDescription": {
         "fr": "Cercle restreint suisse pour clientèle HNW.",
@@ -265,8 +265,8 @@
       "slug": { "_type": "slug", "current": "about" },
       "eyebrow": { "fr": "Notre méthode", "en": "Our method" },
       "heroHeading": {
-        "fr": "Une voix, trois fondateurs, un seul standard.",
-        "en": "One voice, three founders, a single standard."
+        "fr": "Une voix, un réseau, un seul standard.",
+        "en": "One voice, one network, a single standard."
       },
       "heroText": {
         "fr": "Autour de Valmont Seragone Mato, un cercle de cinq présences construit Sawnext sur un constat simple : le luxe contemporain s'épuise dans le bruit. Notre proposition est inverse — un cercle silencieux où la confidentialité est un livrable.",
@@ -277,8 +277,8 @@
         "en": "About — SAW↗NEXT"
       },
       "seoDescription": {
-        "fr": "Trois fondateurs, un standard unique.",
-        "en": "Three founders, a single standard."
+        "fr": "Un fondateur, un réseau, un standard unique.",
+        "en": "One founder, a network, a single standard."
       }
     },
     {

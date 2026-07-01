@@ -19,7 +19,7 @@ interface LandingData {
   tickerItems: string[];
 }
 
-const SECTION_KEYS = ['01', '02', '03', '04', '05', '08', '09'] as const;
+const SECTION_KEYS = ['01', '02', '03', '04', '05', '06', '07'] as const;
 
 export function useLandingData(): LandingData {
   const { t } = useTranslation();
