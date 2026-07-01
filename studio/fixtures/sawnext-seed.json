@@ -139,8 +139,8 @@
       ],
       "domainsEyebrow": { "fr": "05 · Domaines", "en": "05 · Domains" },
       "domainsHeadline": {
-        "fr": "Six chantiers, un seul standard.",
-        "en": "Six fields, a single standard."
+        "fr": "Dix verticales, un seul standard.",
+        "en": "Ten verticals, a single standard."
       },
       "domainsLede": {
         "fr": "Le périmètre est volontairement restreint. Nous opérons là où l'accès rare fait la différence.",
@@ -197,8 +197,8 @@
           "key": "concierge",
           "title": { "fr": "Conciergerie", "en": "Concierge" },
           "lead": {
-            "fr": "Réponse opérationnelle 24/7 sur tout ce qui sort des six domaines.",
-            "en": "24/7 operational response for anything outside the six fields."
+            "fr": "Réponse opérationnelle 24/7 sur tout ce qui sort des dix domaines.",
+            "en": "24/7 operational response for anything outside the ten fields."
           }
         }
       ],
