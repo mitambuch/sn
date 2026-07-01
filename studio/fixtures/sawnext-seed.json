@@ -55,7 +55,7 @@
         "en": "SAW↗NEXT — Swiss private circle"
       },
       "seoDescription": {
-        "fr": "Cercle restreint suisse pour clientèle HNW. Évènements, propriétés, garde-temps, œuvres, voyages sur mesure. Accès par cooptation.",
+        "fr": "Cercle restreint suisse pour clientèle HNW. Événements, propriétés, garde-temps, œuvres, voyages sur mesure. Accès par cooptation.",
         "en": "Swiss restricted circle for HNW clientele. Events, properties, timepieces, artworks, bespoke journeys. Access by cooptation."
       }
     },
@@ -78,7 +78,7 @@
       "heroMetaEstablishedValue": { "fr": "2026 — Boudry, CH", "en": "2026 — Boudry, CH" },
       "heroFieldLabel": { "fr": "Champ d'action", "en": "Field of action" },
       "heroFieldText": {
-        "fr": "Évènements fermés, biens hors-marché, garde-temps et œuvres documentés, voyages sur mesure. Une seule voix opérationnelle pour orchestrer tout cela.",
+        "fr": "Événements fermés, biens hors-marché, garde-temps et œuvres documentés, voyages sur mesure. Une seule voix opérationnelle pour orchestrer tout cela.",
         "en": "Closed events, off-market goods, documented timepieces and artworks, bespoke travel. A single operational voice to orchestrate all of it."
       },
       "heroGpsLabel": { "fr": "Coordonnées", "en": "Coordinates" },
@@ -150,7 +150,7 @@
         {
           "_key": "d-event",
           "key": "event",
-          "title": { "fr": "Évènements privés", "en": "Private events" },
+          "title": { "fr": "Événements privés", "en": "Private events" },
           "lead": {
             "fr": "Galas, ouvertures, dîners protocolaires — accès tenu hors-marché.",
             "en": "Galas, openings, protocol dinners — kept off-market."
