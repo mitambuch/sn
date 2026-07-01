@@ -127,7 +127,7 @@ const FooterFilledMark = ({ liquidProgress }: FooterFilledMarkProps) => {
       xmlns="http://www.w3.org/2000/svg"
       preserveAspectRatio="xMidYMid meet"
       role="img"
-      aria-label="SAW Next"
+      aria-label="SAW NEXT"
       className="text-fg block h-auto w-full"
       fill="currentColor"
       style={{ overflow: 'visible' }}

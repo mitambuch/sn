@@ -256,7 +256,7 @@ const FilledWordmark = ({ className, liquidProgress }: FilledWordmarkProps) => {
       viewBox="-3 -3 572.15 95.04"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="SAW Next"
+      aria-label="SAW NEXT"
       className={className}
       fill="currentColor"
       style={{ overflow: 'visible' }}
